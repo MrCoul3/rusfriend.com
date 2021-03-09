@@ -1,0 +1,25 @@
+section.login-form.authorization-forms
+    div.form-frame
+        div.container
+            h3.form-title Вход
+            div.logo-mobile-ver
+            div.form-close-btn.form-close-btn--login-form
+            //img(src="../images/icons/close-btn.svg", alt="close").form-close-btn.form-close-btn--login-form
+        //img(src="../images/icons/form-decor-line.svg", alt="line").decor-line.decor-line--login-form
+        div.decor-line.decor-line--login-form
+        form.form.login-form
+            input(type="email" placeholder="email" id="email").form__elem.form-input.form-input--email
+            div.login-check.login-check-email.login-check--disable поле обязательно для заполнения
+            label(for="email").label-email
+
+            input(type="password" placeholder="пароль" id="password").form__elem.form-input.form-input--password
+            div.login-check.login-check-password.login-check--disable поле обязательно для заполнения
+            label(for="password").label-password
+
+            div.login-invalid.login-invalid--disable
+                p неверные email или пароль
+
+
+            p.reg-log-changer.form__elem У вас нет аккаунта? Регистрация
+            div.decor-line.decor-line--login-form
+            input(type="submit" value="войти").form__elem.form-submit.form-submit-login.button

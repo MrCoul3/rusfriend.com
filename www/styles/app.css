@@ -1,0 +1,2954 @@
+@import url(https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap);
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+.owl-carousel,.owl-carousel .owl-item{-webkit-tap-highlight-color:transparent;position:relative}.owl-carousel{display:none;width:100%;z-index:1}.owl-carousel .owl-stage{position:relative;-ms-touch-action:pan-Y;touch-action:manipulation;-moz-backface-visibility:hidden}.owl-carousel .owl-stage:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}.owl-carousel .owl-stage-outer{position:relative;overflow:hidden;-webkit-transform:translate3d(0,0,0)}.owl-carousel .owl-item,.owl-carousel .owl-wrapper{-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0)}.owl-carousel .owl-item{min-height:1px;float:left;-webkit-backface-visibility:hidden;-webkit-touch-callout:none}.owl-carousel .owl-item img{display:block;width:100%}.owl-carousel .owl-dots.disabled,.owl-carousel .owl-nav.disabled{display:none}.no-js .owl-carousel,.owl-carousel.owl-loaded{display:block}.owl-carousel .owl-dot,.owl-carousel .owl-nav .owl-next,.owl-carousel .owl-nav .owl-prev{cursor:pointer;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.owl-carousel .owl-nav button.owl-next,.owl-carousel .owl-nav button.owl-prev,.owl-carousel button.owl-dot{background:0 0;color:inherit;border:none;padding:0!important;font:inherit}.owl-carousel.owl-loading{opacity:0;display:block}.owl-carousel.owl-hidden{opacity:0}.owl-carousel.owl-refresh .owl-item{visibility:hidden}.owl-carousel.owl-drag .owl-item{-ms-touch-action:pan-y;touch-action:pan-y;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.owl-carousel.owl-grab{cursor:move;cursor:grab}.owl-carousel.owl-rtl{direction:rtl}.owl-carousel.owl-rtl .owl-item{float:right}.owl-carousel .animated{animation-duration:1s;animation-fill-mode:both}.owl-carousel .owl-animated-in{z-index:0}.owl-carousel .owl-animated-out{z-index:1}.owl-carousel .fadeOut{animation-name:fadeOut}@keyframes fadeOut{0%{opacity:1}100%{opacity:0}}.owl-height{transition:height .5s ease-in-out}.owl-carousel .owl-item .owl-lazy{opacity:0;transition:opacity .4s ease}.owl-carousel .owl-item .owl-lazy:not([src]),.owl-carousel .owl-item .owl-lazy[src^=""]{max-height:0}.owl-carousel .owl-item img.owl-lazy{transform-style:preserve-3d}.owl-carousel .owl-video-wrapper{position:relative;height:100%;background:#000}.owl-carousel .owl-video-play-icon{position:absolute;height:80px;width:80px;left:50%;top:50%;margin-left:-40px;margin-top:-40px;background:url(../_/node_modules/owl.carousel/dist/assets/owl.video.play.png) no-repeat;cursor:pointer;z-index:1;-webkit-backface-visibility:hidden;transition:transform .1s ease}.owl-carousel .owl-video-play-icon:hover{-ms-transform:scale(1.3,1.3);transform:scale(1.3,1.3)}.owl-carousel .owl-video-playing .owl-video-play-icon,.owl-carousel .owl-video-playing .owl-video-tn{display:none}.owl-carousel .owl-video-tn{opacity:0;height:100%;background-position:center center;background-repeat:no-repeat;background-size:contain;transition:opacity .4s ease}.owl-carousel .owl-video-frame{position:relative;z-index:1;height:100%;width:100%}
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+.owl-theme .owl-dots,.owl-theme .owl-nav{text-align:center;-webkit-tap-highlight-color:transparent}.owl-theme .owl-nav{margin-top:10px}.owl-theme .owl-nav [class*=owl-]{color:#FFF;font-size:14px;margin:5px;padding:4px 7px;background:#D6D6D6;display:inline-block;cursor:pointer;border-radius:3px}.owl-theme .owl-nav [class*=owl-]:hover{background:#869791;color:#FFF;text-decoration:none}.owl-theme .owl-nav .disabled{opacity:.5;cursor:default}.owl-theme .owl-nav.disabled+.owl-dots{margin-top:10px}.owl-theme .owl-dots .owl-dot{display:inline-block;zoom:1}.owl-theme .owl-dots .owl-dot span{width:10px;height:10px;margin:5px 7px;background:#D6D6D6;display:block;-webkit-backface-visibility:visible;transition:opacity .2s ease;border-radius:30px}.owl-theme .owl-dots .owl-dot.active span,.owl-theme .owl-dots .owl-dot:hover span{background:#869791}
+@charset "UTF-8";
+#mysite .section {
+  max-width: 1024px;
+  margin: 100px auto 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .section {
+    margin: 70px auto 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .section {
+    margin: 55px auto 0;
+  }
+}
+#mysite .owl-carousel .owl-dots {
+  margin-top: 25px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .owl-carousel .owl-dots {
+    margin-top: 11px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .owl-carousel .carousel-item {
+    width: 100vw;
+  }
+}
+#mysite .owl-carousel span {
+  width: 40px;
+  height: 8px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .owl-carousel span {
+    width: 28.49px;
+    height: 5.84px;
+    margin: 5px 4px;
+  }
+}
+#mysite .owl-carousel .active span {
+  background: red !important;
+}
+#mysite .owl-carousel button {
+  outline: none !important;
+}
+#mysite .top-index {
+  background-image: url(../images/index/kremlin-bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 100px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index {
+    padding-bottom: 35px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index {
+    background-position: -227px -1px;
+  }
+}
+#mysite .top-index .inner {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 250px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index .inner {
+    padding-top: 210px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index .inner {
+    flex-direction: column;
+    padding-top: 100px;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--left {
+    margin-left: 40px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--left {
+    max-width: 389px;
+    margin: 0 auto;
+    margin-bottom: 100px;
+  }
+}
+#mysite .top-index__element--left h1 span {
+  color: #FF3E28;
+}
+#mysite .top-index__element--left h2 {
+  font-weight: 500;
+}
+#mysite .top-index__element--left .top-index-title {
+  margin-left: -150px;
+  opacity: 0;
+  max-width: 465px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--left .top-index-title {
+    width: 292px;
+  }
+}
+#mysite .top-index__element--left .top-index-second-title {
+  margin: 24px 0;
+  margin-left: 150px;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--left .top-index-second-title {
+    margin: 15px 0;
+    margin-left: 150px;
+  }
+}
+#mysite .top-index__element--left .top-index-first-title {
+  margin: 24px 0;
+  margin-left: -150px;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--left .top-index-first-title {
+    margin: 15px 0;
+    margin-left: -150px;
+  }
+}
+#mysite .top-index__element--left .get-guide-btn {
+  margin-top: 29px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--left .get-guide-btn {
+    margin: 23px auto;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--right {
+    margin-right: 40px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--right {
+    margin-right: 0;
+  }
+}
+#mysite .top-index__element--right .top-index-photo {
+  background-image: url(../images/index/top-index-main-photo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 442px;
+  width: 332px;
+  position: relative;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--right .top-index-photo {
+    width: 199px;
+    height: 266px;
+    top: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--right .top-index-photo {
+    width: 100%;
+    /* height: 95%; */
+    height: 118vw;
+  }
+}
+#mysite .top-index__element--right .top-index-photo__elem {
+  position: absolute;
+  transition: all 0.3s ease;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index__element--right .top-index-photo__elem {
+    display: none;
+  }
+}
+#mysite .top-index__element--right .top-index-photo__elem--name {
+  background-image: url(../images/index/photoname.svg);
+  width: 155px;
+  height: 33px;
+  top: 346px;
+  left: 36px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--right .top-index-photo__elem--name {
+    width: 62%;
+    top: 217px;
+    left: -28px;
+  }
+}
+#mysite .top-index__element--right .top-index-photo__elem--description {
+  background-image: url(../images/index/photodescription.svg);
+  width: 267px;
+  height: 33px;
+  top: 386px;
+  left: -16px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--right .top-index-photo__elem--description {
+    width: 109%;
+    top: 243px;
+    left: -27px;
+  }
+}
+#mysite .top-index .about-school-btn {
+  position: absolute;
+  display: flex;
+  top: 610px;
+  left: 334px;
+  cursor: pointer;
+  align-items: center;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index .about-school-btn {
+    flex-direction: column;
+    top: 364px;
+    left: 0;
+    right: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .top-index .about-school-btn {
+    top: 400px;
+  }
+}
+#mysite .top-index .about-school-btn--play-btn {
+  background-image: url(../images/icons/play.svg);
+  width: 38.03px;
+  height: 38.03px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-animation-name: pulsar;
+          animation-name: pulsar;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index .about-school-btn--play-btn {
+    width: 32.03px;
+    height: 32.03px;
+    order: -1;
+  }
+}
+@-webkit-keyframes pulsar {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulsar {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+#mysite .top-index .about-school-btn p {
+  font-weight: 600;
+  font-size: 18px;
+  color: #455A64;
+  margin-right: 10px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index .about-school-btn p {
+    font-size: 14px;
+    width: 139px;
+    text-align: center;
+    margin-right: 0;
+    margin-top: 5px;
+  }
+}
+#mysite .for-whom {
+  margin-top: 40px;
+}
+#mysite .for-whom .title {
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 60px;
+  margin-left: -1000px;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .for-whom .title {
+    opacity: 1;
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .for-whom .title {
+    margin-bottom: 30px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .for-whom .owl-carousel-1 .owl-dots span {
+    margin: 5px 3px;
+  }
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img {
+  min-width: 460px;
+  width: 100%;
+  height: 300px;
+  position: relative;
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img .carousel-img-description {
+  position: absolute;
+  bottom: 0;
+  background: #FFFFFF;
+  opacity: 0.8;
+  width: 460px;
+  height: 60px;
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: border-box;
+  font-weight: 200;
+  font-size: 18px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .for-whom .owl-carousel-1 .carousel-img .carousel-img-description {
+    font-size: 16px;
+  }
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--one {
+  background-image: url(../images/index/for-whom-find-love.png);
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--one .carousel-img-description {
+  padding-top: 8px;
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--two {
+  background-image: url(../images/index/for-whom-culture.png);
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--three {
+  background-image: url(../images/index/for-whom-half.png);
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--three .carousel-img-description {
+  padding-top: 8px;
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--four {
+  background-image: url(../images/index/for-whom-travel.png);
+}
+#mysite .for-whom .owl-carousel-1 .carousel-img--five {
+  background-image: url(../images/index/for-whom-work.png);
+  margin-right: 0;
+}
+#mysite .for-whom .get-free-lesson-btn {
+  text-decoration: none;
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .for-whom .get-free-lesson-btn {
+    margin-top: 20px;
+    width: 300px;
+    height: 75px;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 10px;
+  }
+}
+#mysite .about {
+  padding-top: 100px;
+  background-image: url(../images/index/about-map.png);
+  background-repeat: no-repeat;
+  background-position: center 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about {
+    padding-top: 50px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about {
+    background-size: contain;
+  }
+}
+#mysite .about .inner {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1024px;
+  margin: 0 auto;
+  position: relative;
+}
+@media screen and (max-width: 767px) {
+  #mysite .about .inner {
+    flex-direction: column;
+  }
+}
+#mysite .about__element--left {
+  background-image: url(../images/index/top-index-main-photo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-left: 100px;
+  height: 442px;
+  width: 332px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--left {
+    min-width: 280.74px;
+    height: 373.53px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--left {
+    order: 2;
+    margin: 0 auto;
+    width: 100%;
+    height: 118vw;
+    margin-left: 0 !important;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right {
+    margin-left: 20px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+  }
+}
+#mysite .about__element--right .title {
+  font-weight: 300;
+  margin-left: 300px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right .title {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .title {
+    margin-bottom: 15px;
+  }
+}
+#mysite .about__element--right .about-social-net {
+  display: flex;
+  justify-content: space-between;
+  width: 80px;
+  margin: 10px 0 15px;
+  margin-left: 400px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right .about-social-net {
+    margin-left: 0;
+    width: 60px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .about-social-net {
+    margin: 50px auto !important;
+    order: 10;
+  }
+}
+#mysite .about__element--right .about-social-net__elem {
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right .about-social-net__elem {
+    width: 25.38px;
+    height: 25.38px;
+  }
+}
+#mysite .about__element--right .about-social-net__elem--insta {
+  background-image: url(../images/icons/about-insta-icon.svg);
+}
+#mysite .about__element--right .about-social-net__elem--tiktok {
+  background-image: url(../images/icons/about-tiktok.svg);
+}
+#mysite .about__element--right .slogan {
+  font-weight: 600;
+  position: relative;
+  margin-left: 280px;
+  white-space: nowrap;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right .slogan {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .slogan {
+    white-space: normal;
+    letter-spacing: normal;
+    margin-bottom: 28px;
+    font-size: 18px;
+  }
+}
+#mysite .about__element--right .about-items {
+  max-width: 545px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .about-items {
+    margin: 0 auto;
+    max-width: 400px;
+  }
+}
+#mysite .about__element--right .about-items__item {
+  opacity: 0;
+  margin-left: 150px;
+  font-weight: 300;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about__element--right .about-items__item {
+    margin-left: 0;
+    opacity: 1;
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .about-items__item {
+    letter-spacing: normal;
+    font-size: 18px;
+  }
+}
+#mysite .about__element--right .about-items__item::before {
+  content: url(../images/icons/about-yellow-star.svg);
+  position: relative;
+  top: 4px;
+  right: 6px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .about-items__item::before {
+    display: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about__element--right .about-items__item br {
+    display: none;
+  }
+}
+#mysite .about h2 {
+  text-align: center;
+  font-weight: 600;
+  line-height: 130.5%;
+  text-align: center;
+  margin: 50px 0;
+}
+#mysite .about .detail-slogan {
+  margin-left: -400px;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about .detail-slogan {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about .detail-slogan {
+    display: none;
+  }
+}
+#mysite .about .detail-btn {
+  margin: 0 auto;
+  display: block;
+  padding-top: 25px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about .detail-btn {
+    margin-top: 20px;
+    width: 300px;
+    height: 75px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about .detail-btn {
+    margin-top: 50px;
+  }
+}
+#mysite .reviews {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .reviews {
+    margin-top: 70px;
+    margin-bottom: 50px;
+  }
+}
+#mysite .reviews .title {
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 60px;
+  margin-left: -400px;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .reviews .title {
+    margin-left: 0;
+    opacity: 1;
+    margin-bottom: 45px;
+  }
+}
+#mysite .reviews .inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  position: relative;
+}
+#mysite .reviews .reviews-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 60px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .reviews .reviews-container {
+    display: block;
+  }
+}
+#mysite .reviews .reviews-container .reviews-col {
+  display: flex;
+  flex-direction: column;
+}
+#mysite .reviews .reviews-container .reviews-col--left {
+  margin-right: 10px;
+}
+#mysite .reviews .reviews-container .reviews-col img {
+  width: 100%;
+  box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.25);
+  margin-bottom: 20px;
+  transition: all ease-in-out 0.1s;
+}
+#mysite .reviews .reviews-container .reviews-col img:hover {
+  transition: all ease 0.1s;
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+@media screen and (max-width: 767px) {
+  #mysite .reviews .reviews-container .reviews-col--right {
+    display: none;
+  }
+}
+
+.body-fixed {
+  overflow: hidden;
+  padding-right: 16px;
+}
+
+#mysite {
+  position: relative;
+  margin: 0;
+  font-family: "Exo 2", sans-serif;
+}
+#mysite h1 {
+  margin: 0;
+  font-size: 48px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite h1 {
+    font-size: 32px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite h1 {
+    font-size: 24px;
+  }
+}
+#mysite h2 {
+  margin: 0;
+  font-size: 28px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite h2 {
+    font-size: 20px;
+  }
+}
+#mysite h3 {
+  margin: 0;
+  color: black;
+  font-size: 20px;
+  font-weight: normal;
+}
+@media screen and (max-width: 1024px) {
+  #mysite h3 {
+    font-size: 14px;
+  }
+}
+#mysite .inner {
+  padding: 0 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .inner {
+    padding: 0 30px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .inner {
+    padding: 0 10px;
+  }
+}
+#mysite .button {
+  text-align: center;
+  box-sizing: border-box;
+  text-decoration: none;
+  display: block;
+  font-size: 22px;
+  font-family: "Exo 2", sans-serif;
+  font-weight: bold;
+  color: white;
+  border-radius: 9px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: ease 0.3s;
+}
+#mysite .button:active {
+  transition: transform ease-in-out 0.05s;
+  transform: scale3d(0.95, 0.95, 0.95);
+}
+#mysite .button:after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 300px;
+  margin-left: 60px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7) 0%, white 50%, rgba(255, 255, 255, 0.7) 100%);
+  filter: blur(25px);
+  position: absolute;
+  left: -40px;
+  top: -150px;
+  z-index: 1;
+  transform: rotate(45deg);
+  transition: all 0.1s;
+  -webkit-animation-name: slideme;
+          animation-name: slideme;
+  -webkit-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-delay: 0.05s;
+          animation-delay: 0.05s;
+  -webkit-animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+#mysite .red-btn {
+  background-color: #FF3E28;
+  width: 280px;
+  height: 80px;
+  padding-top: 11px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .red-btn {
+    width: 200px;
+    height: 50px;
+    font-weight: 500;
+    font-size: 16px;
+    padding-top: 5px;
+  }
+}
+@-webkit-keyframes slideme {
+  0% {
+    left: -30px;
+    margin-left: 0px;
+  }
+  30% {
+    left: 110%;
+    margin-left: 80px;
+  }
+  100% {
+    left: 110%;
+    margin-left: 80px;
+  }
+}
+#mysite .decor-line {
+  margin: 0 auto;
+  display: block;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.05) 100%);
+  height: 1px;
+}
+#mysite .decor-line--login-form {
+  width: 332px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .decor-line--login-form {
+    width: 85%;
+  }
+}
+#mysite .decor-line--header {
+  max-width: 1024px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .decor-line--header {
+    display: none;
+  }
+}
+#mysite .decor-line--header-mobile {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  #mysite .decor-line--header-mobile {
+    display: block;
+  }
+}
+#mysite .decor-line--user-login-menu {
+  position: absolute;
+  background-color: #FF3E28;
+  height: 0.5px;
+  top: 86px;
+  width: 75%;
+}
+@media screen and (max-width: 767px) {
+  #mysite .decor-line--footer {
+    top: 6px;
+    position: relative;
+  }
+}
+#mysite .social-net-btns {
+  display: flex;
+  width: 152px;
+  justify-content: space-evenly;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .social-net-btns {
+    justify-content: start;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .social-net-btns--header {
+    display: none;
+  }
+}
+#mysite .social-net-btns__elem {
+  display: block;
+  width: 46px;
+  height: 46px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: all linear 0.1s;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .social-net-btns__elem {
+    width: 26px;
+    height: 26px;
+  }
+}
+#mysite .social-net-btns__elem:hover {
+  transform: scale3d(1.13, 1.13, 1.1);
+  transition: all linear 0.1s;
+}
+#mysite .social-net-btns__elem--instagram {
+  background-image: url(../images/icons/insta-icon.svg);
+}
+@media screen and (max-width: 1024px) {
+  #mysite .social-net-btns__elem--instagram {
+    margin-right: 15px;
+  }
+}
+#mysite .social-net-btns__elem--tiktok {
+  background-image: url(../images/icons/tiktok.svg);
+}
+@media screen and (max-width: 767px) {
+  #mysite .header-menu-fixed {
+    background: #fff;
+  }
+}
+#mysite .header {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  padding: 0;
+  z-index: 900;
+}
+@media screen and (max-width: 767px) {
+  #mysite .header {
+    position: fixed;
+  }
+}
+#mysite .header__overhead {
+  background-image: url(../images/common/Lang-School.png);
+  background-repeat: no-repeat;
+  background-position-x: 177px;
+  background-position-y: 8px;
+  height: 144px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .header__overhead {
+    background-position-y: 31px;
+    background-position-x: 109px;
+    background-image: url(../images/common/Lang-School-1024.png);
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__overhead {
+    height: 70px;
+    background-position-y: 25px;
+    background-position-x: 90px;
+    background-image: url(../images/common/Lang-School-768.png);
+  }
+}
+#mysite .header__overhead .header-logo {
+  background-image: url(../images/icons/logo.svg);
+  width: 149px;
+  height: 108px;
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .header__overhead .header-logo {
+    width: 120px;
+    height: 85px;
+    background-image: url(../images/icons/logo-1024.svg);
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__overhead .header-logo {
+    width: 75.33px;
+    height: 53px;
+    background-image: url(../images/icons/logo-768.svg);
+  }
+}
+#mysite .header__overhead .service-btns {
+  display: flex;
+  align-items: center;
+}
+#mysite .header__overhead .service-btns .language {
+  margin-right: 15px;
+  position: relative;
+  background-repeat: no-repeat;
+  width: 41px;
+  height: 17px;
+}
+#mysite .header__overhead .service-btns .rus-lang {
+  cursor: pointer;
+  background-image: url(../images/icons/btn-change-lang-russian.svg);
+}
+#mysite .header__overhead .service-btns .eng-lang {
+  background-image: url(../images/icons/btn-change-lang-english.svg);
+}
+#mysite .header__overhead .service-btns .lang-changer {
+  display: none;
+  position: absolute;
+  margin-top: 2px;
+  top: 18px;
+}
+#mysite .header__overhead .service-btns .active {
+  display: block;
+}
+#mysite .header__overhead .service-btns .btn-login {
+  font-size: 14px;
+  line-height: 23px;
+  width: 96px;
+  height: 28px;
+  border: 2px solid #006660;
+  box-sizing: border-box;
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+      user-select: none;
+}
+#mysite .header__overhead .service-btns .user-login {
+  display: none;
+  width: 96px;
+  cursor: pointer;
+  position: relative;
+}
+#mysite .header__overhead .service-btns .user-login__elem--user-name {
+  font-size: 12px;
+  display: inline;
+  margin: 0 5px;
+  align-self: center;
+}
+#mysite .header__overhead .service-btns .user-login .user-login-menu {
+  padding: 4px 0px 14px 10px;
+  display: none;
+  flex-direction: column;
+  cursor: auto;
+  z-index: 101;
+  top: 40px;
+  position: absolute;
+  width: 88px;
+  height: 103px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+}
+#mysite .header__overhead .service-btns .user-login .user-login-menu__elem {
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 25px;
+  color: rgba(0, 0, 0, 0.5);
+}
+#mysite .header__overhead .service-btns .user-login .user-login-menu__elem:hover {
+  color: #FF3E28;
+}
+#mysite .header__overhead .service-btns .user-login .user-login-menu__elem--logout {
+  margin-top: 10px;
+  margin-left: 0px;
+  cursor: pointer;
+}
+#mysite .header__overhead .service-btns .active-block {
+  display: block;
+}
+#mysite .header__overhead .service-btns .active-flex {
+  display: flex;
+}
+#mysite .header__overhead .service-btns .disable {
+  display: none;
+}
+#mysite .header__overhead .service-btns .burger-btn {
+  display: none;
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__overhead .service-btns .burger-btn {
+    display: block;
+    margin: 3px 0 0 20px;
+  }
+}
+#mysite .header__lower {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__lower {
+    padding: 0;
+    display: none;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__lower .decor-line-mobile-hide {
+    display: none;
+  }
+}
+#mysite .header__lower .header-menu {
+  display: flex;
+  justify-content: space-between;
+  max-width: 821px;
+  margin: 30px auto;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .header__lower .header-menu {
+    max-width: 767px;
+    margin: 15px auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__lower .header-menu {
+    position: relative;
+    right: 767px;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0;
+    transition: all ease-in 0.1s;
+    background: #fff;
+    justify-content: start;
+    height: 100vh;
+    padding-top: 113px;
+  }
+}
+#mysite .header__lower .header-menu a {
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #455A64;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .header__lower .header-menu a {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__lower .header-menu a {
+    color: rgba(69, 90, 100, 0.75);
+    margin-bottom: 32px;
+    font-weight: normal;
+  }
+}
+#mysite .header__lower .header-menu a:hover {
+  color: #FF3E28;
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__lower .header-menu-active {
+    position: relative;
+    transition: all ease-out 0.1s;
+    margin-bottom: 0;
+    width: 100vw;
+    background: #fff;
+    margin-top: 0;
+    justify-content: start;
+    height: 100vh;
+    padding-top: 113px;
+  }
+}
+#mysite .header .header-lower-fixed {
+  margin-top: 160px;
+  position: fixed;
+  top: -161px;
+  transition: all ease-in-out 0.2s;
+  z-index: 100;
+  background: white;
+}
+@media screen and (max-width: 767px) {
+  #mysite .header .header-lower-fixed {
+    display: none;
+    position: relative;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .header .header-lower-active {
+    display: block;
+  }
+}
+#mysite .footer {
+  background-image: url(../images/common/footer-trees.svg);
+  background-repeat: no-repeat;
+  background-position-y: 127px;
+  height: 210px;
+  position: relative;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .footer {
+    background-image: url(../images/common/footer-trees-1024.svg);
+    height: 130px;
+    background-position-y: 66px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer {
+    position: absolute;
+    bottom: -200px;
+    transition: all ease-in 0.2s;
+    width: 100%;
+    background-color: #fff;
+    padding: 0;
+  }
+}
+#mysite .footer .footer-content {
+  margin: 10px auto;
+  max-width: 1024px;
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+#mysite .footer .footer-content__element--logo {
+  background-image: url(../images/icons/logo.svg);
+  width: 156px;
+  height: 116.04px;
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .footer .footer-content__element--logo {
+    width: 120.01px;
+    height: 84.44px;
+    background-size: contain;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content__element--logo {
+    display: none;
+  }
+}
+#mysite .footer .footer-content__element--text {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content__element--text .footer-questions {
+    display: none;
+  }
+}
+#mysite .footer .footer-content__element--text h2 {
+  font-size: 24px;
+  font-weight: 400;
+}
+#mysite .footer .footer-content__element--text h2 span {
+  color: #FF3E28;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .footer .footer-content__element--text h2 {
+    font-size: 20px;
+  }
+}
+#mysite .footer .footer-content__element--text a {
+  text-decoration: none;
+  color: black;
+}
+#mysite .footer .footer-content__element--text a:hover {
+  color: #FF3E28;
+}
+#mysite .footer .footer-content__element--text .footer-email {
+  margin-left: 5px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .footer .footer-content__element--text .footer-email {
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content__element--text .footer-email {
+    order: 2;
+    font-size: 16px;
+  }
+}
+#mysite .footer .footer-content__element--text .footer-email::before {
+  content: url(../images/icons/footer-email-ico.svg);
+  position: relative;
+  top: 2px;
+  right: 14px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .footer .footer-content__element--text .footer-email::before {
+    right: 8px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content__element--text .footer-email::before {
+    top: 5px;
+  }
+}
+#mysite .footer .footer-content .social-net-btns {
+  align-self: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer .footer-content .social-net-btns {
+    justify-content: center;
+    order: -1;
+    margin: 20px 0 10px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .footer-active-menu {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: #fff;
+    transition: all ease-out 0.1s;
+    padding: 0;
+    z-index: 900;
+  }
+}
+#mysite .menu-item-active {
+  color: #FF3E28 !important;
+}
+
+#mysite .authorization-forms {
+  background: rgba(0, 0, 0, 0.25);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms {
+    background: #fff;
+  }
+}
+#mysite .authorization-forms h3 {
+  color: #455A64;
+}
+#mysite .authorization-forms .form-frame {
+  background: #FFFFFF;
+  border-radius: 18px;
+  margin: 80px auto 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .authorization-forms .form-frame {
+    margin-top: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .form-frame {
+    margin: 20px auto 0;
+  }
+}
+#mysite .authorization-forms .reg-log-changer {
+  color: #4C59D9;
+  font-size: 14px;
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
+  cursor: pointer;
+}
+#mysite .authorization-forms .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .container {
+    margin-bottom: 10px;
+  }
+}
+#mysite .authorization-forms .container .form-title {
+  color: #FF3E28;
+  padding: 15px 0 15px 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .authorization-forms .container .form-title {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .container .logo-mobile-ver {
+    background-image: url(../images/icons/logo.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 75.33px;
+    height: 53px;
+    margin-right: 24.8px;
+  }
+}
+#mysite .authorization-forms .container .form-close-btn {
+  background-image: url(../images/icons/close-btn.svg);
+  padding-right: 20px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+#mysite .authorization-forms .form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .form {
+    margin: 0 auto;
+  }
+}
+#mysite .authorization-forms .form__elem {
+  margin-left: 43px;
+  margin-right: 43px;
+}
+#mysite .authorization-forms .form-input {
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  box-sizing: border-box;
+  outline: none;
+  padding-left: 30px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .form-input {
+    height: 60px;
+    font-size: 20px;
+    padding-left: 43px;
+  }
+}
+#mysite .authorization-forms label {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: cover;
+  left: 49px;
+}
+#mysite .authorization-forms label[for=username] {
+  background-image: url(../images/icons/matryoshka.svg);
+  background-repeat: no-repeat;
+  width: 18px;
+  height: 25px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms label[for=username] {
+    width: 27px;
+    height: 36px;
+  }
+}
+#mysite .authorization-forms .label-email {
+  background-image: url(../images/icons/email-ico.svg);
+  width: 21px;
+  height: 17px;
+  position: absolute;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .label-email {
+    width: 30px;
+    height: 24px;
+  }
+}
+#mysite .authorization-forms .label-password {
+  background-image: url(../images/icons/password-ico.svg);
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .label-password {
+    width: 28px;
+    height: 28px;
+  }
+}
+#mysite .authorization-forms .label-re-password {
+  background-image: url(../images/icons/password-ico.svg);
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+#mysite .authorization-forms label[for=skype] {
+  background-image: url(../images/icons/skype-ico.svg);
+  width: 21px;
+  height: 21px;
+  position: absolute;
+}
+#mysite .authorization-forms .reg-log-changer {
+  margin: 0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .reg-log-changer {
+    font-size: 16px;
+  }
+}
+#mysite .authorization-forms .form-submit {
+  width: 278px;
+  height: 45px;
+  background: #4C59D9;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 35px;
+  padding-bottom: 4px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .form-submit {
+    height: 60px;
+    font-size: 24px;
+    margin-right: 32px;
+    margin-left: 32px;
+    width: auto;
+  }
+}
+#mysite .login-form {
+  display: none;
+  z-index: 1000;
+}
+#mysite .login-form .form-frame {
+  width: 364px;
+  height: 364px;
+  transition: all ease-in 0.05s;
+}
+#mysite .login-form .form-frame .form {
+  position: relative;
+}
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame {
+    width: 100%;
+  }
+}
+#mysite .login-form .form-frame label[for=email] {
+  top: 45px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame label[for=email] {
+    top: 55px;
+  }
+}
+#mysite .login-form .form-frame label[for=password] {
+  top: 105px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame label[for=password] {
+    top: 138px;
+  }
+}
+#mysite .login-form .form-frame .form-input--email {
+  margin-top: 35px;
+  margin-bottom: 25px;
+}
+#mysite .login-form .form-frame .form-input--password {
+  margin-bottom: 45px;
+}
+#mysite .login-form .form-frame .login-invalid {
+  position: absolute;
+  top: 120px;
+  left: 50px;
+  color: red;
+  font-size: 20px;
+  font-style: italic;
+}
+#mysite .login-form .form-frame .login-invalid--disable {
+  display: none;
+}
+#mysite .login-form .form-frame .login-check {
+  color: red;
+  position: absolute;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 500;
+  left: 44px;
+}
+#mysite .login-form .form-frame .login-check--disable {
+  display: none;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .login-form .form-frame .login-check {
+    font-size: 14px;
+  }
+}
+#mysite .login-form .form-frame .login-check-email {
+  top: 73px;
+}
+#mysite .login-form .form-frame .login-check-password {
+  top: 134px;
+}
+#mysite .login-form-active {
+  display: block;
+}
+#mysite .register-form {
+  z-index: 1000;
+  display: none;
+}
+#mysite .register-form .form-frame {
+  height: 485px;
+  width: 364px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame {
+    width: 100%;
+  }
+}
+#mysite .register-form .form-frame .logo-mobile-ver {
+  margin-right: 105px;
+}
+#mysite .register-form .form-frame label[for=username] {
+  top: 25px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame label[for=username] {
+    top: 31px;
+  }
+}
+#mysite .register-form .form-frame .label-email {
+  top: 200px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .label-email {
+    top: 278px;
+  }
+}
+#mysite .register-form .form-frame .label-password {
+  top: 85px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .label-password {
+    top: 117px;
+  }
+}
+#mysite .register-form .form-frame .label-re-password {
+  top: 140px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .label-re-password {
+    top: 197px;
+    width: 28px;
+    height: 28px;
+  }
+}
+#mysite .register-form .form-frame label[for=skype] {
+  top: 252px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame label[for=skype] {
+    top: 356px;
+    width: 28px;
+    height: 28px;
+  }
+}
+#mysite .register-form .form-frame .form-input {
+  margin-bottom: 20px;
+}
+#mysite .register-form .form-frame #username {
+  margin-top: 20px;
+}
+#mysite .register-form .form-frame .reg-check {
+  color: red;
+  position: absolute;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 500;
+  left: 44px;
+}
+#mysite .register-form .form-frame .reg-check--disable {
+  display: none;
+}
+#mysite .register-form .form-frame .check-re-password {
+  top: 167px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .check-re-password {
+    top: 240px;
+  }
+}
+#mysite .register-form .form-frame .reg-check-name {
+  top: 54px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .reg-check-name {
+    top: 80px;
+  }
+}
+#mysite .register-form .form-frame .reg-check-pass {
+  top: 111px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .reg-check-pass {
+    top: 161px;
+  }
+}
+#mysite .register-form .form-frame .reg-check-email {
+  top: 223px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-form .form-frame .reg-check-email {
+    top: 320px;
+  }
+}
+#mysite .register-form-active {
+  display: block;
+  overflow: scroll;
+}
+#mysite .register-success {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.25);
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  z-index: 1000;
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-success {
+    background: #717CD8;
+  }
+}
+#mysite .register-success .register-success__frame {
+  padding: 25px;
+  box-sizing: border-box;
+  margin: 200px auto;
+  width: 800px;
+  height: 385px;
+  background: #717CD8;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  border-radius: 20px;
+  text-align: center;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .register-success .register-success__frame {
+    width: 572px;
+    height: 272px;
+    padding: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-success .register-success__frame {
+    margin: 0;
+    width: auto;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .register-success .register-success__frame .success-img {
+    width: 11%;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-success .register-success__frame .success-img {
+    width: auto;
+    max-width: 60px;
+  }
+}
+#mysite .register-success .register-success__frame h2, #mysite .register-success .register-success__frame h3 {
+  color: white;
+}
+#mysite .register-success .register-success__frame h2 {
+  margin: 10px 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .register-success .register-success__frame h2 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 111%;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .register-success .register-success__frame h2 {
+    margin: 25px auto;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .register-success .register-success__frame h3 {
+    font-weight: 600;
+    font-size: 14px;
+  }
+}
+#mysite .register-success .register-success__frame .reg-success-btn {
+  width: 164px;
+  height: 45px;
+  background: #FFFFFF;
+  border-radius: 9px;
+  color: #FF3E28;
+  margin: 26px auto;
+  line-height: 40px;
+  cursor: pointer;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .register-success .register-success__frame .reg-success-btn {
+    width: 117.26px;
+    height: 32.17px;
+    font-size: 16px;
+    line-height: 31px;
+    margin: 15px auto;
+  }
+}
+#mysite .register-success .register-success__frame a {
+  display: block;
+  margin-top: 10px;
+  color: #F8D6B0;
+}
+#mysite .register-success-active {
+  display: block;
+}
+
+.burger-menu-input {
+  display: none;
+}
+
+.burger-menu-label {
+  position: relative;
+  width: 35px;
+  height: 23px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.5s;
+  text-align: left;
+}
+
+.burger-menu-line,
+.burger-menu-line:before,
+.burger-menu-line:after {
+  background: #525252;
+  position: absolute;
+  height: 3px;
+  width: 35px;
+  border-radius: 4px;
+  transition: all 0.5s;
+}
+
+.burger-menu-label div:first-child {
+  top: 0px;
+}
+.burger-menu-label div:nth-child(2) {
+  top: 10px;
+}
+.burger-menu-label div:nth-child(3) {
+  top: 20px;
+}
+
+#burger + label div:first-child {
+  transition: top 0.15s 0.15s, transform 0.15s;
+}
+#burger + label div:nth-child(2),
+#burger + label div:nth-child(3) {
+  transition: top 0.15s 0.15s, transform 0.15s;
+}
+
+#burger:checked + label div:first-child {
+  top: 10px;
+  transform: rotate(45deg);
+  transition: top 0.15s, transform 0.15s 0.15s;
+}
+#burger:checked + label div:nth-child(2),
+#burger:checked + label div:nth-child(3) {
+  top: 10px;
+  transform: rotate(-45deg);
+  transition: top 0.15s, transform 0.15s 0.15s;
+}
+
+#mysite .about-page .about {
+  padding-top: 300px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about .owl-carousel {
+    width: 361px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about .owl-carousel {
+    width: 100vw;
+    margin: 0 auto !important;
+  }
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about .owl-carousel__element {
+    width: 73%;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about .owl-carousel__element {
+    width: 100vw;
+  }
+}
+#mysite .about-page .about .owl-carousel__element--diplom {
+  margin-top: 81px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about .owl-carousel__element--diplom {
+    margin-top: 54px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about .owl-carousel__element--diplom {
+    margin-top: 154px;
+  }
+}
+#mysite .about-page .about__element--left {
+  opacity: 0;
+  margin-left: -200px;
+  background-image: none;
+  width: 461px;
+}
+#mysite .about-page .about__element--left .owl-dots {
+  margin-top: 5px;
+}
+#mysite .about-page .about__element--right {
+  display: flex;
+  flex-direction: column;
+}
+#mysite .about-page .about__element--right .about-title {
+  opacity: 0;
+  margin-left: 0;
+  position: relative;
+  left: 600px;
+}
+#mysite .about-page .about__element--right .about-social-net {
+  opacity: 0;
+  position: relative;
+  left: 200px;
+  order: -1;
+  margin: 0px 0 7px;
+  margin-left: 0;
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about__element--right .about-social-net {
+    order: 1;
+  }
+}
+#mysite .about-page .about__element--right .about-items__item {
+  opacity: 0;
+  margin-left: 0;
+  position: relative;
+  left: 300px;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 26px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about__element--right .about-items__item {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .about__element--right .about-items__item {
+    text-align: center;
+  }
+}
+#mysite .about-page .about__element--right .about-items__item:before {
+  display: none;
+}
+#mysite .about-page .about__element--right .about-items .a {
+  max-width: 519px;
+}
+#mysite .about-page .about__element--right .about-slogan {
+  opacity: 0;
+  margin-left: 0;
+  position: relative;
+  left: 200px;
+}
+#mysite .about-page .offers {
+  margin: 100px auto;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .offers {
+    margin: 70px auto;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .about-page .offers {
+    margin: 110px auto;
+  }
+}
+@media screen and (max-width: 500px) {
+  #mysite .about-page .offers {
+    margin: 70px auto;
+  }
+}
+
+#mysite .offers .title {
+  margin-left: -1000px;
+  font-weight: 300;
+  text-align: center;
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .title {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+#mysite .offers .slogan {
+  text-align: center;
+  margin: 10px 0 35px;
+  margin-left: 500px;
+  opacity: 0;
+  white-space: nowrap;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .slogan {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .slogan {
+    white-space: normal;
+  }
+}
+#mysite .offers .offers-cards {
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+#mysite .offers .offers-cards .offers-cards-conteiner {
+  opacity: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards .offers-cards-conteiner {
+    opacity: 1;
+  }
+}
+#mysite .offers .offers-cards .offers-cards-conteiner--courses {
+  margin-top: -400px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards .offers-cards-conteiner--courses {
+    margin-top: 0;
+  }
+}
+#mysite .offers .offers-cards .offers-cards-conteiner--private {
+  margin-top: 400px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards .offers-cards-conteiner--private {
+    margin-top: 0;
+  }
+}
+#mysite .offers .offers-cards .offers-cards-conteiner--s-club {
+  margin-top: -400px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards .offers-cards-conteiner--s-club {
+    margin-top: 0;
+  }
+}
+#mysite .offers .offers-cards__card {
+  width: 320px;
+  height: 375px;
+  border-radius: 5px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card {
+    width: 628px;
+    height: 146px;
+    padding-left: 69px;
+    box-sizing: border-box;
+    border-radius: 40px;
+    margin-bottom: 35px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card {
+    padding-left: 0;
+    max-width: 96vw;
+    margin-bottom: 15px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .wrap {
+    margin: 0 auto;
+  }
+}
+#mysite .offers .offers-cards__card .card-content {
+  display: none;
+  color: white;
+  text-align: center;
+  position: relative;
+  padding-top: 27px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card .card-content {
+    text-align: left;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .card-content {
+    text-align: center;
+  }
+}
+#mysite .offers .offers-cards__card .card-content .card-icon {
+  margin: 0 auto;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card .card-content .card-icon {
+    margin-left: 0;
+    margin-right: 25px;
+    width: 94px;
+    height: 85px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .card-content .card-icon {
+    display: none;
+  }
+}
+#mysite .offers .offers-cards__card .card-content--end {
+  transform: scale(-1, 1);
+}
+#mysite .offers .offers-cards__card .card-content .card-title {
+  font-weight: bold;
+  color: white;
+  margin: 20px 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card .card-content .card-title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 111%;
+    margin: 0;
+    margin-bottom: 18px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .card-content .card-title {
+    font-size: 20px;
+  }
+}
+#mysite .offers .offers-cards__card .card-content .card-description {
+  font-weight: 400;
+  font-size: 18px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .card-content .card-description {
+    font-weight: normal;
+    font-size: 18px;
+  }
+}
+#mysite .offers .offers-cards__card .card-content .card-description--front {
+  width: 210px;
+  line-height: 111%;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card .card-content .card-description--front {
+    width: 344px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .offers-cards__card .card-content .card-description--front {
+    width: 51vw;
+  }
+}
+@media screen and (max-width: 550px) {
+  #mysite .offers .offers-cards__card .card-content .card-description--front {
+    width: 80vw;
+  }
+}
+#mysite .offers .offers-cards__card .card-content .card-description--back {
+  width: 285px;
+  line-height: 150%;
+}
+#mysite .offers .offers-cards__card .card-content .card-description--addition {
+  margin-top: 7px;
+}
+#mysite .offers .offers-cards__card .card-content .card-content-price {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 32px;
+  margin: 0;
+  margin-top: 10px;
+}
+#mysite .offers .offers-cards__card .card-content .begin-btn {
+  background: rgba(255, 255, 255, 0.5);
+  width: 320px;
+  height: 72px;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  top: 303px;
+  font-weight: bold;
+  font-size: 22px;
+  padding-top: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card .card-content .begin-btn {
+    display: none;
+  }
+}
+#mysite .offers .offers-cards__card--courses {
+  background: #FFA725;
+}
+#mysite .offers .offers-cards__card--courses .card-icon {
+  width: 93.16px;
+  height: 85px;
+  background-image: url(../images/index/card-logo-bear.svg);
+}
+#mysite .offers .offers-cards__card--private {
+  background: #4C59D9;
+}
+#mysite .offers .offers-cards__card--private .card-icon {
+  width: 99px;
+  height: 85px;
+  background-image: url(../images/index/card-logo-balalayka.svg);
+}
+#mysite .offers .offers-cards__card--private .card-content {
+  padding-top: 22px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .offers-cards__card--private .card-title {
+    margin-bottom: 10px !important;
+  }
+}
+#mysite .offers .offers-cards__card--s-club {
+  background: #34CFBE;
+}
+#mysite .offers .offers-cards__card--s-club .card-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 99px;
+  height: 85px;
+  background-image: url(../images/index/card-logo-samovar.svg);
+}
+#mysite .offers .card-rotate-forward {
+  transition: all ease 0.5s;
+  transform: rotateY(180deg);
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .card-rotate-forward {
+    transform: none;
+  }
+}
+#mysite .offers .card-rotate-back {
+  transition: all ease 0.5s;
+  transform: rotateY(0deg);
+}
+@media screen and (max-width: 767px) {
+  #mysite .offers .card-rotate-back {
+    transform: none;
+  }
+}
+#mysite .offers .card-side-active {
+  display: block !important;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .offers .card-side-active {
+    display: flex !important;
+  }
+}
+
+#mysite .private-lesson .privateless {
+  display: none;
+  padding-top: 300px;
+}
+#mysite .private-lesson .privateless .book-privateless-btn {
+  width: 280px;
+  height: 80px;
+  background-color: #FF3E28;
+  line-height: 76px;
+}
+#mysite .private-lesson .show-session {
+  display: block !important;
+}
+#mysite .private-lesson .hide-session {
+  display: none;
+}
+
+#mysite .my-schedule {
+  margin-bottom: 80px !important;
+  display: none;
+  position: relative;
+}
+#mysite .my-schedule .main-title {
+  text-align: center;
+  font-weight: 300;
+  color: #455A64;
+  margin: 30px 0;
+}
+#mysite .my-schedule .wrapper {
+  font-family: "Montserrat", sans-serif;
+  border: 1px solid #C4C4C4;
+  box-sizing: border-box;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content__element {
+  margin-right: 30px;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .month-module {
+  display: flex;
+  align-items: center;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month {
+  margin-right: 10px;
+  color: #455A64;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn {
+  width: 27px;
+  height: 27px;
+  background-size: contain;
+  cursor: pointer;
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn--left-btn {
+  background-image: url(../images/icons/month-left-btn.svg);
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn--right-btn {
+  background-image: url(../images/icons/month-right-btn.svg);
+}
+#mysite .my-schedule .wrapper .calendar-header .header-content .time-zone {
+  font-family: "Montserrat", sans-serif;
+  right: 20px;
+  position: absolute;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  width: 239px;
+  height: 27px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 19px;
+  color: rgba(0, 0, 0, 0.5);
+}
+#mysite .my-schedule .wrapper .calendar-table {
+  border: 2px solid white;
+  border-top: 1px solid #C4C4C4;
+  width: 100%;
+  border-collapse: collapse;
+}
+#mysite .my-schedule .wrapper .calendar-table .php-data {
+  visibility: hidden;
+}
+#mysite .my-schedule .wrapper .calendar-table .day-number {
+  display: block;
+  position: absolute;
+  top: 0;
+  color: #4C59D9;
+}
+#mysite .my-schedule .wrapper .calendar-table .day-time {
+  font-family: "Exo 2";
+  display: block;
+  position: relative;
+  margin: 10px;
+  text-align: center;
+}
+#mysite .my-schedule .wrapper .calendar-table th {
+  font-weight: normal;
+  font-size: 16px;
+}
+#mysite .my-schedule .wrapper .calendar-table td {
+  height: 100px;
+}
+#mysite .my-schedule .wrapper .calendar-table th, #mysite .my-schedule .wrapper .calendar-table td {
+  padding: 3px;
+  /* Поля вокруг содержимого таблицы */
+  border: 1px solid #C4C4C4;
+  max-width: 70px;
+  width: 7.342%;
+  position: relative;
+}
+#mysite .my-schedule .wrapper .calendar-table .calendar-table-day {
+  cursor: pointer;
+  transition: all ease-in 0.2s;
+}
+#mysite .my-schedule .wrapper .calendar-table .calendar-table-day .day-time {
+  font-size: 14px;
+  margin: 0 auto;
+  width: 100px;
+}
+#mysite .my-schedule .wrapper .calendar-table .calendar-table-day .day-time span {
+  background-color: #33DCD9;
+  border: 0.5px solid #C4C4C4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: white;
+  display: block;
+  margin: 2px 0;
+}
+#mysite .my-schedule .wrapper .calendar-table .calendar-table-day:hover {
+  background-color: rgba(255, 62, 40, 0.22);
+  transition: all ease-in 0.2s;
+}
+#mysite .my-schedule .time-changer-wrapper {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.12);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+#mysite .my-schedule .time-changer {
+  display: none;
+  font-family: "Montserrat", sans-serif;
+  width: 596px;
+  background: #EFF4F9;
+  border-radius: 20px;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+#mysite .my-schedule .time-changer .time-changer-title {
+  color: #FF3E28;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 10px;
+}
+#mysite .my-schedule .time-changer .time-changer-current-date {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #455A64;
+}
+#mysite .my-schedule .time-changer .form-close-btn {
+  background-image: url(../images/icons/close-btn.svg);
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+#mysite .my-schedule .time-changer .time-changer-content {
+  display: flex;
+  justify-content: center;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul {
+  margin-top: 20px;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-selectors-block {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  margin: 0 auto;
+  margin-left: 97px;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-selectors-block__item {
+  margin-right: 7px;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul select {
+  height: 27px;
+  width: 115px;
+  font-family: "Montserrat", sans-serif;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  border: none;
+  outline: none;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .line {
+  width: 16px;
+  background: #BABDC1;
+  height: 1px;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button {
+  margin: 0 auto;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 26px;
+  cursor: pointer;
+  transition: transform 0.05s ease-in-out;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+      user-select: none;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button:active {
+  transition: transform 0.05s ease-in-out;
+  transform: scale3d(0.95, 0.95, 0.95);
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--add-time-button {
+  width: 33px;
+  height: 27px;
+  background: #6F97AA;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--apply-to-current-day {
+  background: #6F97AA;
+  width: 206px;
+  height: 27px;
+  margin: 26px auto 7px;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--apply-to-all-day {
+  width: 206px;
+  height: 27px;
+  background: #768E99;
+}
+#mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--clear-schedule {
+  width: 206px;
+  height: 27px;
+  background: #FF3E28;
+  margin-top: 7px;
+}
+#mysite .my-schedule .time-changer .time-changer-content__element {
+  margin: 20px 0;
+}
+#mysite .my-schedule .time-changer .time-changer-content__element--time-list-modul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 450px;
+  max-height: 250px;
+}
+#mysite .my-schedule .time-changer .time-changer-content__element--time-list-modul .time-elem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+#mysite .my-schedule .time-changer .time-changer-content__element--time-list-modul .time-elem .time {
+  width: 130px;
+  text-align: center;
+  display: block;
+  padding: 5px;
+  background-color: #33DCD9;
+  box-sizing: border-box;
+  border-radius: 5px;
+  color: white;
+  position: relative;
+  margin-right: 10px;
+}
+#mysite .my-schedule .time-changer .time-changer-content__element--time-list-modul .time-elem .del-btn {
+  background-image: url(../images/icons/time-delete.svg);
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+#mysite .my-schedule #cube-loader {
+  background: white;
+  align-items: center;
+  display: flex;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  z-index: 1000;
+}
+#mysite .my-schedule #cube-loader .caption {
+  margin: 0 auto;
+}
+#mysite .my-schedule #cube-loader .cube-loader {
+  width: 73px;
+  height: 73px;
+  margin: 0 auto;
+  margin-top: -262px;
+  position: relative;
+  transform: rotateZ(45deg);
+}
+#mysite .my-schedule #cube-loader .cube-loader .cube {
+  position: relative;
+  transform: rotateZ(45deg);
+  width: 50%;
+  height: 50%;
+  float: left;
+  transform: scale(1.1);
+}
+#mysite .my-schedule #cube-loader .cube-loader .cube:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #34495e;
+  -webkit-animation: cube-loader 2.76s infinite linear both;
+          animation: cube-loader 2.76s infinite linear both;
+  transform-origin: 100% 100%;
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-2 {
+  transform: scale(1.1) rotateZ(90deg);
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-3 {
+  transform: scale(1.1) rotateZ(180deg);
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-4 {
+  transform: scale(1.1) rotateZ(270deg);
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-2:before {
+  -webkit-animation-delay: 0.35s;
+          animation-delay: 0.35s;
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-3:before {
+  -webkit-animation-delay: 0.69s;
+          animation-delay: 0.69s;
+}
+#mysite .my-schedule #cube-loader .cube-loader .loader-4:before {
+  -webkit-animation-delay: 1.04s;
+          animation-delay: 1.04s;
+}
+@-webkit-keyframes cube-loader {
+  0%, 10% {
+    transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%, 75% {
+    transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%, 100% {
+    transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+@keyframes cube-loader {
+  0%, 10% {
+    transform: perspective(136px) rotateX(-180deg);
+    opacity: 0;
+  }
+  25%, 75% {
+    transform: perspective(136px) rotateX(0deg);
+    opacity: 1;
+  }
+  90%, 100% {
+    transform: perspective(136px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+#mysite .my-schedule .calendar-active {
+  display: block;
+}
+#mysite .my-schedule .calendar-disable {
+  display: none;
+}
+#mysite .calendar-active {
+  display: block;
+}
+#mysite .calendar-disable {
+  display: none;
+}
+#mysite .my-calendar {
+  display: none;
+}
+
+.admin {
+  padding: 0 20px;
+}
+
+#mysite .admin-inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  align-items: center;
+}
+#mysite .admin-header {
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  background-image: url(../images/common/lang-School.png);
+  background-repeat: no-repeat;
+  background-position: 131px 5px;
+  align-items: center;
+}
+#mysite .admin-header .header-logo {
+  display: block;
+  background-image: url(../images/icons/logo.svg);
+  background-size: contain;
+  width: 120px;
+  height: 85px;
+}
+#mysite .admin-header .header-title {
+  flex-grow: 1;
+  color: #455A64;
+}
+#mysite .admin-header .btn-exit {
+  line-height: 23px;
+  width: 96px;
+  height: 28px;
+  border: 2px solid #006660;
+  box-sizing: border-box;
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+      user-select: none;
+}
+#mysite .admin-menu {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+#mysite .admin-menu__element {
+  margin: 0 20px;
+  display: block;
+  font-size: 18px;
+  line-height: 22px;
+  color: #455A64;
+  cursor: pointer;
+}
+#mysite .admin-menu__element:hover {
+  color: #FF3E28;
+}
+#mysite .admin-footer {
+  background-image: url(../images/common/footer-trees.svg);
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100px;
+  bottom: 0;
+  z-index: -1;
+}
+
+#mysite .your-calendar {
+  display: none;
+  display: block;
+  padding-top: 300px;
+}
+#mysite .your-calendar__element--main-title {
+  margin: 0 auto;
+  text-align: center;
+  color: #455A64;
+}
+#mysite .your-calendar .instruction {
+  display: flex;
+  justify-content: center;
+}
+#mysite .your-calendar .instruction__element {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.35);
+}
+#mysite .your-calendar .instruction__element--separator {
+  margin: auto 5px;
+}
+#mysite .your-calendar .calendar-app {
+  position: relative;
+  background: #EFF4F9;
+  box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+}
+#mysite .your-calendar .calendar-app .decor-line {
+  margin-bottom: 30px;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 10px 0;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
+  display: flex;
+  align-items: center;
+  max-width: 246px;
+  width: 100%;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
+  margin-left: 10px;
+  color: #455A64;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn {
+  width: 27px;
+  height: 27px;
+  background-size: contain;
+  cursor: pointer;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn--left-btn {
+  background-image: url(../images/icons/month-left-btn.svg);
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn--right-btn {
+  background-image: url(../images/icons/month-right-btn.svg);
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--title {
+  color: #455A64;
+  font-weight: 600;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
+  font-family: "Montserrat", sans-serif;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  width: 239px;
+  height: 27px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 19px;
+  color: rgba(0, 0, 0, 0.5);
+}
+#mysite .your-calendar .calendar-app .calendar-app-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .decor-dates {
+  display: flex;
+  justify-content: space-evenly;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .decor-dates__elem {
+  max-width: 130px;
+  width: 100%;
+  height: 3px;
+  background: #006660;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .calendar-app-content-col {
+  display: flex;
+  justify-content: space-evenly;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .calendar-app-content-col .calendar-app-content-day, #mysite .your-calendar .calendar-app .calendar-app-content .calendar-app-content-col .calendar-app-content-number {
+  max-width: 130px;
+  width: 100%;
+  text-align: center;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .calendar-app-content-col .calendar-app-content-day {
+  line-height: 35px;
+  height: 30px;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .calendar-app-content-col .calendar-app-content-number {
+  border-radius: 0 0 10px 10px;
+  height: 35px;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db {
+  display: flex;
+  justify-content: space-evenly;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item {
+  max-width: 130px;
+  width: 100%;
+  text-align: center;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item div {
+  margin: 20px 0;
+  color: #006660;
+  cursor: pointer;
+  transition: all ease-out 0.1s;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item div:hover {
+  transition: all ease-in 0.1s;
+  background: #FF3E28;
+  border-radius: 5px;
+  color: white;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .selected-time {
+  background: #FF3E28;
+  border-radius: 5px;
+  color: white;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content td, #mysite .your-calendar .calendar-app .calendar-app-content th {
+  width: 2%;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content th {
+  border-top: 5px solid green;
+  border-radius: 5px 5px 0 0;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .day-of-week-active {
+  background: #006660;
+  color: white;
+  font-weight: bold;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .decor-element-active {
+  height: 15px;
+  border-radius: 10px 10px 0 0;
+  margin: 0;
+}
+#mysite .your-calendar .calendar-app .book-btn {
+  background-color: #FF3E28;
+  width: 200px;
+  height: 45px;
+  line-height: 43px;
+  margin: 0 auto;
+}
+#mysite .your-calendar .calendar-app .tegs {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+  padding-bottom: 20px;
+}
+#mysite .your-calendar .calendar-app .tegs__element {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+#mysite .your-calendar .calendar-app .tegs__element .circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  margin-right: 6px;
+  position: relative;
+  top: 1px;
+}
+#mysite .your-calendar .calendar-app .tegs__element .circle--booked {
+  background: #34CFBE;
+}
+#mysite .your-calendar .calendar-app .tegs__element .circle--available {
+  background: #006660;
+}
+#mysite .your-calendar .calendar-app .tegs__element .circle--unavailable {
+  background: #DBDEE1;
+}
+#mysite .your-calendar .enter-your-skype {
+  position: absolute;
+  width: 553px;
+  height: 250px;
+  background: #169E94;
+  box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
+  border-radius: 40px;
+  bottom: 126px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+#mysite .your-calendar .enter-your-skype__element {
+  text-align: center;
+}
+#mysite .your-calendar .enter-your-skype .flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#mysite .your-calendar .enter-your-skype .skype-icon-for-input {
+  background-image: url(../images/icons/skype-ico.svg);
+  width: 21px;
+  height: 20.95px;
+  position: absolute;
+  left: 140px;
+}
+#mysite .your-calendar .enter-your-skype .input-skype {
+  text-align: left;
+  width: 212px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  display: block;
+  padding-left: 33px;
+  margin: 20px auto;
+  margin-right: 4px;
+}
+#mysite .your-calendar .enter-your-skype .send-skype {
+  width: 72px;
+  height: 36px;
+  background: #FF3E28;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 32px;
+}
+#mysite .your-calendar .enter-your-skype .validation-skype {
+  position: absolute;
+  color: #FF3E28;
+  font-style: italic;
+  font-size: 14px;
+  top: 180px;
+  right: 218px;
+}
+#mysite .your-calendar .enter-your-skype h2, #mysite .your-calendar .enter-your-skype h3 {
+  color: white;
+  font-weight: normal;
+}
+#mysite .your-calendar .enter-your-skype h2 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+#mysite .your-calendar .booked-for-this-user {
+  background: #34CFBE;
+  border-radius: 5px;
+  color: white !important;
+  pointer-events: none;
+}
+#mysite .your-calendar .booked-for-other-users {
+  color: #C4C4C4 !important;
+  pointer-events: none;
+}
+
+/*# sourceMappingURL=app.css.map*/

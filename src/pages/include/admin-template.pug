@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+    block sharedVars
+    head
+        title #{pageTitle}
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        meta(charset='utf-8')
+    body#mysite(class=`${bodyAdditionClass}`)
+        header.admin-header
+            a(href="index.php").header-logo
+            h1.header-title Светик, приветик!
+            div.btn-exit Выход
+        div.decor-line.decor-line--admin-header.admin-inner
+        nav.admin-menu.admin-inner
+            div.admin-menu__element.admin-menu__element--mycalendar Мой календарь
+            div.admin-menu__element.admin-menu__element--myschedule Мое расписание
+            div.admin-menu__element.admin-menu__element--mystudents Мои ученики
+            div.admin-menu__element.admin-menu__element--messages Сообщения
+            div.admin-menu__element.admin-menu__element--reviews Отзывы
+        div.decor-line.admin-inner
+        main(class=`${pageAdditionClass}`)
+            block content
+        footer.admin-footer

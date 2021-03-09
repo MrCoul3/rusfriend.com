@@ -1,0 +1,10 @@
+extends include/template
+append sharedVars
+    - const pageUrl = '/';
+    - const pageTitle = 'Занятие с преподавателем';
+    - const bodyAdditionClass = '';
+    - const pageAdditionClass = 'private-lesson';
+block content
+    //section.privateless.inner
+    //    a(href='/').button.book-privateless-btn забронировать
+    include include/book-calendar.html

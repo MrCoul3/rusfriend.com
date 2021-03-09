@@ -1,0 +1,29 @@
+extends include/template
+append sharedVars
+    - const pageUrl = '/';
+    - const pageTitle = 'Об авторе';
+    - const bodyAdditionClass = '';
+    - const pageAdditionClass = 'about-page';
+block content
+    section.about
+        div.inner
+            div.owl-carousel.owl-carousel-3.owl-theme.about__element.about__element--left
+                img(src="../images/index/top-index-main-photo.png").owl-carousel__element.owl-carousel__element--photo
+                img(src="../images/about/diplom 1.png").owl-carousel__element.owl-carousel__element--diplom
+                img(src="../images/about/certificate.png").owl-carousel__element.owl-carousel__element--certificate
+            div.about__element.about__element--right
+                h1.title.about-title Привет!
+                div.about-social-net
+                    a(href="../").about-social-net__elem.about-social-net__elem--insta
+                        //img(src="../images/icons/about-insta-icon.svg")
+                    a(href="../").about-social-net__elem.about-social-net__elem--tiktok
+                        //img(src="../images/icons/about-tiktok.svg")
+                div.about-items
+                    p.about-items__item.a Я сертифицированный преподаватель русского языка как иностранного. Я преподаю русский уже более 3-х лет и мои студенты по всему миру уже стали моими друзьями и я с удовольствием стану твоим другом тоже. В моем блоге в Instagram И TikTok рассказываю больше о России и нашей культуре.
+                    p.about-items__item.b После наших уроков мы заговорим на одном языке.
+                    //p.about-items__item.c Веду блог о русском языке, России и своей культуре в Instagram и Tik Tok
+                    //p.about-items__item.d Основатель онлайн-школы Taiga и автор образовательных курсов по русскому языку
+                h3.slogan.about-slogan Светлана
+        h2.detail-slogan Буду очень рада видеть тебя #[br] на моих online-занятиях
+        //a(href="../").button.detail-btn.red-btn  подробнее
+    include include/offers

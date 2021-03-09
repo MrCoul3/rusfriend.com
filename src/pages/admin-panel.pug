@@ -1,0 +1,11 @@
+extends include/admin-template
+append sharedVars
+    - const pageUrl = '/';
+    - const pageTitle = 'Страница преподавателя';
+    - const bodyAdditionClass = 'admin';
+    - const pageAdditionClass = 'admin-main';
+block content
+    include include/my-calendar.html
+    include include/my-schedule.html
+    //div#vue-my-schedule
+    //div#vue-test

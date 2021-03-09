@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
+
+* {
+    /* background-image: url(img/back-image.jpg);
+    background-size: cover;
+    background-repeat: no-repeat; */
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.frame {
+    border-radius: 30px;
+    background-image: url(img/bg.jpg);
+    display: flex;
+    position: relative;
+    width: 1000px;
+    height: 500px;
+    border: 1px solid black;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#mute,
+#sound-on {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+#mute {
+    display: none;
+}
+
+
+.start-btn {
+    z-index: 5;
+    position: relative;
+    display: block;
+    margin: auto;
+    width: 253px;
+    height: 91.55px;
+    background-image: url(img/start-btn.svg);
+    cursor: auto;
+}
+
+
+img {
+    width: 100%;
+}
+
+.wallet {
+    display: block;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    width: 205.67px;
+    height: 48.61px;
+    background-image: url(img/korito.svg);
+    z-index: 100;
+
+}
+
+
+.bear {
+    background-image: url(img/bear.png);
+    bottom: -190px;
+    position: absolute;
+    width: 160px;
+    height: 213.37px;
+    left: 20px;
+    margin-left: 20px;
+}
+
+.bear-message,
+.bear-message-discount {
+    z-index: 1;
+    left: 256px;
+    top: 500px;
+    position: absolute;
+    background-image: url(img/message-rect.svg);
+    background-repeat: no-repeat;
+    width: 522.41px;
+    height: 242px;
+    font-family: 'Calibri';
+    font-size: 54px;
+    text-align: center;
+    padding: 20px 0 0 0;
+}
+
+.bear-message-discount {
+    display: flex;
+    flex-direction: column;
+}
+
+.bear-message__rub {
+    margin-left: 20px;
+    width: 42px;
+    height: 38.77px;
+}
+
+.bear-message__flex-box {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 40px 0 30px;
+}
+
+.bear-message__rub--animation {
+    transform: rotateY(360deg);
+    transition: all linear 1s;
+}
+
+.yes-btn {
+    background-image: url(img/yes-btn.svg);
+    width: 166.73px;
+    height: 58.84px;
+}
+
+.else-btn {
+    background-image: url(img/else-btn.svg);
+    width: 241.65px;
+    height: 58.84px;
+}
+
+.bear-message-discount__submit {
+    background-image: url(img/submit.svg);
+    width: 354px;
+    height: 78.84px;
+    margin: auto;
+}
+
+.rotate {
+    transform: rotateZ(-15deg);
+    transition: all linear .5s;
+}
+
+.rotate-reverse {
+    transform: rotateZ(0deg);
+    transition: all linear .5s;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    width: 147px;
+    height: 44px;
+    background: #F5E5E5;
+    border: 2px solid black;
+    border-radius: 9px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: 'Caveat', cursive;
+    font-size: 40px;
+}
+
+.score::before {
+    margin: 6px 40px 0px 21px;
+    content: url(img/miniRub.svg);
+}
+
+.rub {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.rub-1 {
+    background-image: url(img/1rub.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.rub-2 {
+    display: none;
+    width: 65px;
+    height: 60px;
+    background-image: url(img/2rub.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.rub-5 {
+    display: none;
+    background-image: url(img/5rub.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 87px;
+    height: 80.31px;
+}
+
+.animation-btn {
+    transform: scale3d(0, 0, 1) rotateZ(500deg);
+    transition: all ease 1s;
+}
+
+.count {
+    width: 20px;
+    height: 20px;
+    background: #000;
+    position: absolute;
+    left: -30px;
+}   

@@ -1,0 +1,313 @@
+
+#mysite {
+  .your-calendar {
+    display: none;
+    display: block;
+    padding-top: 300px;
+    &__element {
+      &--main-title {
+        margin: 0 auto;
+        text-align: center;
+        color: $colorLightBlack;
+      }
+      &--instruction {
+
+      }
+      &--calendar-app {
+
+      }
+    }
+
+    .instruction {
+      display: flex;
+      justify-content: center;
+      &__element {
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.35);
+        &--separator {
+          margin: auto 5px;
+        }
+      }
+    }
+    .calendar-app {
+      position: relative;
+      background: #EFF4F9;
+      box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.25);
+      margin: 0 auto;
+      .decor-line {
+        margin-bottom: 30px;
+      }
+      .calendar-app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 10px 0;
+
+        &__element {
+          &--month-module {
+            display: flex;
+            align-items: center;
+            max-width: 246px;
+            width: 100%;
+            .month {
+              margin-left: 10px;
+              color: $colorLightBlack;
+            }
+
+            .month-btn {
+              width: 27px;
+              height: 27px;
+              background-size: contain;
+              cursor: pointer;
+
+              &--left-btn {
+                background-image: url("../images/icons/month-left-btn.svg");
+              }
+
+              &--right-btn {
+                background-image: url("../images/icons/month-right-btn.svg");
+              }
+            }
+          }
+          &--title {
+            color: $colorLightBlack;
+            font-weight: 600;
+          }
+          &--time-zone {
+            font-family: 'Montserrat', sans-serif;
+            //right: 20px;
+            //position: absolute;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            width: 239px;
+            height: 27px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            line-height: 19px;
+            color: rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+      .calendar-app-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        .decor-dates {
+          display: flex;
+          justify-content: space-evenly;
+          &__elem {
+            max-width: 130px;
+            width: 100%;
+            height: 3px;
+            background: #006660;
+            border-radius: 10px;
+            margin-bottom: 12px;
+          }
+        }
+        .calendar-app-content-col {
+          display: flex;
+          justify-content: space-evenly;
+          .calendar-app-content-day, .calendar-app-content-number {
+            max-width: 130px;
+            width: 100%;
+            text-align: center;
+          }
+          .calendar-app-content-day {
+            line-height: 35px;
+            height: 30px;
+          }
+          .calendar-app-content-number {
+            border-radius: 0 0 10px 10px;
+            height: 35px;
+          }
+        }
+        .time-intrevals-from-db {
+          display: flex;
+          justify-content: space-evenly;
+          &__item {
+
+            max-width: 130px;
+            width: 100%;
+            text-align: center;
+
+            div {
+              margin: 20px 0;
+              color: #006660;
+              cursor: pointer;
+              transition: all ease-out .1s;
+              &:hover {
+                transition: all ease-in .1s;
+                background: $colorRed;
+                border-radius: 5px;
+                color: white;
+              }
+            }
+            .selected-time {
+              background: $colorRed;
+              border-radius: 5px;
+              color: white;
+            }
+          }
+        }
+
+        td, th {
+          width: 2%;
+        }
+        th {
+          border-top: 5px solid green;
+          border-radius: 5px 5px 0 0;
+        }
+
+        //service calsses
+        .day-of-week-active {
+          background: #006660;
+          color: white;
+          font-weight: bold;
+        }
+        .decor-element-active  {
+          height: 15px;
+          border-radius: 10px 10px 0 0;
+          margin: 0;
+        }
+
+      }
+      .book-btn {
+        background-color: $colorRed;
+        width: 200px;
+        height: 45px;
+        line-height: 43px;
+        margin: 0 auto;
+      }
+      .tegs {
+        display: flex;
+        justify-content: center;
+        margin-top: 35px;
+        padding-bottom: 20px;
+        &__element {
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          .circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 14px;
+            margin-right: 6px;
+            position: relative;
+            top: 1px;
+            &--booked {
+              background: #34CFBE;
+            }
+            &--available {
+              background: #006660;
+            }
+            &--unavailable {
+              background: #DBDEE1;
+            }
+          }
+        }
+      }
+    }
+    .enter-your-skype {
+      position: absolute;
+      width: 553px;
+      height: 250px;
+      background: #169E94;
+      box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
+      border-radius: 40px;
+      bottom: 126px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      &__element {
+        text-align: center;
+      }
+      .flex {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .skype-icon-for-input {
+        background-image: url("../images/icons/skype-ico.svg");
+        width: 21px;
+        height: 20.95px;
+        position: absolute;
+        left: 140px;
+      }
+      .input-skype {
+        text-align: left;
+        width: 212px;
+        height: 36px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        outline: none;
+        border: none;
+        display: block;
+        padding-left: 33px;
+        margin: 20px auto;
+        margin-right: 4px;
+      }
+      .send-skype {
+        width: 72px;
+        height: 36px;
+        background: #FF3E28;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 32px;
+      }
+      .validation-skype {
+        position: absolute;
+        color: $colorRed;
+        font-style: italic;
+        font-size: 14px;
+        top: 180px;
+        right: 218px;
+      }
+
+      h2, h3 {
+        color: white;
+        font-weight: normal;
+      }
+      h2 {
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+    }
+
+    .booked-for-this-user {
+      background: $colorTurquoise;
+      border-radius: 5px;
+      color: white!important;
+      pointer-events: none;
+
+    }
+    .booked-for-other-users {
+      color: $colorDisable !important;
+      pointer-events: none;
+    }
+
+  }
+
+  //#booking-calendar {
+  //  //.inner {
+  //  //  //display: flex;
+  //  //  //justify-content: space-between;
+  //  //  max-width: 1024px;
+  //  //  margin: 0 auto;
+  //  //  position: relative;
+  //  //  padding-top: 250px;
+  //  //  @include mediaWidth(1024) {
+  //  //    padding-top: 210px;
+  //  //  }
+  //  //  @include mediaWidth(767) {
+  //  //    flex-direction: column;
+  //  //    padding-top: 100px;
+  //  //    text-align: center;
+  //  //  }
+  //  //}
+  //
+  //}
+
+}
