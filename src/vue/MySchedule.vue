@@ -1,5 +1,16 @@
 <template>
-    <section id="my-schedule" class="my-schedule admin-inner admin-panel-section">
+    <section id="my-schedule" class="my-schedule admin-inner admin-panel-section ">
+        <div style="display: none" v-show="showPreloader" id="cube-loader">
+            <div class="caption">
+                <div class="cube-loader">
+                    <div class="cube loader-1"></div>
+                    <div class="cube loader-2"></div>
+                    <div class="cube loader-4"></div>
+                    <div class="cube loader-3"></div>
+                </div>
+            </div>
+        </div>
+
         <h2  class="main-title">Мое расписание</h2>
         <div class="wrapper">
             <div class="calendar-header">
@@ -29,39 +40,50 @@
                 </tr>
             </table>
         </div>
-        <div class="time-changer" :class="timeChangeSatus">
-            <h2 class="time-changer-title">Изменить доступное время</h2>
-            <h3 class="time-changer-current-date" >{{currentDate}}</h3>
-            <div @click="closeTimeChanger" class="form-close-btn"></div>
-            <div class="decor-line"></div>
-            <div class="time-changer-content">
 
-                <div class="time-changer-content__element time-changer-content__element--time-setter-modul">
-                    <div class="time-selectors-block">
-                        <select class="time-selectors-block__item" name="left-time" id="left-time">
-                            <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index" :value="item">{{item}}</option>
-                        </select>
-                        <span class="line time-selectors-block__item"></span>
-                        <select class="time-selectors-block__item" name="right-time" id="right-time">
-                            <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index" :value="item">{{item}}</option>
-                        </select>
-                        <div @click="addTime()"
-                             class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
-                            &#10003;
+        <div class="time-changer-wrapper" :class="timeChangeSatus">
+            <div class="time-changer" :class="timeChangeSatus">
+                <h2 class="time-changer-title">Изменить доступное время</h2>
+                <h3 class="time-changer-current-date" >{{currentDate}} {{dayOfWeek}}</h3>
+                <div @click="closeTimeChanger" class="form-close-btn"></div>
+                <div class="decor-line"></div>
+                <div class="time-changer-content">
+
+                    <div class="time-setter-modul">
+
+                        <div class="time-selectors-block">
+                            <select class="time-selectors-block__item" name="left-time" id="left-time">
+                                <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                            </select>
+                            <span class="line time-selectors-block__item"></span>
+                            <select class="time-selectors-block__item" name="right-time" id="right-time">
+                                <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                            </select>
+                            <div @click="addTime()"
+                                 class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
+                                &#10003;
+                            </div>
                         </div>
-                    </div>
-                    <div class="time-changer-content__element time-changer-content__element--time-list-modul">
-                        <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index" :value="item">
-                            <div class="time">{{item}}</div>
-                            <div @click="delTime($event)" class="del-btn"></div>
+
+                        <div class="time-changer-content__element time-changer-content__element--time-list-modul">
+                            <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index" :value="item">
+                                <div class="time">{{item}}</div>
+                                <div @click="delTime($event)" class="del-btn"></div>
+                            </div>
                         </div>
+                        <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">применить к <span style="font-weight: bold">текущему</span> дню
+                        </div>
+                        <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span style="font-weight: bold">{{dayOfWeek}}</span></div>
+                        <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить расписание</div>
+
                     </div>
-                    <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">применить к текущему дню
-                    </div>
-                    <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко всем четвергам</div>
+
+
                 </div>
+
             </div>
         </div>
+
     </section>
 </template>
 

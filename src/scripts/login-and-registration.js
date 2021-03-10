@@ -227,10 +227,10 @@ $(document).ready(function () {
                     console.log(data);
                     if (data.success) {
                         if (data.status === 'admin') {
-                            document.location.href = '/admin-panel.php'
+                            document.location.href = '/index.php'
+                            authorizedUser();
                         }
                         if (data.status === 'user') {
-
                             setCookie('name', data.name);
                             authorizedUser();
                             common();
@@ -269,11 +269,11 @@ $(document).ready(function () {
             response.then(function (data) {
                 return data.json()
             }).then(function (data) {
-
+                console.log(data)
                 if (data.success) {
-                    if (data.status === 'admin') {
-                        // document.location.href = '/admin-panel.php'
-                    }
+                    // if (data.status === 'admin') {
+                    //     // document.location.href = '/admin-panel.php'
+                    // }
                     if (data.status === 'user') {
                         authorizedUser();
                         common();

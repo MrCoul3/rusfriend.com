@@ -3,6 +3,78 @@ $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
         console.log('admin-panel init');
 
+        let myCalendar = new Vue({
+            el: '#my-calendar',
+            data: {
+                month: new Date().getMonth(),
+                year: new Date().getFullYear(),
+                dFirstMonth: '1',
+                timeZones: [],
+                day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
+                daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
+                monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                date: new Date(),
+                timeChangeSatus: 'calendar-disable',
+                currentMonth: null,
+                showPreloader: true,
+                dayOfWeek: null,
+            },
+            methods: {
+                calendar: function () {
+                    var days = [];
+                    var week = 0;
+                    days[week] = [];
+                    var dlast = new Date(this.year, this.month + 1, 0).getDate(); // 28 число дней  в месяце
+                    for (let i = 1; i <= dlast; i++) {
+                        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+                            a = {index: i};
+                            days[week].push(a);
+                            if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+                                a.current = '#F6FFFF';
+                            }
+                        } else {
+                            week++;
+                            days[week] = [];
+                            a = {index: i};
+                            days[week].push(a);
+                            if ((i == new Date().getDate()) && (this.year == new Date().getFullYear()) && (this.month == new Date().getMonth())) {
+                                a.current = '#F6FFFF'
+                            }
+                        }
+                    }
+                    if (days[0].length > 0) {
+                        for (let i = days[0].length; i < 7; i++) {
+                            days[0].unshift('');
+                        }
+                    }
+                    return days;
+                },
+                decrease: function () {
+                    this.month--;
+                    if (this.month < 0) {
+                        this.month = 12;
+                        this.month--;
+                        this.year--;
+                    }
+                },
+                increase: function () {
+                    this.month++;
+                    if (this.month > 11) {
+                        this.month = -1;
+                        this.month++;
+                        this.year++;
+                    }
+
+                },
+                setCurrentMonth() {
+                    if ((String(this.month + 1).length) == '1') {
+                        this.currentMonth = 0 + String(this.month + 1);
+                    } else {
+                        this.currentMonth = this.month + 1;
+                    }
+                },
+            },
+        });
 
         let mySchedule = new Vue({
             el: '#my-schedule',
@@ -11,7 +83,8 @@ $(document).ready(function () {
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
                 timeZones: [],
-                day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+                day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
+                daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
                 monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                 date: new Date(),
                 timeIntervals: [],
@@ -23,12 +96,16 @@ $(document).ready(function () {
                 showPreloader: true,
                 timeIsSet: false,
                 dataFromDB: [],
+                dayOfWeek: null,
             },
+            computed: {
 
+            },
             mounted: function () {
                 this.getIntervalsFromDB();
             },
             created: function () {
+                // console.log(this.currentDayOfWeek);
                 this.showPreloader = false;
                 if ((String(this.month + 1).length) == '1') {
                     this.currentMonth = 0 + String(this.month + 1);
@@ -115,6 +192,16 @@ $(document).ready(function () {
                     }
                 },
                 openTimeChanger(event) {
+                    // день недели выбранной ячейки
+                    let targetDate = event.target.closest('td').getAttribute('date')
+                    targetDate = targetDate.split('.');
+                    targetDate[1] = +targetDate[1] - 1;
+                    targetDate = targetDate.reverse().join(', ');
+                    console.log(targetDate);
+                    let date = new Date(targetDate).getDay();
+                    // console.log(this.daySun[date]);
+                    this.dayOfWeek = this.daySun[date];
+                    // время выбранной ячейки
                     let timeInCell = event.target.closest('.calendar-table-day');
                     // console.log(timeInCell.childNodes[1].childElementCount)
                     if(timeInCell.childNodes[1].childElementCount === 0) {
@@ -122,8 +209,7 @@ $(document).ready(function () {
                     } else {
                         this.timeIsSet = true;
                     }
-                    console.log(this.timeIsSet);
-                    let timeModul = document.querySelector('.time-changer-content__element--time-list-modul');
+                    // console.log(this.timeIsSet);
                     this.timeChangeSatus = 'calendar-active';
                     this.setCurrentMonth();
                     this.currentDate = event.target.closest('.calendar-table-day').getAttribute('date');
@@ -183,7 +269,7 @@ $(document).ready(function () {
                         this.timeRightSelectorVariables.splice(rightValIndex, 1);
                         console.log(this.timeIntervals);
                     }
-                    console.log(this.timeIsSet);
+                    // console.log(this.timeIsSet);
                 },
                 delBtn() {
                     this.resetValues()
@@ -249,8 +335,8 @@ $(document).ready(function () {
                     this.closeTimeChanger();
                 },
 
-                getIntervalsFromDB() {
 
+                getIntervalsFromDB() {
                     $('.calendar-table-day').each(function (k, val) {
                         let day = $(this);
                         let dayTime = day.find('.day-time')[0]
@@ -281,6 +367,8 @@ $(document).ready(function () {
                 },
             }
         });
+
+
 
 
     }

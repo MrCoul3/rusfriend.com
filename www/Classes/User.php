@@ -1,9 +1,6 @@
 <?php
-
-
 namespace Classes;
-//session_start();
-
+session_start();
 class User
 {
     protected $dbAccess = null;
@@ -90,8 +87,10 @@ class User
                 'name' => $dataFromDB['name']
             );
             if (in_array($dataFromDB['email'], $this->adminEmails)) {
+                $_SESSION['status'] = 'admin';
                 return 'admin';
             } else {
+                $_SESSION['status'] = 'user';
                 return 'user';
             }
         }
@@ -105,8 +104,10 @@ class User
 //        }
         if (isset($_SESSION['email'])) {
             if (in_array($_SESSION['email'], $this->adminEmails)) {
+                $_SESSION['status'] = 'admin';
                 return 'admin';
             } else {
+                $_SESSION['status'] = 'user';
                 return 'user';
             }
         }
@@ -114,9 +115,9 @@ class User
 
     public function logout()
     {
-        echo 'asasas';
-//        $_SESSION = [];
-        session_destroy();
+        $_SESSION = [];
+        return true;
+//        session_destroy();
     }
 
     public function checkSkype()

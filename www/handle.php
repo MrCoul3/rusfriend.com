@@ -83,6 +83,16 @@ if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedL
 
 if ($request['method'] == 'logout') {
     $logout = $obj->logout();
+    if ($logout) {
+        $response =[
+            'logout' => true
+        ];
+    } else {
+        $response =[
+            'logout' => false
+        ];
+    }
+    echo json_encode($response);
 }
 
 if ($request['method'] == 'language') {

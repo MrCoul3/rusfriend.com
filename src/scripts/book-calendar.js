@@ -104,12 +104,7 @@ $(document).ready(function () {
                         this.year++;
                     }
                 },
-                // getCookie: function(name) {
-                //     let matches = document.cookie.match(new RegExp(
-                //         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-                //     ));
-                //     return matches ? decodeURIComponent(matches[1]) : undefined;
-                // },
+
                 lightingOfToday: function () {
                     let dayNum = document.querySelectorAll('.calendar-app-content-number');
                     let dayName = $('.calendar-app-content-day');

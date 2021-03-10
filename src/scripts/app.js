@@ -28,17 +28,19 @@ if (document.getElementById('vue-test')) {
     });
 }
 
+if (document.getElementById('vue-my-schedule')) {
+    console.log('init my-schedule calendar');
+    const mySchedule = new Vue({
+        el: '#vue-my-schedule',
+        components: {
+            myschedule: MySchedule,
+        }
+    });
+}
+
+
 $(document).ready(function () {
 
-    if (document.getElementById('vue-my-schedule')) {
-        console.log('init my-schedule calendar');
-        const mySchedule = new Vue({
-            el: '#vue-my-schedule',
-            components: {
-                myschedule: mySchedule,
-            }
-        });
-    }
 
 
 

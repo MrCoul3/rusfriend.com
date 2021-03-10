@@ -1,18 +1,20 @@
 
 #mysite {
-
-  .my-schedule {
+  // общие для всех вкладок
+  .admin-panel-section {
     margin-bottom: 80px !important;
     display: none;
     position: relative;
-
     .main-title {
       text-align: center;
       font-weight: 300;
       color: $colorLightBlack;
       margin: 30px 0;
+      &__description {
+        margin-top: -20px;
+        margin-bottom: 20px;
+      }
     }
-
     .wrapper {
       font-family: 'Montserrat', sans-serif;
       border: 1px solid #C4C4C4;
@@ -95,6 +97,7 @@
         th {
           font-weight: normal;
           font-size: 16px;
+          color: $colorLightBlack;
         }
         td {
           height: 100px;
@@ -130,7 +133,13 @@
         }
       }
     }
+  }
 
+  .my-calendar {
+
+  }
+
+  .my-schedule {
     .time-changer-wrapper {
       position: fixed;
       background: rgba(0, 0, 0, 0.12);
@@ -388,16 +397,15 @@
       display: none;
     }
   }
+
+
+  // для переключения активности вкладок
   .calendar-active {
     display: block;
   }
   .calendar-disable {
     display: none;
   }
-  .my-calendar {
-    display: none;
-  }
-
 
 }
 

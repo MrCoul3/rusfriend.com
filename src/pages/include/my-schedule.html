@@ -1,4 +1,4 @@
-<section id="my-schedule" class="my-schedule admin-inner admin-panel-section calendar-active">
+<section id="my-schedule" class="my-schedule admin-inner admin-panel-section ">
     <div style="display: none" v-show="showPreloader" id="cube-loader">
         <div class="caption">
             <div class="cube-loader">
@@ -10,7 +10,8 @@
         </div>
     </div>
 
-    <h2  class="main-title">Мое расписание</h2>
+    <h2 class="main-title">Мое расписание</h2>
+    <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку календаря и выберите интервалы</h3>
     <div class="wrapper">
         <div class="calendar-header">
             <div class="header-content">
@@ -26,7 +27,6 @@
         </div>
 
 
-
         <table class="calendar-table admin-inner">
             <tr>
                 <th v-for="d in day">{{d}}</th>
@@ -34,7 +34,9 @@
 
             <tr v-for="week in calendar()">
 
-                <td  class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week" :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
+                <td class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week"
+                    :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span
+                        class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
 
             </tr>
         </table>
@@ -43,7 +45,7 @@
     <div class="time-changer-wrapper" :class="timeChangeSatus">
         <div class="time-changer" :class="timeChangeSatus">
             <h2 class="time-changer-title">Изменить доступное время</h2>
-            <h3 class="time-changer-current-date" >{{currentDate}}</h3>
+            <h3 class="time-changer-current-date">{{currentDate}} {{dayOfWeek}}</h3>
             <div @click="closeTimeChanger" class="form-close-btn"></div>
             <div class="decor-line"></div>
             <div class="time-changer-content">
@@ -52,11 +54,15 @@
 
                     <div class="time-selectors-block">
                         <select class="time-selectors-block__item" name="left-time" id="left-time">
-                            <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                            <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index"
+                                    :value="item">{{item}}
+                            </option>
                         </select>
                         <span class="line time-selectors-block__item"></span>
                         <select class="time-selectors-block__item" name="right-time" id="right-time">
-                            <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                            <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index"
+                                    :value="item">{{item}}
+                            </option>
                         </select>
                         <div @click="addTime()"
                              class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
@@ -70,10 +76,14 @@
                             <div @click="delTime($event)" class="del-btn"></div>
                         </div>
                     </div>
-                    <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">применить к <span style="font-weight: bold">текущему</span> дню
+                    <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">
+                        применить к <span style="font-weight: bold">текущему</span> дню
                     </div>
-                    <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко всем четвергам</div>
-                    <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить расписание</div>
+                    <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span
+                            style="font-weight: bold">{{dayOfWeek}}</span></div>
+                    <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить
+                        расписание
+                    </div>
 
                 </div>
 
@@ -84,5 +94,6 @@
     </div>
 
 </section>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

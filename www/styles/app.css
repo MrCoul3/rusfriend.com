@@ -2241,52 +2241,56 @@
   display: none;
 }
 
-#mysite .my-schedule {
+#mysite .admin-panel-section {
   margin-bottom: 80px !important;
   display: none;
   position: relative;
 }
-#mysite .my-schedule .main-title {
+#mysite .admin-panel-section .main-title {
   text-align: center;
   font-weight: 300;
   color: #455A64;
   margin: 30px 0;
 }
-#mysite .my-schedule .wrapper {
+#mysite .admin-panel-section .main-title__description {
+  margin-top: -20px;
+  margin-bottom: 20px;
+}
+#mysite .admin-panel-section .wrapper {
   font-family: "Montserrat", sans-serif;
   border: 1px solid #C4C4C4;
   box-sizing: border-box;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content__element {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content__element {
   margin-right: 30px;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .month-module {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module {
   display: flex;
   align-items: center;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month {
   margin-right: 10px;
   color: #455A64;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month-btn {
   width: 27px;
   height: 27px;
   background-size: contain;
   cursor: pointer;
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn--left-btn {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month-btn--left-btn {
   background-image: url(../images/icons/month-left-btn.svg);
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .month-module .month-btn--right-btn {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month-btn--right-btn {
   background-image: url(../images/icons/month-right-btn.svg);
 }
-#mysite .my-schedule .wrapper .calendar-header .header-content .time-zone {
+#mysite .admin-panel-section .wrapper .calendar-header .header-content .time-zone {
   font-family: "Montserrat", sans-serif;
   right: 20px;
   position: absolute;
@@ -2300,36 +2304,37 @@
   line-height: 19px;
   color: rgba(0, 0, 0, 0.5);
 }
-#mysite .my-schedule .wrapper .calendar-table {
+#mysite .admin-panel-section .wrapper .calendar-table {
   border: 2px solid white;
   border-top: 1px solid #C4C4C4;
   width: 100%;
   border-collapse: collapse;
 }
-#mysite .my-schedule .wrapper .calendar-table .php-data {
+#mysite .admin-panel-section .wrapper .calendar-table .php-data {
   visibility: hidden;
 }
-#mysite .my-schedule .wrapper .calendar-table .day-number {
+#mysite .admin-panel-section .wrapper .calendar-table .day-number {
   display: block;
   position: absolute;
   top: 0;
   color: #4C59D9;
 }
-#mysite .my-schedule .wrapper .calendar-table .day-time {
+#mysite .admin-panel-section .wrapper .calendar-table .day-time {
   font-family: "Exo 2";
   display: block;
   position: relative;
   margin: 10px;
   text-align: center;
 }
-#mysite .my-schedule .wrapper .calendar-table th {
+#mysite .admin-panel-section .wrapper .calendar-table th {
   font-weight: normal;
   font-size: 16px;
+  color: #455A64;
 }
-#mysite .my-schedule .wrapper .calendar-table td {
+#mysite .admin-panel-section .wrapper .calendar-table td {
   height: 100px;
 }
-#mysite .my-schedule .wrapper .calendar-table th, #mysite .my-schedule .wrapper .calendar-table td {
+#mysite .admin-panel-section .wrapper .calendar-table th, #mysite .admin-panel-section .wrapper .calendar-table td {
   padding: 3px;
   /* Поля вокруг содержимого таблицы */
   border: 1px solid #C4C4C4;
@@ -2337,16 +2342,16 @@
   width: 7.342%;
   position: relative;
 }
-#mysite .my-schedule .wrapper .calendar-table .calendar-table-day {
+#mysite .admin-panel-section .wrapper .calendar-table .calendar-table-day {
   cursor: pointer;
   transition: all ease-in 0.2s;
 }
-#mysite .my-schedule .wrapper .calendar-table .calendar-table-day .day-time {
+#mysite .admin-panel-section .wrapper .calendar-table .calendar-table-day .day-time {
   font-size: 14px;
   margin: 0 auto;
   width: 100px;
 }
-#mysite .my-schedule .wrapper .calendar-table .calendar-table-day .day-time span {
+#mysite .admin-panel-section .wrapper .calendar-table .calendar-table-day .day-time span {
   background-color: #33DCD9;
   border: 0.5px solid #C4C4C4;
   box-sizing: border-box;
@@ -2355,7 +2360,7 @@
   display: block;
   margin: 2px 0;
 }
-#mysite .my-schedule .wrapper .calendar-table .calendar-table-day:hover {
+#mysite .admin-panel-section .wrapper .calendar-table .calendar-table-day:hover {
   background-color: rgba(255, 62, 40, 0.22);
   transition: all ease-in 0.2s;
 }
@@ -2614,9 +2619,6 @@
 #mysite .calendar-disable {
   display: none;
 }
-#mysite .my-calendar {
-  display: none;
-}
 
 .admin {
   padding: 0 20px;
@@ -2677,6 +2679,9 @@
   cursor: pointer;
 }
 #mysite .admin-menu__element:hover {
+  color: #FF3E28;
+}
+#mysite .admin-menu .menu-element-colored {
   color: #FF3E28;
 }
 #mysite .admin-footer {
