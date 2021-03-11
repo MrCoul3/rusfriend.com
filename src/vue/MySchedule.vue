@@ -1,5 +1,5 @@
 <template>
-    <section id="my-schedule" class="my-schedule admin-inner admin-panel-section ">
+    <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section ">
         <div style="display: none" v-show="showPreloader" id="cube-loader">
             <div class="caption">
                 <div class="cube-loader">
@@ -11,7 +11,8 @@
             </div>
         </div>
 
-        <h2  class="main-title">Мое расписание</h2>
+        <h2 class="main-title">Мое расписание</h2>
+        <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку календаря и выберите интервалы</h3>
         <div class="wrapper">
             <div class="calendar-header">
                 <div class="header-content">
@@ -27,7 +28,6 @@
             </div>
 
 
-
             <table class="calendar-table admin-inner">
                 <tr>
                     <th v-for="d in day">{{d}}</th>
@@ -35,7 +35,9 @@
 
                 <tr v-for="week in calendar()">
 
-                    <td  class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week" :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
+                    <td class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week"
+                        :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span
+                            class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
 
                 </tr>
             </table>
@@ -44,7 +46,7 @@
         <div class="time-changer-wrapper" :class="timeChangeSatus">
             <div class="time-changer" :class="timeChangeSatus">
                 <h2 class="time-changer-title">Изменить доступное время</h2>
-                <h3 class="time-changer-current-date" >{{currentDate}} {{dayOfWeek}}</h3>
+                <h3 class="time-changer-current-date">{{currentDate}} {{dayOfWeek}}</h3>
                 <div @click="closeTimeChanger" class="form-close-btn"></div>
                 <div class="decor-line"></div>
                 <div class="time-changer-content">
@@ -53,11 +55,15 @@
 
                         <div class="time-selectors-block">
                             <select class="time-selectors-block__item" name="left-time" id="left-time">
-                                <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                                <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index"
+                                        :value="item">{{item}}
+                                </option>
                             </select>
                             <span class="line time-selectors-block__item"></span>
                             <select class="time-selectors-block__item" name="right-time" id="right-time">
-                                <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index" :value="item">{{item}}</option>
+                                <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index"
+                                        :value="item">{{item}}
+                                </option>
                             </select>
                             <div @click="addTime()"
                                  class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
@@ -71,10 +77,14 @@
                                 <div @click="delTime($event)" class="del-btn"></div>
                             </div>
                         </div>
-                        <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">применить к <span style="font-weight: bold">текущему</span> дню
+                        <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">
+                            применить к <span style="font-weight: bold">текущему</span> дню
                         </div>
-                        <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span style="font-weight: bold">{{dayOfWeek}}</span></div>
-                        <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить расписание</div>
+                        <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span
+                                style="font-weight: bold">{{dayOfWeek}}</span></div>
+                        <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить
+                            расписание
+                        </div>
 
                     </div>
 
@@ -90,36 +100,45 @@
 <script>
     import axios from 'axios';
     export default {
-        name: "MySchedule",
         data() {
             return {
                 month: new Date().getMonth(),
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
                 timeZones: [],
-                day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+                day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
+                daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
                 monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
                 date: new Date(),
                 timeIntervals: [],
                 timeLeftSelectorVariables: ['06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'],
                 timeRightSelectorVariables: ['06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'],
-                timeChangeSatus: 'disable',
+                timeChangeSatus: 'calendar-disable',
                 currentDate: null,
                 currentMonth: null,
+                showPreloader: true,
+                timeIsSet: false,
+                dataFromDB: [],
+                dayOfWeek: null,
             }
         },
+        mounted: function () {
+            this.getIntervalsFromDB();
+        },
         created: function () {
+            // console.log(this.currentDayOfWeek);
+            this.showPreloader = false;
             if ((String(this.month + 1).length) == '1') {
                 this.currentMonth = 0 + String(this.month + 1);
             } else {
                 this.currentMonth = this.month + 1;
             }
         },
-        computed: {},
         methods: {
             calendar: function () {
                 var days = [];
                 var week = 0;
+                let a;
                 days[week] = [];
                 var dlast = new Date(this.year, this.month + 1, 0).getDate(); // 28 число дней  в месяце
                 for (let i = 1; i <= dlast; i++) {
@@ -153,6 +172,7 @@
                     this.month--;
                     this.year--;
                 }
+                this.getIntervalsFromDB();
             },
             increase: function () {
                 this.month++;
@@ -161,8 +181,11 @@
                     this.month++;
                     this.year++;
                 }
+
+                this.getIntervalsFromDB();
             },
             resetValues() {
+                this.timeIsSet = false;
                 let arrLeft = this.timeLeftSelectorVariables;
                 let arrRight = this.timeRightSelectorVariables;
                 this.timeIntervals.forEach(function (val, ind) {
@@ -178,8 +201,9 @@
                 });
                 this.timeIntervals = [];
             },
+
             closeTimeChanger() {
-                this.timeChangeSatus = 'disable';
+                this.timeChangeSatus = 'calendar-disable';
                 this.resetValues();
             },
             setCurrentMonth() {
@@ -190,9 +214,64 @@
                 }
             },
             openTimeChanger(event) {
-                this.timeChangeSatus = 'active';
+                // день недели выбранной ячейки
+                let targetDate = event.target.closest('td').getAttribute('date')
+                targetDate = targetDate.split('.');
+                targetDate[1] = +targetDate[1] - 1;
+                targetDate = targetDate.reverse().join(', ');
+                console.log(targetDate);
+                let date = new Date(targetDate).getDay();
+                // console.log(this.daySun[date]);
+                this.dayOfWeek = this.daySun[date];
+                // время выбранной ячейки
+                let timeInCell = event.target.closest('.calendar-table-day');
+                // console.log(timeInCell.childNodes[1].childElementCount)
+                if(timeInCell.childNodes[1].childElementCount === 0) {
+                    this.timeIsSet = false;
+                } else {
+                    this.timeIsSet = true;
+                }
+                // console.log(this.timeIsSet);
+                this.timeChangeSatus = 'calendar-active';
                 this.setCurrentMonth();
-                this.currentDate = event.target.getAttribute('date');
+                this.currentDate = event.target.closest('.calendar-table-day').getAttribute('date');
+                let currDate = this.currentDate;
+                let timeIntervals = this.timeIntervals;
+                let arrLeft = this.timeLeftSelectorVariables;
+                let arrRight = this.timeRightSelectorVariables;
+
+                axios.post('handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
+                    .then((response) => {
+                        let resData = response.data;
+                        let mass;
+                        if (resData !== null) {
+                            resData.forEach(function (val, k) {
+                                let dateFromDb = val.day;
+                                let timeFromDb = val.time;
+                                // console.log(dateFromDb);
+                                // console.log(currDate);
+                                if (currDate === dateFromDb) {
+                                    mass = timeFromDb.split(',');
+                                    // console.log(timeFromDb.split(',')[0]);
+                                    mass.forEach(function (val, k) {
+                                        let massValue = val;
+                                        arrLeft.forEach(function (val, k) {
+                                            if (val === massValue.trim().split(' - ')[0]) {
+                                                arrLeft.splice(k, 1);
+                                            }
+                                        });
+                                        arrRight.forEach(function (val, k) {
+                                            if (val === massValue.trim().split(' - ')[1]) {
+                                                arrRight.splice(k, 1);
+                                            }
+                                        });
+                                        // console.log(massValue.trim().split(' - ')[0]);
+                                        timeIntervals.push(val.trim());
+                                    })
+                                }
+                            })
+                        }
+                    });
             },
             compareNumeric(a, b) {
                 if (a > b) return 1;
@@ -200,16 +279,26 @@
                 if (a < b) return -1;
             },
             addTime() {
-                let timeVal = $('#left-time').val() + ' - ' + $('#right-time').val();
-                this.timeIntervals.push(timeVal);
-                this.timeIntervals.sort(this.compareNumeric);
-                let leftValIndex = $('#left-time option:selected').attr('data-index');
-                let rightValIndex = $('#right-time option:selected').attr('data-index');
-                this.timeLeftSelectorVariables.splice(leftValIndex, 1);
-                this.timeRightSelectorVariables.splice(rightValIndex, 1);
+                if (this.timeIntervals.length < 21) {
+                    this.timeIsSet = true;
+                    let timeVal = $('#left-time').val() + ' - ' + $('#right-time').val();
+                    console.log(timeVal);
+                    this.timeIntervals.push(timeVal);
+                    this.timeIntervals.sort(this.compareNumeric);
+                    let leftValIndex = $('#left-time option:selected').attr('data-index');
+                    let rightValIndex = $('#right-time option:selected').attr('data-index');
+                    this.timeLeftSelectorVariables.splice(leftValIndex, 1);
+                    this.timeRightSelectorVariables.splice(rightValIndex, 1);
+                    console.log(this.timeIntervals);
+                }
+                // console.log(this.timeIsSet);
+            },
+            delBtn() {
+                this.resetValues()
                 console.log(this.timeIntervals);
             },
             delTime(event) {
+                console.log(this.timeIsSet);
                 let val = event.target.parentNode.getAttribute('value');
                 let arr = val.split('-');
                 if (!this.timeLeftSelectorVariables.includes(arr[0].trim())) {
@@ -222,28 +311,87 @@
                 }
                 let index = this.timeIntervals.indexOf(val);
                 this.timeIntervals.splice(index, 1);
-                console.log(this.timeIntervals);
+
+                if (this.timeIntervals.length === 0) {
+                    this.timeIsSet = false;
+                } else {
+                    this.timeIsSet = true;
+                }
             },
             applyBtn() {
-                let inputData = {
-                    day: this.currentDate,
-                    time: this.timeIntervals,
-                    'method': 'addTimeIntervals'
+                console.log(this.timeIntervals.length);
+                console.log(this.timeIntervals);
+                console.log(this.timeIsSet);
+                if (this.timeIsSet === true) {
+                    let inputData = {
+                        day: this.currentDate,
+                        time: this.timeIntervals,
+                        'method': 'addTimeIntervals'
+                    }
+                    let response = fetch('handle.php', {
+                        method: 'Post',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify(inputData)
+
+                    });
+                    this.getIntervalsFromDB();
                 }
-                let response = fetch('handle.php', {
-                    method: 'Post',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    body: JSON.stringify(inputData)
-                });
+
+                else {
+                    let inputData = {
+                        day: this.currentDate,
+                        'method': 'deleteTimeIntervals'
+                    }
+                    let response = fetch('handle.php', {
+                        method: 'Post',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify(inputData)
+                    });
+                    this.getIntervalsFromDB();
+                }
 
                 this.closeTimeChanger();
+            },
+
+
+            getIntervalsFromDB() {
+                $('.calendar-table-day').each(function (k, val) {
+                    let day = $(this);
+                    let dayTime = day.find('.day-time')[0]
+                    dayTime.innerHTML = '';
+                });
+                axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
+                    .then((response) => {
+                        // console.log(response.data);
+                        let data = response.data;
+                        $('.calendar-table-day').each(function (k, val) {
+                            let dateOfcell = $(this).attr('date');
+                            let day = $(this);
+                            data.forEach(function (val, k) {
+                                let dateFromDb = val.day;
+                                let timeFromDb = val.time;
+                                if (dateOfcell === dateFromDb) {
+                                    let arrTime = timeFromDb.split(',');
+                                    let str = arrTime.join('</span><span>');
+                                    let dayTime = day.find('.day-time')[0];
+                                    dayTime.innerHTML = '<span>' + str + '</span>';
+                                }
+                            });
+                        });
+                    });
+            },
+            exitBtn() {
+                console.log('exit');
             },
         }
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+    // стили для компонента находятся в файле admin-panel.scss
+    /*@import '../styles/scss/admin-panel';*/
 </style>

@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import './index';
 import './common';
 import './about';
@@ -10,39 +9,35 @@ import './courses';
 import './guide';
 import './my-lessons';
 import './admin-panel';
-import './admin-template';
 import './login-and-registration';
 import 'owl.carousel';
 import './easing-plugin';
 import './service';
+import Vue from 'vue';
 import MySchedule from "../vue/MySchedule.vue";
-import Test from "../vue/Test.vue";
+import MyCalendar from "../vue/MyCalendar.vue";
 
-if (document.getElementById('vue-test')) {
-    console.log('init vue-test');
-    const vueTest = new Vue({
-        el: '#vue-test',
-        components: {
-            test: Test,
-        }
-    });
-}
-
-if (document.getElementById('vue-my-schedule')) {
-    console.log('init my-schedule calendar');
-    const mySchedule = new Vue({
-        el: '#vue-my-schedule',
-        components: {
-            myschedule: MySchedule,
-        }
-    });
-}
-
+Vue.config.productionTip = false;
 
 $(document).ready(function () {
 
+    if (document.getElementById('vue-my-calendar')) {
+        console.log('init vue-my-calendar')
+        const myCalendar = new Vue({
+            el: '#vue-my-calendar',
+            template: "<MyCalendar/>",
+            components: { MyCalendar }
+        })
+    }
 
-
+    if (document.getElementById('vue-my-schedule')) {
+        console.log('init vue-my-schedule');
+        const mySchedule = new Vue({
+            el: '#vue-my-schedule',
+            template: "<MySchedule/>",
+            components: { MySchedule }
+        });
+    }
 
 
 

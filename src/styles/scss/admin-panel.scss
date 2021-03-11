@@ -1,6 +1,82 @@
+// стили body (<body class="admin" id="mysite">)
+.admin {
+  padding: 0 20px;
+}
 
 #mysite {
-  // общие для всех вкладок
+  // header + nav-menu + footer
+  .admin-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .admin-header {
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    background-image: url("../images/common/lang-School.png");
+    background-repeat: no-repeat;
+    background-position: 131px 5px;
+    align-items: center;
+    .header-logo {
+      display: block;
+      background-image: url("../images/icons/logo.svg");
+      background-size: contain;
+      width: 120px;
+      height: 85px;
+    }
+    .header-title {
+      flex-grow: 1;
+      color: $colorLightBlack;
+    }
+    .btn-exit {
+      line-height: 23px;
+      width: 96px;
+      height: 28px;
+      border: 2px solid #006660;
+      box-sizing: border-box;
+      border-radius: 30px;
+      text-align: center;
+      cursor: pointer;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+  }
+  .admin-menu {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+    &__element {
+      margin: 0 20px;
+      display: block;
+      //text-decoration: none;
+      font-size: 18px;
+      line-height: 22px;
+      color: $colorLightBlack;
+      cursor: pointer;
+      &:hover {
+        color: $colorRed;
+      }
+    }
+    .menu-element-colored {
+      color: $colorRed;
+    }
+  }
+  .admin-footer {
+    background-image: url("../images/common/footer-trees.svg");
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100px;
+    //position: fixed;
+    bottom: 0;
+    z-index: -1;
+  }
+
+  // общие стили для всех компонентов
   .admin-panel-section {
     margin-bottom: 80px !important;
     display: none;

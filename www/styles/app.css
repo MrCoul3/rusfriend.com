@@ -2241,6 +2241,78 @@
   display: none;
 }
 
+.admin {
+  padding: 0 20px;
+}
+
+#mysite .admin-inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  align-items: center;
+}
+#mysite .admin-header {
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  background-image: url(../images/common/lang-School.png);
+  background-repeat: no-repeat;
+  background-position: 131px 5px;
+  align-items: center;
+}
+#mysite .admin-header .header-logo {
+  display: block;
+  background-image: url(../images/icons/logo.svg);
+  background-size: contain;
+  width: 120px;
+  height: 85px;
+}
+#mysite .admin-header .header-title {
+  flex-grow: 1;
+  color: #455A64;
+}
+#mysite .admin-header .btn-exit {
+  line-height: 23px;
+  width: 96px;
+  height: 28px;
+  border: 2px solid #006660;
+  box-sizing: border-box;
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+      user-select: none;
+}
+#mysite .admin-menu {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+#mysite .admin-menu__element {
+  margin: 0 20px;
+  display: block;
+  font-size: 18px;
+  line-height: 22px;
+  color: #455A64;
+  cursor: pointer;
+}
+#mysite .admin-menu__element:hover {
+  color: #FF3E28;
+}
+#mysite .admin-menu .menu-element-colored {
+  color: #FF3E28;
+}
+#mysite .admin-footer {
+  background-image: url(../images/common/footer-trees.svg);
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100px;
+  bottom: 0;
+  z-index: -1;
+}
 #mysite .admin-panel-section {
   margin-bottom: 80px !important;
   display: none;
@@ -2620,79 +2692,6 @@
   display: none;
 }
 
-.admin {
-  padding: 0 20px;
-}
-
-#mysite .admin-inner {
-  max-width: 1024px;
-  margin: 0 auto;
-  align-items: center;
-}
-#mysite .admin-header {
-  justify-content: space-between;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  background-image: url(../images/common/lang-School.png);
-  background-repeat: no-repeat;
-  background-position: 131px 5px;
-  align-items: center;
-}
-#mysite .admin-header .header-logo {
-  display: block;
-  background-image: url(../images/icons/logo.svg);
-  background-size: contain;
-  width: 120px;
-  height: 85px;
-}
-#mysite .admin-header .header-title {
-  flex-grow: 1;
-  color: #455A64;
-}
-#mysite .admin-header .btn-exit {
-  line-height: 23px;
-  width: 96px;
-  height: 28px;
-  border: 2px solid #006660;
-  box-sizing: border-box;
-  border-radius: 30px;
-  text-align: center;
-  cursor: pointer;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-      user-select: none;
-}
-#mysite .admin-menu {
-  display: flex;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  justify-content: center;
-}
-#mysite .admin-menu__element {
-  margin: 0 20px;
-  display: block;
-  font-size: 18px;
-  line-height: 22px;
-  color: #455A64;
-  cursor: pointer;
-}
-#mysite .admin-menu__element:hover {
-  color: #FF3E28;
-}
-#mysite .admin-menu .menu-element-colored {
-  color: #FF3E28;
-}
-#mysite .admin-footer {
-  background-image: url(../images/common/footer-trees.svg);
-  background-repeat: no-repeat;
-  width: 100vw;
-  height: 100px;
-  bottom: 0;
-  z-index: -1;
-}
-
 #mysite .your-calendar {
   display: none;
   display: block;
@@ -2955,5 +2954,6 @@
   color: #C4C4C4 !important;
   pointer-events: none;
 }
+/*@import '../styles/scss/admin-panel';*/
 
 /*# sourceMappingURL=app.css.map*/

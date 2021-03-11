@@ -226,7 +226,7 @@ module.exports = (env = {}, argv) => {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       alias: {
         '~': path.resolve(__dirname, 'src/scripts/'),
-        // 'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js'
+        'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js'
       },
     },
 
