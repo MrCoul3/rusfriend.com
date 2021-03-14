@@ -115,9 +115,9 @@ class User
 
     public function logout()
     {
-        $_SESSION = [];
+//        $_SESSION = [];
+        session_destroy();
         return true;
-//        session_destroy();
     }
 
     public function checkSkype()
@@ -148,6 +148,13 @@ class User
         $result = $this->dbAccess->query($query);
         $getUserInfo = mysqli_fetch_assoc($result);
         $_SESSION['username'] = $getUserInfo['name'];
+        return $getUserInfo;
+    }
+    public function getUserInfoForAdmin($request)
+    {
+        $query = "SELECT * FROM `users` WHERE `name` = '{$request['name']}'";
+        $result = $this->dbAccess->query($query);
+        $getUserInfo = mysqli_fetch_all($result);
         return $getUserInfo;
     }
 //    public function getUserName()

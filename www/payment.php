@@ -60,6 +60,13 @@ require("vendor/autoload.php");
         // и редирект в
         if (successPayment === true) {
             axios.post('/handle.php', JSON.stringify({'method': 'successPay'}));
+            console.log(getCookie('type'));
+            if (getCookie('type') === 'private') {
+                window.location.href = 'private-lesson.php';
+            }
+            if (getCookie('type') === 's-club') {
+                window.location.href = 'speaking-club.php';
+            }
             // Редирект в 'ваши занятия'
         } else {
             console.log("оплата не произведена");

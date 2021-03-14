@@ -1,21 +1,31 @@
 <template>
     <section id="my-calendar" class="my-calendar admin-inner admin-panel-section calendar-active">
-        <h2  class="main-title">Календарь занятий</h2>
-        <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных занятиях, нажав на интересующую ячейку</h3>
+        <h2 class="main-title">Календарь занятий</h2>
+        <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных занятиях,
+            нажав на интересующую ячейку</h3>
         <div class="wrapper">
             <div class="calendar-header">
                 <div class="header-content">
+                    <div class="tegs">
+                        <div class="tegs__element">
+                            <div class="circle circle--s-club"></div>
+                            <span>Speaking - club</span>
+                        </div>
+                        <div class="tegs__element">
+                            <div class="circle circle--private"></div>
+                            <span>Занятие с преподавателем</span>
+                        </div>
+                    </div>
                     <div class="month-module header-content__element">
                         <p class="month">{{monthes[month]}} {{year}}</p>
-                        <div v-on:click="decrease"  class="month-btn month-btn--left-btn"></div>
-                        <div v-on:click="increase"  class="month-btn month-btn--right-btn"></div>
+                        <div v-on:click="decrease" class="month-btn month-btn--left-btn"></div>
+                        <div v-on:click="increase" class="month-btn month-btn--right-btn"></div>
                     </div>
                     <select class="time-zone header-content__element">
                         <option>Europe/Moscow GMT +3:00</option>
                     </select>
                 </div>
             </div>
-
 
 
             <table class="calendar-table admin-inner">
@@ -25,16 +35,47 @@
 
                 <tr v-for="week in calendar()">
 
-                    <td  class="calendar-table-day"  v-for="day in week" :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span class="day-number">{{ day.index }}</span><span class="day-time">13:00 - 14:00 David</span></td>
+                    <td class="calendar-table-days" v-on:click='bookingEvent($event)' v-for="day in week"
+                        :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year">
+                        <span class="day-number">{{ day.index }}</span></td>
 
                 </tr>
             </table>
+
+            <div v-show="detailShow" class="calendar-detail">
+                <div @click="detailShow = false" class="close-btn"></div>
+                <div class="date">{{detailDate}}</div>
+                <div class="time">{{detailTime}}</div>
+                <div class="type">{{detailType}}</div>
+                <div class="decor-line"></div>
+
+                <div class="wrap user-wrap">
+                    <div class="wrap user">
+                        <div class="user-icon"></div>
+                        <div class="user-name">{{detailUserName}}</div>
+                    </div>
+                    <div class="wrap message">
+                        <div class="message-title">сообщение</div>
+                        <div class="message-icon"></div>
+                    </div>
+                </div>
+                <div class="wrap skype">
+                    <div class="skype-icon"></div>
+                    <div class="skype-name">david33</div>
+                </div>
+                <div class="decor-line"></div>
+                <div class="wrap">
+                    <div class="button change-btn">изменить</div>
+                    <div class="button cancel-btn">отменить</div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
 
 <script>
     import axios from 'axios';
+
     export default {
         data() {
             return {
@@ -44,13 +85,31 @@
                 timeZones: [],
                 day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
                 daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
-                monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                monthes: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"],
                 date: new Date(),
                 timeChangeSatus: 'calendar-disable',
                 currentMonth: null,
                 showPreloader: true,
                 dayOfWeek: null,
+                detailShow: false,
+                detailDate: null,
+                detailTime: null,
+                detailType: null,
+                detailUserName: null,
+
             }
+        },
+        mounted: function () {
+            this.getBooksTimeFromDB();
+        },
+        updated() {
+            this.setCurrentMonth();
+        },
+        created: function () {
+            // console.log(this.currentDayOfWeek);
+            this.showPreloader = false;
+            this.setCurrentMonth();
+
         },
         methods: {
             calendar: function () {
@@ -90,6 +149,7 @@
                     this.month--;
                     this.year--;
                 }
+                this.getBooksTimeFromDB();
             },
             increase: function () {
                 this.month++;
@@ -98,6 +158,7 @@
                     this.month++;
                     this.year++;
                 }
+                this.getBooksTimeFromDB();
 
             },
             setCurrentMonth() {
@@ -107,6 +168,58 @@
                     this.currentMonth = this.month + 1;
                 }
             },
+            getBooksTimeFromDB() {
+                // console.log('getintervals')
+                // очищает ячейки при обновлении компонента
+                $('.calendar-table-days .book').remove();
+
+                axios.post('/handle.php', JSON.stringify({'method': 'getBooksTime'}))
+                    .then((response) => {
+                        // console.log(response.data);
+                        let data = response.data;
+                        data.forEach(function (val, k) {
+                            let typeFromDb = val.type;
+                            let nameFromDb = val.name;
+                            let dateFromDb = val.day;
+                            let timeFromDb = val.time;
+                            let paymentFromDb = val.payment;
+                            $('.calendar-table-days').each(function (k, val) {
+                                let day = $(this);
+                                let dateOfcell = $(this).attr('date');
+                                if (dateOfcell === dateFromDb) {
+                                    if (paymentFromDb === 'payed') {
+                                        day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                    }
+                                }
+                            })
+
+                        });
+                    });
+            },
+            bookingEvent(event) {
+                console.log(event.target);
+                // axios.post('/handle.php', JSON.stringify({'method': 'getUserInfoForAdmin'}))
+                //     .then((response) => {
+                //       console.log(response.data)
+                //     })
+                if (event.target.className.includes('book')) {
+                    console.log('work')
+                    //open detail
+                    this.detailShow = true;
+                    let target = event.target;
+                    this.detailDate = target.getAttribute('data');
+                    this.detailTime = target.getAttribute('time');
+                    this.detailType = target.getAttribute('type');
+                    if (target.getAttribute('type') === 'private') {
+                        this.detailType = 'Занятие с преподавателем';
+                    }
+                    if (target.getAttribute('type') === 's-club') {
+                        this.detailType = 'Speaking - Club';
+                    }
+                    this.detailUserName = target.getAttribute('name');
+                }
+            },
+            
         },
     }
 </script>

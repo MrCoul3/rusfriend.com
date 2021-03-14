@@ -123,6 +123,20 @@ if ($request['method'] == 'getTimeIntervals') {
     echo json_encode($response);
 }
 
+if ($request['method'] == 'getBooksTime') {
+    $timeIntervals = $objCalendar->returnBooksTime();
+    foreach ($timeIntervals as $day=>$time) {
+        $response[] = [
+            'name'   => $time[0],
+            'day'    => $time[1],
+            'time'   => $time[2],
+            'type'   => $time[3],
+            'payment'=> $time[4]
+        ];
+    }
+    echo json_encode($response);
+}
+
 if ($request['method'] == 'deleteTimeIntervals') {
     $deleteTimeIntervals = $objCalendar->deleteTimeIntervals($request);
 }
@@ -169,4 +183,7 @@ if ($request['method'] === 'successPay') {
     $result = $objCalendar->successPay();
 }
 
-
+if ($request['method'] === 'getUserInfoForAdmin') {
+    $result = $obj->getUserInfoForAdmin($request);
+    echo json_encode(($result) );
+}

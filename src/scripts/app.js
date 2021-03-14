@@ -1,3 +1,4 @@
+console.log('app.js init')
 import './index';
 import './common';
 import './about';
@@ -16,10 +17,29 @@ import './service';
 import Vue from 'vue';
 import MySchedule from "../vue/MySchedule.vue";
 import MyCalendar from "../vue/MyCalendar.vue";
+import BookCalendar from "../vue/BookCalendar.vue";
 
-Vue.config.productionTip = false;
+// function getCookie(name) {
+//     let matches = document.cookie.match(new RegExp(
+//         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+//     ));
+//     return matches ? decodeURIComponent(matches[1]) : undefined;
+// }
+
+
+
+// Vue.config.productionTip = false;
 
 $(document).ready(function () {
+
+    if (document.getElementById('vue-book-calendar')) {
+        console.log('init vue-book-calendar')
+        const bookCalendar = new Vue({
+            el: "#vue-book-calendar",
+            template: "<BookCalendar/>",
+            components: { BookCalendar }
+        })
+    }
 
     if (document.getElementById('vue-my-calendar')) {
         console.log('init vue-my-calendar')
@@ -38,6 +58,10 @@ $(document).ready(function () {
             components: { MySchedule }
         });
     }
+
+
+
+
 
 
 

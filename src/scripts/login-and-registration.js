@@ -298,6 +298,7 @@ $(document).ready(function () {
 
     function logout() {
         $(".user-login-menu__elem--logout").click(function (e) {
+            e.preventDefault();
             let inputData = {
                 'method': 'logout'
             };
@@ -308,9 +309,22 @@ $(document).ready(function () {
                 },
                 body: JSON.stringify(inputData)
             });
-            $(".btn-login").removeClass("disable").addClass('active-block');
-            $(".user-login").addClass("disable").removeClass("active-flex");
-            deleteCookie('name');
+            response.then(function (data) {
+                return data.json()
+            }).then(function (data) {
+                console.log(data.logout)
+                if (data.logout === true) {
+                    $(".btn-login").removeClass("disable").addClass('active-block');
+                    $(".user-login").addClass("disable").removeClass("active-flex");
+                    deleteCookie('name');
+                    console.log('logout');
+                    if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
+                        window.location.reload();
+                    }
+                } else {
+                    console.log('не удалось выйти')
+                }
+            });
         });
     }
 

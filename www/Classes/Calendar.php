@@ -64,6 +64,13 @@ class Calendar
         $result = mysqli_fetch_all($this->dbAccess->query($query));
         return $result;
     }
+    public function returnBooksTime()
+    {
+        $query = "SELECT `name`, `day`, `time`, `type`, `payment` FROM `bookstime` WHERE 1";
+        $result = mysqli_fetch_all($this->dbAccess->query($query));
+        return $result;
+    }
+
 
     public function addBooksTime($request)
     {

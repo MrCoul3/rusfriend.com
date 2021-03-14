@@ -1946,6 +1946,419 @@ module.exports = {
 
 /***/ }),
 
+/***/ "../node_modules/babel-loader/lib/index.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************!*\
+  !*** ../node_modules/babel-loader/lib??ref--1!../node_modules/vue-loader/lib??vue-loader-options!./vue/BookCalendar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+var selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      dFirstMonth: '1',
+      timeZones: [],
+      day: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
+      monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      date: new Date(),
+      weekNumber: null,
+      dateInterval: null,
+      responseData: [],
+      currentMonth: null,
+      // selectedTimeArray: [],
+      enterSkype: false,
+      validationSkype: false,
+      preLoader: false
+    };
+  },
+  beforeMount: function beforeMount() {
+    Date.prototype.getWeek = function () {
+      var onejan = new Date(this.getFullYear(), 0, 1);
+      return Math.ceil(((this - onejan) / 86400000 + onejan.getDay()) / 7);
+    }; // возвращает номер недели
+
+
+    this.weekNumber = new Date().getWeek() - 1; // console.log(this.weekNumber);
+  },
+  created: function created() {
+    if (String(this.month + 1).length == '1') {
+      this.currentMonth = 0 + String(this.month + 1);
+    } else {
+      this.currentMonth = this.month + 1;
+    }
+  },
+  mounted: function mounted() {
+    this.getIntervalsFromDB();
+    this.lightingOfToday();
+    this.changeStateOfItem();
+  },
+  updated: function updated() {
+    this.lightingOfToday();
+    this.changeStateOfItem();
+  },
+  methods: {
+    DateOfMondayInWeek: function DateOfMondayInWeek(year, weekNumber) {
+      for (var a = 1;; a++) {
+        if (new Date(year, 0, a).getDay() == 1) break;
+      }
+
+      a += (weekNumber - 1) * 7;
+      return new Date(year, 0, a);
+    },
+    weekCalendar: function weekCalendar() {
+      var numOfDayInMonth = new Date(this.year, this.month + 1, 0).getDate(); // число дней в текущем мес
+
+      var week = [];
+      var w = 0;
+      week[w] = [];
+      var dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
+
+      for (var i = dayInCurrentWeek; i <= dayInCurrentWeek + 6; i++) {
+        var a = {
+          index: i
+        };
+
+        if (i <= numOfDayInMonth) {
+          week[w].push(a);
+        }
+
+        if (i > numOfDayInMonth) {
+          a = {
+            index: i - numOfDayInMonth
+          };
+          week[w].push(a); // week[w].push(i - numOfDayInMonth);
+        }
+
+        if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
+          a.today = 'today';
+          a.color = '#fff';
+          a.font = 'bold';
+          a.current = '#006660';
+        }
+      } // console.log(week);
+      // console.log(week[w][0].index + ' - ' + week[w][6].index);
+
+
+      this.dateInterval = week[w][0].index + ' - ' + week[w][6].index;
+      return week;
+    },
+    decrease: function decrease() {
+      console.log('w');
+      this.weekNumber--;
+      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
+      console.log(this.month);
+      console.log(this.weekNumber);
+
+      if (this.weekNumber === 0) {
+        this.weekNumber = 52;
+        this.year--;
+      }
+
+      this.getIntervalsFromDB();
+    },
+    increase: function increase() {
+      this.weekNumber++;
+      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
+      console.log(this.weekNumber);
+
+      if (this.weekNumber === 52) {
+        this.weekNumber = 1;
+        this.year++;
+      }
+
+      this.getIntervalsFromDB();
+    },
+    lightingOfToday: function lightingOfToday() {
+      var dayNum = document.querySelectorAll('.calendar-app-content-number');
+      var dayName = $('.calendar-app-content-day');
+      var decorElements = $('.decor-dates__elem');
+      dayNum.forEach(function (val, k) {
+        if (val.getAttribute('today')) {
+          dayName[k].classList.add('day-of-week-active');
+          decorElements[k].classList.add('decor-element-active');
+        } else {
+          dayName[k].classList.remove('day-of-week-active');
+          decorElements[k].classList.remove('decor-element-active');
+        }
+      });
+    },
+    getIntervalsFromDB: function getIntervalsFromDB() {
+      $('.time-intrevals-elem ').each(function (k, val) {
+        val.innerHTML = '';
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getTimeIntervals'
+      })).then(function (response) {
+        // console.log(response.data);
+        var dataFromDB = response.data; // console.log(dataFromDB[0]);
+
+        dataFromDB.forEach(function (dataFromDB, k) {
+          // console.log(dataFromDB.day); // ...7.03.2021...
+          $('.time-intrevals-elem ').each(function (k, val) {
+            // console.log(val.getAttribute('date'));
+            var dateNumber = val;
+
+            if (dataFromDB.day === dateNumber.getAttribute('date')) {
+              // console.log(dataFromDB.time);
+              var arr = dataFromDB.time.split(','); // console.log(arr);
+
+              var str = arr.join('</div><div>'); // console.log(str);
+              // console.log(dateNumber.innerHTML);
+
+              dateNumber.innerHTML = '<div>' + str + '</div>';
+            }
+          });
+        });
+      });
+    },
+    chooseTime: function chooseTime(event) {
+      // console.log(event.target);
+      var selectedTime = event.target;
+
+      if (selectedTime.className.includes('selected-time')) {
+        selectedTime.classList.remove('selected-time');
+      } else {
+        selectedTime.classList.add('selected-time');
+      }
+
+      selectedTimeArray = [];
+      var userName = $('.user-login__elem--user-name').html();
+      var typeOfLesson;
+
+      if ($('.header-menu--private').hasClass('menu-item-active')) {
+        typeOfLesson = 'private';
+      } else {
+        typeOfLesson = 's-club';
+      }
+
+      document.cookie = "type=" + typeOfLesson;
+      $('.selected-time').each(function (k, val) {
+        var day = val.parentNode.getAttribute('date');
+        var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
+
+        var obj = {
+          name: userName,
+          type: typeOfLesson,
+          day: day,
+          time: time,
+          payment: 'unpayed',
+          'method': 'bookEvent'
+        };
+        console.log(obj);
+
+        if (day !== null && time !== '') {
+          selectedTimeArray.push(obj);
+        }
+      }); // console.log(array);
+      // this.selectedTimeArray = array.slice(0);
+    },
+    bookEvent: function bookEvent() {
+      var _this = this;
+
+      // console.log(selectedTimeArray);
+      // нужно сделать проверку на логин, если не залогинен то открыть форму
+      // Регистрации
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'checkLoginOnBookedLesson'
+      })).then(function (response) {
+        // console.log(response.data['success']);
+        if (response.data['success'] === false) {
+          // открытие формы логина
+          if (!$(".login-form").hasClass('login-form-active')) {
+            $(".login-form").addClass('login-form-active');
+            $("#mysite").addClass("body-fixed");
+          }
+        } else {
+          //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+            'method': 'checkSkype'
+          })).then(function (response) {
+            // console.log(response.data);
+            var dataFromDB = response.data;
+
+            if (dataFromDB.status === 'empty') {
+              _this.enterSkype = true;
+            } else {
+              axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray));
+              window.location.href = "payment.php";
+            }
+          });
+        }
+      });
+    },
+    sendSkype: function sendSkype() {
+      // console.log($('.input-skype').val());
+      var skype = $('.input-skype');
+
+      if (skype.val().trim() === '') {
+        // console.log('empty');
+        this.validationSkype = true;
+      } else {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+          'method': 'sendSkype',
+          'skype': skype.val()
+        }));
+        this.enterSkype = false;
+      }
+    },
+    // функция изменения состояния интервала в календаре при
+    // забронированных интервалах для данного пользователя
+    changeStateOfItem: function changeStateOfItem() {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getLessons'
+      })).then(function (response) {
+        // console.log(response.data);
+        // получаем всю информацию о забронированных уроках по данному пользователю
+        var dataFromDB = response.data; // console.log($(this).attr('date'));
+
+        var timeInterval = $('.time-intrevals-from-db__item');
+        dataFromDB.forEach(function (val, k) {
+          // console.log(val[1]);
+          var userNameFromDB = val[1];
+          var dayFromDB = val[2];
+          var timeFromDB = val[3];
+
+          if (userNameFromDB === getCookie('name')) {
+            timeInterval.each(function (k, val) {
+              if ($(this).attr('date') === dayFromDB) {
+                // console.log(timeFromDB);
+                // console.log($(this).children())
+                $(this).children().each(function (k, val) {
+                  // console.log(val.innerHTML);
+                  if (val.innerHTML === timeFromDB) {
+                    val.classList.add('booked-for-this-user'); // console.log(val);
+                  }
+                });
+              }
+            });
+          }
+
+          if (userNameFromDB !== getCookie('name')) {
+            // console.log(userNameFromDB);
+            timeInterval.each(function (k, val) {
+              if ($(this).attr('date') === dayFromDB) {
+                // console.log(timeFromDB);
+                // console.log($(this).children())
+                $(this).children().each(function (k, val) {
+                  // console.log(val.innerHTML);
+                  if (val.innerHTML === timeFromDB) {
+                    val.classList.add('booked-for-other-users'); // console.log(val);
+                  }
+                });
+              }
+            });
+          }
+        });
+      });
+    }
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
+
+/***/ }),
+
 /***/ "../node_modules/babel-loader/lib/index.js?!../node_modules/vue-loader/lib/index.js?!./vue/MyCalendar.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************!*\
   !*** ../node_modules/babel-loader/lib??ref--1!../node_modules/vue-loader/lib??vue-loader-options!./vue/MyCalendar.vue?vue&type=script&lang=js& ***!
@@ -1955,8 +2368,48 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2002,13 +2455,29 @@ __webpack_require__.r(__webpack_exports__);
       timeZones: [],
       day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
       daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
-      monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      monthes: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"],
       date: new Date(),
       timeChangeSatus: 'calendar-disable',
       currentMonth: null,
       showPreloader: true,
-      dayOfWeek: null
+      dayOfWeek: null,
+      detailShow: false,
+      detailDate: null,
+      detailTime: null,
+      detailType: null,
+      detailUserName: null
     };
+  },
+  mounted: function mounted() {
+    this.getBooksTimeFromDB();
+  },
+  updated: function updated() {
+    this.setCurrentMonth();
+  },
+  created: function created() {
+    // console.log(this.currentDayOfWeek);
+    this.showPreloader = false;
+    this.setCurrentMonth();
   },
   methods: {
     calendar: function calendar() {
@@ -2058,6 +2527,8 @@ __webpack_require__.r(__webpack_exports__);
         this.month--;
         this.year--;
       }
+
+      this.getBooksTimeFromDB();
     },
     increase: function increase() {
       this.month++;
@@ -2067,6 +2538,8 @@ __webpack_require__.r(__webpack_exports__);
         this.month++;
         this.year++;
       }
+
+      this.getBooksTimeFromDB();
     },
     setCurrentMonth: function setCurrentMonth() {
       if (String(this.month + 1).length == '1') {
@@ -2074,9 +2547,64 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.currentMonth = this.month + 1;
       }
+    },
+    getBooksTimeFromDB: function getBooksTimeFromDB() {
+      // console.log('getintervals')
+      // очищает ячейки при обновлении компонента
+      $('.calendar-table-days .book').remove();
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getBooksTime'
+      })).then(function (response) {
+        // console.log(response.data);
+        var data = response.data;
+        data.forEach(function (val, k) {
+          var typeFromDb = val.type;
+          var nameFromDb = val.name;
+          var dateFromDb = val.day;
+          var timeFromDb = val.time;
+          var paymentFromDb = val.payment;
+          $('.calendar-table-days').each(function (k, val) {
+            var day = $(this);
+            var dateOfcell = $(this).attr('date');
+
+            if (dateOfcell === dateFromDb) {
+              if (paymentFromDb === 'payed') {
+                day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
+              }
+            }
+          });
+        });
+      });
+    },
+    bookingEvent: function bookingEvent(event) {
+      console.log(event.target); // axios.post('/handle.php', JSON.stringify({'method': 'getUserInfoForAdmin'}))
+      //     .then((response) => {
+      //       console.log(response.data)
+      //     })
+
+      if (event.target.className.includes('book')) {
+        console.log('work'); //open detail
+
+        this.detailShow = true;
+        var target = event.target;
+        this.detailDate = target.getAttribute('data');
+        this.detailTime = target.getAttribute('time');
+        this.detailType = target.getAttribute('type');
+
+        if (target.getAttribute('type') === 'private') {
+          this.detailType = 'Занятие с преподавателем';
+        }
+
+        if (target.getAttribute('type') === 's-club') {
+          this.detailType = 'Speaking - Club';
+        }
+
+        this.detailUserName = target.getAttribute('name');
+      }
     }
   }
 });
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
 
 /***/ }),
 
@@ -2200,7 +2728,7 @@ __webpack_require__.r(__webpack_exports__);
       timeZones: [],
       day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
       daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
-      monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      monthes: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"],
       date: new Date(),
       timeIntervals: [],
       timeLeftSelectorVariables: ['06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'],
@@ -6457,6 +6985,398 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "../node_modules/vue-loader/lib/loaders/templateLoader.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "your-calendar inner", attrs: { id: "booking-calendar" } },
+    [
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.preLoader,
+              expression: "preLoader"
+            }
+          ]
+        },
+        [_vm._v("Загрузка")]
+      ),
+      _vm._v(" "),
+      _c(
+        "h3",
+        {
+          staticClass:
+            "your-calendar__element your-calendar__element--main-title main-title"
+        },
+        [
+          _vm._v(
+            "Все online-Занятия с\n        преподавателем проходят в Skype"
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "your-calendar__element your-calendar__element--calendar-app calendar-app"
+        },
+        [
+          _c("div", { staticClass: "calendar-app-header" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "calendar-app-header__element calendar-app-header__element--month-module"
+              },
+              [
+                _c("div", {
+                  staticClass: "month-btn month-btn--left-btn",
+                  on: { click: _vm.decrease }
+                }),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "month-btn month-btn--right-btn",
+                  on: { click: _vm.increase }
+                }),
+                _vm._v(" "),
+                _c("p", { staticClass: "month" }, [
+                  _vm._v(
+                    _vm._s(_vm.monthes[_vm.month]) +
+                      " " +
+                      _vm._s(_vm.dateInterval) +
+                      ", " +
+                      _vm._s(_vm.year)
+                  )
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "h2",
+              {
+                staticClass:
+                  "calendar-app-header__element calendar-app-header__element--title"
+              },
+              [_vm._v("Календарь занятий")]
+            ),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "decor-line" }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "calendar-app-content" },
+            [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "calendar-app-content-col" },
+                _vm._l(_vm.day, function(d) {
+                  return _c(
+                    "div",
+                    { staticClass: "calendar-app-content-day" },
+                    [_vm._v(_vm._s(d))]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.weekCalendar(), function(week) {
+                return _c(
+                  "div",
+                  { staticClass: "calendar-app-content-col" },
+                  _vm._l(week, function(day) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass: "calendar-app-content-number",
+                        style: {
+                          "background-color": day.current,
+                          color: day.color,
+                          "font-weight": day.font
+                        },
+                        attrs: {
+                          today: day.today,
+                          date:
+                            day.index + "." + _vm.currentMonth + "." + _vm.year
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(day.index) +
+                            "\n                "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              }),
+              _vm._v(" "),
+              _vm._l(_vm.weekCalendar(), function(week) {
+                return _c(
+                  "div",
+                  { staticClass: "time-intrevals-from-db" },
+                  _vm._l(week, function(day) {
+                    return _c("div", {
+                      staticClass:
+                        "time-intrevals-elem time-intrevals-from-db__item",
+                      attrs: {
+                        date:
+                          day.index + "." + _vm.currentMonth + "." + _vm.year
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.chooseTime($event)
+                        }
+                      }
+                    })
+                  }),
+                  0
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "button book-btn",
+              attrs: { href: "" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.bookEvent()
+                }
+              }
+            },
+            [_vm._v("забронировать")]
+          ),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.enterSkype,
+                  expression: "enterSkype"
+                }
+              ],
+              staticClass: "enter-your-skype"
+            },
+            [
+              _c("h2", { staticClass: "enter-your-skype__element" }, [
+                _vm._v("Все занятия проходят в skype")
+              ]),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex" }, [
+                _c("div", { staticClass: "skype-icon-for-input" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex", attrs: { id: "enter-your-skype" } },
+                  [
+                    _c("input", {
+                      staticClass: "enter-your-skype__element input-skype",
+                      attrs: { type: "text", placeholder: "skype" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "button send-skype",
+                        on: {
+                          click: function($event) {
+                            return _vm.sendSkype()
+                          }
+                        }
+                      },
+                      [_vm._v("send")]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.validationSkype,
+                        expression: "validationSkype"
+                      }
+                    ],
+                    staticClass: "validation-skype"
+                  },
+                  [_vm._v("поле не должно быть пустым")]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(5)
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "your-calendar__element your-calendar__element--instruction instruction"
+      },
+      [
+        _c("p", { staticClass: "instruction__element" }, [
+          _vm._v("1. Выберите удобное для вас время")
+        ]),
+        _vm._v(" "),
+        _c(
+          "p",
+          {
+            staticClass: "instruction__element instruction__element--separator"
+          },
+          [_vm._v(">")]
+        ),
+        _vm._v(" "),
+        _c("p", { staticClass: "instruction__element" }, [
+          _vm._v("2. Оплатите урок")
+        ]),
+        _vm._v(" "),
+        _c(
+          "p",
+          {
+            staticClass: "instruction__element instruction__element--separator"
+          },
+          [_vm._v(">")]
+        ),
+        _vm._v(" "),
+        _c("p", { staticClass: "instruction__element" }, [
+          _vm._v("3. Готовьтесь к уроку")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "select",
+      {
+        staticClass:
+          "calendar-app-header__element calendar-app-header__element--time-zone"
+      },
+      [_c("option", [_vm._v("Europe/Moscow GMT +3:00")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "decor-dates" }, [
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "decor-dates__elem" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tegs" }, [
+      _c("div", { staticClass: "tegs__element" }, [
+        _c("div", { staticClass: "circle circle--booked" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Забронированное занятие")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "tegs__element" }, [
+        _c("div", { staticClass: "circle circle--available" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Доступное время")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "tegs__element" }, [
+        _c("div", { staticClass: "circle circle--unavailable" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Недоступное время")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "enter-your-skype__element" }, [
+      _vm._v("Для продолжения введите номер "),
+      _c("br"),
+      _vm._v(" своего skype и нажмите ‘далее’")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "enter-your-skype__element" }, [
+      _vm._v("Skype преподавателя: "),
+      _c("span", [_vm._v("svetlana tutorOnline")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "../node_modules/vue-loader/lib/loaders/templateLoader.js?!../node_modules/vue-loader/lib/index.js?!./vue/MyCalendar.vue?vue&type=template&id=1a0260e1&":
 /*!*******************************************************************************************************************************************************************************************!*\
   !*** ../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./vue/MyCalendar.vue?vue&type=template&id=1a0260e1& ***!
@@ -6484,13 +7404,15 @@ var render = function() {
       _vm._v(" "),
       _c("h3", { staticClass: "main-title main-title__description" }, [
         _vm._v(
-          "Здесь ты можешь посмотреть информацию о забронированных занятиях, нажав на интересующую ячейку"
+          "Здесь ты можешь посмотреть информацию о забронированных занятиях,\n        нажав на интересующую ячейку"
         )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "wrapper" }, [
         _c("div", { staticClass: "calendar-header" }, [
           _c("div", { staticClass: "header-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
             _c("div", { staticClass: "month-module header-content__element" }, [
               _c("p", { staticClass: "month" }, [
                 _vm._v(_vm._s(_vm.monthes[_vm.month]) + " " + _vm._s(_vm.year))
@@ -6507,7 +7429,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _vm._m(0)
+            _vm._m(1)
           ])
         ]),
         _vm._v(" "),
@@ -6530,19 +7452,21 @@ var render = function() {
                   return _c(
                     "td",
                     {
-                      staticClass: "calendar-table-day",
+                      staticClass: "calendar-table-days",
                       style: { "background-color": day.current },
                       attrs: {
                         date:
                           day.index + "." + _vm.currentMonth + "." + _vm.year
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.bookingEvent($event)
+                        }
                       }
                     },
                     [
                       _c("span", { staticClass: "day-number" }, [
                         _vm._v(_vm._s(day.index))
-                      ]),
-                      _c("span", { staticClass: "day-time" }, [
-                        _vm._v("13:00 - 14:00 David")
                       ])
                     ]
                   )
@@ -6552,6 +7476,63 @@ var render = function() {
             })
           ],
           2
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.detailShow,
+                expression: "detailShow"
+              }
+            ],
+            staticClass: "calendar-detail"
+          },
+          [
+            _c("div", {
+              staticClass: "close-btn",
+              on: {
+                click: function($event) {
+                  _vm.detailShow = false
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "date" }, [
+              _vm._v(_vm._s(_vm.detailDate))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "time" }, [
+              _vm._v(_vm._s(_vm.detailTime))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "type" }, [
+              _vm._v(_vm._s(_vm.detailType))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "decor-line" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "wrap user-wrap" }, [
+              _c("div", { staticClass: "wrap user" }, [
+                _c("div", { staticClass: "user-icon" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "user-name" }, [
+                  _vm._v(_vm._s(_vm.detailUserName))
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(2)
+            ]),
+            _vm._v(" "),
+            _vm._m(3),
+            _vm._v(" "),
+            _c("div", { staticClass: "decor-line" }),
+            _vm._v(" "),
+            _vm._m(4)
+          ]
         )
       ])
     ]
@@ -6562,8 +7543,56 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tegs" }, [
+      _c("div", { staticClass: "tegs__element" }, [
+        _c("div", { staticClass: "circle circle--s-club" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Speaking - club")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "tegs__element" }, [
+        _c("div", { staticClass: "circle circle--private" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Занятие с преподавателем")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("select", { staticClass: "time-zone header-content__element" }, [
       _c("option", [_vm._v("Europe/Moscow GMT +3:00")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "wrap message" }, [
+      _c("div", { staticClass: "message-title" }, [_vm._v("сообщение")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "message-icon" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "wrap skype" }, [
+      _c("div", { staticClass: "skype-icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "skype-name" }, [_vm._v("david33")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "wrap" }, [
+      _c("div", { staticClass: "button change-btn" }, [_vm._v("изменить")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "button cancel-btn" }, [_vm._v("отменить")])
     ])
   }
 ]
@@ -19278,6 +20307,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
 /* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
+/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
+console.log('app.js init');
 
 
 
@@ -19296,8 +20327,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_15__["default"].config.productionTip = false;
+ // function getCookie(name) {
+//     let matches = document.cookie.match(new RegExp(
+//         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+//     ));
+//     return matches ? decodeURIComponent(matches[1]) : undefined;
+// }
+// Vue.config.productionTip = false;
+
 $(document).ready(function () {
+  if (document.getElementById('vue-book-calendar')) {
+    console.log('init vue-book-calendar');
+    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_15__["default"]({
+      el: "#vue-book-calendar",
+      template: "<BookCalendar/>",
+      components: {
+        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
+      }
+    });
+  }
+
   if (document.getElementById('vue-my-calendar')) {
     console.log('init vue-my-calendar');
     var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_15__["default"]({
@@ -19462,313 +20511,9 @@ $(document).ready(function () {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($('main').hasClass("private-lesson") || $('main').hasClass("speaking-club")) {
-    //----------------------------------------------------------------
-    var getCookie = function getCookie(name) {
-      var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
-    };
-
     console.log('booking-calendar init'); //----------------------------------------------------------------
-
-    var selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
-
-    var bookingCalendar = new Vue({
-      el: '#booking-calendar',
-      data: {
-        month: new Date().getMonth(),
-        year: new Date().getFullYear(),
-        dFirstMonth: '1',
-        timeZones: [],
-        day: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
-        monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-        date: new Date(),
-        weekNumber: null,
-        dateInterval: null,
-        responseData: [],
-        currentMonth: null,
-        // selectedTimeArray: [],
-        enterSkype: false,
-        validationSkype: false
-      },
-      beforeMount: function beforeMount() {
-        Date.prototype.getWeek = function () {
-          var onejan = new Date(this.getFullYear(), 0, 1);
-          return Math.ceil(((this - onejan) / 86400000 + onejan.getDay()) / 7);
-        }; // возвращает номер недели
-
-
-        this.weekNumber = new Date().getWeek() - 1; // console.log(this.weekNumber);
-      },
-      created: function created() {
-        if (String(this.month + 1).length == '1') {
-          this.currentMonth = 0 + String(this.month + 1);
-        } else {
-          this.currentMonth = this.month + 1;
-        }
-      },
-      mounted: function mounted() {
-        this.getIntervalsFromDB();
-        this.lightingOfToday();
-        this.changeStateOfItem();
-      },
-      updated: function updated() {
-        this.getIntervalsFromDB();
-        this.lightingOfToday();
-        this.changeStateOfItem();
-      },
-      computed: {},
-      methods: {
-        DateOfMondayInWeek: function DateOfMondayInWeek(year, weekNumber) {
-          for (var a = 1;; a++) {
-            if (new Date(year, 0, a).getDay() == 1) break;
-          }
-
-          a += (weekNumber - 1) * 7;
-          return new Date(year, 0, a);
-        },
-        weekCalendar: function weekCalendar() {
-          var numOfDayInMonth = new Date(this.year, this.month + 1, 0).getDate(); // число дней в текущем мес
-
-          var week = [];
-          var w = 0;
-          week[w] = [];
-          var dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
-
-          for (var i = dayInCurrentWeek; i <= dayInCurrentWeek + 6; i++) {
-            var a = {
-              index: i
-            };
-
-            if (i <= numOfDayInMonth) {
-              week[w].push(a);
-            }
-
-            if (i > numOfDayInMonth) {
-              a = {
-                index: i - numOfDayInMonth
-              };
-              week[w].push(a); // week[w].push(i - numOfDayInMonth);
-            }
-
-            if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
-              a.today = 'today';
-              a.color = '#fff';
-              a.font = 'bold';
-              a.current = '#006660';
-            }
-          } // console.log(week);
-          // console.log(week[w][0].index + ' - ' + week[w][6].index);
-
-
-          this.dateInterval = week[w][0].index + ' - ' + week[w][6].index;
-          return week;
-        },
-        decrease: function decrease() {
-          console.log('w');
-          this.weekNumber--;
-          this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-          console.log(this.month);
-          console.log(this.weekNumber);
-
-          if (this.weekNumber === 0) {
-            this.weekNumber = 52;
-            this.year--;
-          }
-        },
-        increase: function increase() {
-          this.weekNumber++;
-          this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-          console.log(this.weekNumber);
-
-          if (this.weekNumber === 52) {
-            this.weekNumber = 1;
-            this.year++;
-          }
-        },
-        lightingOfToday: function lightingOfToday() {
-          var dayNum = document.querySelectorAll('.calendar-app-content-number');
-          var dayName = $('.calendar-app-content-day');
-          var decorElements = $('.decor-dates__elem');
-          dayNum.forEach(function (val, k) {
-            if (val.getAttribute('today')) {
-              dayName[k].classList.add('day-of-week-active');
-              decorElements[k].classList.add('decor-element-active');
-            } else {
-              dayName[k].classList.remove('day-of-week-active');
-              decorElements[k].classList.remove('decor-element-active');
-            }
-          });
-        },
-        getIntervalsFromDB: function getIntervalsFromDB() {
-          $('.time-intrevals-elem ').each(function (k, val) {
-            val.innerHTML = '';
-          });
-          axios.post('/handle.php', JSON.stringify({
-            'method': 'getTimeIntervals'
-          })).then(function (response) {
-            // console.log(response.data);
-            var dataFromDB = response.data; // console.log(dataFromDB[0]);
-
-            dataFromDB.forEach(function (dataFromDB, k) {
-              // console.log(dataFromDB.day); // ...7.03.2021...
-              $('.time-intrevals-elem ').each(function (k, val) {
-                // console.log(val.getAttribute('date'));
-                var dateNumber = val;
-
-                if (dataFromDB.day === dateNumber.getAttribute('date')) {
-                  // console.log(dataFromDB.time);
-                  var arr = dataFromDB.time.split(','); // console.log(arr);
-
-                  var str = arr.join('</div><div>'); // console.log(str);
-                  // console.log(dateNumber.innerHTML);
-
-                  dateNumber.innerHTML = '<div>' + str + '</div>';
-                }
-              });
-            });
-          });
-        },
-        chooseTime: function chooseTime(event) {
-          // console.log(event.target);
-          var selectedTime = event.target;
-
-          if (selectedTime.className.includes('selected-time')) {
-            selectedTime.classList.remove('selected-time');
-          } else {
-            selectedTime.classList.add('selected-time');
-          } // let selectedTimeArray = this.selectedTimeArray;
-
-
-          selectedTimeArray = [];
-          var userName = $('.user-login__elem--user-name').html();
-          var typeOfLesson = null;
-
-          if ($('.header-menu--private').hasClass('menu-item-active')) {
-            typeOfLesson = 'private';
-          } else {
-            typeOfLesson = 's-club';
-          }
-
-          $('.selected-time').each(function (k, val) {
-            var day = val.parentNode.getAttribute('date');
-            var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
-
-            var obj = {
-              name: userName,
-              type: typeOfLesson,
-              day: day,
-              time: time,
-              payment: 'unpayed',
-              'method': 'bookEvent'
-            }; // console.log(obj)
-
-            if (day !== null && time !== '') {
-              selectedTimeArray.push(obj);
-            }
-          }); // console.log(array);
-          // this.selectedTimeArray = array.slice(0);
-        },
-        bookEvent: function bookEvent() {
-          var _this = this;
-
-          // console.log(selectedTimeArray);
-          // нужно сделать проверку на логин, если не залогинен то открыть форму
-          // Регистрации
-          axios.post('/handle.php', JSON.stringify({
-            'method': 'checkLoginOnBookedLesson'
-          })).then(function (response) {
-            // console.log(response.data['success']);
-            if (response.data['success'] === false) {
-              // открытие формы логина
-              if (!$(".login-form").hasClass('login-form-active')) {
-                $(".login-form").addClass('login-form-active');
-                $("#mysite").addClass("body-fixed");
-              }
-            } else {
-              //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
-              axios.post('/handle.php', JSON.stringify({
-                'method': 'checkSkype'
-              })).then(function (response) {
-                // console.log(response.data);
-                var dataFromDB = response.data;
-
-                if (dataFromDB.status === 'empty') {
-                  _this.enterSkype = true;
-                } else {
-                  axios.post('/handle.php', JSON.stringify(selectedTimeArray));
-                  window.location.href = "payment.php";
-                }
-              });
-            }
-          });
-        },
-        sendSkype: function sendSkype() {
-          // console.log($('.input-skype').val());
-          var skype = $('.input-skype');
-
-          if (skype.val().trim() === '') {
-            // console.log('empty');
-            this.validationSkype = true;
-          } else {
-            axios.post('/handle.php', JSON.stringify({
-              'method': 'sendSkype',
-              'skype': skype.val()
-            }));
-            this.enterSkype = false;
-          }
-        },
-        // функция изменения состояния интервала в календаре при
-        // забронированных интервалах для данного пользователя
-        changeStateOfItem: function changeStateOfItem() {
-          axios.post('/handle.php', JSON.stringify({
-            'method': 'getLessons'
-          })).then(function (response) {
-            // console.log(response.data);
-            // получаем всю информацию о забронированных уроках по данному пользователю
-            var dataFromDB = response.data; // console.log($(this).attr('date'));
-
-            var timeInterval = $('.time-intrevals-from-db__item');
-            dataFromDB.forEach(function (val, k) {
-              // console.log(val[1]);
-              var userNameFromDB = val[1];
-              var dayFromDB = val[2];
-              var timeFromDB = val[3];
-
-              if (userNameFromDB === getCookie('name')) {
-                timeInterval.each(function (k, val) {
-                  if ($(this).attr('date') === dayFromDB) {
-                    // console.log(timeFromDB);
-                    // console.log($(this).children())
-                    $(this).children().each(function (k, val) {
-                      // console.log(val.innerHTML);
-                      if (val.innerHTML === timeFromDB) {
-                        val.classList.add('booked-for-this-user'); // console.log(val);
-                      }
-                    });
-                  }
-                });
-              }
-
-              if (userNameFromDB !== getCookie('name')) {
-                // console.log(userNameFromDB);
-                timeInterval.each(function (k, val) {
-                  if ($(this).attr('date') === dayFromDB) {
-                    // console.log(timeFromDB);
-                    // console.log($(this).children())
-                    $(this).children().each(function (k, val) {
-                      // console.log(val.innerHTML);
-                      if (val.innerHTML === timeFromDB) {
-                        val.classList.add('booked-for-other-users'); // console.log(val);
-                      }
-                    });
-                  }
-                });
-              }
-            });
-          });
-        }
-      }
-    });
+    //         let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
+    //----------------------------------------------------------------
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -20440,6 +21185,7 @@ $(document).ready(function () {
 
   function logout() {
     $(".user-login-menu__elem--logout").click(function (e) {
+      e.preventDefault();
       var inputData = {
         'method': 'logout'
       };
@@ -20450,9 +21196,24 @@ $(document).ready(function () {
         },
         body: JSON.stringify(inputData)
       });
-      $(".btn-login").removeClass("disable").addClass('active-block');
-      $(".user-login").addClass("disable").removeClass("active-flex");
-      deleteCookie('name');
+      response.then(function (data) {
+        return data.json();
+      }).then(function (data) {
+        console.log(data.logout);
+
+        if (data.logout === true) {
+          $(".btn-login").removeClass("disable").addClass('active-block');
+          $(".user-login").addClass("disable").removeClass("active-flex");
+          deleteCookie('name');
+          console.log('logout');
+
+          if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
+            window.location.reload();
+          }
+        } else {
+          console.log('не удалось выйти');
+        }
+      });
     });
   }
 
@@ -20571,6 +21332,7 @@ $(document).ready(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
+  // для страницы перед календарем бронирования
   $('.book-privateless-btn').click(function (e) {
     e.preventDefault();
     $('.privateless').addClass('hide-session');
@@ -20612,6 +21374,75 @@ $(document).ready(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./vue/BookCalendar.vue":
+/*!******************************!*\
+  !*** ./vue/BookCalendar.vue ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookCalendar.vue?vue&type=template&id=678606de&scoped=true& */ "./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true&");
+/* harmony import */ var _BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookCalendar.vue?vue&type=script&lang=js& */ "./vue/BookCalendar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "../node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "678606de",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "vue/BookCalendar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./vue/BookCalendar.vue?vue&type=script&lang=js&":
+/*!*******************************************************!*\
+  !*** ./vue/BookCalendar.vue?vue&type=script&lang=js& ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_1_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--1!../../node_modules/vue-loader/lib??vue-loader-options!./BookCalendar.vue?vue&type=script&lang=js& */ "../node_modules/babel-loader/lib/index.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_1_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true&":
+/*!*************************************************************************!*\
+  !*** ./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true& ***!
+  \*************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./BookCalendar.vue?vue&type=template&id=678606de&scoped=true& */ "../node_modules/vue-loader/lib/loaders/templateLoader.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
