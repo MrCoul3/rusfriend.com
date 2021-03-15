@@ -183,7 +183,35 @@ if ($request['method'] === 'successPay') {
     $result = $objCalendar->successPay();
 }
 
-if ($request['method'] === 'getUserInfoForAdmin') {
-    $result = $obj->getUserInfoForAdmin($request);
-    echo json_encode(($result) );
+if ($request['method'] === 'getAllUsersInfo') {
+
+    $result = $obj->getAllUsersInfo();
+    $booksTime = $objCalendar->returnBooksTime();
+    array_reverse($booksTime);
+    $arr = [];
+    foreach ($result as $k=>$val) {
+        $arr[] = $val;
+    }
+
+    foreach ($arr as $k=>$val) {
+        foreach ($booksTime as $item) {
+//            print_r($item[0]);
+            if ($item[0] === $val['name']) {
+//                print_r($arr[$k]['name']);
+                // в массив добавляется последний элемент из БД, а надо первый
+                $arr[$k]['date'] = $item[1];
+                $arr[$k]['time'] = $item[2];
+            }
+        }
+    }
+//    echo "<pre>";
+//    print_r($arr);
+//    echo "</pre>";
+
+    echo json_encode($arr);
+}
+
+if ($request['method'] === 'getUserSkype') {
+    $result = $obj->getUserSkype($request);
+    echo json_encode($result);
 }

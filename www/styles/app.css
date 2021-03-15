@@ -2834,6 +2834,60 @@
 #mysite .my-schedule .calendar-disable {
   display: none;
 }
+#mysite .my-students {
+  color: #455A64;
+  font-family: Montserrat, sans-serif;
+}
+#mysite .my-students .my-students-header .wrap {
+  display: flex;
+  font-size: 18px;
+  justify-content: space-around;
+}
+#mysite .my-students .my-students-content .student .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  line-height: 20px;
+}
+#mysite .my-students .my-students-content .student__elem {
+  max-width: 200px;
+  width: 100%;
+}
+#mysite .my-students .my-students-content .student__elem--name {
+  display: flex;
+  align-items: center;
+  max-width: 150px;
+  width: 100%;
+}
+#mysite .my-students .my-students-content .student__elem--name .student-name-icon {
+  background-image: url(../images/icons/user-ico.svg);
+  width: 30px;
+  height: 30px;
+  background-size: contain;
+  margin-right: 3px;
+}
+#mysite .my-students .my-students-content .student__elem--time {
+  max-width: 200px;
+  width: 100%;
+}
+#mysite .my-students .my-students-content .student__elem--contacts {
+  text-align: center;
+}
+#mysite .my-students .my-students-content .student__elem--contacts span {
+  color: #A8A8A8;
+}
+#mysite .my-students .my-students-content .student__elem--actions {
+  color: #A8A8A8;
+  text-decoration: underline;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  max-width: 220px;
+}
+#mysite .my-students .my-students-content .student__elem--actions div:hover {
+  color: #FF3E28;
+}
 #mysite .calendar-active {
   display: block;
 }
@@ -2845,6 +2899,9 @@
   display: none;
   display: block;
   padding-top: 300px;
+  max-width: 1024px;
+  width: 100%;
+  margin: 0 auto;
 }
 #mysite .your-calendar__element--main-title {
   margin: 0 auto;

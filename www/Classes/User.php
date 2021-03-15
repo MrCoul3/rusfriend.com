@@ -150,13 +150,22 @@ class User
         $_SESSION['username'] = $getUserInfo['name'];
         return $getUserInfo;
     }
-    public function getUserInfoForAdmin($request)
+    public function getAllUsersInfo()
     {
-        $query = "SELECT * FROM `users` WHERE `name` = '{$request['name']}'";
+        $query = "SELECT `name`, `email`, `skype` FROM `users` WHERE 1=1";
         $result = $this->dbAccess->query($query);
-        $getUserInfo = mysqli_fetch_all($result);
-        return $getUserInfo;
+        return $result;
+//        $getUsersInfo = mysqli_fetch_assoc($result);
+//        return $getUsersInfo;
     }
+    public function getUserSkype($request)
+    {
+        $query = "SELECT `skype` FROM `users` WHERE `name` = '{$request['name']}'";
+        $result = $this->dbAccess->query($query);
+        $getUserSkype =  mysqli_fetch_assoc($result);
+        return $getUserSkype;
+    }
+
 //    public function getUserName()
 //    {
 //        $query = "SELECT `name` FROM `users` WHERE id = '{$_SESSION['user_id']}' OR email = '{$_SESSION['email']}'";

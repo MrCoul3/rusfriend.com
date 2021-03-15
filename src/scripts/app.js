@@ -18,19 +18,23 @@ import Vue from 'vue';
 import MySchedule from "../vue/MySchedule.vue";
 import MyCalendar from "../vue/MyCalendar.vue";
 import BookCalendar from "../vue/BookCalendar.vue";
-
-// function getCookie(name) {
-//     let matches = document.cookie.match(new RegExp(
-//         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-//     ));
-//     return matches ? decodeURIComponent(matches[1]) : undefined;
-// }
+import MyStudents from "../vue/MyStudents.vue";
 
 
 
-// Vue.config.productionTip = false;
+
+Vue.config.productionTip = false;
 
 $(document).ready(function () {
+
+    if (document.getElementById('vue-my-students')) {
+        console.log('init vue-my-students')
+        const bookCalendar = new Vue({
+            el: "#vue-my-students",
+            template: "<MyStudents/>",
+            components: { MyStudents }
+        })
+    }
 
     if (document.getElementById('vue-book-calendar')) {
         console.log('init vue-book-calendar')

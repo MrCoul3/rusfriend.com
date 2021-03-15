@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
-        console.log('admin-template init');
+        console.log('admin-panel init');
         $('.header').css('display', 'none');// убираем header главной страницы
         // loginOnReload();
         // переключение элементов меню

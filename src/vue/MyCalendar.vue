@@ -61,7 +61,7 @@
                 </div>
                 <div class="wrap skype">
                     <div class="skype-icon"></div>
-                    <div class="skype-name">david33</div>
+                    <div class="skype-name">{{detailSkype}}</div>
                 </div>
                 <div class="decor-line"></div>
                 <div class="wrap">
@@ -96,6 +96,7 @@
                 detailTime: null,
                 detailType: null,
                 detailUserName: null,
+                detailSkype: null,
 
             }
         },
@@ -198,10 +199,7 @@
             },
             bookingEvent(event) {
                 console.log(event.target);
-                // axios.post('/handle.php', JSON.stringify({'method': 'getUserInfoForAdmin'}))
-                //     .then((response) => {
-                //       console.log(response.data)
-                //     })
+
                 if (event.target.className.includes('book')) {
                     console.log('work')
                     //open detail
@@ -217,9 +215,16 @@
                         this.detailType = 'Speaking - Club';
                     }
                     this.detailUserName = target.getAttribute('name');
+                    axios.post('/handle.php', JSON.stringify({name: this.detailUserName, 'method': 'getUserSkype'}))
+                        .then((response) => {
+                            console.log(response.data)
+                            let data = response.data;
+                            this.detailSkype = data['skype'];
+                            console.log(data['skype']);
+                        });
                 }
             },
-            
+
         },
     }
 </script>

@@ -343,347 +343,425 @@
       }
 
 
-    .wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .user {
-      .user-icon {
-        background-image: url("../images/icons/user-ico.svg");
-        width: 30px;
-        height: 30px;
-        background-size: contain;
-        margin-right: 3px;
+      .wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
-      .user-name {
-        font-size: 20px;
+      .user {
+        .user-icon {
+          background-image: url("../images/icons/user-ico.svg");
+          width: 30px;
+          height: 30px;
+          background-size: contain;
+          margin-right: 3px;
+        }
+
+        .user-name {
+          font-size: 20px;
+          color: $colorLightBlack;
+        }
+      }
+
+      .message {
+        .message-title {
+          font-weight: normal;
+          font-size: 10px;
+          color: #909091;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+
+        .message-icon {
+          //background-image: url("../images/icons/message-text.svg");
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .skype {
+        justify-content: left;
+        margin-bottom: 7px;
+
+        .skype-icon {
+          background-image: url("../images/icons/skype-ico.svg");
+          width: 13.03px;
+          height: 13px;
+          background-size: contain;
+          margin-right: 3px;
+        }
+
+        .skype-name {
+          font-size: 14px;
+          color: $colorLightBlack;
+        }
+      }
+
+      .button {
+        width: 110px;
+        height: 27px;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 24px;
+        margin-top: 22px;
+      }
+
+      .change-btn {
+        background: #4C9CD8;
+      }
+
+      .cancel-btn {
+        background: $colorRed;
+      }
+    }
+  }
+
+  .my-schedule {
+    .time-changer-wrapper {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.12);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .time-changer {
+      display: none;
+      font-family: 'Montserrat', sans-serif;
+      width: 596px;
+      //height: 361px;
+      background: #EFF4F9;
+      border-radius: 20px;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 100px;
+      left: 0;
+      right: 0;
+      margin: auto;
+
+      .time-changer-title {
+        color: $colorRed;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .time-changer-current-date {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 16px;
         color: $colorLightBlack;
       }
-    }
 
-    .message {
-      .message-title {
-        font-weight: normal;
-        font-size: 10px;
-        color: #909091;
-        cursor: pointer;
-        text-decoration: underline;
-      }
-
-      .message-icon {
-        //background-image: url("../images/icons/message-text.svg");
+      .form-close-btn {
+        background-image: url("../images/icons/close-btn.svg");
         width: 16px;
         height: 16px;
-      }
-    }
-
-    .skype {
-      justify-content: left;
-      margin-bottom: 7px;
-      .skype-icon {
-        background-image: url("../images/icons/skype-ico.svg");
-        width: 13.03px;
-        height: 13px;
-        background-size: contain;
-        margin-right: 3px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        right: 20px;
       }
 
-      .skype-name {
-        font-size: 14px;
-        color: $colorLightBlack;
-      }
-    }
+      .time-changer-content {
+        display: flex;
+        justify-content: center;
 
-    .button {
-      width: 110px;
-      height: 27px;
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-      border-radius: 4px;
-      font-weight: normal;
-      font-size: 12px;
-      line-height: 24px;
-      margin-top: 22px;
-    }
+        .time-setter-modul {
+          margin-top: 20px;
 
-    .change-btn {
-      background: #4C9CD8;
-    }
-
-    .cancel-btn {
-      background: $colorRed;
-    }
-  }
-}
-
-.my-schedule {
-  .time-changer-wrapper {
-    position: fixed;
-    background: rgba(0, 0, 0, 0.12);
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-  }
-
-  .time-changer {
-    display: none;
-    font-family: 'Montserrat', sans-serif;
-    width: 596px;
-    //height: 361px;
-    background: #EFF4F9;
-    border-radius: 20px;
-    padding: 20px 40px;
-    box-sizing: border-box;
-    position: fixed;
-    top: 100px;
-    left: 0;
-    right: 0;
-    margin: auto;
-
-    .time-changer-title {
-      color: $colorRed;
-      font-weight: 300;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .time-changer-current-date {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 16px;
-      color: $colorLightBlack;
-    }
-
-    .form-close-btn {
-      background-image: url("../images/icons/close-btn.svg");
-      width: 16px;
-      height: 16px;
-      background-repeat: no-repeat;
-      cursor: pointer;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .time-changer-content {
-      display: flex;
-      justify-content: center;
-
-      .time-setter-modul {
-        margin-top: 20px;
-
-        .time-selectors-block {
-          display: flex;
-          align-items: center;
-          width: 300px;
-          margin: 0 auto;
-          margin-left: 97px;
-
-          &__item {
-            margin-right: 7px;
-          }
-        }
-
-        select {
-          height: 27px;
-          width: 115px;
-          font-family: 'Montserrat', sans-serif;
-          background: #FFFFFF;
-          box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 4px;
-          border: none;
-          outline: none;
-        }
-
-        .line {
-          width: 16px;
-          background: #BABDC1;
-          height: 1px;
-        }
-
-        .time-changer-button {
-          margin: 0 auto;
-          box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-          border-radius: 4px;
-          color: #fff;
-          font-size: 12px;
-          text-align: center;
-          line-height: 26px;
-          cursor: pointer;
-          transition: transform .05s ease-in-out;
-          -moz-user-select: none;
-          -khtml-user-select: none;
-          -webkit-user-select: none;
-          user-select: none;
-
-          &:active {
-            transition: transform .05s ease-in-out;
-            transform: scale3d(.95, .95, .95);
-          }
-
-          &--add-time-button {
-            width: 33px;
-            height: 27px;
-            background: #6F97AA;
-          }
-
-          &--apply-to-current-day {
-            background: #6F97AA;
-            width: 206px;
-            height: 27px;
-            margin: 26px auto 7px;
-          }
-
-          &--apply-to-all-day {
-            width: 206px;
-            height: 27px;
-            background: #768E99;
-          }
-
-          &--clear-schedule {
-            width: 206px;
-            height: 27px;
-            background: $colorRed;
-            margin-top: 7px;
-          }
-        }
-
-
-      }
-
-      &__element {
-        margin: 20px 0;
-
-        &--time-list-modul {
-          display: flex;
-          flex-direction: column;
-          flex-wrap: wrap;
-          width: 450px;
-          max-height: 250px;
-
-          .time-elem {
+          .time-selectors-block {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 5px;
-            //margin-left: 25px;
-            .time {
-              width: 130px;
-              text-align: center;
-              display: block;
-              padding: 5px;
-              //background-color: #33DCD9;
-              background-color: #33DCD9;
-              box-sizing: border-box;
-              border-radius: 5px;
-              color: white;
-              position: relative;
-              margin-right: 10px;
+            width: 300px;
+            margin: 0 auto;
+            margin-left: 97px;
+
+            &__item {
+              margin-right: 7px;
+            }
+          }
+
+          select {
+            height: 27px;
+            width: 115px;
+            font-family: 'Montserrat', sans-serif;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            border: none;
+            outline: none;
+          }
+
+          .line {
+            width: 16px;
+            background: #BABDC1;
+            height: 1px;
+          }
+
+          .time-changer-button {
+            margin: 0 auto;
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+            line-height: 26px;
+            cursor: pointer;
+            transition: transform .05s ease-in-out;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+
+            &:active {
+              transition: transform .05s ease-in-out;
+              transform: scale3d(.95, .95, .95);
             }
 
-            .del-btn {
-              background-image: url("../images/icons/time-delete.svg");
-              width: 13px;
-              height: 13px;
-              cursor: pointer;
-              margin-right: 10px;
+            &--add-time-button {
+              width: 33px;
+              height: 27px;
+              background: #6F97AA;
+            }
+
+            &--apply-to-current-day {
+              background: #6F97AA;
+              width: 206px;
+              height: 27px;
+              margin: 26px auto 7px;
+            }
+
+            &--apply-to-all-day {
+              width: 206px;
+              height: 27px;
+              background: #768E99;
+            }
+
+            &--clear-schedule {
+              width: 206px;
+              height: 27px;
+              background: $colorRed;
+              margin-top: 7px;
+            }
+          }
+
+
+        }
+
+        &__element {
+          margin: 20px 0;
+
+          &--time-list-modul {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            width: 450px;
+            max-height: 250px;
+
+            .time-elem {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-bottom: 5px;
+              //margin-left: 25px;
+              .time {
+                width: 130px;
+                text-align: center;
+                display: block;
+                padding: 5px;
+                //background-color: #33DCD9;
+                background-color: #33DCD9;
+                box-sizing: border-box;
+                border-radius: 5px;
+                color: white;
+                position: relative;
+                margin-right: 10px;
+              }
+
+              .del-btn {
+                background-image: url("../images/icons/time-delete.svg");
+                width: 13px;
+                height: 13px;
+                cursor: pointer;
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+
+
+      }
+    }
+
+    #cube-loader {
+      background: rgb(255, 255, 255);
+      align-items: center;
+      display: flex;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      z-index: 1000;
+
+      & .caption {
+        margin: 0 auto;
+      }
+
+      .cube-loader {
+        width: 73px;
+        height: 73px;
+        margin: 0 auto;
+        margin-top: -262px;
+        position: relative;
+        transform: rotatZ(45deg);
+
+        & .cube {
+          position: relative;
+          transform: rotateZ(45deg);
+          width: 50%;
+          height: 50%;
+          float: left;
+          transform: scale(1.1);
+        }
+
+        & .cube:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(52, 73, 94, 1.0);
+          animation: cube-loader 2.76s infinite linear both;
+          transform-origin: 100% 100%;
+        }
+
+        & .loader-2 {
+          transform: scale(1.1) rotateZ(90deg);
+        }
+
+        & .loader-3 {
+          transform: scale(1.1) rotateZ(180deg);
+        }
+
+        & .loader-4 {
+          transform: scale(1.1) rotateZ(270deg);
+        }
+
+        & .loader-2:before {
+          animation-delay: 0.35s;
+        }
+
+        & .loader-3:before {
+          animation-delay: 0.69s;
+        }
+
+        & .loader-4:before {
+          animation-delay: 1.04s;
+        }
+      }
+    }
+
+    @keyframes cube-loader {
+      0%, 10% {
+        transform: perspective(136px) rotateX(-180deg);
+        opacity: 0;
+      }
+      25%, 75% {
+        transform: perspective(136px) rotateX(0deg);
+        opacity: 1;
+      }
+      90%, 100% {
+        transform: perspective(136px) rotateY(180deg);
+        opacity: 0;
+      }
+    }
+
+    .calendar-active {
+      display: block;
+    }
+
+    .calendar-disable {
+      display: none;
+    }
+  }
+
+  .my-students {
+    color: $colorLightBlack;
+    font-family: Montserrat, sans-serif;
+    .my-students-header {
+      .wrap {
+        display: flex;
+
+        font-size: 18px;
+        justify-content: space-around;
+      }
+    }
+    .my-students-content {
+      .student {
+        .wrap {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 10px 0;
+          line-height: 20px;
+        }
+        &__elem {
+          max-width: 200px;
+          width: 100%;
+
+          &--name {
+            display: flex;
+            align-items: center;
+            max-width: 150px;
+            width: 100%;
+            .student-name-icon {
+              background-image: url("../images/icons/user-ico.svg");
+              width: 30px;
+              height: 30px;
+              background-size: contain;
+              margin-right: 3px;
+            }
+          }
+          &--time {
+            max-width: 200px;
+            width: 100%;
+          }
+          &--contacts {
+            text-align: center;
+            span {
+              color: #A8A8A8;
+            }
+          }
+          &--actions {
+            color: #A8A8A8;
+            text-decoration: underline;
+            font-size: 12px;
+            text-align: center;
+            cursor: pointer;
+            max-width: 220px;
+            div {
+              &:hover {
+                color: $colorRed;
+              }
             }
           }
         }
       }
-
-
     }
+
+
   }
 
-  #cube-loader {
-    background: rgb(255, 255, 255);
-    align-items: center;
-    display: flex;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: absolute;
-    z-index: 1000;
-
-    & .caption {
-      margin: 0 auto;
-    }
-
-    .cube-loader {
-      width: 73px;
-      height: 73px;
-      margin: 0 auto;
-      margin-top: -262px;
-      position: relative;
-      transform: rotatZ(45deg);
-
-      & .cube {
-        position: relative;
-        transform: rotateZ(45deg);
-        width: 50%;
-        height: 50%;
-        float: left;
-        transform: scale(1.1);
-      }
-
-      & .cube:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(52, 73, 94, 1.0);
-        animation: cube-loader 2.76s infinite linear both;
-        transform-origin: 100% 100%;
-      }
-
-      & .loader-2 {
-        transform: scale(1.1) rotateZ(90deg);
-      }
-
-      & .loader-3 {
-        transform: scale(1.1) rotateZ(180deg);
-      }
-
-      & .loader-4 {
-        transform: scale(1.1) rotateZ(270deg);
-      }
-
-      & .loader-2:before {
-        animation-delay: 0.35s;
-      }
-
-      & .loader-3:before {
-        animation-delay: 0.69s;
-      }
-
-      & .loader-4:before {
-        animation-delay: 1.04s;
-      }
-    }
-  }
-
-  @keyframes cube-loader {
-    0%, 10% {
-      transform: perspective(136px) rotateX(-180deg);
-      opacity: 0;
-    }
-    25%, 75% {
-      transform: perspective(136px) rotateX(0deg);
-      opacity: 1;
-    }
-    90%, 100% {
-      transform: perspective(136px) rotateY(180deg);
-      opacity: 0;
-    }
-  }
-
+  // для переключения активности вкладок
   .calendar-active {
     display: block;
   }
@@ -691,17 +769,6 @@
   .calendar-disable {
     display: none;
   }
-}
-
-
-// для переключения активности вкладок
-.calendar-active {
-  display: block;
-}
-
-.calendar-disable {
-  display: none;
-}
 
 }
 
