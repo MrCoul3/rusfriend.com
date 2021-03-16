@@ -676,6 +676,17 @@
   padding-right: 16px;
 }
 
+.inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main-title {
+  text-align: center;
+  color: #455A64;
+}
+
 #mysite {
   position: relative;
   margin: 0;
@@ -983,6 +994,7 @@
   display: block;
 }
 #mysite .header__overhead .service-btns .btn-login {
+  display: none;
   font-size: 14px;
   line-height: 23px;
   width: 96px;
@@ -998,7 +1010,7 @@
       user-select: none;
 }
 #mysite .header__overhead .service-btns .user-login {
-  display: none;
+  display: flex;
   width: 96px;
   cursor: pointer;
   position: relative;
@@ -1021,6 +1033,15 @@
   height: 103px;
   background: #FFFFFF;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+}
+@media screen and (max-width: 767px) {
+  #mysite .header__overhead .service-btns .user-login .user-login-menu {
+    display: block !important;
+    top: 20px;
+    right: -10px;
+    height: 100vh;
+    width: 50vw;
+  }
 }
 #mysite .header__overhead .service-btns .user-login .user-login-menu__elem {
   display: block;
@@ -1288,6 +1309,10 @@
 }
 #mysite .menu-item-active {
   color: #FF3E28 !important;
+}
+
+.header-menu-white-on-mobile {
+  background: #fff;
 }
 
 #mysite .authorization-forms {
@@ -2224,6 +2249,16 @@
   }
 }
 
+#mysite .courses-page .courses {
+  padding-top: 300px;
+  padding-bottom: 140px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .courses-page .courses {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
 #mysite .private-lesson .privateless {
   display: none;
   padding-top: 300px;

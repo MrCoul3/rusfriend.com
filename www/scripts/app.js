@@ -20667,9 +20667,11 @@ $(document).ready(function () {
     };
 
     var userMenuOpen = function userMenuOpen() {
+      // if (mediaQueryMobile.matches) {// не менее 767
       $(".user-login").on('click', function () {
         $(".user-login-menu").slideToggle(100);
-      }); // $(".button").click(function (e) {
+      }); // }
+      // $(".button").click(function (e) {
       //     e.preventDefault();
       // });
     };
@@ -20704,12 +20706,12 @@ $(document).ready(function () {
       });
     };
 
-    var mediaQueryMobile = window.matchMedia('(max-width: 768px)'); // не более 768
+    var mediaQueryMobile = window.matchMedia('(min-width: 767px)'); // не менее 767
 
+    userMenuOpen();
     resetStates();
     changeLanguage();
     navMenuFixing();
-    userMenuOpen();
     burgerMenuActions();
   }
 });
@@ -20972,7 +20974,7 @@ jQuery.extend(jQuery.easing, {
 /* WEBPACK VAR INJECTION */(function($) {var mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
 
 var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
-var mediaQueryCartSmall = window.matchMedia('(max-width: 767px)');
+var mediaQuerySmall = window.matchMedia('(max-width: 767px)');
 $(document).ready(function () {
   if ($("main").hasClass('main-page')) {
     //end animation----------------------------------
@@ -21030,6 +21032,19 @@ $(document).ready(function () {
     animateToOrigin($(".top-index-second-title"));
     animateToOrigin($(".top-index-first-title"));
     document.addEventListener("scroll", function (e) {
+      // console.log(window.pageYOffset );
+      // делает header белым при прокрутке больше 50px
+      if (mediaQuerySmall.matches) {
+        console.log('small');
+
+        if (window.pageYOffset > 50) {
+          // $('.header__overhead').css('background', '#fff')
+          $('.header__overhead').addClass('header-menu-white-on-mobile');
+        } else {
+          $('.header__overhead').removeClass('header-menu-white-on-mobile');
+        }
+      }
+
       if (mediaQueryCartDesktop.matches) {
         // анимация for-whom
         if (window.pageYOffset > 350) {

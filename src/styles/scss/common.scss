@@ -11,6 +11,18 @@
     padding-right: 16px;
 }
 
+.inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    width: 100%;
+}
+.main-title {
+    text-align: center;
+    color: $colorLightBlack;
+}
+
+
+
 #mysite {
     position: relative;
     margin: 0;
@@ -289,7 +301,7 @@
                 }
 
                 .btn-login {
-                     //display: none;
+                     display: none;
                     font-size: 14px;
                     line-height: 23px;
                     width: 96px;
@@ -315,8 +327,8 @@
                 //    display: none;
                 //}
                 .user-login {
-                    //display: flex;
-                    display: none;
+                    display: flex;
+                    //display: none;
                     width: 96px;
                     cursor: pointer;
                     position: relative;
@@ -341,6 +353,13 @@
                         height: 103px;
                         background: #FFFFFF;
                         box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+                        @include mediaWidth(767) {
+                            display: block!important;
+                            top: 20px;
+                            right: -10px;
+                            height: 100vh;
+                            width: 50vw;
+                        }
                         &__elem {
                             display: block;
                             text-decoration: none;
@@ -605,4 +624,7 @@
     }
 
 
+}
+.header-menu-white-on-mobile {
+    background: #fff;
 }

@@ -1,6 +1,6 @@
 const mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
 const mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
-const mediaQueryCartSmall = window.matchMedia('(max-width: 767px)');
+const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
 
 $(document).ready(function () {
     if ($("main").hasClass('main-page')) {
@@ -42,6 +42,21 @@ $(document).ready(function () {
         animateToOrigin($(".top-index-second-title"));
         animateToOrigin($(".top-index-first-title"));
         document.addEventListener("scroll", function (e) {
+            // console.log(window.pageYOffset );
+
+            // делает header белым при прокрутке больше 50px
+            if (mediaQuerySmall.matches) {
+                console.log('small')
+                if (window.pageYOffset > 50) {
+                    // $('.header__overhead').css('background', '#fff')
+                    $('.header__overhead').addClass('header-menu-white-on-mobile')
+                } else {
+                    $('.header__overhead').removeClass('header-menu-white-on-mobile')
+
+                }
+            }
+
+
             if (mediaQueryCartDesktop.matches) {
                 // анимация for-whom
                 if (window.pageYOffset > 350) {

@@ -21,8 +21,6 @@ import BookCalendar from "../vue/BookCalendar.vue";
 import MyStudents from "../vue/MyStudents.vue";
 
 
-
-
 Vue.config.productionTip = false;
 
 $(document).ready(function () {
@@ -32,7 +30,7 @@ $(document).ready(function () {
         const bookCalendar = new Vue({
             el: "#vue-my-students",
             template: "<MyStudents/>",
-            components: { MyStudents }
+            components: {MyStudents}
         })
     }
 
@@ -41,7 +39,7 @@ $(document).ready(function () {
         const bookCalendar = new Vue({
             el: "#vue-book-calendar",
             template: "<BookCalendar/>",
-            components: { BookCalendar }
+            components: {BookCalendar}
         })
     }
 
@@ -50,7 +48,7 @@ $(document).ready(function () {
         const myCalendar = new Vue({
             el: '#vue-my-calendar',
             template: "<MyCalendar/>",
-            components: { MyCalendar }
+            components: {MyCalendar}
         })
     }
 
@@ -59,24 +57,20 @@ $(document).ready(function () {
         const mySchedule = new Vue({
             el: '#vue-my-schedule',
             template: "<MySchedule/>",
-            components: { MySchedule }
+            components: {MySchedule}
         });
     }
 
 
-
-
-
-
-
     if ($(".header")) {
-        const mediaQueryMobile = window.matchMedia('(max-width: 768px)'); // не более 768
+        const mediaQueryMobile = window.matchMedia('(min-width: 767px)'); // не менее 767
 
+        userMenuOpen();
         resetStates();
         changeLanguage();
         navMenuFixing();
-        userMenuOpen();
         burgerMenuActions();
+
 
         function resetStates() {
             $(document).click(function (e) {
@@ -91,6 +85,7 @@ $(document).ready(function () {
                 // console.log(e.target);
             });
         }
+
         function changeLanguage() {
             $(".btn-change-lang").click(function () {
                 // console.log($(".lang-changer").hasClass('lang-changer-active'));
@@ -125,7 +120,8 @@ $(document).ready(function () {
                 });
             });
         }
-        function navMenuFixing(){
+
+        function navMenuFixing() {
             let lastPos = 0;
             document.addEventListener("scroll", function (e) {
                 function headerLowerFixed() {
@@ -141,6 +137,7 @@ $(document).ready(function () {
                 $(window).resize(function (e) {
                     headerLowerFixed();
                 });
+
                 headerLowerFixed();
                 lastPos = window.pageYOffset;
 
@@ -154,14 +151,21 @@ $(document).ready(function () {
                 }
             });
         }
+
         function userMenuOpen() {
-            $(".user-login").on('click', function () {
-                $(".user-login-menu").slideToggle(100);
-            });
+            // if (mediaQueryMobile.matches) {// не менее 767
+                $(".user-login").on('click', function () {
+                    $(".user-login-menu").slideToggle(100);
+                });
+            // }
+
+
+
             // $(".button").click(function (e) {
             //     e.preventDefault();
             // });
         }
+
         function burgerMenuActions() {
             $(".burger-menu").click(function () {
                 // console.log(window.pageYOffset);

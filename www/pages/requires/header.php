@@ -91,6 +91,7 @@ if (isset($_SESSION['email'])) {
         <div class="button reg-success-btn">далее</div>
     </div>
 </section>
+
 <header class="header inner">
     <div class="header__overhead">
         <div class="social-net-btns social-net-btns--header">
