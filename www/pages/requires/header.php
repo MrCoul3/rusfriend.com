@@ -92,7 +92,7 @@ if (isset($_SESSION['email'])) {
     </div>
 </section>
 
-<header class="header inner">
+<header class="header">
     <div class="header__overhead">
         <div class="social-net-btns social-net-btns--header">
             <a class="social-net-btns__elem social-net-btns__elem--instagram" href="../"></a>

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
         console.log('admin-panel init');
@@ -12,6 +14,7 @@ $(document).ready(function () {
                 $('.my-calendar').addClass('calendar-active');
                 $('.admin-menu__element--mycalendar').addClass('menu-element-colored');
             }
+
             if (e.target.className.includes('admin-menu__element--myschedule')) {
                 $('.admin-panel-section').removeClass('calendar-active');
                 $('.my-schedule').addClass('calendar-active');
@@ -23,18 +26,33 @@ $(document).ready(function () {
                 $('.my-students').addClass('calendar-active');
                 $(this).addClass('menu-element-colored');
             }
+
             if (e.target.className.includes('admin-menu__element--messages')) {
                 $('.admin-panel-section').removeClass('calendar-active');
                 $('.messages').addClass('calendar-active');
                 $(this).addClass('menu-element-colored');
             }
+
             if (e.target.className.includes('admin-menu__element--reviews')) {
                 $('.admin-panel-section').removeClass('calendar-active');
                 $('.reviews').addClass('calendar-active');
                 $(this).addClass('menu-element-colored');
             }
+            // ------------------------var 2
+
+
+
+
+
         });
 
+        $('.admin-menu__element').click(function () {
+            console.log($(this))
+            axios.post('/handle.php', JSON.stringify({'method': 'requireAdminComponents'}))
+                .then((response) => {
+
+                });
+        })
 
         // logout
         $('.btn-exit').click(function (e) {

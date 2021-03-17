@@ -144,7 +144,7 @@ $(document).ready(function () {
                     skype: skype,
                     'method': 'register'
                 };
-                let response = fetch('/handle.php', {
+                let response = fetch('handle.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
@@ -214,7 +214,7 @@ $(document).ready(function () {
                     password: $("#password").val(),
                     'method': 'login'
                 };
-                let response = fetch('/handle.php', {
+                let response = fetch('handle.php', {
                     method: 'Post',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
@@ -258,7 +258,7 @@ $(document).ready(function () {
             let data = {
                 'method': 'reload'
             };
-            let response = fetch('/handle.php', {
+            let response = fetch('handle.php', {
                 method: 'Post',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -302,7 +302,7 @@ $(document).ready(function () {
             let inputData = {
                 'method': 'logout'
             };
-            let response = fetch('/handle.php', {
+            let response = fetch('handle.php', {
                 method: 'Post',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
