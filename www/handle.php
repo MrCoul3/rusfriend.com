@@ -215,3 +215,7 @@ if ($request['method'] === 'getUserSkype') {
     $result = $obj->getUserSkype($request);
     echo json_encode($result);
 }
+
+if ($request['method'] === 'delBooksTime') {
+        $result = $objCalendar->delBooksTime($request);
+}

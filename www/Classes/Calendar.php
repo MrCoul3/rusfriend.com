@@ -112,9 +112,18 @@ class Calendar
     public function successPay()
     {
         $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `name` = '{$_SESSION['name']}'";
-        var_dump($query);
         $result = $this->dbAccess->query($query);
         return $result;
+    }
+
+    // удалить урок
+    public function delBooksTime($request)
+    {
+        $name = $request['name'];
+        $day = $request['day'];
+        $time = $request['time'];
+        $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$day}' AND `time` = '{$time}'";
+        $this->dbAccess->query($query);
     }
 
 }

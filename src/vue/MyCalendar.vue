@@ -3,7 +3,8 @@
         <div v-show="preloader" id="preloader"></div>
         <section id="my-calendar" class="my-calendar admin-inner admin-panel-section calendar-active">
             <h2 class="main-title">Календарь занятий</h2>
-            <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных занятиях,
+            <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных
+                занятиях,
                 нажав на интересующую ячейку</h3>
             <div class="wrapper">
                 <div class="calendar-header">
@@ -38,7 +39,8 @@
                     <tr v-for="week in calendar()">
 
                         <td class="calendar-table-days" v-on:click='bookingEvent($event)' v-for="day in week"
-                            :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year">
+                            :style="{'background-color': day.current}"
+                            :date="day.index + '.' + currentMonth + '.' + year">
                             <span class="day-number">{{ day.index }}</span></td>
 
                     </tr>
@@ -67,19 +69,40 @@
                     </div>
                     <div class="decor-line"></div>
                     <div class="wrap">
-                        <div class="button change-btn">изменить</div>
-                        <div class="button cancel-btn">отменить</div>
+                        <div @click="updateBook()" class="button change-btn">изменить урок</div>
+                        <div @click="cancelLessonFrame()" class="button cancel-btn">отменить урок</div>
                     </div>
                 </div>
+
+                <div v-show="cancelLessShow" class="cancel-lesson-frame">
+                    <div @click="closeCancelLessonFrame" class="close-btn"></div>
+                    <div class="title">Вы уверены, что хотите отменить урок?</div>
+                    <div class="decor-line"></div>
+                    <div class="wrap">
+                        <div @click="deleteBook()" class="button submit-btn">да</div>
+                        <div @click="closeCancelLessonFrame()" class="button cancel-btn">отмена</div>
+                    </div>
+                </div>
+
+
+                <adminBookCalendar
+                        v-show="bookCalendar"
+                />
+
             </div>
+
         </section>
     </div>
 </template>
 
 <script>
+    import adminBookCalendar from "./adminBookCalendar.vue";
     import axios from 'axios';
 
     export default {
+        components: {
+            adminBookCalendar
+        },
         data() {
             return {
                 month: new Date().getMonth(),
@@ -92,7 +115,6 @@
                 date: new Date(),
                 timeChangeSatus: 'calendar-disable',
                 currentMonth: null,
-                showPreloader: true,
                 dayOfWeek: null,
                 detailShow: false,
                 detailDate: null,
@@ -101,6 +123,8 @@
                 detailUserName: null,
                 detailSkype: null,
                 preloader: true,
+                cancelLessShow: false,
+                bookCalendar: true,
             }
         },
         mounted: function () {
@@ -111,7 +135,6 @@
         },
         created: function () {
             // console.log(this.currentDayOfWeek);
-            this.showPreloader = false;
             this.setCurrentMonth();
 
         },
@@ -174,13 +197,12 @@
             },
             getBooksTimeFromDB() {
                 // this.preloader = true;
-                this.preloader = false;
                 // console.log('getintervals')
                 // очищает ячейки при обновлении компонента
                 $('.calendar-table-days .book').remove();
                 axios.post('/handle.php', JSON.stringify({'method': 'getBooksTime'}))
                     .then((response) => {
-                        this.preloader = false;
+
                         // console.log(response.data);
                         let data = response.data;
                         data.forEach(function (val, k) {
@@ -200,6 +222,7 @@
                             })
 
                         });
+                        this.preloader = false;
                     });
             },
             bookingEvent(event) {
@@ -229,7 +252,37 @@
                         });
                 }
             },
-
+            // отмена занятия
+            cancelLessonFrame() {
+                this.detailShow = false;
+                this.cancelLessShow = true;
+            },
+            closeCancelLessonFrame() {
+                this.detailShow = true;
+                this.cancelLessShow = false;
+            },
+            // удалить занятие из БД
+            deleteBook() {
+                // console.log(this.detailUserName);
+                // console.log(this.detailDate);
+                // console.log(this.detailTime);
+                let input = {
+                    name: this.detailUserName,
+                    day: this.detailDate,
+                    time: this.detailTime,
+                    'method': 'delBooksTime'
+                };
+                console.log(input);
+                axios.post('/handle.php', JSON.stringify(input))
+                this.cancelLessShow = false;
+                this.preloader = true;
+                this.getBooksTimeFromDB();
+            },
+            updateBook() {
+                this.bookCalendar = true;
+                this.detailShow = false;
+                // удалить текущий интервал методом deleteBook()
+            },
         },
     }
 </script>
@@ -247,9 +300,4 @@
         overflow: visible;
         background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
     }
-
-    /*.visible {*/
-    /*    visibility: visible!important;*/
-    /*    opacity: 1!important;*/
-    /*}*/
 </style>

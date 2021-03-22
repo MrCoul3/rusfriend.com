@@ -744,7 +744,7 @@
   box-sizing: border-box;
   text-decoration: none;
   display: block;
-  font-size: 22px;
+  font-size: 16px;
   font-family: "Exo 2", sans-serif;
   font-weight: bold;
   color: white;
@@ -994,7 +994,6 @@
   display: block;
 }
 #mysite .header__overhead .service-btns .btn-login {
-  display: none;
   font-size: 14px;
   line-height: 23px;
   width: 96px;
@@ -1010,7 +1009,7 @@
       user-select: none;
 }
 #mysite .header__overhead .service-btns .user-login {
-  display: flex;
+  display: none;
   width: 96px;
   cursor: pointer;
   position: relative;
@@ -2438,9 +2437,6 @@
   font-size: 16px;
   color: #455A64;
 }
-#mysite .admin-panel-section .wrapper .calendar-table td {
-  height: 100px;
-}
 #mysite .admin-panel-section .wrapper .calendar-table th, #mysite .admin-panel-section .wrapper .calendar-table td {
   padding: 3px;
   /* Поля вокруг содержимого таблицы */
@@ -2448,6 +2444,10 @@
   max-width: 70px;
   width: 7.342%;
   position: relative;
+}
+#mysite .admin-panel-section .wrapper .calendar-table td {
+  height: 100px;
+  padding-top: 23px;
 }
 #mysite .admin-panel-section .wrapper .calendar-table .calendar-table-day {
   cursor: pointer;
@@ -2573,6 +2573,7 @@
   height: 30px;
   background-size: contain;
   margin-right: 3px;
+  background-repeat: no-repeat;
 }
 #mysite .my-calendar .calendar-detail .user .user-name {
   font-size: 20px;
@@ -2599,6 +2600,7 @@
   height: 13px;
   background-size: contain;
   margin-right: 3px;
+  background-repeat: no-repeat;
 }
 #mysite .my-calendar .calendar-detail .skype .skype-name {
   font-size: 14px;
@@ -2619,6 +2621,63 @@
 }
 #mysite .my-calendar .calendar-detail .cancel-btn {
   background: #FF3E28;
+}
+#mysite .my-calendar .cancel-lesson-frame {
+  background: #EFF4F9;
+  position: absolute;
+  width: 438px;
+  height: 140px;
+  box-sizing: border-box;
+  top: 250px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-radius: 20px;
+  padding: 30px 45px;
+}
+#mysite .my-calendar .cancel-lesson-frame .title {
+  color: #FF3E28;
+}
+#mysite .my-calendar .cancel-lesson-frame .decor-line {
+  margin: 20px 0 0;
+}
+#mysite .my-calendar .cancel-lesson-frame .close-btn {
+  cursor: pointer;
+  right: 18px;
+  top: 12px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  background-image: url(../images/icons/close-btn.svg);
+}
+#mysite .my-calendar .cancel-lesson-frame .wrap {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#mysite .my-calendar .cancel-lesson-frame .wrap .button {
+  width: 110px;
+  height: 27px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 24px;
+  margin-top: 22px;
+}
+#mysite .my-calendar .cancel-lesson-frame .wrap .submit-btn {
+  background: #4C9CD8;
+}
+#mysite .my-calendar .cancel-lesson-frame .wrap .cancel-btn {
+  background: #FF3E28;
+}
+#mysite .my-calendar #admin-booking-calendar {
+  position: absolute;
+  top: 0px;
+  padding: 0;
+}
+#mysite .my-calendar #admin-booking-calendar .calendar-app {
+  padding-bottom: 20px;
 }
 #mysite .my-schedule .time-changer-wrapper {
   position: fixed;
@@ -2722,17 +2781,17 @@
 }
 #mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--apply-to-current-day {
   background: #6F97AA;
-  width: 206px;
+  width: 230px;
   height: 27px;
   margin: 26px auto 7px;
 }
 #mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--apply-to-all-day {
-  width: 206px;
+  width: 230px;
   height: 27px;
   background: #768E99;
 }
 #mysite .my-schedule .time-changer .time-changer-content .time-setter-modul .time-changer-button--clear-schedule {
-  width: 206px;
+  width: 230px;
   height: 27px;
   background: #FF3E28;
   margin-top: 7px;
@@ -2772,97 +2831,6 @@
   cursor: pointer;
   margin-right: 10px;
 }
-#mysite .my-schedule #cube-loader {
-  background: white;
-  align-items: center;
-  display: flex;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  position: absolute;
-  z-index: 1000;
-}
-#mysite .my-schedule #cube-loader .caption {
-  margin: 0 auto;
-}
-#mysite .my-schedule #cube-loader .cube-loader {
-  width: 73px;
-  height: 73px;
-  margin: 0 auto;
-  margin-top: -262px;
-  position: relative;
-  transform: rotatZ(45deg);
-}
-#mysite .my-schedule #cube-loader .cube-loader .cube {
-  position: relative;
-  transform: rotateZ(45deg);
-  width: 50%;
-  height: 50%;
-  float: left;
-  transform: scale(1.1);
-}
-#mysite .my-schedule #cube-loader .cube-loader .cube:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #34495e;
-  -webkit-animation: cube-loader 2.76s infinite linear both;
-          animation: cube-loader 2.76s infinite linear both;
-  transform-origin: 100% 100%;
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-2 {
-  transform: scale(1.1) rotateZ(90deg);
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-3 {
-  transform: scale(1.1) rotateZ(180deg);
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-4 {
-  transform: scale(1.1) rotateZ(270deg);
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-2:before {
-  -webkit-animation-delay: 0.35s;
-          animation-delay: 0.35s;
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-3:before {
-  -webkit-animation-delay: 0.69s;
-          animation-delay: 0.69s;
-}
-#mysite .my-schedule #cube-loader .cube-loader .loader-4:before {
-  -webkit-animation-delay: 1.04s;
-          animation-delay: 1.04s;
-}
-@-webkit-keyframes cube-loader {
-  0%, 10% {
-    transform: perspective(136px) rotateX(-180deg);
-    opacity: 0;
-  }
-  25%, 75% {
-    transform: perspective(136px) rotateX(0deg);
-    opacity: 1;
-  }
-  90%, 100% {
-    transform: perspective(136px) rotateY(180deg);
-    opacity: 0;
-  }
-}
-@keyframes cube-loader {
-  0%, 10% {
-    transform: perspective(136px) rotateX(-180deg);
-    opacity: 0;
-  }
-  25%, 75% {
-    transform: perspective(136px) rotateX(0deg);
-    opacity: 1;
-  }
-  90%, 100% {
-    transform: perspective(136px) rotateY(180deg);
-    opacity: 0;
-  }
-}
 #mysite .my-schedule .calendar-active {
   display: block;
 }
@@ -2901,6 +2869,7 @@
   height: 30px;
   background-size: contain;
   margin-right: 3px;
+  background-repeat: no-repeat;
 }
 #mysite .my-students .my-students-content .student__elem--time {
   max-width: 200px;
@@ -3208,10 +3177,5 @@
   overflow: visible;
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
 }
-
-/*.visible {*/
-/*    visibility: visible!important;*/
-/*    opacity: 1!important;*/
-/*}*/
 
 /*# sourceMappingURL=app.css.map*/

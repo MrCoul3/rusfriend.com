@@ -1,5 +1,4 @@
 import axios from "axios";
-
 $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
         console.log('admin-panel init');
@@ -38,21 +37,17 @@ $(document).ready(function () {
                 $('.reviews').addClass('calendar-active');
                 $(this).addClass('menu-element-colored');
             }
-            // ------------------------var 2
-
-
-
-
 
         });
 
-        $('.admin-menu__element').click(function () {
-            console.log($(this))
-            axios.post('/handle.php', JSON.stringify({'method': 'requireAdminComponents'}))
-                .then((response) => {
-
-                });
-        })
+        // $('.admin-menu__element').click(function () {
+        //     // console.log($(this).attr('type'));
+        //     let type = $(this).attr('type');
+        //     axios.post('pages/requires/admin-panel.php', JSON.stringify({type: type, 'method': 'requireAdminComponents'}))
+        //         // .then((response) => {
+        //         //
+        //         // });
+        // });
 
         // logout
         $('.btn-exit').click(function (e) {

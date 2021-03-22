@@ -13,10 +13,10 @@ html(lang="en")
         div.decor-line.decor-line--admin-header.admin-inner
         nav.admin-menu.admin-inner
             div.admin-menu__element.admin-menu__element--mycalendar(type="my-calendar") Мой календарь
-            div.admin-menu__element.admin-menu__element--myschedule Мое расписание
-            div.admin-menu__element.admin-menu__element--mystudents Мои ученики
-            div.admin-menu__element.admin-menu__element--messages Сообщения
-            div.admin-menu__element.admin-menu__element--reviews Отзывы
+            div.admin-menu__element.admin-menu__element--myschedule(type="my-schedule") Мое расписание
+            div.admin-menu__element.admin-menu__element--mystudents(type="my-students") Мои ученики
+            div.admin-menu__element.admin-menu__element--messages(type="my-messages") Сообщения
+            div.admin-menu__element.admin-menu__element--reviews(type="my-reviews") Отзывы
         div.decor-line.admin-inner
         main(class=`${pageAdditionClass}`)
             block content

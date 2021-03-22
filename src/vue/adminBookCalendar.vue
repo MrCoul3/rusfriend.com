@@ -1,15 +1,5 @@
 <template>
-    <section id="booking-calendar" class="your-calendar inner">
-        <div v-show="preLoader">Загрузка</div>
-        <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online-Занятия с
-            преподавателем проходят в Skype</h3>
-        <div class="your-calendar__element your-calendar__element--instruction instruction">
-            <p class="instruction__element">1. Выберите удобное для вас время</p>
-            <p class="instruction__element instruction__element--separator">></p>
-            <p class="instruction__element">2. Оплатите урок</p>
-            <p class="instruction__element instruction__element--separator">></p>
-            <p class="instruction__element">3. Готовьтесь к уроку</p>
-        </div>
+    <section id="admin-booking-calendar" class="your-calendar inner">
         <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
             <div class="calendar-app-header">
                 <div class="calendar-app-header__element calendar-app-header__element--month-module">
@@ -17,7 +7,7 @@
                     <div @click="increase" class="month-btn month-btn--right-btn"></div>
                     <p class="month">{{monthes[month]}} {{dateInterval}}, {{year}}</p>
                 </div>
-                <h2 class="calendar-app-header__element calendar-app-header__element--title">Календарь занятий</h2>
+                <h2 class="calendar-app-header__element calendar-app-header__element--title">Изменить время урока</h2>
                 <select class="calendar-app-header__element calendar-app-header__element--time-zone">
                     <option>Europe/Moscow GMT +3:00</option>
                 </select>
@@ -52,7 +42,7 @@
                 </div>
 
             </div>
-            <a @click.prevent="bookEvent()" href="" class="button book-btn">забронировать</a>
+            <a @click.prevent="bookEvent()" href="" class="button book-btn">изменить время урока</a>
 
             <div class="tegs">
                 <div class="tegs__element">
@@ -113,7 +103,6 @@
                 // selectedTimeArray: [],
                 enterSkype: false,
                 validationSkype: false,
-                preLoader: false,
             }
         },
 

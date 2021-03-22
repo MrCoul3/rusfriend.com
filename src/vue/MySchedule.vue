@@ -1,100 +1,91 @@
 <template>
-    <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section ">
-        <div style="display: none" v-show="showPreloader" id="cube-loader">
-            <div class="caption">
-                <div class="cube-loader">
-                    <div class="cube loader-1"></div>
-                    <div class="cube loader-2"></div>
-                    <div class="cube loader-4"></div>
-                    <div class="cube loader-3"></div>
-                </div>
-            </div>
-        </div>
-
-        <h2 class="main-title">Мое расписание</h2>
-        <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку календаря и выберите интервалы</h3>
-        <div class="wrapper">
-            <div class="calendar-header">
-                <div class="header-content">
-                    <div class="month-module header-content__element">
-                        <p class="month">{{monthes[month]}} {{year}}</p>
-                        <div v-on:click="decrease" @click="setCurrentMonth" class="month-btn month-btn--left-btn"></div>
-                        <div v-on:click="increase" @click="setCurrentMonth" class="month-btn month-btn--right-btn"></div>
+    <div>
+        <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section ">
+            <h2 class="main-title">Мое расписание</h2>
+            <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку календаря и выберите интервалы</h3>
+            <div class="wrapper">
+                <div class="calendar-header">
+                    <div class="header-content">
+                        <div class="month-module header-content__element">
+                            <p class="month">{{monthes[month]}} {{year}}</p>
+                            <div v-on:click="decrease" @click="setCurrentMonth" class="month-btn month-btn--left-btn"></div>
+                            <div v-on:click="increase" @click="setCurrentMonth" class="month-btn month-btn--right-btn"></div>
+                        </div>
+                        <select class="time-zone header-content__element">
+                            <option>Europe/Moscow GMT +3:00</option>
+                        </select>
                     </div>
-                    <select class="time-zone header-content__element">
-                        <option>Europe/Moscow GMT +3:00</option>
-                    </select>
                 </div>
+
+
+                <table class="calendar-table admin-inner">
+                    <tr>
+                        <th v-for="d in day">{{d}}</th>
+                    </tr>
+
+                    <tr v-for="week in calendar()">
+
+                        <td class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week"
+                            :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span
+                                class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
+
+                    </tr>
+                </table>
             </div>
 
+            <div class="time-changer-wrapper" :class="timeChangeSatus">
+                <div class="time-changer" :class="timeChangeSatus">
+                    <h2 class="time-changer-title">Изменить доступное время</h2>
+                    <h3 class="time-changer-current-date">{{currentDate}} {{dayOfWeek}}</h3>
+                    <div @click="closeTimeChanger" class="form-close-btn"></div>
+                    <div class="decor-line"></div>
+                    <div class="time-changer-content">
 
-            <table class="calendar-table admin-inner">
-                <tr>
-                    <th v-for="d in day">{{d}}</th>
-                </tr>
+                        <div class="time-setter-modul">
 
-                <tr v-for="week in calendar()">
-
-                    <td class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week"
-                        :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span
-                            class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
-
-                </tr>
-            </table>
-        </div>
-
-        <div class="time-changer-wrapper" :class="timeChangeSatus">
-            <div class="time-changer" :class="timeChangeSatus">
-                <h2 class="time-changer-title">Изменить доступное время</h2>
-                <h3 class="time-changer-current-date">{{currentDate}} {{dayOfWeek}}</h3>
-                <div @click="closeTimeChanger" class="form-close-btn"></div>
-                <div class="decor-line"></div>
-                <div class="time-changer-content">
-
-                    <div class="time-setter-modul">
-
-                        <div class="time-selectors-block">
-                            <select class="time-selectors-block__item" name="left-time" id="left-time">
-                                <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index"
-                                        :value="item">{{item}}
-                                </option>
-                            </select>
-                            <span class="line time-selectors-block__item"></span>
-                            <select class="time-selectors-block__item" name="right-time" id="right-time">
-                                <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index"
-                                        :value="item">{{item}}
-                                </option>
-                            </select>
-                            <div @click="addTime()"
-                                 class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
-                                &#10003;
+                            <div class="time-selectors-block">
+                                <select class="time-selectors-block__item" name="left-time" id="left-time">
+                                    <option v-for="(item, index) in timeLeftSelectorVariables" :data-index="index"
+                                            :value="item">{{item}}
+                                    </option>
+                                </select>
+                                <span class="line time-selectors-block__item"></span>
+                                <select class="time-selectors-block__item" name="right-time" id="right-time">
+                                    <option v-for="(item, index) in timeRightSelectorVariables" :data-index="index"
+                                            :value="item">{{item}}
+                                    </option>
+                                </select>
+                                <div @click="addTime()"
+                                     class="time-selectors-block__item time-changer-button time-changer-button--add-time-button">
+                                    &#10003;
+                                </div>
                             </div>
+
+                            <div class="time-changer-content__element time-changer-content__element--time-list-modul">
+                                <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index" :value="item">
+                                    <div class="time">{{item}}</div>
+                                    <div @click="delTime($event)" class="del-btn"></div>
+                                </div>
+                            </div>
+                            <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">
+                                применить к <span style="font-weight: bold">текущему</span> дню
+                            </div>
+                            <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span
+                                    style="font-weight: bold">{{dayOfWeek}}</span></div>
+                            <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить
+                                расписание
+                            </div>
+
                         </div>
 
-                        <div class="time-changer-content__element time-changer-content__element--time-list-modul">
-                            <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index" :value="item">
-                                <div class="time">{{item}}</div>
-                                <div @click="delTime($event)" class="del-btn"></div>
-                            </div>
-                        </div>
-                        <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">
-                            применить к <span style="font-weight: bold">текущему</span> дню
-                        </div>
-                        <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span
-                                style="font-weight: bold">{{dayOfWeek}}</span></div>
-                        <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить
-                            расписание
-                        </div>
 
                     </div>
 
-
                 </div>
-
             </div>
-        </div>
 
-    </section>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -116,10 +107,10 @@
                 timeChangeSatus: 'calendar-disable',
                 currentDate: null,
                 currentMonth: null,
-                showPreloader: true,
                 timeIsSet: false,
                 dataFromDB: [],
                 dayOfWeek: null,
+                // preloader: true,
             }
         },
         mounted: function () {
@@ -127,7 +118,6 @@
         },
         created: function () {
             // console.log(this.currentDayOfWeek);
-            this.showPreloader = false;
             if ((String(this.month + 1).length) == '1') {
                 this.currentMonth = 0 + String(this.month + 1);
             } else {
@@ -191,11 +181,11 @@
                     let value = val.split('-');
                     if (!arrLeft.includes(value[0].trim())) {
                         arrLeft.push(value[0].trim());
-                        arrLeft.sort(this.compareNumeric);
+                        arrLeft.sort();
                     }
                     if (!arrRight.includes(value[1].trim())) {
                         arrRight.push(value[1].trim());
-                        arrRight.sort(this.compareNumeric);
+                        arrRight.sort();
                     }
                 });
                 this.timeIntervals = [];
@@ -288,7 +278,7 @@
                     let rightValIndex = $('#right-time option:selected').attr('data-index');
                     this.timeLeftSelectorVariables.splice(leftValIndex, 1);
                     this.timeRightSelectorVariables.splice(rightValIndex, 1);
-                    console.log(this.timeIntervals);
+                    // console.log(this.timeIntervals);
                 }
                 // console.log(this.timeIsSet);
             },
@@ -381,6 +371,7 @@
                                 }
                             });
                         });
+                        // this.preloader = false;
                     });
             },
             exitBtn() {
