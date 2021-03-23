@@ -140,7 +140,7 @@
         beforeUpdate() {
         },
         updated() {
-            console.log('updated');
+            // console.log('updated');
             this.setCurrentMonth();
             // this.getBooksTimeFromDB();
         },

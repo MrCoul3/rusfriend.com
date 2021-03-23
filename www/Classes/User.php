@@ -9,7 +9,8 @@ class User
         'name',
         'password',
         'email',
-        'skype'
+        'skype',
+        'status'
     ];
 
     protected $adminEmails = [
@@ -152,7 +153,7 @@ class User
     }
     public function getAllUsersInfo()
     {
-        $query = "SELECT `name`, `email`, `skype` FROM `users` WHERE 1=1";
+        $query = "SELECT `name`, `email`, `skype`, `status` FROM `users` WHERE 1=1";
         $result = $this->dbAccess->query($query);
         return $result;
 //        $getUsersInfo = mysqli_fetch_assoc($result);
@@ -174,5 +175,19 @@ class User
 //        $_SESSION['username'] = $getUserName['name'];
 //        return $getUserName;
 //    }
+
+    // заблокировать пользователя
+    public function blockUser($request)
+    {
+        $query = "UPDATE `users` SET `status` = 'blocked' WHERE `email` = '{$request['email']}'";
+        $result = $this->dbAccess->query($query);
+        return 'blocked';
+    }
+    public function unBlockUser($request)
+    {
+        $query = "UPDATE `users` SET `status` = 'active' WHERE `email` = '{$request['email']}'";
+        $result = $this->dbAccess->query($query);
+        return 'active';
+    }
 
 }

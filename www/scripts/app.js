@@ -2547,7 +2547,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   beforeUpdate: function beforeUpdate() {},
   updated: function updated() {
-    console.log('updated');
+    // console.log('updated');
     this.setCurrentMonth(); // this.getBooksTimeFromDB();
   },
   created: function created() {
@@ -3210,16 +3210,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      array: []
+      array: [],
+      statusColor: '' // blockUserInnerHTML: 'заблокировать'
+
     };
+  },
+  updated: function updated() {// console.log('updated')
   },
   mounted: function mounted() {
     this.getAllUsersInfo();
   },
+  created: function created() {},
+  computed: {},
   methods: {
     getAllUsersInfo: function getAllUsersInfo() {
       var _this = this;
@@ -3231,8 +3238,54 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
         var array = _this.array;
         data.forEach(function (val, k) {
-          array.push(val);
-        });
+          // console.log(val.status)
+          if (val.status !== 'admin') {
+            array.push(val);
+          }
+
+          if (val.status === 'active') {
+            val.text = 'заблокировать';
+          }
+
+          if (val.status === 'blocked') {
+            val.text = 'разблокировать';
+          }
+        }); // console.log(array)
+      });
+    },
+    blockUser: function blockUser(event) {
+      // console.log(event.target.parentNode.previousElementSibling);
+      var statusElem = event.target.parentNode.previousElementSibling;
+      var email = event.target.getAttribute('email');
+      var status = event.target.getAttribute('status');
+      var method = null;
+
+      if (status === 'active') {
+        method = 'blockUser';
+        this.statusColor = 'status-blocked';
+      } else {
+        method = 'unBlockUser';
+        this.statusColor = '';
+      }
+
+      var data = {
+        email: email,
+        'method': method
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(data)).then(function (response) {
+        console.log(response.data);
+        var data = response.data;
+        event.target.setAttribute('status', data);
+        statusElem.innerHTML = data;
+        statusElem.setAttribute('status', data);
+
+        if (data === 'blocked') {
+          event.target.innerHTML = 'разблокировать';
+          statusElem.classList.add('blocked');
+        } else {
+          event.target.innerHTML = 'заблокировать';
+          statusElem.classList.remove('blocked');
+        }
       });
     }
   }
@@ -8691,10 +8744,6 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "student__elem student__elem--time" }, [
-                _vm._v(_vm._s(arr.date) + " " + _vm._s(arr.time))
-              ]),
-              _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "student__elem student__elem--contacts" },
@@ -8711,7 +8760,49 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(1, true)
+              _c(
+                "div",
+                {
+                  staticClass: "student__elem student__elem--status",
+                  class: arr.status,
+                  attrs: { status: arr.status }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(arr.status) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "student__elem student__elem--actions" },
+                [
+                  _c("div", { staticClass: "student-actions-invite" }, [
+                    _vm._v("отправить приглашение на урок")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "student-actions-message" }, [
+                    _vm._v("написать сообщение")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "student-actions-ban",
+                      attrs: { status: arr.status, email: arr.email },
+                      on: {
+                        click: function($event) {
+                          return _vm.blockUser($event)
+                        }
+                      }
+                    },
+                    [_vm._v(_vm._s(arr.text) + "\n                    ")]
+                  )
+                ]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "decor-line" })
@@ -8729,35 +8820,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "my-students-header" }, [
       _c("div", { staticClass: "wrap" }, [
-        _c("p", [_vm._v("Имя")]),
+        _c("p", { staticClass: "name" }, [_vm._v("Имя")]),
         _vm._v(" "),
-        _c("div", { staticClass: "wrap" }, [
-          _c("p", [_vm._v("Статус")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "question" })
+        _c("p", { staticClass: "contacts-data" }, [
+          _vm._v("Контактные данные ")
         ]),
         _vm._v(" "),
-        _c("p", [_vm._v("Контактные данные ")]),
+        _c("p", { staticClass: "status" }, [_vm._v("Статус")]),
         _vm._v(" "),
-        _c("p", [_vm._v("Действия")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "student__elem student__elem--actions" }, [
-      _c("div", { staticClass: "student-actions-invite" }, [
-        _vm._v("отправить приглашение на урок")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "student-actions-message" }, [
-        _vm._v("написать сообщение")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "student-actions-ban" }, [
-        _vm._v("заблокировать")
+        _c("p", { staticClass: "actions" }, [_vm._v("Действия")])
       ])
     ])
   }
@@ -22178,6 +22249,7 @@ $(document).ready(function () {
           password: password,
           email: email,
           skype: skype,
+          status: 'active',
           'method': 'register'
         };
         var response = fetch('handle.php', {

@@ -2843,8 +2843,24 @@
 }
 #mysite .my-students .my-students-header .wrap {
   display: flex;
+  max-width: 1024px;
   font-size: 18px;
   justify-content: space-around;
+}
+#mysite .my-students .my-students-header .wrap p {
+  position: relative;
+}
+#mysite .my-students .my-students-header .wrap .name {
+  right: 50px;
+}
+#mysite .my-students .my-students-header .wrap .contacts-data {
+  right: 50px;
+}
+#mysite .my-students .my-students-header .wrap .status {
+  right: 60px;
+}
+#mysite .my-students .my-students-header .wrap .actions {
+  right: 20px;
 }
 #mysite .my-students .my-students-content .student .wrap {
   display: flex;
@@ -2854,14 +2870,12 @@
   line-height: 20px;
 }
 #mysite .my-students .my-students-content .student__elem {
-  max-width: 200px;
   width: 100%;
 }
 #mysite .my-students .my-students-content .student__elem--name {
   display: flex;
   align-items: center;
-  max-width: 150px;
-  width: 100%;
+  max-width: 178px;
 }
 #mysite .my-students .my-students-content .student__elem--name .student-name-icon {
   background-image: url(../images/icons/user-ico.svg);
@@ -2871,9 +2885,9 @@
   margin-right: 3px;
   background-repeat: no-repeat;
 }
-#mysite .my-students .my-students-content .student__elem--time {
-  max-width: 200px;
-  width: 100%;
+#mysite .my-students .my-students-content .student__elem--status {
+  text-align: center;
+  color: #169E94;
 }
 #mysite .my-students .my-students-content .student__elem--contacts {
   text-align: center;
@@ -2887,9 +2901,11 @@
   font-size: 12px;
   text-align: center;
   cursor: pointer;
-  max-width: 220px;
 }
 #mysite .my-students .my-students-content .student__elem--actions div:hover {
+  color: #FF3E28;
+}
+#mysite .my-students .my-students-content .blocked {
   color: #FF3E28;
 }
 #mysite .calendar-active {

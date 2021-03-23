@@ -142,6 +142,7 @@ $(document).ready(function () {
                     password: password,
                     email: email,
                     skype: skype,
+                    status: 'active',
                     'method': 'register'
                 };
                 let response = fetch('handle.php', {

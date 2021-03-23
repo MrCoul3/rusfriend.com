@@ -217,5 +217,15 @@ if ($request['method'] === 'getUserSkype') {
 }
 
 if ($request['method'] === 'delBooksTime') {
-        $result = $objCalendar->delBooksTime($request);
+    $result = $objCalendar->delBooksTime($request);
+}
+
+if ($request['method'] === 'blockUser') {
+    $result = $obj->blockUser($request);
+    echo $result;
+}
+
+if ($request['method'] === 'unBlockUser') {
+    $result = $obj->unBlockUser($request);
+    echo $result;
 }

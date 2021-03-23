@@ -193,7 +193,6 @@
         }
 
 
-
         th, td {
           padding: 3px; /* Поля вокруг содержимого таблицы */
           border: 1px solid #C4C4C4;
@@ -201,6 +200,7 @@
           width: 7.342%;
           position: relative;
         }
+
         td {
           height: 100px;
           padding-top: 23px;
@@ -421,6 +421,7 @@
         background: $colorRed;
       }
     }
+
     //окно отмены занятия
     .cancel-lesson-frame {
       background: #EFF4F9;
@@ -434,12 +435,15 @@
       margin: auto;
       border-radius: 20px;
       padding: 30px 45px;
+
       .title {
         color: $colorRed;
       }
+
       .decor-line {
         margin: 20px 0 0;
       }
+
       .close-btn {
         cursor: pointer;
         right: 18px;
@@ -449,10 +453,12 @@
         position: absolute;
         background-image: url("../images/icons/close-btn.svg");
       }
+
       .wrap {
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+
         .button {
           width: 110px;
           height: 27px;
@@ -463,9 +469,11 @@
           line-height: 24px;
           margin-top: 22px;
         }
+
         .submit-btn {
           background: #4C9CD8;
         }
+
         .cancel-btn {
           background: $colorRed;
         }
@@ -476,6 +484,7 @@
       position: absolute;
       top: 0px;
       padding: 0;
+
       .calendar-app {
         padding-bottom: 20px;
       }
@@ -675,14 +684,37 @@
   .my-students {
     color: $colorLightBlack;
     font-family: Montserrat, sans-serif;
+
     .my-students-header {
       .wrap {
         display: flex;
-
+        max-width: 1024px;
         font-size: 18px;
         justify-content: space-around;
+
+        p {
+          position: relative;
+        }
+        .name {
+          right: 50px;
+        }
+
+        .contacts-data {
+          right: 50px;
+        }
+
+        .status {
+          right: 60px;
+        }
+
+        .actions {
+          right: 20px;
+        }
       }
+
     }
+
+
     .my-students-content {
       .student {
         .wrap {
@@ -692,15 +724,16 @@
           margin: 10px 0;
           line-height: 20px;
         }
+
         &__elem {
-          max-width: 200px;
+          //max-width: 200px;
           width: 100%;
 
           &--name {
             display: flex;
             align-items: center;
-            max-width: 150px;
-            width: 100%;
+            max-width: 178px;
+
             .student-name-icon {
               background-image: url("../images/icons/user-ico.svg");
               width: 30px;
@@ -710,23 +743,29 @@
               background-repeat: no-repeat;
             }
           }
-          &--time {
-            max-width: 200px;
-            width: 100%;
+
+          &--status {
+            //max-width: 200px;
+            //width: 100%;
+            text-align: center;
+            color: #169E94;
           }
+
           &--contacts {
             text-align: center;
+
             span {
               color: #A8A8A8;
             }
           }
+
           &--actions {
             color: #A8A8A8;
             text-decoration: underline;
             font-size: 12px;
             text-align: center;
             cursor: pointer;
-            max-width: 220px;
+            //max-width: 220px;
             div {
               &:hover {
                 color: $colorRed;
@@ -734,6 +773,10 @@
             }
           }
         }
+      }
+
+      .blocked {
+        color: $colorRed;
       }
     }
 
