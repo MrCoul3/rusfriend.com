@@ -3165,6 +3165,31 @@
   pointer-events: none;
 }
 /*@import '../styles/scss/admin-panel';*/
+.wrap[data-v-33175acf] {
+  display: flex;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+}
+.cancel-btn[data-v-33175acf] {
+  background-color: #4C9CD8;
+  width: 200px;
+  height: 45px;
+  line-height: 43px;
+  margin: 0 auto;
+}
+#preloader[data-v-33175acf] {
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+}
 #preloader[data-v-1a0260e1] {
   /*visibility: hidden;*/
   /*opacity: 0;*/

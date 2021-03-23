@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="preloader" id="preloader"></div>
-        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section calendar-active">
+        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section ">
             <h2 class="main-title">Календарь занятий</h2>
             <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных
                 занятиях,
@@ -69,7 +69,7 @@
                     </div>
                     <div class="decor-line"></div>
                     <div class="wrap">
-                        <div @click="updateBook()" class="button change-btn">изменить урок</div>
+                        <div @click="openBook()" class="button change-btn">изменить урок</div>
                         <div @click="cancelLessonFrame()" class="button cancel-btn">отменить урок</div>
                     </div>
                 </div>
@@ -86,7 +86,12 @@
 
 
                 <adminBookCalendar
-                        v-show="bookCalendar"
+                        v-show="showBookCalendar"
+                        :user-name="detailUserName"
+                        @delete-book="deleteBook"
+                        :type-of-lesson="typeOfLesson"
+                        @close="closeAdminCalendar"
+                        @update="updateBook"
                 />
 
             </div>
@@ -103,6 +108,7 @@
         components: {
             adminBookCalendar
         },
+
         data() {
             return {
                 month: new Date().getMonth(),
@@ -120,23 +126,27 @@
                 detailDate: null,
                 detailTime: null,
                 detailType: null,
+                typeOfLesson: null,
                 detailUserName: null,
                 detailSkype: null,
                 preloader: true,
                 cancelLessShow: false,
-                bookCalendar: true,
+                showBookCalendar: false,
             }
         },
         mounted: function () {
             this.getBooksTimeFromDB();
         },
+        beforeUpdate() {
+        },
         updated() {
+            console.log('updated');
             this.setCurrentMonth();
+            // this.getBooksTimeFromDB();
         },
         created: function () {
             // console.log(this.currentDayOfWeek);
             this.setCurrentMonth();
-
         },
         methods: {
             calendar: function () {
@@ -186,7 +196,6 @@
                     this.year++;
                 }
                 this.getBooksTimeFromDB();
-
             },
             setCurrentMonth() {
                 if ((String(this.month + 1).length) == '1') {
@@ -195,6 +204,7 @@
                     this.currentMonth = this.month + 1;
                 }
             },
+
             getBooksTimeFromDB() {
                 // this.preloader = true;
                 // console.log('getintervals')
@@ -202,7 +212,6 @@
                 $('.calendar-table-days .book').remove();
                 axios.post('/handle.php', JSON.stringify({'method': 'getBooksTime'}))
                     .then((response) => {
-
                         // console.log(response.data);
                         let data = response.data;
                         data.forEach(function (val, k) {
@@ -214,9 +223,20 @@
                             $('.calendar-table-days').each(function (k, val) {
                                 let day = $(this);
                                 let dateOfcell = $(this).attr('date');
+
                                 if (dateOfcell === dateFromDb) {
+                                    // не добавлять интервалы если уже существуют
                                     if (paymentFromDb === 'payed') {
-                                        day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                        $(this).children().each(function (k, val) {
+                                            // console.log(val);
+                                            let valName = val.getAttribute('name');
+                                            let valType = val.getAttribute('type');
+                                            let valTime = val.getAttribute('time');
+                                            let valDate = val.getAttribute('data');
+                                            if (typeFromDb !== valType && nameFromDb !== valName && dateFromDb !== valDate && timeFromDb !== valTime) {
+                                                day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                            }
+                                        });
                                     }
                                 }
                             })
@@ -226,16 +246,16 @@
                     });
             },
             bookingEvent(event) {
-                console.log(event.target);
+                // console.log(event.target);
 
                 if (event.target.className.includes('book')) {
-                    console.log('work')
+                    // console.log('work')
                     //open detail
                     this.detailShow = true;
                     let target = event.target;
                     this.detailDate = target.getAttribute('data');
                     this.detailTime = target.getAttribute('time');
-                    this.detailType = target.getAttribute('type');
+                    this.typeOfLesson = target.getAttribute('type');
                     if (target.getAttribute('type') === 'private') {
                         this.detailType = 'Занятие с преподавателем';
                     }
@@ -245,10 +265,10 @@
                     this.detailUserName = target.getAttribute('name');
                     axios.post('/handle.php', JSON.stringify({name: this.detailUserName, 'method': 'getUserSkype'}))
                         .then((response) => {
-                            console.log(response.data)
+                            // console.log(response.data)
                             let data = response.data;
                             this.detailSkype = data['skype'];
-                            console.log(data['skype']);
+                            // console.log(data['skype']);
                         });
                 }
             },
@@ -261,6 +281,7 @@
                 this.detailShow = true;
                 this.cancelLessShow = false;
             },
+
             // удалить занятие из БД
             deleteBook() {
                 // console.log(this.detailUserName);
@@ -278,10 +299,23 @@
                 this.preloader = true;
                 this.getBooksTimeFromDB();
             },
-            updateBook() {
-                this.bookCalendar = true;
+            // "изменить урок"
+            openBook() {
+                this.showBookCalendar = true;
                 this.detailShow = false;
                 // удалить текущий интервал методом deleteBook()
+            },
+
+            // "отмена" Закрыть календарь изменения урока
+            closeAdminCalendar(data) {
+                this.showBookCalendar = false;
+                this.detailShow = true;
+            },
+
+            // 'при клике по "изменить время урока" удалить изменяемый интервал '
+            updateBook(data) {
+                this.deleteBook()
+                window.location.reload();
             },
         },
     }

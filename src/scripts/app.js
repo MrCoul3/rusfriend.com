@@ -20,7 +20,7 @@ import MyCalendar from "../vue/MyCalendar.vue";
 import BookCalendar from "../vue/BookCalendar.vue";
 import MyStudents from "../vue/MyStudents.vue";
 import adminBookCalendar from "../vue/adminBookCalendar.vue";
-// Vue.config.productionTip = false;
+Vue.config.productionTip = false;
 
 $(document).ready(function () {
 

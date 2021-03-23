@@ -13,8 +13,8 @@
         <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
             <div class="calendar-app-header">
                 <div class="calendar-app-header__element calendar-app-header__element--month-module">
-                    <div @click="decrease" class="month-btn month-btn--left-btn"></div>
-                    <div @click="increase" class="month-btn month-btn--right-btn"></div>
+                    <div @click="decrease()" class="month-btn month-btn--left-btn"></div>
+                    <div @click="increase()" class="month-btn month-btn--right-btn"></div>
                     <p class="month">{{monthes[month]}} {{dateInterval}}, {{year}}</p>
                 </div>
                 <h2 class="calendar-app-header__element calendar-app-header__element--title">Календарь занятий</h2>
@@ -47,7 +47,8 @@
                 </div>
 
                 <div v-for="week in weekCalendar()" class="time-intrevals-from-db">
-                    <div @click="chooseTime($event)" v-for="day in week" :date="day.index + '.' + currentMonth + '.' + year"
+                    <div @click="chooseTime($event)" v-for="day in week"
+                         :date="day.index + '.' + currentMonth + '.' + year"
                          class="time-intrevals-elem time-intrevals-from-db__item"></div>
                 </div>
 
@@ -68,9 +69,10 @@
                     <span>Недоступное время</span>
                 </div>
             </div>
-            <div v-show="enterSkype"  class="enter-your-skype">
+            <div v-show="enterSkype" class="enter-your-skype">
                 <h2 class="enter-your-skype__element">Все занятия проходят в skype</h2>
-                <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’</h3>
+                <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’
+                </h3>
                 <div class="flex">
                     <div class="skype-icon-for-input"></div>
                     <div id="enter-your-skype" class="flex">
@@ -110,7 +112,6 @@
                 dateInterval: null,
                 responseData: [],
                 currentMonth: null,
-                // selectedTimeArray: [],
                 enterSkype: false,
                 validationSkype: false,
                 preLoader: false,
@@ -126,7 +127,6 @@
             // console.log(this.weekNumber);
         },
         created: function () {
-
             if ((String(this.month + 1).length) == '1') {
                 this.currentMonth = 0 + String(this.month + 1);
             } else {
@@ -134,16 +134,49 @@
             }
         },
         mounted: function () {
+            this.adjustmentDateOfWeek();
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
 
         },
-        updated: function () {
+        updated () {
+            this.adjustmentDateOfWeek();
             this.lightingOfToday();
             this.changeStateOfItem();
+            if ((String(this.month + 1).length) == '1') {
+                this.currentMonth = 0 + String(this.month + 1);
+            } else {
+                this.currentMonth = this.month + 1;
+            }
         },
         methods: {
+            //метод корректировки дат недели
+            adjustmentDateOfWeek() {
+                let firstElem = $('.time-intrevals-elem:first-child');
+                let numberFirstElem = firstElem.attr('date').split('.')[0];
+                let monthFirstElem = firstElem.attr('date').split('.')[1];
+                // console.log(numberFirstElem);
+                // console.log(monthFirstElem);
+                // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
+                if (numberFirstElem > 24 && numberFirstElem < 32) {
+                    // console.log(numberFirstElem);
+                    $('.time-intrevals-elem').each(function (k,val) {
+                        // console.log($(this).attr('date').split('.'));
+                        let dateArr = $(this).attr('date').split('.')
+                        if (dateArr[0] > 0 && dateArr[0] < 7) {
+                            // console.log(dateArr[1])
+                            dateArr[1] = String(+monthFirstElem + 1);
+                            if (dateArr[1].length == '1') {
+                                dateArr[1] = 0 + String(dateArr[1]);
+                            }
+                            // console.log(dateArr.join('.'));
+                            let newDate = dateArr.join('.');
+                            val.setAttribute('date', newDate);
+                        }
+                    })
+                }
+            },
             DateOfMondayInWeek(year, weekNumber) {
                 for (var a = 1; ; a++) if ((new Date(year, 0, a)).getDay() == 1) break;
                 a += (weekNumber - 1) * 7;
@@ -181,18 +214,21 @@
                 console.log('w');
                 this.weekNumber--;
                 this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-                console.log(this.month);
-                console.log(this.weekNumber);
+                // console.log(this.month);
+                // console.log(this.weekNumber);
+
                 if (this.weekNumber === 0) {
                     this.weekNumber = 52
                     this.year--;
                 }
+
                 this.getIntervalsFromDB();
             },
             increase: function () {
                 this.weekNumber++;
                 this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-                console.log(this.weekNumber);
+                // console.log(this.month);
+                // console.log(this.weekNumber);
                 if (this.weekNumber === 52) {
                     this.weekNumber = 1;
                     this.year++;
@@ -351,7 +387,7 @@
                                     if ($(this).attr('date') === dayFromDB) {
                                         // console.log(timeFromDB);
                                         // console.log($(this).children())
-                                        $(this).children().each(function (k,val) {
+                                        $(this).children().each(function (k, val) {
                                             // console.log(val.innerHTML);
                                             if (val.innerHTML === timeFromDB) {
                                                 val.classList.add('booked-for-this-user');
@@ -367,7 +403,7 @@
                                     if ($(this).attr('date') === dayFromDB) {
                                         // console.log(timeFromDB);
                                         // console.log($(this).children())
-                                        $(this).children().each(function (k,val) {
+                                        $(this).children().each(function (k, val) {
                                             // console.log(val.innerHTML);
                                             if (val.innerHTML === timeFromDB) {
                                                 val.classList.add('booked-for-other-users');

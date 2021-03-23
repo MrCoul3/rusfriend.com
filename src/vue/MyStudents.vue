@@ -1,12 +1,12 @@
 <template>
-    <section id="vue-my-students" class="my-students admin-inner admin-panel-section ">
+    <section id="vue-my-students" class="my-students admin-inner admin-panel-section calendar-active">
         <h2 class="main-title">Мои студенты</h2>
 
         <div class="my-students-header">
             <div class="wrap">
                 <p>Имя</p>
                 <div class="wrap">
-                    <p>Время урока</p>
+                    <p>Статус</p>
                     <div class="question"></div>
                 </div>
                 <p>Контактные данные </p>

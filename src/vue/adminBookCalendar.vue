@@ -1,78 +1,72 @@
 <template>
-    <section id="admin-booking-calendar" class="your-calendar inner">
-        <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
-            <div class="calendar-app-header">
-                <div class="calendar-app-header__element calendar-app-header__element--month-module">
-                    <div @click="decrease" class="month-btn month-btn--left-btn"></div>
-                    <div @click="increase" class="month-btn month-btn--right-btn"></div>
-                    <p class="month">{{monthes[month]}} {{dateInterval}}, {{year}}</p>
+    <div>
+        <div v-show="showPreLoader" id="preloader"></div>
+        <section id="admin-booking-calendar" class="your-calendar inner" :key="reload">
+            <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
+                <div class="calendar-app-header">
+                    <div class="calendar-app-header__element calendar-app-header__element--month-module">
+                        <div @click="decrease" class="month-btn month-btn--left-btn"></div>
+                        <div @click="increase" class="month-btn month-btn--right-btn"></div>
+                        <p class="month">{{monthes[month]}} {{dateInterval}}, {{year}}</p>
+                    </div>
+                    <h2 class="calendar-app-header__element calendar-app-header__element--title">Изменить время
+                        урока</h2>
+                    <select class="calendar-app-header__element calendar-app-header__element--time-zone">
+                        <option>Europe/Moscow GMT +3:00</option>
+                    </select>
                 </div>
-                <h2 class="calendar-app-header__element calendar-app-header__element--title">Изменить время урока</h2>
-                <select class="calendar-app-header__element calendar-app-header__element--time-zone">
-                    <option>Europe/Moscow GMT +3:00</option>
-                </select>
-            </div>
-            <div class="decor-line"></div>
-            <div class="calendar-app-content">
+                <div class="decor-line"></div>
+                <div class="calendar-app-content">
 
-                <div class="decor-dates">
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                </div>
-                <div class="calendar-app-content-col">
-                    <div v-for="d in day" class="calendar-app-content-day">{{d}}</div>
-                </div>
+                    <div class="decor-dates">
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                    </div>
+                    <div class="calendar-app-content-col">
+                        <div v-for="d in day" class="calendar-app-content-day">{{d}}</div>
+                    </div>
 
-                <div v-for="week in weekCalendar()" class="calendar-app-content-col">
-                    <div v-for="day in week" :today="day.today"
-                         :style="{'background-color': day.current, 'color': day.color, 'font-weight': day.font}"
-                         class="calendar-app-content-number" :date="day.index + '.' + currentMonth + '.' + year">
-                        {{day.index}}
+                    <div v-for="week in weekCalendar()" class="calendar-app-content-col">
+                        <div v-for="day in week" :today="day.today"
+                             :style="{'background-color': day.current, 'color': day.color, 'font-weight': day.font}"
+                             class="calendar-app-content-number" :date="day.index + '.' + currentMonth + '.' + year">
+                            {{day.index}}
+                        </div>
+                    </div>
+
+                    <div v-for="week in weekCalendar()" class="time-intrevals-from-db">
+                        <div @click="chooseTime($event)" v-for="day in week"
+                             :date="day.index + '.' + currentMonth + '.' + year"
+                             class="time-intrevals-elem time-intrevals-from-db__item"></div>
+                    </div>
+
+                </div>
+                <div class="wrap">
+                    <div @click.prevent="bookEvent()" class="button book-btn">изменить время урока</div>
+                    <div @click="closeAdminBookCalendar()" class="button cancel-btn">отмена</div>
+                </div>
+                <div class="tegs">
+                    <div class="tegs__element">
+                        <div class="circle circle--booked"></div>
+                        <span>Забронированное занятие</span>
+                    </div>
+                    <div class="tegs__element">
+                        <div class="circle circle--available"></div>
+                        <span>Доступное время</span>
+                    </div>
+                    <div class="tegs__element">
+                        <div class="circle circle--unavailable"></div>
+                        <span>Недоступное время</span>
                     </div>
                 </div>
-
-                <div v-for="week in weekCalendar()" class="time-intrevals-from-db">
-                    <div @click="chooseTime($event)" v-for="day in week" :date="day.index + '.' + currentMonth + '.' + year"
-                         class="time-intrevals-elem time-intrevals-from-db__item"></div>
-                </div>
-
             </div>
-            <a @click.prevent="bookEvent()" href="" class="button book-btn">изменить время урока</a>
-
-            <div class="tegs">
-                <div class="tegs__element">
-                    <div class="circle circle--booked"></div>
-                    <span>Забронированное занятие</span>
-                </div>
-                <div class="tegs__element">
-                    <div class="circle circle--available"></div>
-                    <span>Доступное время</span>
-                </div>
-                <div class="tegs__element">
-                    <div class="circle circle--unavailable"></div>
-                    <span>Недоступное время</span>
-                </div>
-            </div>
-            <div v-show="enterSkype"  class="enter-your-skype">
-                <h2 class="enter-your-skype__element">Все занятия проходят в skype</h2>
-                <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’</h3>
-                <div class="flex">
-                    <div class="skype-icon-for-input"></div>
-                    <div id="enter-your-skype" class="flex">
-                        <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
-                        <div @click="sendSkype()" class="button send-skype">send</div>
-                    </div>
-                    <div v-show="validationSkype" class="validation-skype">поле не должно быть пустым</div>
-                </div>
-                <h3 class="enter-your-skype__element">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -89,6 +83,7 @@
     export default {
         data() {
             return {
+                reload: 0,
                 month: new Date().getMonth(),
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
@@ -100,12 +95,20 @@
                 dateInterval: null,
                 responseData: [],
                 currentMonth: null,
-                // selectedTimeArray: [],
                 enterSkype: false,
                 validationSkype: false,
+                showPreLoader: true,
             }
         },
-
+        props: {
+            userName: {
+                required: true,
+            },
+            typeOfLesson: {
+                required: true,
+                default: 'private',
+            },
+        },
         beforeMount: function () {
             Date.prototype.getWeek = function () {
                 var onejan = new Date(this.getFullYear(), 0, 1);
@@ -123,16 +126,50 @@
             }
         },
         mounted: function () {
+            this.adjustmentDateOfWeek();
             this.getIntervalsFromDB();
-            this.lightingOfToday();
             this.changeStateOfItem();
-
+            this.lightingOfToday();
+            // console.log(this.userName);
         },
         updated: function () {
+            this.adjustmentDateOfWeek();
             this.lightingOfToday();
+            this.getIntervalsFromDB();
             this.changeStateOfItem();
+            if ((String(this.month + 1).length) == '1') {
+                this.currentMonth = 0 + String(this.month + 1);
+            } else {
+                this.currentMonth = this.month + 1;
+            }
         },
         methods: {
+            //метод корректировки дат недели
+            adjustmentDateOfWeek() {
+                let firstElem = $('.time-intrevals-elem:first-child');
+                let numberFirstElem = firstElem.attr('date').split('.')[0];
+                let monthFirstElem = firstElem.attr('date').split('.')[1];
+                // console.log(numberFirstElem);
+                // console.log(monthFirstElem);
+                // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
+                if (numberFirstElem > 24 && numberFirstElem < 32) {
+                    // console.log(numberFirstElem);
+                    $('.time-intrevals-elem').each(function (k, val) {
+                        // console.log($(this).attr('date').split('.'));
+                        let dateArr = $(this).attr('date').split('.')
+                        if (dateArr[0] > 0 && dateArr[0] < 7) {
+                            // console.log(dateArr[1])
+                            dateArr[1] = String(+monthFirstElem + 1);
+                            if (dateArr[1].length == '1') {
+                                dateArr[1] = 0 + String(dateArr[1]);
+                            }
+                            // console.log(dateArr.join('.'));
+                            let newDate = dateArr.join('.');
+                            val.setAttribute('date', newDate);
+                        }
+                    })
+                }
+            },
             DateOfMondayInWeek(year, weekNumber) {
                 for (var a = 1; ; a++) if ((new Date(year, 0, a)).getDay() == 1) break;
                 a += (weekNumber - 1) * 7;
@@ -189,7 +226,6 @@
                 this.getIntervalsFromDB();
 
             },
-
             lightingOfToday: function () {
                 let dayNum = document.querySelectorAll('.calendar-app-content-number');
                 let dayName = $('.calendar-app-content-day');
@@ -204,7 +240,6 @@
                     }
                 })
             },
-
             getIntervalsFromDB: function () {
                 $('.time-intrevals-elem ').each((k, val) => {
                     val.innerHTML = '';
@@ -234,8 +269,11 @@
                         })
                     });
             },
+
             chooseTime: function (event) {
+                console.log('chooseTime');
                 // console.log(event.target);
+                $('.time-intrevals-elem div').removeClass('selected-time');
                 let selectedTime = event.target;
                 if (selectedTime.className.includes('selected-time')) {
                     selectedTime.classList.remove('selected-time');
@@ -244,15 +282,8 @@
                 }
 
                 selectedTimeArray = [];
-                // let userName = $('.user-login__elem--user-name').html();
-                let userName = getCookie('name');
-                let typeOfLesson;
-                if ($('.header-menu--private').hasClass('menu-item-active')) {
-                    typeOfLesson = 'private';
-                } else {
-                    typeOfLesson = 's-club';
-                }
-                document.cookie = "type=" + typeOfLesson;
+                let userName = this.userName;
+                let typeOfLesson = this.typeOfLesson;
 
                 $('.selected-time').each(function (k, val) {
                     let day = val.parentNode.getAttribute('date');
@@ -263,7 +294,7 @@
                         type: typeOfLesson,
                         day: day,
                         time: time,
-                        payment: 'unpayed',
+                        payment: 'payed',
                         'method': 'bookEvent'
 
                     };
@@ -275,105 +306,83 @@
                 // console.log(array);
                 // this.selectedTimeArray = array.slice(0);
             },
+
+            // "изменить время урока"
             bookEvent: function () {
-                // console.log(selectedTimeArray);
-                // нужно сделать проверку на логин, если не залогинен то открыть форму
-                // Регистрации
-                axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
-                    .then((response) => {
-                        // console.log(response.data['success']);
-                        if (response.data['success'] === false) {
-                            // открытие формы логина
-                            if (!$(".login-form").hasClass('login-form-active')) {
-                                $(".login-form").addClass('login-form-active');
-                                $("#mysite").addClass("body-fixed");
-                            }
-
-                        } else {
-                            //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
-                            axios.post('/handle.php', JSON.stringify({'method': 'checkSkype'}))
-                                .then((response) => {
-                                    // console.log(response.data);
-                                    let dataFromDB = response.data;
-                                    if (dataFromDB.status === 'empty') {
-                                        this.enterSkype = true;
-                                    } else {
-
-                                        axios.post('/handle.php', JSON.stringify(selectedTimeArray))
-                                        window.location.href = "payment.php";
-                                    }
-                                });
-                        }
-                    })
-
+                this.$emit('update');
+                axios.post('/handle.php', JSON.stringify(selectedTimeArray))
+                this.reload += 1;
             },
 
-            sendSkype: function () {
-                // console.log($('.input-skype').val());
-                let skype = $('.input-skype');
-                if (skype.val().trim() === '') {
-                    // console.log('empty');
-                    this.validationSkype = true;
-                } else {
-                    axios.post('/handle.php', JSON.stringify({'method': 'sendSkype', 'skype': skype.val()}))
-                    this.enterSkype = false;
-                }
-            },
             // функция изменения состояния интервала в календаре при
             // забронированных интервалах для данного пользователя
             changeStateOfItem: function () {
-
+                let timeInterval = $('.time-intrevals-from-db__item');
                 axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
                     .then((response) => {
                         // console.log(response.data);
                         // получаем всю информацию о забронированных уроках по данному пользователю
                         let dataFromDB = response.data;
                         // console.log($(this).attr('date'));
-                        let timeInterval = $('.time-intrevals-from-db__item');
                         dataFromDB.forEach(function (val, k) {
                             // console.log(val[1]);
-                            let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
-                            if (userNameFromDB === getCookie('name')) {
-                                timeInterval.each(function (k, val) {
-                                    if ($(this).attr('date') === dayFromDB) {
-                                        // console.log(timeFromDB);
-                                        // console.log($(this).children())
-                                        $(this).children().each(function (k,val) {
-                                            // console.log(val.innerHTML);
-                                            if (val.innerHTML === timeFromDB) {
-                                                val.classList.add('booked-for-this-user');
-                                                // console.log(val);
-                                            }
-                                        })
-                                    }
-                                })
-                            }
-                            if (userNameFromDB !== getCookie('name')) {
-                                // console.log(userNameFromDB);
-                                timeInterval.each(function (k, val) {
-                                    if ($(this).attr('date') === dayFromDB) {
-                                        // console.log(timeFromDB);
-                                        // console.log($(this).children())
-                                        $(this).children().each(function (k,val) {
-                                            // console.log(val.innerHTML);
-                                            if (val.innerHTML === timeFromDB) {
-                                                val.classList.add('booked-for-other-users');
-                                                // console.log(val);
-                                            }
-                                        })
-                                    }
-                                })
-                            }
-
+                            // console.log(userNameFromDB);
+                            timeInterval.each(function (k, val) {
+                                if ($(this).attr('date') === dayFromDB) {
+                                    // console.log(timeFromDB);
+                                    // console.log($(this).children())
+                                    $(this).children().each((k, val) => {
+                                        // console.log(val.innerHTML);
+                                        if (val.innerHTML === timeFromDB) {
+                                            val.classList.add('booked-for-other-users');
+                                            // console.log(val);
+                                        }
+                                    })
+                                }
+                            })
                         })
                     });
+                this.showPreLoader = false;
+            },
+
+            closeAdminBookCalendar() {
+                // Для сброса значений компонента при отмене использую :key reload
+                this.reload += 1;
+                this.$emit('close');
             },
         },
     }
 </script>
 
 <style scoped>
+    .wrap {
+        display: flex;
+        max-width: 420px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .cancel-btn {
+        background-color: #4C9CD8;
+        width: 200px;
+        height: 45px;
+        line-height: 43px;
+        margin: 0 auto;
+    }
+
+    #preloader {
+        /*visibility: hidden;*/
+        /*opacity: 0;*/
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
+    }
 
 </style>
