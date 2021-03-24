@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="preloader" id="preloader"></div>
-        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section ">
+        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section calendar-active">
             <h2 class="main-title">Календарь занятий</h2>
             <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных
                 занятиях,
@@ -85,7 +85,7 @@
                 </div>
 
 
-                <adminBookCalendar
+                <AdminBookCalendar
                         v-show="showBookCalendar"
                         :user-name="detailUserName"
                         @delete-book="deleteBook"
@@ -101,12 +101,12 @@
 </template>
 
 <script>
-    import adminBookCalendar from "./adminBookCalendar.vue";
+    import AdminBookCalendar from "./AdminBookCalendar.vue";
     import axios from 'axios';
 
     export default {
         components: {
-            adminBookCalendar
+           AdminBookCalendar
         },
 
         data() {

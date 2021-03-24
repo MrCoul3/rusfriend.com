@@ -69,6 +69,57 @@
     <div class="button reg-success-btn">далее</div>
   </div>
 </section>
+<section class="settings">
+  <div class="settings-main-frame">
+    <div class="settings-main-frame__elem settings-main-frame__elem--header">
+      <div class="move-icon"></div>
+      <h3 class="settings-title">Настройки</h3>
+      <div class="close-btn close-btn--settings"></div>
+    </div>
+    <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
+    <div class="settings-main-frame__elem settings-main-frame__elem--content">
+      <div class="setting-content-elem setting-content-elem--name">
+        <div class="flex">
+          <p class="placeholder">имя пользователя</p>
+          <div class="change-btn">изменить</div>
+        </div>
+        <div class="main-text main-text--user-name">Ivan Ivanov</div>
+      </div>
+      <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
+      <div class="setting-content-elem setting-content-elem--password">
+        <div class="flex">
+          <p class="placeholder">пароль</p>
+          <div class="change-btn">изменить</div>
+        </div>
+        <div class="main-text main-text--password">**********</div>
+      </div>
+      <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
+      <div class="setting-content-elem setting-content-elem--email">
+        <div class="flex">
+          <p class="placeholder">email</p>
+          <div class="change-btn">изменить</div>
+        </div>
+        <div class="main-text main-text--email">mr.coul@inbox.ru</div>
+      </div>
+      <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
+      <div class="setting-content-elem setting-content-elem--skype">
+        <div class="flex">
+          <p class="placeholder">skype</p>
+          <div class="change-btn">изменить</div>
+        </div>
+        <div class="main-text main-text--skype">mrcoul3</div>
+      </div>
+      <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
+      <div class="setting-content-elem setting-content-elem--avatar">
+        <div class="flex">
+          <p class="placeholder">фото профиля</p>
+          <div class="change-btn">изменить</div>
+        </div>
+        <div class="avatar"></div>
+      </div>
+    </div>
+  </div>
+</section>
     <header class="header">
       <div class="header__overhead">
         <div class="social-net-btns social-net-btns--header"><a class="social-net-btns__elem social-net-btns__elem--instagram" href="../"></a><a class="social-net-btns__elem social-net-btns__elem--tiktok" href="../"></a></div><a class="header-logo" href="index.php">
@@ -79,9 +130,10 @@
           </div>
           <div class="btn-login">Войти</div>
           <div class="user-login"><img class="user-login__elem" src="images/icons/user-ico.svg" alt="">
-            <p class="user-login__elem user-login__elem--user-name">sdasdsad</p><img class="user-login__elem" src="images/icons/user-arrow.svg" alt="">
-            <div class="user-login-menu"><a class="user-login-menu__elem user-login-menu__elem--messages" href="/">Сообщения</a><a class="user-login-menu__elem user-login-menu__elem--lessons" href="../">Мои уроки</a><a class="user-login-menu__elem user-login-menu__elem--settings" href="../">Настройки</a>
-              <div class="decor-line decor-line--user-login-menu"></div><a class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Выход</a>
+            <p class="user-login__elem user-login__elem--user-name">User Name</p><img class="user-login__elem" src="images/icons/user-arrow.svg" alt="">
+            <div class="user-login-menu"><a class="user-login-menu__elem user-login-menu__elem--messages" href="/">Сообщения</a><a class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">Мои уроки</a>
+              <div class="user-login-menu__elem user-login-menu__elem--settings">Настройки</div>
+              <div class="decor-line decor-line--user-login-menu"></div><a class="user-login-menu__elem user-login-menu__elem--logout" href="/index.php">Выход</a>
             </div>
           </div>
           <div class="burger-btn">
@@ -184,7 +236,7 @@
   </div>
 </section>
     </main>
-    <footer class="footer inner">
+    <footer class="footer">
       <div class="decor-line decor-line--footer"></div>
       <div class="footer-content"><a class="footer-content__element footer-content__element--logo" href="../">
           <!--img(src="../images/icons/logo.svg", alt="logo").footer-content__element.footer-content__element--logo--></a>

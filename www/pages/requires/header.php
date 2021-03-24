@@ -91,6 +91,9 @@ if (isset($_SESSION['email'])) {
         <div class="button reg-success-btn">далее</div>
     </div>
 </section>
+<section class="settings">
+    <p>sdsdsdsd</p>
+</section>
 
 <header class="header">
     <div class="header__overhead">
@@ -117,8 +120,8 @@ if (isset($_SESSION['email'])) {
                                                                                             alt="">
                 <div class="user-login-menu">
                     <a class="user-login-menu__elem user-login-menu__elem--messages" href="/">Сообщения</a>
-                    <a class="user-login-menu__elem user-login-menu__elem--lessons" href="../">Мои уроки</a>
-                    <a class="user-login-menu__elem user-login-menu__elem--settings" href="../">Настройки</a>
+                    <a class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">Мои уроки</a>
+                    <div class="user-login-menu__elem user-login-menu__elem--settings">Настройки</div>
                     <div class="decor-line decor-line--user-login-menu"></div>
                     <a class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Выход</a>
                 </div>

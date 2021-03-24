@@ -1,0 +1,133 @@
+#mysite {
+
+  .about-page {
+
+
+    .about {
+      padding-top: 300px;
+      @include mediaWidth(767) {
+        padding-top: 100px;
+        padding-bottom: 100px;
+      }
+
+      .owl-carousel {
+        @include mediaWidth(1024) {
+          width: 361px;
+        }
+        @include mediaWidth(767) {
+          //width: 320px;
+          width: 100vw;
+          margin: 0 auto !important;
+        }
+
+        &__element {
+          @include mediaWidth(1024) {
+            width: 73%;
+            margin: 0 auto;
+          }
+          @include mediaWidth(767) {
+            width: 100vw;
+          }
+
+          &--diplom {
+            margin-top: 81px;
+            @include mediaWidth(1024) {
+              margin-top: 54px;
+            }
+            @include mediaWidth(767) {
+              margin-top: 154px;
+            }
+          }
+        }
+      }
+
+      &__element {
+        &--left {
+          opacity: 0;
+          margin-left: -200px;
+          background-image: none;
+          width: 461px;
+
+          .owl-dots {
+            margin-top: 5px;
+          }
+        }
+
+        &--right {
+          display: flex;
+          flex-direction: column;
+
+          .about-title {
+            opacity: 0;
+            margin-left: 0;
+            position: relative;
+            left: 600px;
+          }
+
+          .about-social-net {
+            opacity: 0;
+            position: relative;
+            left: 200px;
+            order: -1;
+            margin: 0px 0 7px;
+            margin-left: 0;
+            @include mediaWidth(767) {
+              order: 1;
+            }
+          }
+
+          .about-items {
+            &__item {
+              opacity: 0;
+              margin-left: 0;
+              position: relative;
+              left: 300px;
+              font-weight: normal;
+              font-size: 22px;
+              line-height: 26px;
+              //text-align: justify;
+              @include mediaWidth(1024) {
+                font-size: 16px;
+                line-height: 19px;
+              }
+              @include mediaWidth(767) {
+                text-align: center;
+              }
+
+              &:before {
+                display: none;
+              }
+            }
+
+            .a {
+              max-width: 519px;
+            }
+
+            .b {
+            }
+          }
+
+          .about-slogan {
+            opacity: 0;
+            margin-left: 0;
+            position: relative;
+            left: 200px;
+          }
+        }
+      }
+    }
+    .offers {
+      margin: 100px auto;
+      @include mediaWidth(1024) {
+        margin: 70px auto;
+      }
+      @include mediaWidth(767) {
+        margin: 110px auto;
+      }
+      @include mediaWidth(500) {
+        margin: 70px auto;
+      }
+    }
+  }
+
+}

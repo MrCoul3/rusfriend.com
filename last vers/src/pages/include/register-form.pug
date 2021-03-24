@@ -1,0 +1,39 @@
+section.register-form.authorization-forms
+    div.form-frame
+        div.container
+            h3.form-title Регистрация
+            div.logo-mobile-ver
+            div.form-close-btn.form-close-btn--register-form
+            //img(src="../images/icons/close-btn.svg", alt="close").form-close-btn.form-close-btn--register-form
+        div.decor-line.decor-line--login-form
+        form(method="post").form
+            input(type="text" placeholder="имя пользователя" id="username" name="username").form__elem.form-input.form-input--username.required-input
+            div.reg-check.reg-check-name.reg-check--disable поле обязательно для заполнения
+            label(for="username")
+
+
+            input(type="password" placeholder="пароль" id="reg-password" name="password").form__elem.form-input.form-input--password.required-input
+            div.reg-check.reg-check-pass.reg-check--disable поле обязательно для заполнения
+            label(for="password").label-password
+
+            input(type="password" placeholder="повторите пароль" id="re-password").form__elem.form-input.form-input--re-password.required-input
+            label(for="re-reg-password").label-re-password
+            div.reg-check.check-re-password.reg-check--disable пароли не совпадают
+
+            input(type="email" placeholder="email" id="reg-email" name="email").form__elem.form-input.form-input--email.required-input
+            div.reg-check.reg-check-email.reg-check--disable поле обязательно для заполнения
+            label(for="email").label-email
+
+            input(type="text" placeholder="skype" id="skype" name="skype").form__elem.form-input.form-input--skype
+            label(for="skype")
+
+            p.reg-log-changer.form__elem Уже зарегестрированы? Войти
+            div.decor-line.decor-line--login-form
+            input(type="submit" value="зарегестрироваться").form__elem.form-submit.form-submit-register.button
+section.register-success
+    div.register-success__frame 
+        img(src="../images/icons/succes.svg", alt="success").success-img
+        h2 Поздравляем, #[br] Вы успешно зарегистрировались!
+        h3 Теперь вы можете полностью использовать функционал сайта. #[br] Что бы забронировать урок - перейдите в раздел#[br]  
+            a(href="") “Занятие с преподавателем” 
+        div.button.reg-success-btn далее

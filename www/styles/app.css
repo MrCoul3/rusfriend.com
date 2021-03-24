@@ -687,6 +687,20 @@
   color: #455A64;
 }
 
+.close-btn {
+  opacity: 0.3;
+  transition: all ease-in 0.2s;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  background-image: url(../images/icons/close-btn.svg);
+}
+.close-btn:hover {
+  transition: all ease-in 0.2s;
+  opacity: 0.8;
+}
+
 #mysite {
   position: relative;
   margin: 0;
@@ -994,6 +1008,7 @@
   display: block;
 }
 #mysite .header__overhead .service-btns .btn-login {
+  display: none;
   font-size: 14px;
   line-height: 23px;
   width: 96px;
@@ -1009,7 +1024,7 @@
       user-select: none;
 }
 #mysite .header__overhead .service-btns .user-login {
-  display: none;
+  display: flex;
   width: 96px;
   cursor: pointer;
   position: relative;
@@ -1043,6 +1058,7 @@
   }
 }
 #mysite .header__overhead .service-btns .user-login .user-login-menu__elem {
+  cursor: pointer;
   display: block;
   text-decoration: none;
   font-size: 14px;
@@ -2258,6 +2274,13 @@
     padding-bottom: 100px;
   }
 }
+#mysite .private-lesson .title {
+  font-weight: 400;
+  position: relative;
+  top: 265px;
+  text-align: center;
+  color: #455A64;
+}
 #mysite .private-lesson .privateless {
   display: none;
   padding-top: 300px;
@@ -2273,6 +2296,14 @@
 }
 #mysite .private-lesson .hide-session {
   display: none;
+}
+
+#mysite .speaking-club .title {
+  font-weight: 400;
+  position: relative;
+  top: 265px;
+  text-align: center;
+  color: #455A64;
 }
 
 .admin {
@@ -2921,7 +2952,7 @@
   padding-top: 300px;
   max-width: 1024px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 #mysite .your-calendar__element--main-title {
   margin: 0 auto;
@@ -3180,21 +3211,157 @@
   color: #C4C4C4 !important;
   pointer-events: none;
 }
+
+#mysite .student-lessons {
+  padding-top: 250px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
+#mysite .student-lessons .main-title {
+  text-align: center;
+  font-weight: 300;
+  margin: 30px 0;
+}
+#mysite .student-lessons .block {
+  display: flex;
+  max-height: 150px;
+  height: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px 0;
+}
+#mysite .student-lessons .block__elem--title {
+  width: 210px;
+  font-weight: 600;
+  color: #455A64;
+}
+#mysite .student-lessons .block__elem--decor-line-vertical {
+  position: relative;
+  display: block;
+  min-height: 100px;
+  height: 100%;
+  width: 1px;
+  background: linear-gradient(360deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.05) 100%);
+}
+#mysite .student-lessons .block__elem--content {
+  max-height: 140px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 210px;
+  line-height: 25px;
+  position: relative;
+}
+#mysite .student-lessons .block__elem--content .content-elem {
+  margin-right: 20px;
+  font-family: Montserrat, sans-serif;
+}
+
+#mysite .settings {
+  display: none;
+}
+#mysite .settings .settings-main-frame {
+  width: 400px;
+  height: 500px;
+  position: absolute;
+  z-index: 9999;
+  background-color: #EFF4F9;
+  border-radius: 40px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  padding: 0 25px;
+}
+#mysite .settings .settings-main-frame__elem--header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  cursor: pointer;
+}
+#mysite .settings .settings-main-frame__elem--header:hover .move-icon {
+  transition: all ease-in 0.2s;
+  opacity: 0.5;
+}
+#mysite .settings .settings-main-frame__elem--header .move-icon {
+  transition: all ease-out 0.2s;
+  background-image: url(../images/icons/bx-move.svg);
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  position: relative;
+  top: 1px;
+}
+#mysite .settings .settings-main-frame__elem--header .settings-title {
+  color: #FF3E28;
+  margin-left: 10px;
+}
+#mysite .settings .settings-main-frame__elem--header .close-btn {
+  top: 20px;
+  right: 40px;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem {
+  line-height: 25px;
+  box-sizing: border-box;
+  padding: 5px 0;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .flex {
+  display: flex;
+  justify-content: space-between;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .placeholder {
+  margin: 0;
+  font-weight: 300;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .change-btn {
+  font-weight: 300;
+  color: #0052B4;
+  cursor: pointer;
+  text-decoration: none;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .change-btn:hover {
+  text-decoration: underline;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .main-text {
+  color: #455A64;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .avatar {
+  cursor: pointer;
+  width: 130px;
+  height: 130px;
+  background-size: contain;
+  background-image: url(../images/icons/user-ico.svg);
+  margin: 0 auto;
+}
+#mysite .settings-active {
+  display: block;
+}
 /*@import '../styles/scss/admin-panel';*/
-.wrap[data-v-33175acf] {
+.wrap[data-v-c00eaaa2] {
   display: flex;
   max-width: 420px;
   width: 100%;
   margin: 0 auto;
 }
-.cancel-btn[data-v-33175acf] {
+.cancel-btn[data-v-c00eaaa2] {
   background-color: #4C9CD8;
   width: 200px;
   height: 45px;
   line-height: 43px;
   margin: 0 auto;
 }
-#preloader[data-v-33175acf] {
+#preloader[data-v-c00eaaa2] {
   /*visibility: hidden;*/
   /*opacity: 0;*/
   position: fixed;

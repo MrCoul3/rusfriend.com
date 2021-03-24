@@ -51,6 +51,7 @@
     "@fancyapps/fancybox": "^3.5.7",
     "axios": "^0.21.1",
     "cookies": "^0.8.0",
+    "draggable": "^4.2.0",
     "jquery": "^3.3.1",
     "missionlog": "^1.6.5",
     "normalize.css": "^8.0.1",
