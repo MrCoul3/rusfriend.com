@@ -14,7 +14,6 @@ $(document).ready(function () {
         openSettings();
         // -------------------------
 
-
         // ----------- сброс активных состояний
         function resetStates() {
             $(document).click(function (e) {

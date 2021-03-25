@@ -1,38 +1,65 @@
-section.settings
+section.settings.settings-active
    div.settings-main-frame
         div.settings-main-frame__elem.settings-main-frame__elem--header
             div.move-icon
             h3.settings-title Настройки
-            div.close-btn.close-btn--settings.marker
+            div.close-btn.close-btn--settings
         div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
         div.settings-main-frame__elem.settings-main-frame__elem--content
 
             div.setting-content-elem.setting-content-elem--name
-                div.flex
-                    p.placeholder имя пользователя
-                    div.change-btn изменить
-                div.main-text.main-text--user-name Ivan Ivanov
+                div.wrap
+                    div.flex
+                        p.placeholder имя пользователя
+                        div.change-btn.change-btn--input изменить
+                    div.main-text.main-text--user-name Ivan Ivanov
+                div.input-wrap
+                    div.flex
+                        div.check
+                        input(type='text' placeholder='введите новое имя').input.input--name
+                        div.button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--password
-                div.flex
-                    p.placeholder пароль
-                    div.change-btn изменить
-                div.main-text.main-text--password **********
+                div.wrap
+                    div.flex
+                        p.placeholder пароль
+                        div.change-btn.change-btn--input изменить
+                    div.main-text.main-text--password **********
+                div.input-wrap
+                    div.check.check--old-pass неверный пароль
+                    input(type='password' placeholder='введите старый пароль').input.input--old-pas.input--password
+                    input(type='password' placeholder='введите новый пароль').input.input--new-pas.input--password
+                    div.flex
+                        div.check
+                        input(type='password' placeholder='повторите новый пароль').input.input--repeat-new-pas.input--password
+                        div.button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--email
-                div.flex
-                    p.placeholder email
-                    div.change-btn изменить
-                div.main-text.main-text--email mr.coul@inbox.ru
+                div.wrap
+                    div.flex
+                        p.placeholder email
+                        div.change-btn.change-btn--input изменить
+                    div.main-text.main-text--email mr.coul@inbox.ru
+                div.input-wrap
+                    div.flex
+                        div.check
+                        input(type='text' placeholder='введите новый email').input.input--email
+                        div.button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--skype
-                div.flex
-                    p.placeholder skype
-                    div.change-btn изменить
-                div.main-text.main-text--skype mrcoul3
+                div.wrap
+                    div.flex
+                        p.placeholder skype
+                        div.change-btn.change-btn--input изменить
+                    div.main-text.main-text--skype mrcoul3
+                div.input-wrap
+                    div.flex
+                        div.check
+                        input(type='text' placeholder='введите skype').input.input--skype
+                        div.button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--avatar

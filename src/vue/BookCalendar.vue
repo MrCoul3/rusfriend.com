@@ -377,11 +377,12 @@
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
                         dataFromDB.forEach(function (val, k) {
-                            // console.log(val[1]);
+                            // console.log(val[5]);
                             let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
-                            if (userNameFromDB === getCookie('name')) {
+                            let paymentFromDB = val[5];
+                            if (userNameFromDB === getCookie('name') && paymentFromDB === 'payed') {
                                 timeInterval.each(function (k, val) {
                                     if ($(this).attr('date') === dayFromDB) {
                                         // console.log(timeFromDB);

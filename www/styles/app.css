@@ -758,7 +758,7 @@
   box-sizing: border-box;
   text-decoration: none;
   display: block;
-  font-size: 16px;
+  font-size: 20px;
   font-family: "Exo 2", sans-serif;
   font-weight: bold;
   color: white;
@@ -3101,6 +3101,7 @@
   margin: 0;
 }
 #mysite .your-calendar .calendar-app .book-btn {
+  font-size: 16px;
   background-color: #FF3E28;
   width: 200px;
   height: 45px;
@@ -3263,11 +3264,11 @@
 }
 
 #mysite .settings {
-  display: none;
+  visibility: hidden;
 }
 #mysite .settings .settings-main-frame {
   width: 400px;
-  height: 500px;
+  overflow: scroll;
   position: absolute;
   z-index: 9999;
   background-color: #EFF4F9;
@@ -3278,6 +3279,9 @@
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   padding: 0 25px;
+}
+#mysite .settings .settings-main-frame::-webkit-scrollbar {
+  width: 0px;
 }
 #mysite .settings .settings-main-frame__elem--header {
   display: flex;
@@ -3311,7 +3315,11 @@
   box-sizing: border-box;
   padding: 5px 0;
 }
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .wrap-hidden {
+  display: none;
+}
 #mysite .settings .settings-main-frame__elem--content .setting-content-elem .flex {
+  position: relative;
   display: flex;
   justify-content: space-between;
 }
@@ -3334,7 +3342,6 @@
   color: #455A64;
   font-size: 18px;
   font-weight: 500;
-  cursor: pointer;
 }
 #mysite .settings .settings-main-frame__elem--content .setting-content-elem .avatar {
   cursor: pointer;
@@ -3344,8 +3351,61 @@
   background-image: url(../images/icons/user-ico.svg);
   margin: 0 auto;
 }
-#mysite .settings-active {
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap {
+  display: none;
+  position: relative;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .check {
+  display: none;
+  position: absolute;
+  color: #FF3E28;
+  font-style: italic;
+  font-size: 12px;
+  bottom: -8px;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .check--old-pass {
+  bottom: 102px;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .check--new-pass {
+  bottom: 47px;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .check-active {
   display: block;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .input {
+  margin: 10px 0;
+  width: 239px;
+  height: 36px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  outline: none;
+  border-radius: 5px;
+  font-family: "Exo 2", sans-serif;
+  font-size: 16px;
+  padding-left: 15px;
+  box-sizing: border-box;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap .button {
+  margin: 10px 0;
+  width: 92px;
+  height: 36px;
+  background: #0052B4;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  line-height: 31px;
+  font-weight: 300;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .input-wrap-active {
+  display: block;
+}
+#mysite .settings-active {
+  visibility: visible;
 }
 /*@import '../styles/scss/admin-panel';*/
 .wrap[data-v-c00eaaa2] {

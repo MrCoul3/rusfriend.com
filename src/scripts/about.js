@@ -5,6 +5,8 @@ $(document).ready(function () {
 
         aboutAnimation();
         offersAnimation();
+
+
         $(".owl-carousel-3").owlCarousel({
             items: 1,
             margin: 300,
@@ -20,18 +22,22 @@ $(document).ready(function () {
             autoplayTimeout: 5000
         });
 
+        // ----------- возврат в исходное состояние
         function animateToOrigin(element, marginLeft = 0) {
             element.animate({
                 'opacity': 1,
                 'marginLeft': marginLeft
             }, 1000, "easeOutQuart");
         }
+
+        // ----------- возврат в исходное состояние
         function animateToLeft(element, left = 0) {
             element.animate({
                 'left': left,
                 'opacity': 1
             })
         }
+        // ----------- анимация карточек предложений
         function offersAnimation() {
             document.addEventListener("scroll", function (e) {
                 // console.log(window.pageYOffset);
@@ -49,6 +55,7 @@ $(document).ready(function () {
                 }
             });
         }
+
         function aboutAnimation() {
             if ($('.about-page')) {
                 animateToOrigin($(".about__element--left"));

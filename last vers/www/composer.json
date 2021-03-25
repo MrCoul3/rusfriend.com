@@ -1,9 +1,0 @@
-{
-    "name": "mcoul/www",
-    "require": {},
-    "autoload": {
-        "psr-4": {
-            "Classes\\": "Classes"
-        }
-    }
-}

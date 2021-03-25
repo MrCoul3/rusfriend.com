@@ -1,20 +1,24 @@
 #mysite {
   .settings {
     visibility: hidden;
+
     .settings-main-frame {
-      width: 400px!important;
-      height: 500px!important;
+      width: 400px;
+      overflow: scroll;
       position: absolute;
-      inset: 0px;
       z-index: 9999;
       background-color: #EFF4F9;
       border-radius: 40px;
       left: 0;
       right: 0;
-      margin: 0 auto!important;
+      margin: 0 auto;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
       box-sizing: border-box;
       padding: 0 25px;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
 
       &__elem {
         &--decor-line {
@@ -26,10 +30,12 @@
           align-items: center;
           height: 50px;
           cursor: pointer;
+
           &:hover .move-icon {
             transition: all ease-in .2s;
             opacity: .5;
           }
+
           .move-icon {
             transition: all ease-out .2s;
             background-image: url("../images/icons/bx-move.svg");
@@ -39,13 +45,16 @@
             position: relative;
             top: 1px;
           }
+
           .settings-title {
             color: $colorRed;
             margin-left: 10px;
           }
+
           .close-btn {
             top: 20px;
             right: 40px;
+
             &:hover {
 
             }
@@ -57,32 +66,46 @@
             line-height: 25px;
             box-sizing: border-box;
             padding: 5px 0;
+
+            .wrap {
+              //display: none;
+            }
+
+            .wrap-hidden {
+              display: none;
+            }
+
             .flex {
+              position: relative;
               display: flex;
               justify-content: space-between;
             }
+
             .placeholder {
               margin: 0;
               font-weight: 300;
               font-size: 16px;
               color: rgba(0, 0, 0, 0.6);
             }
+
             .change-btn {
               font-weight: 300;
               color: #0052B4;
               cursor: pointer;
               text-decoration: none;
+
               &:hover {
                 text-decoration: underline;
               }
             }
+
             .main-text {
               color: $colorLightBlack;
               font-size: 18px;
               font-weight: 500;
-              cursor: pointer;
-
+              //cursor: pointer;
             }
+
             .avatar {
               cursor: pointer;
               width: 130px;
@@ -91,12 +114,76 @@
               background-image: url("../images/icons/user-ico.svg");
               margin: 0 auto;
             }
+
+            .input-wrap {
+              display: none;
+              position: relative;
+
+              .check {
+                display: none;
+                position: absolute;
+                color: $colorRed;
+                font-style: italic;
+                font-size: 12px;
+                bottom: -8px;
+
+                &--old-pass {
+                  bottom: 102px;
+                }
+
+                &--new-pass {
+                  bottom: 47px;
+                }
+              }
+
+              .check-active {
+                display: block;
+              }
+
+              .input {
+                margin: 10px 0;
+                width: 239px;
+                height: 36px;
+                background: #fff;
+                border: 1px solid rgba(0, 0, 0, 0.24);
+                outline: none;
+                border-radius: 5px;
+                font-family: 'Exo 2', sans-serif;
+                font-size: 16px;
+                padding-left: 15px;
+                box-sizing: border-box;
+
+                &--name {
+
+                }
+              }
+
+              .button {
+                margin: 10px 0;
+                width: 92px;
+                height: 36px;
+                background: #0052B4;
+                border-radius: 5px;
+                color: white;
+                font-size: 16px;
+                text-align: center;
+                line-height: 31px;
+                font-weight: 300;
+                user-select: none;
+              }
+            }
+
+            .input-wrap-active {
+              display: block;
+            }
+
           }
         }
 
       }
     }
   }
+
   .settings-active {
     visibility: visible;
 
