@@ -2487,7 +2487,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.adjustmentDateOfWeek();
     this.getIntervalsFromDB();
     this.lightingOfToday();
-    this.changeStateOfItem();
+    this.changeStateOfItem(); // this.disableBeforeCurrentDate();
   },
   updated: function updated() {
     this.adjustmentDateOfWeek();
@@ -2758,7 +2758,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
                 // console.log(timeFromDB);
                 // console.log($(this).children())
                 $(this).children().each(function (k, val) {
-                  // console.log(val.innerHTML);
+                  // console.log(val);
                   if (val.innerHTML === timeFromDB) {
                     val.classList.add('booked-for-this-user'); // console.log(val);
                   }
@@ -2770,14 +2770,31 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           if (userNameFromDB !== getCookie('name')) {
             // console.log(userNameFromDB);
             timeInterval.each(function (k, val) {
+              // console.log($(this).attr('date'))
               if ($(this).attr('date') === dayFromDB) {
                 // console.log(timeFromDB);
                 // console.log($(this).children())
                 $(this).children().each(function (k, val) {
-                  // console.log(val.innerHTML);
+                  // console.log(val);
                   if (val.innerHTML === timeFromDB) {
                     val.classList.add('booked-for-other-users'); // console.log(val);
                   }
+                });
+              }
+            }); //--------- функция деактивации интервалов раньше текущего дня
+
+            var data = new Date();
+            timeInterval.each(function (k, val) {
+              var date = $(this).attr('date');
+              var day = date.split('.')[0];
+              var month = date.split('.')[1]; // console.log(month)
+              // console.log(data.getMonth())
+              // console.log(month <= data.getMonth() +1 )
+
+              if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                // console.log($(this).children());
+                $(this).children().each(function (k, val) {
+                  val.classList.add('booked-for-other-users');
                 });
               }
             });

@@ -137,6 +137,7 @@
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
+            // this.disableBeforeCurrentDate();
 
         },
         updated () {
@@ -373,9 +374,11 @@
                     .then((response) => {
                         // console.log(response.data);
                         // получаем всю информацию о забронированных уроках по данному пользователю
+
                         let dataFromDB = response.data;
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
+
                         dataFromDB.forEach(function (val, k) {
                             // console.log(val[5]);
                             let userNameFromDB = val[1];
@@ -388,7 +391,7 @@
                                         // console.log(timeFromDB);
                                         // console.log($(this).children())
                                         $(this).children().each(function (k, val) {
-                                            // console.log(val.innerHTML);
+                                            // console.log(val);
                                             if (val.innerHTML === timeFromDB) {
                                                 val.classList.add('booked-for-this-user');
                                                 // console.log(val);
@@ -397,23 +400,43 @@
                                     }
                                 })
                             }
+
+
+
                             if (userNameFromDB !== getCookie('name')) {
                                 // console.log(userNameFromDB);
+
                                 timeInterval.each(function (k, val) {
+                                    // console.log($(this).attr('date'))
                                     if ($(this).attr('date') === dayFromDB) {
                                         // console.log(timeFromDB);
                                         // console.log($(this).children())
                                         $(this).children().each(function (k, val) {
-                                            // console.log(val.innerHTML);
-                                            if (val.innerHTML === timeFromDB) {
+                                            // console.log(val);
+                                            if ((val.innerHTML === timeFromDB)) {
                                                 val.classList.add('booked-for-other-users');
                                                 // console.log(val);
                                             }
                                         })
                                     }
                                 })
+                                //--------- функция деактивации интервалов раньше текущего дня
+                                let data = new Date();
+                                timeInterval.each(function (k, val) {
+                                    let date = $(this).attr('date');
+                                    let day = date.split('.')[0];
+                                    let month = date.split('.')[1];
+                                    // console.log(month)
+                                    // console.log(data.getMonth())
+                                    // console.log(month <= data.getMonth() +1 )
+                                    if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth()+1) {
+                                        // console.log($(this).children());
+                                        $(this).children().each(function (k, val) {
+                                            val.classList.add('booked-for-other-users');
+                                        })
+                                    }
+                                });
                             }
-
                         })
                     });
             },
