@@ -7,6 +7,18 @@ $(document).ready(function () {
         console.log("js index plugged");
         paralaksForMainPhoto();
 
+
+        // ------------- функционал кнопки "подробнее про нашу школу"
+        // задний фон затемнение 
+        $('.about-school-btn').click(function () {
+            $('.video-container').addClass('detailed-about-school-active');
+        });
+        $('.close-button').click(function () {
+            $('.video-container').removeClass('detailed-about-school-active');
+        });
+        // ------------------------------------------------------------
+
+
         // карусели
         $(".owl-carousel-1").owlCarousel({
             margin: 100,

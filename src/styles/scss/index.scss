@@ -46,7 +46,61 @@
       outline: none !important;
     }
   }
-  
+
+  // ------- видео "подробнее про нашу школу"
+  .video-container {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 145px;
+    margin: auto;
+    max-width: 600px;
+    width: 100%;
+    z-index: 9999;
+    &:hover .close-line {
+      //display: block;
+      //top: -30px;
+      transform: translateY(-30px);
+      transition: all ease-in .2s;
+    }
+    .close-line {
+      transition: all ease-out .2s;
+      position: absolute;
+      //display: none;
+      width: 100%;
+      height: 30px;
+      background: $colorRed;
+      color: #FFFFFF;
+      text-align: center;
+      line-height: 30px;
+      .close-button {
+        cursor: pointer;
+        position: absolute;
+        right: 9px;
+        top: 6px;
+        background-image: url("../images/icons/close-btn-white.svg");
+        width: 20px;
+        height: 20px;
+        opacity: .7;
+        transition: all ease-out .2s;
+        &:hover {
+          transition: all ease-in .2s;
+          opacity: 1;
+        }
+      }
+    }
+    .detailed-about-school {
+      position: absolute;
+      width: 100%;
+      height: 338px;
+    }
+  }
+  .detailed-about-school-active {
+    display: block;
+  }
+  // ------------------------------------------------
+
   //.owl-carousel-2 {
   //  .carousel-item {
   //    width: 600px;
@@ -404,8 +458,6 @@
   }
 
 
-
-
   .about {
     padding-top: 100px;
     background-image: url("../images/index/about-map.png");
@@ -449,7 +501,7 @@
           margin: 0 auto;
           width: 100%;
           height: 118vw;
-          margin-left: 0!important;
+          margin-left: 0 !important;
         }
       }
 
@@ -648,19 +700,23 @@
       .reviews-col {
         display: flex;
         flex-direction: column;
+
         &--left {
           margin-right: 10px;
         }
+
         img {
           width: 100%;
           box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.25);
           margin-bottom: 20px;
-          transition:  all ease-in-out .1s;
+          transition: all ease-in-out .1s;
+
           &:hover {
-            transition:  all ease .1s;
+            transition: all ease .1s;
             transform: scale3d(1.1, 1.1, 1.1);
           }
         }
+
         //.review {
         //  background-size: contain;
         //  background-repeat: no-repeat;

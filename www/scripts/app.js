@@ -2487,7 +2487,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.adjustmentDateOfWeek();
     this.getIntervalsFromDB();
     this.lightingOfToday();
-    this.changeStateOfItem(); // this.disableBeforeCurrentDate();
+    this.changeStateOfItem();
   },
   updated: function updated() {
     this.adjustmentDateOfWeek();
@@ -2615,6 +2615,10 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       });
     },
     getIntervalsFromDB: function getIntervalsFromDB() {
+      // ----- удаление неоплаченых бронирований
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'delUnpayedBooks'
+      }));
       $('.time-intrevals-elem ').each(function (k, val) {
         val.innerHTML = '';
       });
@@ -2653,7 +2657,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         selectedTime.classList.add('selected-time');
       }
 
-      selectedTimeArray = []; // let userName = $('.user-login__elem--user-name').html();
+      selectedTimeArray = [];
+      console.log(selectedTimeArray); // let userName = $('.user-login__elem--user-name').html();
 
       var userName = getCookie('name');
       var typeOfLesson;
@@ -21645,9 +21650,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {var mediaQueryMobile = window.matchMedia('(min-width: 767px)'); // не менее 767
-
-$(document).ready(function () {
+/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($(".header")) {
     // -------------------------
     // ----------- сброс активных состояний
@@ -21813,7 +21816,9 @@ $(document).ready(function () {
     }; // -----------------------------
 
 
-    console.log('common.js init'); // -------------------------
+    console.log('common.js init');
+    var mediaQueryMobile = window.matchMedia('min-width: 767px'); // не менее 767
+    // -------------------------
 
     resetStates();
     changeLanguage();
@@ -22056,7 +22061,16 @@ $(document).ready(function () {
     };
 
     console.log("js index plugged");
-    paralaksForMainPhoto(); // карусели
+    paralaksForMainPhoto(); // ------------- функционал кнопки "подробнее про нашу школу"
+    // задний фон затемнение 
+
+    $('.about-school-btn').click(function () {
+      $('.video-container').addClass('detailed-about-school-active');
+    });
+    $('.close-button').click(function () {
+      $('.video-container').removeClass('detailed-about-school-active');
+    }); // ------------------------------------------------------------
+    // карусели
 
     $(".owl-carousel-1").owlCarousel({
       margin: 100,

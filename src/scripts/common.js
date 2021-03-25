@@ -1,8 +1,9 @@
-const mediaQueryMobile = window.matchMedia('(min-width: 767px)'); // не менее 767
+
 
 $(document).ready(function () {
     if ($(".header")) {
         console.log('common.js init')
+        const mediaQueryMobile = window.matchMedia('min-width: 767px'); // не менее 767
         // -------------------------
         resetStates();
         changeLanguage();
@@ -73,6 +74,7 @@ $(document).ready(function () {
         function navMenuFixing() {
             let lastPos = 0;
             document.addEventListener("scroll", function (e) {
+
                 function headerLowerFixed() {
                     if (!mediaQueryMobile.matches) {
                         if (window.pageYOffset > 145) {

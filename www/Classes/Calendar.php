@@ -116,6 +116,11 @@ class Calendar
         return $result;
     }
 
+    public function delUnpayedBooks()
+    {
+        $query = "DELETE FROM `bookstime` WHERE `payment` = 'unpayed'";
+        $this->dbAccess->query($query);
+    }
     // удалить урок
     public function delBooksTime($request)
     {

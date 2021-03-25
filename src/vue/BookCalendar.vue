@@ -137,8 +137,6 @@
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
-            // this.disableBeforeCurrentDate();
-
         },
         updated () {
             this.adjustmentDateOfWeek();
@@ -253,6 +251,9 @@
             },
 
             getIntervalsFromDB: function () {
+                // ----- удаление неоплаченых бронирований
+                axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
+
                 $('.time-intrevals-elem ').each((k, val) => {
                     val.innerHTML = '';
                 });
@@ -291,6 +292,7 @@
                 }
 
                 selectedTimeArray = [];
+                console.log(selectedTimeArray)
                 // let userName = $('.user-login__elem--user-name').html();
                 let userName = getCookie('name');
                 let typeOfLesson;

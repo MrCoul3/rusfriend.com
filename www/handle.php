@@ -7,6 +7,8 @@ $request = json_decode(file_get_contents('php://input'), true);
 
 $obj = new \Classes\User();
 $objCalendar = new \Classes\Calendar();
+
+// --------------------- регистрация
 if ($request['method'] == 'register') {
     $response = [];
     $register = $obj->addUser($request);
@@ -23,8 +25,9 @@ if ($request['method'] == 'register') {
     }
     echo json_encode($response);
 }
+// -----------------------------------
 
-
+// --------------------- логин
 if ($request['method'] == 'login') {
     $response = [];
     $login = $obj->login($request);
@@ -52,7 +55,9 @@ if ($request['method'] == 'login') {
     }
     echo json_encode($response);
 }
+// -----------------------------------
 
+// --------------------- проверка лоина при перезагрузке
 if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedLesson') {
     $response = [];
     $check = $obj->checkLogin();
@@ -80,7 +85,9 @@ if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedL
     }
     echo json_encode($response);
 }
+// -----------------------------------
 
+// --------------------- логаут
 if ($request['method'] == 'logout') {
     $logout = $obj->logout();
     if ($logout) {
@@ -94,11 +101,16 @@ if ($request['method'] == 'logout') {
     }
     echo json_encode($response);
 }
+// -----------------------------------
 
+
+// --------------------- установка куки при смене языка
 if ($request['method'] == 'language') {
     setcookie('btnLang', $request['btnLang']);
     setcookie('langChanger', $request['langChanger']);
 }
+// -----------------------------------
+
 
 if ($request['method'] == 'addTimeIntervals') {
     $objCalendar->addTimeIntervals($request);
@@ -164,23 +176,27 @@ if ($request['method'] === 'getUserInfo') {
 }
 
 if ($request[0]['method'] === 'bookEvent') {
-//    print_r($request);
     $objCalendar->addBooksTime($request);
 }
+
 // получение данных для сстраницы payment.php
 //if ($request['method'] === 'getLessons') {
 //   $result = $objCalendar->getLessonsForThisUser();
 ////   print_r($result);
 //    echo json_encode(($result) );
 //}
+
 if ($request['method'] === 'getLessons') {
     $result = $objCalendar->getLessons();
-//   print_r($result);
     echo json_encode(($result) );
 }
 
 if ($request['method'] === 'successPay') {
     $result = $objCalendar->successPay();
+}
+
+if ($request['method'] === 'delUnpayedBooks') {
+    $objCalendar->delUnpayedBooks();
 }
 
 if ($request['method'] === 'getAllUsersInfo') {
