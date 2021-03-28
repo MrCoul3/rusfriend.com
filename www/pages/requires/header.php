@@ -91,96 +91,102 @@ if (isset($_SESSION['email'])) {
         <div class="button reg-success-btn">далее</div>
     </div>
 </section>
-<section class="settings">
-    <div class="settings-main-frame">
-        <div class="settings-main-frame__elem settings-main-frame__elem--header">
-            <div class="move-icon"></div>
-            <h3 class="settings-title">Настройки</h3>
-            <div class="close-btn close-btn--settings"></div>
-        </div>
-        <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
-        <div class="settings-main-frame__elem settings-main-frame__elem--content">
-            <div class="setting-content-elem setting-content-elem--name">
-                <div class="wrap">
-                    <div class="flex">
-                        <p class="placeholder">имя пользователя</p>
-                        <div class="change-btn change-btn--input">изменить</div>
-                    </div>
-                    <div class="main-text main-text--user-name">Ivan Ivanov</div>
-                </div>
-                <div class="input-wrap">
-                    <div class="flex">
-                        <div class="check"></div>
-                        <input class="input input--name" type="text" placeholder="введите новое имя">
-                        <div class="button change-button">изменить</div>
-                    </div>
-                </div>
-            </div>
-            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
-            <div class="setting-content-elem setting-content-elem--password">
-                <div class="wrap">
-                    <div class="flex">
-                        <p class="placeholder">пароль</p>
-                        <div class="change-btn change-btn--input">изменить</div>
-                    </div>
-                    <div class="main-text main-text--password">**********</div>
-                </div>
-                <div class="input-wrap">
-                    <div class="check check--old-pass">неверный пароль</div>
-                    <input class="input input--old-pas input--password" type="password" placeholder="введите старый пароль">
-                    <input class="input input--new-pas input--password" type="password" placeholder="введите новый пароль">
-                    <div class="flex">
-                        <div class="check"></div>
-                        <input class="input input--repeat-new-pas input--password" type="password" placeholder="повторите новый пароль">
-                        <div class="button change-button">изменить</div>
-                    </div>
-                </div>
-            </div>
-            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
-            <div class="setting-content-elem setting-content-elem--email">
-                <div class="wrap">
-                    <div class="flex">
-                        <p class="placeholder">email</p>
-                        <div class="change-btn change-btn--input">изменить</div>
-                    </div>
-                    <div class="main-text main-text--email">mr.coul@inbox.ru</div>
-                </div>
-                <div class="input-wrap">
-                    <div class="flex">
-                        <div class="check"></div>
-                        <input class="input input--email" type="text" placeholder="введите новый email">
-                        <div class="button change-button">изменить</div>
-                    </div>
-                </div>
-            </div>
-            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
-            <div class="setting-content-elem setting-content-elem--skype">
-                <div class="wrap">
-                    <div class="flex">
-                        <p class="placeholder">skype</p>
-                        <div class="change-btn change-btn--input">изменить</div>
-                    </div>
-                    <div class="main-text main-text--skype">mrcoul3</div>
-                </div>
-                <div class="input-wrap">
-                    <div class="flex">
-                        <div class="check"></div>
-                        <input class="input input--skype" type="text" placeholder="введите skype">
-                        <div class="button change-button">изменить</div>
-                    </div>
-                </div>
-            </div>
-            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
-            <div class="setting-content-elem setting-content-elem--avatar">
-                <div class="flex">
-                    <p class="placeholder">фото профиля</p>
-                    <div class="change-btn">изменить</div>
-                </div>
-                <div class="avatar"></div>
-            </div>
-        </div>
-    </div>
-</section>
+
+
+<!--<section class="settings">-->
+<!--    <div class="settings-main-frame">-->
+<!--        <div class="settings-main-frame__elem settings-main-frame__elem--header">-->
+<!--            <div class="move-icon"></div>-->
+<!--            <h3 class="settings-title">Настройки</h3>-->
+<!--            <div class="close-btn close-btn--settings"></div>-->
+<!--        </div>-->
+<!--        <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>-->
+<!--        <div class="settings-main-frame__elem settings-main-frame__elem--content">-->
+<!--            <div class="setting-content-elem setting-content-elem--name">-->
+<!--                <div class="wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <p class="placeholder">имя пользователя</p>-->
+<!--                        <div class="change-btn change-btn--input">изменить</div>-->
+<!--                    </div>-->
+<!--                    <div class="main-text main-text--user-name">Ivan Ivanov</div>-->
+<!--                </div>-->
+<!--                <div class="input-wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <div class="check"></div>-->
+<!--                        <input class="input input--name" type="text" placeholder="введите новое имя">-->
+<!--                        <div class="button change-button">изменить</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>-->
+<!--            <div class="setting-content-elem setting-content-elem--password">-->
+<!--                <div class="wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <p class="placeholder">пароль</p>-->
+<!--                        <div class="change-btn change-btn--input">изменить</div>-->
+<!--                    </div>-->
+<!--                    <div class="main-text main-text--password">**********</div>-->
+<!--                </div>-->
+<!--                <div class="input-wrap">-->
+<!--                    <div class="check check--old-pass">неверный пароль</div>-->
+<!--                    <input class="input input--old-pas input--password" type="password" placeholder="введите старый пароль">-->
+<!--                    <input class="input input--new-pas input--password" type="password" placeholder="введите новый пароль">-->
+<!--                    <div class="flex">-->
+<!--                        <div class="check"></div>-->
+<!--                        <input class="input input--repeat-new-pas input--password" type="password" placeholder="повторите новый пароль">-->
+<!--                        <div class="button change-button">изменить</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>-->
+<!--            <div class="setting-content-elem setting-content-elem--email">-->
+<!--                <div class="wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <p class="placeholder">email</p>-->
+<!--                        <div class="change-btn change-btn--input">изменить</div>-->
+<!--                    </div>-->
+<!--                    <div class="main-text main-text--email">mr.coul@inbox.ru</div>-->
+<!--                </div>-->
+<!--                <div class="input-wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <div class="check"></div>-->
+<!--                        <input class="input input--email" type="text" placeholder="введите новый email">-->
+<!--                        <div class="button change-button">изменить</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>-->
+<!--            <div class="setting-content-elem setting-content-elem--skype">-->
+<!--                <div class="wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <p class="placeholder">skype</p>-->
+<!--                        <div class="change-btn change-btn--input">изменить</div>-->
+<!--                    </div>-->
+<!--                    <div class="main-text main-text--skype">mrcoul3</div>-->
+<!--                </div>-->
+<!--                <div class="input-wrap">-->
+<!--                    <div class="flex">-->
+<!--                        <div class="check"></div>-->
+<!--                        <input class="input input--skype" type="text" placeholder="введите skype">-->
+<!--                        <div class="button change-button">изменить</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>-->
+<!--            <div class="setting-content-elem setting-content-elem--avatar">-->
+<!--                <div class="flex">-->
+<!--                    <p class="placeholder">фото профиля</p>-->
+<!--                    <div class="change-btn">изменить</div>-->
+<!--                </div>-->
+<!--                <div class="avatar"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+
+
+
+
 
 <header class="header">
     <div class="header__overhead">

@@ -10,11 +10,13 @@ $(document).ready(function () {
 
         // ------------- функционал кнопки "подробнее про нашу школу"
         // задний фон затемнение 
-        $('.about-school-btn').click(function () {
-            $('.video-container').addClass('detailed-about-school-active');
+        $('.about-school-btn--play-btn').click(function () {
+            $("#mysite").addClass("body-fixed");
+            $('.about-school-video').addClass('detailed-about-school-active');
         });
         $('.close-button').click(function () {
-            $('.video-container').removeClass('detailed-about-school-active');
+            $("#mysite").removeClass("body-fixed");
+            $('.about-school-video').removeClass('detailed-about-school-active');
         });
         // ------------------------------------------------------------
 

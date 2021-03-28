@@ -48,57 +48,69 @@
   }
 
   // ------- видео "подробнее про нашу школу"
-  .video-container {
+  .about-school-video {
     display: none;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 145px;
-    margin: auto;
-    max-width: 600px;
-    width: 100%;
-    z-index: 9999;
-    &:hover .close-line {
-      //display: block;
-      //top: -30px;
-      transform: translateY(-30px);
-      transition: all ease-in .2s;
-    }
-    .close-line {
-      transition: all ease-out .2s;
-      position: absolute;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.25);
+    .video-container {
       //display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 145px;
+      margin: auto;
+      max-width: 600px;
       width: 100%;
-      height: 30px;
-      background: $colorRed;
-      color: #FFFFFF;
-      text-align: center;
-      line-height: 30px;
-      .close-button {
-        cursor: pointer;
-        position: absolute;
-        right: 9px;
-        top: 6px;
-        background-image: url("../images/icons/close-btn-white.svg");
-        width: 20px;
-        height: 20px;
-        opacity: .7;
+      z-index: 9999;
+      &:hover .close-line {
+        //display: block;
+        //top: -30px;
+        transform: translateY(-30px);
+        transition: all ease-in .2s;
+      }
+      .close-line {
         transition: all ease-out .2s;
-        &:hover {
-          transition: all ease-in .2s;
-          opacity: 1;
+        position: absolute;
+        //display: none;
+        width: 100%;
+        height: 30px;
+        background: $colorRed;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 30px;
+        .close-button {
+          cursor: pointer;
+          position: absolute;
+          right: 9px;
+          top: 6px;
+          background-image: url("../images/icons/close-btn-white.svg");
+          width: 20px;
+          height: 20px;
+          opacity: .7;
+          transition: all ease-out .2s;
+          &:hover {
+            transition: all ease-in .2s;
+            opacity: 1;
+          }
         }
       }
+      .detailed-about-school {
+        position: absolute;
+        width: 100%;
+        height: 338px;
+      }
     }
-    .detailed-about-school {
-      position: absolute;
-      width: 100%;
-      height: 338px;
-    }
+
   }
   .detailed-about-school-active {
     display: block;
   }
+
+
+
   // ------------------------------------------------
 
   //.owl-carousel-2 {
@@ -302,7 +314,7 @@
       display: flex;
       top: 610px;
       left: 334px;
-      cursor: pointer;
+
       align-items: center;
       @include mediaWidth(1024) {
         flex-direction: column;
@@ -316,6 +328,7 @@
       }
 
       &--play-btn {
+        cursor: pointer;
         background-image: url("../images/icons/play.svg");
         width: 38.03px;
         height: 38.03px;

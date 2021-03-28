@@ -1,13 +1,17 @@
 <title>Главная</title>
 <main class="main-page">
+
+    <section class="about-school-video">
+        <div class="video-container">
+            <div class="close-line">Подробнее про нашу школу
+                <div class="close-button"></div>
+            </div>
+            <iframe class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
+    
     <section class="top-index">
         <div class="inner">
-            <div class="video-container">
-                <div class="close-line">Подробнее про нашу школу
-                    <div class="close-button"></div>
-                </div>
-                <iframe class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
             <div class="top-index__element top-index__element--left">
                 <h1 class="top-index-title">Online - школа <span>русского</span> языка как иностранного</h1>
                 <h2 class="top-index-second-title">Русский язык от носителя <br> с любовью из России</h2>
@@ -29,6 +33,7 @@
             </div>
         </div>
     </section>
+
     <section class="for-whom section">
         <h1 class="title for-whom-title">ДЛЯ КОГО НАША ШКОЛА?</h1>
         <div class="owl-carousel owl-theme owl-carousel-1">
@@ -50,6 +55,7 @@
         </div>
         <a class="get-free-lesson-btn button red-btn" href="../">получить <br> бесплатное занятие</a>
     </section>
+
     <section class="offers section inner">
         <h1 class="title offers-title">НАШИ ПРЕДЛОЖЕНИЯ</h1>
         <h3 class="slogan offers-slogan">После наших уроков мы заговорим на одном языке</h3>
@@ -108,6 +114,7 @@
             </div>
         </div>
     </section>
+
     <section class="about">
         <div class="inner">
             <div class="about__element about__element--left">
@@ -136,6 +143,7 @@
         <h2 class="detail-slogan">Буду очень рада видеть тебя <br> на моих online-занятиях</h2><a
             class="button detail-btn red-btn" href="/about.php"> подробнее</a>
     </section>
+
     <section class="reviews">
         <h1 class="title reviews-title">ЧТО ГОВОРЯТ СТУДЕНТЫ</h1>
         <div class="inner">
@@ -173,4 +181,5 @@
             </div>
         </div>
     </section>
+
 </main>

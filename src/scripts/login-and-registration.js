@@ -20,7 +20,6 @@ $(document).ready(function () {
             if (!$(".login-form").hasClass('login-form-active')) {
                 $(".login-form").addClass('login-form-active');
                 $("#mysite").addClass("body-fixed");
-
                 // $('.login-form .form-frame').animate({
                 //     'width': '364px',
                 //     'height': '364px'
