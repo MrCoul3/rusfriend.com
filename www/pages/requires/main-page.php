@@ -2,11 +2,17 @@
 <main class="main-page">
     <section class="top-index">
         <div class="inner">
+            <div class="video-container">
+                <div class="close-line">Подробнее про нашу школу
+                    <div class="close-button"></div>
+                </div>
+                <iframe class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
             <div class="top-index__element top-index__element--left">
                 <h1 class="top-index-title">Online - школа <span>русского</span> языка как иностранного</h1>
                 <h2 class="top-index-second-title">Русский язык от носителя <br> с любовью из России</h2>
                 <h2 class="top-index-first-title">Начни изучать алфавит <br> прямо сейчас</h2><a
-                    class="button get-guide-btn red-btn" href="">получить гайд <br> бесплатно</a>
+                    class="button get-guide-btn red-btn" href="/guide.php">получить гайд <br> бесплатно</a>
             </div>
             <div class="top-index__element top-index__element--right">
                 <div class="top-index-photo">
@@ -55,17 +61,13 @@
                         <!--img(src="../images/index/card-logo-bear.svg").card-icon-->
                         <div class="wrap">
                             <h3 class="card-title">Курсы</h3>
-                            <p class="card-description card-description--front card-side-active">Подписка на видеокурс,
-                                который подходит именно тебе</p>
+                            <p class="card-description card-description--front card-side-active">Подписка на видеокурс, который подходит именно тебе</p>
                         </div>
-                        <div class="begin-btn">начать</div>
+                        <div class="begin-btn detail-btn">подробнее</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Здесь ты можешь выбрать грамматический курс ,
-                            который подходит именно тебе, в каждом курсе ты получишь видеоуроки с домашними заданиями,
-                            полезными материалами и обратной связью.</p>
-                        <p class="card-content-price">от 25$</p>
-                        <div class="begin-btn">начать</div>
+                        <p class="card-description card-description--back">Здесь ты можешь выбрать грамматический курс , который подходит именно тебе, в каждом курсе ты получишь видеоуроки с домашними заданиями, полезными материалами и обратной связью.</p>
+                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/courses.php">начать</a>
                     </div>
                 </div>
             </div>
@@ -76,17 +78,13 @@
                         <!--img(src="../images/index/card-logo-balalayka.svg").card-icon-->
                         <div class="wrap">
                             <h3 class="card-title">Занятия с <br> преподавателем</h3>
-                            <p class="card-description card-description--front">Индивидуальные занятия по видеосвязи для
-                                любого уровня</p>
+                            <p class="card-description card-description--front">Индивидуальные занятия по видеосвязи для любого уровня</p>
                         </div>
-                        <div class="begin-btn">начать</div>
+                        <div class="begin-btn detail-btn">подробнее</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Забронируй 60-минутный урок с преподавателем
-                            в удобное для тебя время. Вместе мы определим индивидуальный план развития. <br> <br> Урок
-                            включает грамматику и работу с упражнениями.</p>
-                        <p class="card-content-price">от 25$</p>
-                        <div class="begin-btn">начать</div>
+                        <p class="card-description card-description--back">Забронируй 60-минутный урок с преподавателем в удобное для тебя время. Вместе мы определим индивидуальный план развития. <br> <br> Урок включает грамматику и работу с упражнениями.</p>
+                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/private-lesson.php">начать</a>
                     </div>
                 </div>
             </div>
@@ -97,19 +95,14 @@
                         <!--img(src="../images/index/card-logo-samovar.svg").card-icon-->
                         <div class="wrap">
                             <h3 class="card-title">Speaking-Сlub</h3>
-                            <p class="card-description card-description--front">Для тех, кто немного говорит по-русски и
-                                хочет улучшить разговорные навыки</p>
+                            <p class="card-description card-description--front">Для тех, кто немного говорит по-русски и хочет улучшить разговорные навыки</p>
                         </div>
-                        <div class="begin-btn">начать</div>
+                        <div class="begin-btn detail-btn">подробнее</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Если ты уже немного говоришь по-русски и
-                            хочешь увеличить словарный запас, а так же приятно провести время за разговором -
-                            Speaking-Club как раз для тебя.</p>
-                        <p class="card-description card-description--back card-description--addition">Не включает
-                            грамматику и подходит для любого уровня.</p>
-                        <p class="card-content-price">от 25$</p>
-                        <div class="begin-btn">начать</div>
+                        <p class="card-description card-description--back">Если ты уже немного говоришь по-русски и хочешь увеличить словарный запас, а так же приятно провести время за разговором - Speaking-Club как раз для тебя.</p>
+                        <p class="card-description card-description--back card-description--addition">Не включает грамматику и подходит для любого уровня.</p>
+                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/speaking-club.php">начать</a>
                     </div>
                 </div>
             </div>
@@ -122,11 +115,12 @@
             </div>
             <div class="about__element about__element--right">
                 <h1 class="title about-title">ОБО МНЕ</h1>
-                <div class="about-social-net"><a class="about-social-net__elem about-social-net__elem--insta"
-                                                 href="../">
-                        <!--img(src="../images/icons/about-insta-icon.svg")--></a><a
-                        class="about-social-net__elem about-social-net__elem--tiktok" href="../">
-                        <!--img(src="../images/icons/about-tiktok.svg")--></a></div>
+                <div class="about-social-net">
+                    <a class="about-social-net__elem about-social-net__elem--insta" href="https://www.instagram.com/svetlana_totrova/" target="_blank">
+                        <!--img(src="../images/icons/about-insta-icon.svg")--></a>
+                    <a class="about-social-net__elem about-social-net__elem--tiktok" href="../">
+                        <!--img(src="../images/icons/about-tiktok.svg")--></a>
+                </div>
                 <h3 class="slogan about-slogan">Носитель русского языка из России</h3>
                 <div class="about-items">
                     <p class="about-items__item a">Сертифицированный преподаватель <br> русского языка как иностранного
@@ -140,7 +134,7 @@
             </div>
         </div>
         <h2 class="detail-slogan">Буду очень рада видеть тебя <br> на моих online-занятиях</h2><a
-            class="button detail-btn red-btn" href="../"> подробнее</a>
+            class="button detail-btn red-btn" href="/about.php"> подробнее</a>
     </section>
     <section class="reviews">
         <h1 class="title reviews-title">ЧТО ГОВОРЯТ СТУДЕНТЫ</h1>

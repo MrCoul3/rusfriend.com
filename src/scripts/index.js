@@ -48,6 +48,8 @@ $(document).ready(function () {
             autoplayTimeout: 3000
         });
 
+        //подредактировать анимацию
+
         //ANIMATION-----------------------------------
         // анимация главного баннера на главной странице
         animateToOrigin($(".top-index-title"));

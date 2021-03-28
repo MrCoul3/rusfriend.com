@@ -211,12 +211,13 @@
   }
 }
 #mysite .top-index__element--right .top-index-photo {
-  background-image: url(../images/index/top-index-main-photo.png);
+  background-image: url(../images/index/top-index-main-photo-blurring.png);
   background-repeat: no-repeat;
   background-size: cover;
   height: 442px;
   width: 332px;
   position: relative;
+  box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.25);
 }
 @media screen and (max-width: 1024px) {
   #mysite .top-index__element--right .top-index-photo {
@@ -468,12 +469,18 @@
   }
 }
 #mysite .about__element--left {
-  background-image: url(../images/index/top-index-main-photo.png);
+  background-image: url(../images/index/about_photo.png);
   background-repeat: no-repeat;
   background-size: cover;
   margin-left: 100px;
   height: 442px;
   width: 332px;
+  box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.25);
+  transition: all ease-out 0.1s;
+}
+#mysite .about__element--left:hover {
+  transition: all ease-in 0.1s;
+  transform: scale3d(1.05, 1.05, 1.05);
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--left {
@@ -1097,15 +1104,6 @@
   height: 103px;
   background: #FFFFFF;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
-}
-@media screen and (max-width: 767px) {
-  #mysite .header__overhead .service-btns .user-login .user-login-menu {
-    display: block !important;
-    top: 20px;
-    right: -10px;
-    height: 100vh;
-    width: 50vw;
-  }
 }
 #mysite .header__overhead .service-btns .user-login .user-login-menu__elem {
   cursor: pointer;
@@ -1958,6 +1956,10 @@
   margin-left: -200px;
   background-image: none;
   width: 461px;
+  box-shadow: none;
+}
+#mysite .about-page .about__element--left:hover {
+  transform: none;
 }
 #mysite .about-page .about__element--left .owl-dots {
   margin-top: 5px;
@@ -2236,6 +2238,9 @@
   margin-top: 10px;
 }
 #mysite .offers .offers-cards__card .card-content .begin-btn {
+  color: #fff;
+  text-decoration: none;
+  display: block;
   background: rgba(255, 255, 255, 0.5);
   width: 320px;
   height: 72px;
@@ -2278,7 +2283,7 @@
   }
 }
 #mysite .offers .offers-cards__card--s-club {
-  background: #9abbba;
+  background: #34CFBE;
 }
 #mysite .offers .offers-cards__card--s-club .card-icon {
   background-position: center;
@@ -3253,7 +3258,7 @@
   margin-bottom: 20px;
 }
 #mysite .your-calendar .booked-for-this-user {
-  background: #9abbba;
+  background: #34CFBE;
   border-radius: 5px;
   color: white !important;
   pointer-events: none;

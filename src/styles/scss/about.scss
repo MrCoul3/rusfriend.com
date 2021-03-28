@@ -47,7 +47,10 @@
           margin-left: -200px;
           background-image: none;
           width: 461px;
-
+          box-shadow: none;
+          &:hover {
+            transform: none;
+          }
           .owl-dots {
             margin-top: 5px;
           }
