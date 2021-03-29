@@ -269,16 +269,15 @@ $(document).ready(function () {
             response.then(function (data) {
                 return data.json()
             }).then(function (data) {
-                // console.log(data)
+                console.log(data)
                 if (data.success) {
-                    // if (data.status === 'admin') {
-                    //     // document.location.href = '/admin-panel.php'
-                    // }
+
                     if (data.status === 'user') {
                         authorizedUser();
                         common();
                         $(".user-login__elem--user-name").html(data.name);
                     }
+
                 } else {
                     deleteCookie('name');
                     $(".btn-login").removeClass("disable");

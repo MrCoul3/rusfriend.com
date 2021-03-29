@@ -21,12 +21,12 @@ section.settings
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--password
-                div.wrap
+                div.wrap.wrap--pass
                     div.flex
                         p.placeholder пароль
                         div.change-btn.change-btn--input изменить
                     div.main-text.main-text--password **********
-                div.input-wrap
+                div.input-wrap.input-wrap--pass
                     div.check.check--old-pass неверный пароль
                     input(type='password' placeholder='введите старый пароль').input.input--old-pas.input--password
                     input(type='password' placeholder='введите новый пароль').input.input--new-pas.input--password
@@ -37,16 +37,16 @@ section.settings
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--email
-                div.wrap
+                div.wrap.wrap--email
                     div.flex
                         p.placeholder email
                         div.change-btn.change-btn--input изменить
                     div.main-text.main-text--email mr.coul@inbox.ru
-                div.input-wrap
+                div.input-wrap.input-wrap--email
                     div.flex
-                        div.check
+                        div.check.check--email
                         input(type='text' placeholder='введите новый email').input.input--email
-                        div.button.change-button изменить
+                        div(data-type='email').button.change-button.change-button--email изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--skype
@@ -59,7 +59,7 @@ section.settings
                     div.flex
                         div.check
                         input(type='text' placeholder='введите skype').input.input--skype
-                        div.button.change-button изменить
+                        div(data-type='skype').button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--avatar

@@ -56,7 +56,7 @@ $(document).ready(function () {
                     inputWrap.classList.add('input-wrap-active');
                 }
 
-                // при нажатии на кнопку "ИЗМЕНИТЬ"
+                // при нажатии на кнопку "ИЗМЕНИТЬ" после ввода в инпут
                 if (e.target.className.includes('change-button')) {
 
                     let inputField = e.target.previousElementSibling;
@@ -65,6 +65,7 @@ $(document).ready(function () {
                     let errors = [];
 
                     // сброс чеков при фокусе
+
                     inputField.addEventListener('focus', function () {
                         check.classList.remove('check-active');
                     });
@@ -113,61 +114,95 @@ $(document).ready(function () {
                     if (errors.length !== 0) {
                         check.classList.add('check-active');
                         // ----------- если нет ошибок
+
                     } else {
 
+                        let dataType = e.target.getAttribute('data-type'); // тип отправляемых данных ('name', 'password', 'email', 'skype') Берется из атрибута data-type кнопки "ИЗМЕНИТЬ"
 
-                        let dataType = e.target.getAttribute('data-type');
+                        // ----------- ИЗМЕНЕНИЕ ПАРОЛЯ ----------- \\
+                        let oldPas = $('.input--old-pas');
+                        // сброс чека при фокусе
+                        oldPas.on('focus', function () {
+                            $('.check--old-pass').removeClass('check-active');
+                        });
 
-                        // ------- ИЗМЕНЕНИЕ ПАРОЛЯ
                         if (e.target.className.includes('change-button--password')) {
-                            console.log('pass');
-                            let oldPas = $('.input--old-pas')
                             let data = {
                                 old: oldPas.val(), // старый пароль
                                 data: inputField.value, // новый пароль
                                 dataType: dataType,
                                 'method': 'changeSettings',
                             }
+                            // console.log(JSON.stringify(data));
                             axios.post('/handle.php', JSON.stringify(data))
-                            // проверка паролей
-                            // if (dataFromDB.type === 'name') {
-                            //
-                            // }
-                            // проверка старого пароля
-                            // if ($('.input--old-pas').val() !== )
-                        // ---------------------------------------
-                        } else {
+                                .then((response) => {
+                                    let dataFromDB = response.data;
+                                    console.log(dataFromDB);
+                                    if (dataFromDB !== 'success') {
+                                        $('.check--old-pass').addClass('check-active');
+                                    } else {
+                                        $('.wrap--pass').removeClass('wrap-hidden');
+                                        $('.input-wrap--pass').removeClass('input-wrap-active')
+                                    }
+                                });
 
+                        // ---------------------------------------
+
+                        } else {
                             // ----- ИЗМЕНЕНИЕ ОСТАЛЬНЫХ ПОЛЕЙ (имя, email, skype)
-                            console.log('not passw');
-                            // let dataType = e.target.getAttribute('data-type');
                             let inputWrap = e.target.parentNode.parentNode;
                             let wrap = inputWrap.previousElementSibling;
-                            // console.log(wrap)
 
                             let data = {
                                 data: inputField.value,
                                 dataType: dataType,
                                 'method': 'changeSettings',
                             }
-
                             // console.log(data);
                             axios.post('/handle.php', JSON.stringify(data))
                                 .then((response) => {
-                                    console.log(response.data)
+                                    // console.log(response.data)
                                     let dataFromDB = response.data;
                                     // если смена успешна, убирается поле ввода с возвратом первоначального состояния
                                     if (dataFromDB.status === 'success') {
-                                        wrap.classList.remove('wrap-hidden');
-                                        inputWrap.classList.remove('input-wrap-active')
 
-                                        // при смене имени меняется имя в шапке сайта и в поле настроек
-                                        if (dataFromDB.type === 'name') {
-                                            $(".user-login__elem--user-name").html(dataFromDB.name);
-                                            $('.main-text--user-name').html(dataFromDB.name);
+                                        if (dataFromDB.type !== 'email') {
+                                            wrap.classList.remove('wrap-hidden');
+                                            inputWrap.classList.remove('input-wrap-active')
+                                            let nameOfFiled =  e.target.parentNode.parentNode.previousElementSibling.lastElementChild
+                                            // console.log(nameOfFiled);
+                                            nameOfFiled.innerHTML = dataFromDB.name;
+                                            // при смене имени меняется имя в шапке сайта и в поле настроек
+                                            if (dataFromDB.type === 'name') {
+                                                $(".user-login__elem--user-name").html(dataFromDB.name);
+                                            }
                                         }
 
 
+                                    }
+                                    // -------------- email
+                                    if (dataFromDB.status === 'unconfirmed') {
+                                        // меняется placeholder поля инпут на введите код подтверждения
+                                        // console.log(dataFromDB.status);
+                                        $('.input--email').attr('placeholder', 'введите код подтверждения').val('').removeClass('input--email').addClass('confirm-email');
+                                        $('.check--email').addClass('check-active').html('вам на почту отправлен код подтверждения');
+                                        $('.change-button--email').html('подтвердить').attr('data-type', 'confirm-code');
+                                    }
+                                    if (dataFromDB.status === 'confirmed') {
+                                        console.log(dataFromDB.email);
+                                        console.log(dataFromDB);
+                                        // console.log('confirmed');
+                                        // console.log(dataFromDB.status);
+                                        $('.wrap--email').removeClass('wrap-hidden');
+                                        $('.input-wrap--email').removeClass('input-wrap-active');
+                                        $('.main-text--email').html(dataFromDB.email);
+                                        $('.confirm-email').attr('placeholder', 'введите email').val('').removeClass('confirm-email').addClass('input--email');
+                                        $('.change-button--email').html('изменить').attr('data-type', 'email');
+                                    }
+                                    if (dataFromDB.status === 'invalid-code')  {
+                                        // console.log('неверный код подтверждения');
+                                        // console.log(dataFromDB.status);
+                                        $('.check--email').addClass('check-active').html('неверный код подтверждения');
                                     }
                                 });
                         }

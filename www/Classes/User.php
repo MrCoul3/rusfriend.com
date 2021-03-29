@@ -1,8 +1,11 @@
 <?php
+
 namespace Classes;
 session_start();
+
 class User
 {
+
     protected $dbAccess = null;
     protected $requireFieldsforUsers = [
         'id',
@@ -21,6 +24,10 @@ class User
     public function __construct()
     {
         $this->dbAccess = new DbAccess();
+    }
+    function getCode()
+    {
+        return $code = rand(1000, 9999);
     }
 
     function getPassHash($userPassword)
@@ -100,10 +107,7 @@ class User
 
     public function checkLogin()
     {
-//        if (isset($_SESSION['user_id'])) {
-//            return $_SESSION['user_id'];
-//        }
-        if (isset($_SESSION['email'])) {
+        if (isset($_SESSION['user_id'])) {
             if (in_array($_SESSION['email'], $this->adminEmails)) {
                 $_SESSION['status'] = 'admin';
                 return 'admin';
@@ -116,14 +120,13 @@ class User
 
     public function logout()
     {
-//        $_SESSION = [];
         session_destroy();
         return true;
     }
 
     public function checkSkype()
     {
-        $query = "SELECT `skype` FROM `users` WHERE email = '{$_SESSION['email']}'";
+        $query = "SELECT `skype` FROM `users` WHERE id = '{$_SESSION['user_id']}'";
         $result = $this->dbAccess->query($query);
         $getSkype = mysqli_fetch_assoc($result);
         return $getSkype;
@@ -151,6 +154,7 @@ class User
         $_SESSION['username'] = $getUserInfo['name'];
         return $getUserInfo;
     }
+
     public function getAllUsersInfo()
     {
         $query = "SELECT `name`, `email`, `skype`, `status` FROM `users` WHERE 1=1";
@@ -159,11 +163,12 @@ class User
 //        $getUsersInfo = mysqli_fetch_assoc($result);
 //        return $getUsersInfo;
     }
+
     public function getUserSkype($request)
     {
         $query = "SELECT `skype` FROM `users` WHERE `name` = '{$request['name']}'";
         $result = $this->dbAccess->query($query);
-        $getUserSkype =  mysqli_fetch_assoc($result);
+        $getUserSkype = mysqli_fetch_assoc($result);
         return $getUserSkype;
     }
 
@@ -183,6 +188,7 @@ class User
         $result = $this->dbAccess->query($query);
         return 'blocked';
     }
+
     public function unBlockUser($request)
     {
         $query = "UPDATE `users` SET `status` = 'active' WHERE `email` = '{$request['email']}'";
@@ -194,45 +200,84 @@ class User
 
     public function changeSettings($request)
     {
-        $errors = [];
-
+//        var_dump($code);
+//        $code = 1234;
         if ($request['dataType'] === 'password') {
             // --------ПРОВЕРКА СТАРОГО ПАРОЛЯ
             $oldPasswordEncode = $this->getPassHash($request['old']); // шифрование введенного старого пароля
-            $query = "SELECT `{$request['dataType']}` FROM `users` WHERE `email` = '{$_SESSION['email']}'"; // запрос на получение пароля из БД
+            $newPasswordEncode = $this->getPassHash($request['data']); // шифрование введенного нового пароля
+            $query = "SELECT `{$request['dataType']}` FROM `users` WHERE `id` = '{$_SESSION['user_id']}'";
             $passwordFromDBEncode = mysqli_fetch_assoc($this->dbAccess->query($query));  // получение старого пароля из БД
-//            var_dump($oldPasswordEncode);
-//            var_dump($passwordFromDBEncode['password']);
+            // если пароли не совпадают возвращаем 'invalid password'
             if ($oldPasswordEncode !== $passwordFromDBEncode['password']) {
-                $errors[] = 'пароли не совпадают';
+                return 'invalid password';
+            } else {
+                $query = "UPDATE `users` SET `{$request['dataType']}` = '{$newPasswordEncode}' WHERE `id` = '{$_SESSION['user_id']}'";
+                $this->dbAccess->query($query);
+                return 'success';
             }
-        }
-        //                          `password`
-        //  "UPDATE `users` SET `{$request['dataType']}` = '{$request['data']}' WHERE `email` = '{$_SESSION['email']}'";
-        if (empty($errors)) {
-            $query = "UPDATE `users` SET `{$request['dataType']}` = '{$request['data']}' WHERE `email` = '{$_SESSION['email']}'";
-            $this->dbAccess->query($query);
-        }
 
-//        $checkQuery = "SELECT `{$request['dataType']}` FROM `users` WHERE `email` = '{$_SESSION['email']}'";
-//        $check = mysqli_fetch_assoc($this->dbAccess->query($checkQuery));
-        //---------------- проверка имени пользователя
-        if ($request['dataType'] === 'name') {
-            $response = [];
-            if ($check['name'] === $request['data']) {
-                $_SESSION['name'] = $check['name'];
+        } elseif ($request['dataType'] === 'email') {
+            $_SESSION['newEmail'] = $request['data'];
+//            var_dump($_SESSION['newEmail']);
+//            var_dump($request['dataType'] );
+            $code = rand(1000, 9999);
+            $_SESSION['code'] = $code;
+            mail($request['data'], 'Сonfirm your new email', $_SESSION['code']);
+            $response = [
+                'status' => 'unconfirmed',
+            ];
+            return $response;
+
+        } elseif ($request['dataType'] === 'confirm-code') {
+            // если введенный код совпадает
+            if ($request['data'] == $_SESSION['code']) {
+                // присваиваем значение email текущей сессии новый емаил
+                $_SESSION['email'] = $_SESSION['newEmail'];
+//                var_dump('email ' . $_SESSION['email']);
                 $response = [
-                    'name'=>$check['name'],
-                    'type'=>'name',
-                    'status'=>'success'
+                    'status' => 'confirmed',
+                    'email'=> $_SESSION['newEmail'],
                 ];
+                $query = "UPDATE `users` SET `email` = '{$_SESSION['email']}' WHERE `id` = '{$_SESSION['user_id']}'";
+                $this->dbAccess->query($query);
+                return $response;
+            } else {
+                $_SESSION['newEmail'] = '';
+                $response = [
+                    'status' => 'invalid-code',
+                ];
+            }
+            return $response;
+
+        } else {
+            $query = "UPDATE `users` SET `{$request['dataType']}` = '{$request['data']}' WHERE `id` = '{$_SESSION['user_id']}'";
+            $this->dbAccess->query($query);
+            $checkQuery = "SELECT `{$request['dataType']}` FROM `users` WHERE `id` = '{$_SESSION['user_id']}'";
+            $check = mysqli_fetch_all($this->dbAccess->query($checkQuery));
+            if ($check[0][0] === $request['data']) {
+
+
+                if ($request['dataType'] === 'name') {
+                    $_SESSION['name'] = $request['data'];
+                }
+
+//                if ($request['dataType'] === 'email') {
+//                    $_SESSION['email'] = $request['data'];
+//
+//                }
+
+                $response = [
+                    'name' => $request['data'],
+                    'type' => $request['dataType'],
+                    'status' => 'success'
+                ];
+
                 return $response;
             } else {
                 return 'error';
             }
         }
-
-
     }
 
 }

@@ -1,6 +1,6 @@
 <?php session_start();
 require('service.html');
-
+//var_dump($_SESSION['name']);
 if (isset($_SESSION['email'])) {
     $status = [
         'logout' => ['disable', 'disable'],
@@ -12,6 +12,9 @@ if (isset($_SESSION['email'])) {
         'login'=>['disable', 'disable']
     ];
 }
+require("vendor/autoload.php");
+$obj = new \Classes\User();
+$res = $obj->checkSkype();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,14 +122,14 @@ if (isset($_SESSION['email'])) {
             </div>
             <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
             <div class="setting-content-elem setting-content-elem--password">
-                <div class="wrap">
+                <div class="wrap wrap--pass">
                     <div class="flex">
                         <p class="placeholder">пароль</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
                     <div class="main-text main-text--password">**********</div>
                 </div>
-                <div class="input-wrap">
+                <div class="input-wrap input-wrap--pass">
                     <div class="check check--old-pass">неверный пароль</div>
                     <input class="input input--old-pas input--password" type="password" placeholder="введите старый пароль">
                     <input class="input input--new-pas input--password" type="password" placeholder="введите новый пароль">
@@ -139,18 +142,18 @@ if (isset($_SESSION['email'])) {
             </div>
             <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
             <div class="setting-content-elem setting-content-elem--email">
-                <div class="wrap">
+                <div class="wrap wrap--email">
                     <div class="flex">
                         <p class="placeholder">email</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
-                    <div class="main-text main-text--email">mr.coul@inbox.ru</div>
+                    <div class="main-text main-text--email"><?=$_SESSION['email']?></div>
                 </div>
-                <div class="input-wrap">
+                <div class="input-wrap input-wrap--email">
                     <div class="flex">
-                        <div class="check"></div>
+                        <div class="check check--email"></div>
                         <input class="input input--email" type="text" placeholder="введите новый email">
-                        <div class="button change-button">изменить</div>
+                        <div data-type='email' class="button change-button change-button--email">изменить</div>
                     </div>
                 </div>
             </div>
@@ -161,13 +164,13 @@ if (isset($_SESSION['email'])) {
                         <p class="placeholder">skype</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
-                    <div class="main-text main-text--skype">mrcoul3</div>
+                    <div class="main-text main-text--skype"><?=$res['skype']?></div>
                 </div>
                 <div class="input-wrap">
                     <div class="flex">
                         <div class="check"></div>
                         <input class="input input--skype" type="text" placeholder="введите skype">
-                        <div class="button change-button">изменить</div>
+                        <div data-type='skype' class="button change-button">изменить</div>
                     </div>
                 </div>
             </div>
@@ -201,7 +204,7 @@ if (isset($_SESSION['email'])) {
             <div class="user-login <?= $status['login'][1] ?>">
                 <img class="user-login__elem" src="images/icons/user-ico.svg" alt="">
                 <p class="user-login__elem user-login__elem--user-name">
-                    <?=$_SESSION['username']?>
+                    <?=$_SESSION['name']?>
                 </p>
                 <img class="user-login__elem"
                                                                                             src="images/icons/user-arrow.svg"

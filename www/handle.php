@@ -250,5 +250,5 @@ if ($request['method'] === 'unBlockUser') {
 
 if ($request['method'] === 'changeSettings') {
     $result = $obj->changeSettings($request);
-//    echo json_encode($result);
+    echo json_encode($result);
 }
