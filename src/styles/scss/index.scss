@@ -261,7 +261,7 @@
           &__elem {
             position: absolute;
             transition: all .3s ease;
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
             @include mediaWidth(767) {
               display: none;
@@ -498,6 +498,7 @@
 
     &__element {
       &--left {
+        opacity: 0;
         background-image: url("../images/index/about_photo.png");
         background-repeat: no-repeat;
         background-size: cover;
@@ -538,6 +539,7 @@
         }
 
         .title {
+          opacity: 0;
           font-weight: 300;
           margin-left: 300px;
           @include mediaWidth(1024) {
@@ -549,6 +551,7 @@
         }
 
         .about-social-net {
+          opacity: 0;
           display: flex;
           justify-content: space-between;
           width: 80px;
@@ -584,6 +587,7 @@
         }
 
         .slogan {
+          opacity: 0;
           font-weight: 600;
           //letter-spacing: 0.1em;
           position: relative;

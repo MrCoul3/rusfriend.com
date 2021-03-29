@@ -190,4 +190,50 @@ class User
         return 'active';
     }
 
+    // ------------- SETTINGS
+
+    public function changeSettings($request)
+    {
+        $errors = [];
+
+        if ($request['dataType'] === 'password') {
+            // --------ПРОВЕРКА СТАРОГО ПАРОЛЯ
+            $oldPasswordEncode = $this->getPassHash($request['old']); // шифрование введенного старого пароля
+            $query = "SELECT `{$request['dataType']}` FROM `users` WHERE `email` = '{$_SESSION['email']}'"; // запрос на получение пароля из БД
+            $passwordFromDBEncode = mysqli_fetch_assoc($this->dbAccess->query($query));  // получение старого пароля из БД
+//            var_dump($oldPasswordEncode);
+//            var_dump($passwordFromDBEncode['password']);
+            if ($oldPasswordEncode !== $passwordFromDBEncode['password']) {
+                $errors[] = 'пароли не совпадают';
+            }
+        }
+        //                          `password`
+        //  "UPDATE `users` SET `{$request['dataType']}` = '{$request['data']}' WHERE `email` = '{$_SESSION['email']}'";
+        if (empty($errors)) {
+            $query = "UPDATE `users` SET `{$request['dataType']}` = '{$request['data']}' WHERE `email` = '{$_SESSION['email']}'";
+            $this->dbAccess->query($query);
+        }
+
+//        $checkQuery = "SELECT `{$request['dataType']}` FROM `users` WHERE `email` = '{$_SESSION['email']}'";
+//        $check = mysqli_fetch_assoc($this->dbAccess->query($checkQuery));
+        //---------------- проверка имени пользователя
+        if ($request['dataType'] === 'name') {
+            $response = [];
+            if ($check['name'] === $request['data']) {
+                $_SESSION['name'] = $check['name'];
+                $response = [
+                    'name'=>$check['name'],
+                    'type'=>'name',
+                    'status'=>'success'
+                ];
+                return $response;
+            } else {
+                return 'error';
+            }
+        }
+
+
+    }
+
 }
+

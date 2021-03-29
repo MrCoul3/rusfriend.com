@@ -1,6 +1,11 @@
 #mysite {
   .settings {
     visibility: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1000;
 
     .settings-main-frame {
       width: 400px;

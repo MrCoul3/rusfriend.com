@@ -4,7 +4,7 @@
     <title>Курсы</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
-  <link href="styles/app.css" rel="stylesheet" integrity="sha384-B8MmHoOzpFSeRZ0dMpvejYg5l/bbEfhg6EVjCUjjVqCHxwCiVpFlEt4nbWzm7s7/" crossorigin="anonymous"></head>
+  <link href="styles/app.css" rel="stylesheet"></head>
   <body id="mysite">
 <section class="login-form authorization-forms">
   <div class="form-frame">
@@ -90,7 +90,7 @@
           <div class="flex">
             <div class="check"></div>
             <input class="input input--name" type="text" placeholder="введите новое имя">
-            <div class="button change-button">изменить</div>
+            <div class="button change-button" data-type="name">изменить</div>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@
           <div class="flex">
             <div class="check"></div>
             <input class="input input--repeat-new-pas input--password" type="password" placeholder="повторите новый пароль">
-            <div class="button change-button">изменить</div>
+            <div class="button change-button change-button--password" data-type="password">изменить</div>
           </div>
         </div>
       </div>
@@ -215,5 +215,5 @@
             <!--img(src="../images/icons/tiktok.svg")--></a></div>
       </div>
     </footer>
-  <script type="text/javascript" src="scripts/app.js" integrity="sha384-ct+ucAetnaniFWJEbu+iwnV63W8D+SbCzfGBCXl/2+LPNTMnbKwl3HD+Sf8U79aV" crossorigin="anonymous"></script></body>
+  <script type="text/javascript" src="scripts/app.js"></script></body>
 </html>

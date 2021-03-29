@@ -12,7 +12,7 @@ $(document).ready(function () {
         coloredNavMenuElems();
 
         openUserMenu();
-        openSettings();
+
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -179,15 +179,7 @@ $(document).ready(function () {
             //     e.preventDefault();
             // });
         }
-
-        // ----------- открыть настройки пользователя
-        function openSettings() {
-            $('.user-login-menu__elem--settings').click(function () {
-                $('.settings').addClass('settings-active');
-            })
-        }
-
-        // -----------------------------
+        // -----------------------------------------
 
 
     }

@@ -2,7 +2,7 @@
 require("vendor/autoload.php");
 $request = json_decode(file_get_contents('php://input'), true);
 //echo "<pre>";
-//print_r($request);
+//print_r($request['method']);
 //echo "</pre>";
 
 $obj = new \Classes\User();
@@ -244,4 +244,11 @@ if ($request['method'] === 'blockUser') {
 if ($request['method'] === 'unBlockUser') {
     $result = $obj->unBlockUser($request);
     echo $result;
+}
+
+// ------------- SETTINGS --------------- \\
+
+if ($request['method'] === 'changeSettings') {
+    $result = $obj->changeSettings($request);
+//    echo json_encode($result);
 }

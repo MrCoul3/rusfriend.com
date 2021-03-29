@@ -9,7 +9,6 @@ $(document).ready(function () {
 
 
         // ------------- функционал кнопки "подробнее про нашу школу"
-        // задний фон затемнение 
         $('.about-school-btn--play-btn').click(function () {
             $("#mysite").addClass("body-fixed");
             $('.about-school-video').addClass('detailed-about-school-active');
@@ -50,7 +49,6 @@ $(document).ready(function () {
             autoplayTimeout: 3000
         });
 
-        //подредактировать анимацию
 
         //ANIMATION-----------------------------------
         // анимация главного баннера на главной странице
@@ -58,7 +56,7 @@ $(document).ready(function () {
         animateToOrigin($(".top-index-second-title"));
         animateToOrigin($(".top-index-first-title"));
         document.addEventListener("scroll", function (e) {
-            // console.log(window.pageYOffset );
+            console.log(window.pageYOffset );
 
             // делает header белым при прокрутке больше 50px
             if (mediaQuerySmall.matches) {
@@ -72,19 +70,18 @@ $(document).ready(function () {
                 }
             }
 
-
             if (mediaQueryCartDesktop.matches) {
                 // анимация for-whom
-                if (window.pageYOffset > 350) {
+                if (window.pageYOffset > 280) {
                     animateToOrigin($(".for-whom-title"))
                 }
                 // анимация offers
-                if (window.pageYOffset > 1000) {
+                if (window.pageYOffset > 900) {
                     animateToOrigin($(".offers-title"));
                     animateToOrigin($(".offers-slogan"));
                 }
-                    // вращение карточек
-                if (window.pageYOffset > 1150) {
+
+                if (window.pageYOffset > 1100) {
                     $(".offers-cards-conteiner").animate({
                         'opacity': 1,
                         'marginTop': 0
@@ -101,20 +98,20 @@ $(document).ready(function () {
                 if (window.pageYOffset > 1700) {
                     animateToOrigin($(".about-items .a"));
                 }
-                if (window.pageYOffset > 1800) {
+                if (window.pageYOffset > 1725) {
                     animateToOrigin($(".about-items .b"));
                 }
-                if (window.pageYOffset > 1900) {
+                if (window.pageYOffset > 1750) {
                     animateToOrigin($(".about-items .c"));
                 }
-                if (window.pageYOffset > 2000) {
+                if (window.pageYOffset > 1800) {
                     animateToOrigin($(".about-items .d"));
                 }
-                if (window.pageYOffset > 2100) {
+                if (window.pageYOffset > 1900) {
                     animateToOrigin($(".detail-slogan"));
                 }
                 //анимация  reviews
-                if (window.pageYOffset > 2500) {
+                if (window.pageYOffset > 2250) {
                     animateToOrigin($(".reviews-title"));
                 }
             }

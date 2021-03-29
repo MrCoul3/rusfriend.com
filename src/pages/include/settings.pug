@@ -17,7 +17,7 @@ section.settings
                     div.flex
                         div.check
                         input(type='text' placeholder='введите новое имя').input.input--name
-                        div.button.change-button изменить
+                        div(data-type='name').button.change-button изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--password
@@ -33,7 +33,7 @@ section.settings
                     div.flex
                         div.check
                         input(type='password' placeholder='повторите новый пароль').input.input--repeat-new-pas.input--password
-                        div.button.change-button изменить
+                        div(data-type='password').button.change-button.change-button--password изменить
             div.settings-main-frame__elem.settings-main-frame__elem--decor-line.decor-line
 
             div.setting-content-elem.setting-content-elem--email
