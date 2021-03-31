@@ -6,6 +6,10 @@
       top: 265px;
       text-align: center;
       color: $colorLightBlack;
+      @include mediaWidth(1024) {
+        top: 220px;
+      }
+
     }
   }
 }

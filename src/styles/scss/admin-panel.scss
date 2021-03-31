@@ -1,15 +1,17 @@
 // стили body (<body class="admin" id="mysite">)
-.admin {
+//.admin {
+//  padding: 0 20px;
+//}
+.admin-inner {
+  max-width: 1024px;
+  margin: 0 auto;
+  align-items: center;
   padding: 0 20px;
 }
 
 #mysite {
   // header + nav-menu + footer
-  .admin-inner {
-    max-width: 1024px;
-    margin: 0 auto;
-    align-items: center;
-  }
+
 
   .admin-header {
     justify-content: space-between;

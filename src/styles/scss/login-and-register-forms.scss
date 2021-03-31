@@ -47,13 +47,19 @@
                 }
             }
             .logo-mobile-ver {
-                @include mediaWidth(767) {
+                @include mediaWidth(1024) {
                     background-image: url("../images/icons/logo.svg");
                     background-repeat: no-repeat;
                     background-size: contain;
-                    width: 75.33px;
+                    position: relative;
+                    top: 6px;
+                    width: 57.33px;
                     height: 53px;
                     margin-right: 24.8px;
+                }
+                @include mediaWidth(767) {
+                    width: 75.33px;
+                    top: 0 ;
                 }
             }
 
@@ -206,7 +212,7 @@
 
     .login-form {
         display: none;
-        z-index: 1000;
+        z-index: 1100;
 
         .form-frame {
             width: 364px;

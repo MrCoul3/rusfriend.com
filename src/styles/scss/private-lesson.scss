@@ -6,6 +6,12 @@
       top: 265px;
       text-align: center;
       color: $colorLightBlack;
+      @include mediaWidth(1024) {
+        top: 220px;
+      }
+      @include mediaWidth(767) {
+        top: 85px;
+      }
     }
     .privateless {
       display: none;

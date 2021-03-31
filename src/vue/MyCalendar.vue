@@ -129,7 +129,7 @@
                 typeOfLesson: null,
                 detailUserName: null,
                 detailSkype: null,
-                preloader: true,
+                preloader: false,
                 cancelLessShow: false,
                 showBookCalendar: false,
             }

@@ -12,7 +12,7 @@ if ($request['method'] == 'requireAdminComponents') {
 </style>
 <body class="admin" id="mysite">
 
-<header class="admin-header"><a class="header-logo" href="index.php"></a>
+<header class="admin-header admin-inner"><a class="header-logo" href="index.php"></a>
     <h1 class="header-title">Светик, приветик!</h1>
     <div class="btn-exit">Выход</div>
 </header>

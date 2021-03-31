@@ -283,13 +283,18 @@
                     });
             },
             chooseTime: function (event) {
-                // console.log(event.target);
+
+
                 let selectedTime = event.target;
-                if (selectedTime.className.includes('selected-time')) {
-                    selectedTime.classList.remove('selected-time');
-                } else {
-                    selectedTime.classList.add('selected-time');
+                if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
+                    console.log(event.target);
+                    if (selectedTime.className.includes('selected-time')) {
+                        selectedTime.classList.remove('selected-time');
+                    } else {
+                        selectedTime.classList.add('selected-time');
+                    }
                 }
+
 
                 selectedTimeArray = [];
                 console.log(selectedTimeArray)

@@ -1,17 +1,29 @@
 
 #mysite {
   .your-calendar {
-    display: none;
     display: block;
     padding-top: 300px;
     max-width: 1024px;
-    width: 100%;
+    //width: 100%;
     margin: 0 auto 20px;
+    @include mediaWidth(1024) {
+      padding-top: 250px;
+    }
+    @include mediaWidth(767) {
+      padding-top: 85px;
+    }
     &__element {
       &--main-title {
         margin: 0 auto;
         text-align: center;
         color: $colorLightBlack;
+        @include mediaWidth(767) {
+          font-size: 12px;
+          margin-bottom: 5px;
+        }
+        @include mediaWidth(320) {
+          font-size: 10px;
+        }
       }
       &--instruction {
 
@@ -24,6 +36,9 @@
     .instruction {
       display: flex;
       justify-content: center;
+      @include mediaWidth(767) {
+        display: none;
+      }
       &__element {
         font-size: 16px;
         color: rgba(0, 0, 0, 0.35);
@@ -52,9 +67,27 @@
             align-items: center;
             max-width: 246px;
             width: 100%;
+            @include mediaWidth(1024) {
+              width: 215px;
+
+            }
+            @include mediaWidth(767) {
+              width: auto;
+            }
             .month {
               margin-left: 10px;
               color: $colorLightBlack;
+              @include mediaWidth(1024) {
+                font-size: 14px;
+              }
+              @include mediaWidth(767) {
+                font-size: 12px;
+                margin-left: 0;
+              }
+              @include mediaWidth(320) {
+                font-size: 10px;
+              }
+
             }
 
             .month-btn {
@@ -62,7 +95,13 @@
               height: 27px;
               background-size: contain;
               cursor: pointer;
-
+              background-repeat: no-repeat;
+              @include mediaWidth(1024) {
+                height: 24px;
+              }
+              @include mediaWidth(767) {
+                width: 24px;
+              }
               &--left-btn {
                 background-image: url("../images/icons/month-left-btn.svg");
               }
@@ -75,6 +114,9 @@
           &--title {
             color: $colorLightBlack;
             font-weight: 600;
+            @include mediaWidth(767) {
+              display: none;
+            }
           }
           &--time-zone {
             font-family: 'Montserrat', sans-serif;
@@ -89,6 +131,18 @@
             font-size: 16px;
             line-height: 19px;
             color: rgba(0, 0, 0, 0.5);
+            @include mediaWidth(1024) {
+              font-size: 12px;
+              width: 215px;
+            }
+            @include mediaWidth(767) {
+              width: 165px;
+              height: 19px;
+            }
+            @include mediaWidth(320) {
+              font-size: 10px;
+              width: 135px;
+            }
           }
         }
       }
@@ -129,11 +183,21 @@
           display: flex;
           justify-content: space-evenly;
           &__item {
-
             max-width: 130px;
             width: 100%;
             text-align: center;
-
+            @include mediaWidth(1024) {
+              font-size: 12px;
+            }
+            @include mediaWidth(767) {
+            }
+            @include mediaWidth(537) {
+              text-align: left;
+              width: 28px;
+            }
+            @include mediaWidth(320) {
+              font-size: 10px;
+            }
             div {
               margin: 20px 0;
               color: #006660;
@@ -145,11 +209,21 @@
                 border-radius: 5px;
                 color: white;
               }
+              @include mediaWidth(1024) {
+                &:hover {
+                  background: transparent;
+                  color: #006660;
+                }
+              }
+              @include mediaWidth(537) {
+                line-height: 10px;
+                padding: 3px 0px;
+              }
             }
             .selected-time {
-              background: $colorRed;
+              background: $colorRed!important;
               border-radius: 5px;
-              color: white;
+              color: white!important;
             }
           }
         }
@@ -181,17 +255,27 @@
         width: 200px;
         height: 45px;
         line-height: 43px;
-        margin: 0 auto;
+        margin: 20px auto;
       }
       .tegs {
         display: flex;
         justify-content: center;
         margin-top: 35px;
         padding-bottom: 20px;
+        @include mediaWidth(1024) {
+          font-size: 14px;
+        }
+        @include mediaWidth(767) {
+          font-size: 12px;
+          padding: 0 10px 20px;
+        }
         &__element {
           display: flex;
           align-items: center;
           margin-right: 20px;
+          @include mediaWidth(767) {
+            margin-right: 5px;
+          }
           .circle {
             width: 14px;
             height: 14px;
@@ -199,6 +283,11 @@
             margin-right: 6px;
             position: relative;
             top: 1px;
+            @include mediaWidth(767) {
+              width: 10px;
+              height: 10px;
+              border-radius: 10px;
+            }
             &--booked {
               background: #34CFBE;
             }

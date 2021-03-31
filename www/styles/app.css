@@ -1081,7 +1081,6 @@
   display: block;
 }
 #mysite .header__overhead .service-btns .btn-login {
-  display: none;
   font-size: 14px;
   line-height: 23px;
   width: 96px;
@@ -1097,7 +1096,7 @@
       user-select: none;
 }
 #mysite .header__overhead .service-btns .user-login {
-  display: flex;
+  display: none;
   width: 96px;
   cursor: pointer;
   position: relative;
@@ -1449,14 +1448,22 @@
     font-size: 20px;
   }
 }
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
   #mysite .authorization-forms .container .logo-mobile-ver {
     background-image: url(../images/icons/logo.svg);
     background-repeat: no-repeat;
     background-size: contain;
-    width: 75.33px;
+    position: relative;
+    top: 6px;
+    width: 57.33px;
     height: 53px;
     margin-right: 24.8px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .authorization-forms .container .logo-mobile-ver {
+    width: 75.33px;
+    top: 0;
   }
 }
 #mysite .authorization-forms .container .form-close-btn {
@@ -1581,7 +1588,7 @@
 }
 #mysite .login-form {
   display: none;
-  z-index: 1000;
+  z-index: 1100;
 }
 #mysite .login-form .form-frame {
   width: 364px;
@@ -1984,6 +1991,7 @@
 #mysite .about-page .about__element--right {
   display: flex;
   flex-direction: column;
+  color: #455A64;
 }
 #mysite .about-page .about__element--right .about-title {
   opacity: 0;
@@ -2353,6 +2361,16 @@
   text-align: center;
   color: #455A64;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .private-lesson .title {
+    top: 220px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .private-lesson .title {
+    top: 85px;
+  }
+}
 #mysite .private-lesson .privateless {
   display: none;
   padding-top: 300px;
@@ -2377,16 +2395,19 @@
   text-align: center;
   color: #455A64;
 }
-
-.admin {
-  padding: 0 20px;
+@media screen and (max-width: 1024px) {
+  #mysite .speaking-club .title {
+    top: 220px;
+  }
 }
 
-#mysite .admin-inner {
+.admin-inner {
   max-width: 1024px;
   margin: 0 auto;
   align-items: center;
+  padding: 0 20px;
 }
+
 #mysite .admin-header {
   justify-content: space-between;
   margin-top: 20px;
@@ -3019,21 +3040,45 @@
 }
 
 #mysite .your-calendar {
-  display: none;
   display: block;
   padding-top: 300px;
   max-width: 1024px;
-  width: 100%;
   margin: 0 auto 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar {
+    padding-top: 250px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar {
+    padding-top: 85px;
+  }
 }
 #mysite .your-calendar__element--main-title {
   margin: 0 auto;
   text-align: center;
   color: #455A64;
 }
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar__element--main-title {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+}
+@media screen and (max-width: 320px) {
+  #mysite .your-calendar__element--main-title {
+    font-size: 10px;
+  }
+}
 #mysite .your-calendar .instruction {
   display: flex;
   justify-content: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .instruction {
+    display: none;
+  }
 }
 #mysite .your-calendar .instruction__element {
   font-size: 16px;
@@ -3063,15 +3108,52 @@
   max-width: 246px;
   width: 100%;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
+    width: 215px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
+    width: auto;
+  }
+}
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
   margin-left: 10px;
   color: #455A64;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
+    font-size: 12px;
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 320px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
+    font-size: 10px;
+  }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn {
   width: 27px;
   height: 27px;
   background-size: contain;
   cursor: pointer;
+  background-repeat: no-repeat;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn {
+    height: 24px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn {
+    width: 24px;
+  }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn--left-btn {
   background-image: url(../images/icons/month-left-btn.svg);
@@ -3082,6 +3164,11 @@
 #mysite .your-calendar .calendar-app .calendar-app-header__element--title {
   color: #455A64;
   font-weight: 600;
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--title {
+    display: none;
+  }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
   font-family: "Montserrat", sans-serif;
@@ -3094,6 +3181,24 @@
   font-size: 16px;
   line-height: 19px;
   color: rgba(0, 0, 0, 0.5);
+}
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
+    font-size: 12px;
+    width: 215px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
+    width: 165px;
+    height: 19px;
+  }
+}
+@media screen and (max-width: 320px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
+    font-size: 10px;
+    width: 135px;
+  }
 }
 #mysite .your-calendar .calendar-app .calendar-app-content {
   display: flex;
@@ -3138,6 +3243,22 @@
   width: 100%;
   text-align: center;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item {
+    font-size: 12px;
+  }
+}
+@media screen and (max-width: 537px) {
+  #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item {
+    text-align: left;
+    width: 28px;
+  }
+}
+@media screen and (max-width: 320px) {
+  #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item {
+    font-size: 10px;
+  }
+}
 #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item div {
   margin: 20px 0;
   color: #006660;
@@ -3150,10 +3271,22 @@
   border-radius: 5px;
   color: white;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item div:hover {
+    background: transparent;
+    color: #006660;
+  }
+}
+@media screen and (max-width: 537px) {
+  #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item div {
+    line-height: 10px;
+    padding: 3px 0px;
+  }
+}
 #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .selected-time {
-  background: #FF3E28;
+  background: #FF3E28 !important;
   border-radius: 5px;
-  color: white;
+  color: white !important;
 }
 #mysite .your-calendar .calendar-app .calendar-app-content td, #mysite .your-calendar .calendar-app .calendar-app-content th {
   width: 2%;
@@ -3178,7 +3311,7 @@
   width: 200px;
   height: 45px;
   line-height: 43px;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 #mysite .your-calendar .calendar-app .tegs {
   display: flex;
@@ -3186,10 +3319,26 @@
   margin-top: 35px;
   padding-bottom: 20px;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .calendar-app .tegs {
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .tegs {
+    font-size: 12px;
+    padding: 0 10px 20px;
+  }
+}
 #mysite .your-calendar .calendar-app .tegs__element {
   display: flex;
   align-items: center;
   margin-right: 20px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .tegs__element {
+    margin-right: 5px;
+  }
 }
 #mysite .your-calendar .calendar-app .tegs__element .circle {
   width: 14px;
@@ -3198,6 +3347,13 @@
   margin-right: 6px;
   position: relative;
   top: 1px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .tegs__element .circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+  }
 }
 #mysite .your-calendar .calendar-app .tegs__element .circle--booked {
   background: #34CFBE;

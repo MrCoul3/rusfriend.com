@@ -322,7 +322,7 @@
                 }
 
                 .btn-login {
-                     display: none;
+                     //display: none;
                     font-size: 14px;
                     line-height: 23px;
                     width: 96px;
@@ -348,8 +348,8 @@
                 //    display: none;
                 //}
                 .user-login {
-                    display: flex;
-                    //display: none;
+                    //display: flex;
+                    display: none;
                     width: 96px;
                     cursor: pointer;
                     position: relative;

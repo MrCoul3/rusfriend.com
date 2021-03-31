@@ -2637,13 +2637,16 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       });
     },
     chooseTime: function chooseTime(event) {
-      // console.log(event.target);
       var selectedTime = event.target;
 
-      if (selectedTime.className.includes('selected-time')) {
-        selectedTime.classList.remove('selected-time');
-      } else {
-        selectedTime.classList.add('selected-time');
+      if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
+        console.log(event.target);
+
+        if (selectedTime.className.includes('selected-time')) {
+          selectedTime.classList.remove('selected-time');
+        } else {
+          selectedTime.classList.add('selected-time');
+        }
       }
 
       selectedTimeArray = [];
@@ -2942,7 +2945,7 @@ __webpack_require__.r(__webpack_exports__);
       typeOfLesson: null,
       detailUserName: null,
       detailSkype: null,
-      preloader: true,
+      preloader: false,
       cancelLessShow: false,
       showBookCalendar: false
     };
