@@ -20,6 +20,7 @@ $(document).ready(function () {
             if (!$(".login-form").hasClass('login-form-active')) {
                 $(".login-form").addClass('login-form-active');
                 $("#mysite").addClass("body-fixed");
+                // $('.header__overhead').addClass('header-fixed');
                 // $('.login-form .form-frame').animate({
                 //     'width': '364px',
                 //     'height': '364px'
@@ -38,6 +39,7 @@ $(document).ready(function () {
                 $(".register-form").removeClass('register-form-active');
             }
             $("#mysite").removeClass("body-fixed");
+            // $('.header__overhead').removeClass('header-fixed');
             $(".login-invalid").addClass("login-invalid--disable");
         });
     }

@@ -1,30 +1,44 @@
 import axios from 'axios';
+
 $(document).ready(function () {
         console.log('settings init');
+
         // -------------------------
-        moveSettingWindow();
+        // moveSettingWindow();
         openSettings();
         closeSettings();
         changeSettings();
 
-        // ----------- функционал перемещения меню настроек по экрану
-        function moveSettingWindow() {
-            let Draggable = require('Draggable');
-            let header = document.querySelector('.settings-main-frame__elem--header');
-            let frame = document.querySelector('.settings-main-frame');
-            let options = {
-                handle: header,
-            };
-            new Draggable(frame, options);
-        }
+        // $(window).resize(function () {
+        //         moveSettingWindow();
+        // });
 
-        // -----------------------------------------
+        // // ----------- функционал перемещения меню настроек по экрану
+        // function moveSettingWindow() {
+        //     let Draggable
+        //     if ($(window).width() > 767) {
+        //          Draggable = require('Draggable');
+        //     } else {
+        //         $('.settings-main-frame').attr('style', '');
+        //         Draggable = null;
+        //     }
+        //     let header = document.querySelector('.settings-main-frame__elem--header');
+        //     let frame = document.querySelector('.settings-main-frame');
+        //     let options = {
+        //         handle: header,
+        //     };
+        //     new Draggable(frame, options);
+        // }
+        //
+        // // -----------------------------------------
 
         // ----------- открыть настройки пользователя
         function openSettings() {
             $('.user-login-menu__elem--settings').click(function () {
                 $("#mysite").addClass("body-fixed");
+                $('.settings-main-frame').addClass('settings-active');
                 $('.settings').addClass('settings-active');
+
             })
         }
 
@@ -34,6 +48,7 @@ $(document).ready(function () {
         function closeSettings() {
             $('.close-btn--settings').click(function () {
                 $("#mysite").removeClass("body-fixed");
+                $('.settings-main-frame').removeClass('settings-active');
                 $('.settings').removeClass('settings-active');
             });
         }
@@ -146,7 +161,7 @@ $(document).ready(function () {
                                     }
                                 });
 
-                        // ---------------------------------------
+                            // ---------------------------------------
 
                         } else {
                             // ----- ИЗМЕНЕНИЕ ОСТАЛЬНЫХ ПОЛЕЙ (имя, email, skype)
@@ -169,7 +184,7 @@ $(document).ready(function () {
                                         if (dataFromDB.type !== 'email') {
                                             wrap.classList.remove('wrap-hidden');
                                             inputWrap.classList.remove('input-wrap-active')
-                                            let nameOfFiled =  e.target.parentNode.parentNode.previousElementSibling.lastElementChild
+                                            let nameOfFiled = e.target.parentNode.parentNode.previousElementSibling.lastElementChild
                                             // console.log(nameOfFiled);
                                             nameOfFiled.innerHTML = dataFromDB.name;
                                             // при смене имени меняется имя в шапке сайта и в поле настроек
@@ -199,7 +214,7 @@ $(document).ready(function () {
                                         $('.confirm-email').attr('placeholder', 'введите email').val('').removeClass('confirm-email').addClass('input--email');
                                         $('.change-button--email').html('изменить').attr('data-type', 'email');
                                     }
-                                    if (dataFromDB.status === 'invalid-code')  {
+                                    if (dataFromDB.status === 'invalid-code') {
                                         // console.log('неверный код подтверждения');
                                         // console.log(dataFromDB.status);
                                         $('.check--email').addClass('check-active').html('неверный код подтверждения');

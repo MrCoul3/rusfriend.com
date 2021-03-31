@@ -131,9 +131,10 @@
 
         .label-email {
             background-image: url("../images/icons/email-ico.svg");
-            width: 21px;
+            width: 20px;
             height: 17px;
             position: absolute;
+            background-size: contain;
             @include mediaWidth(767) {
                 width: 30px;
                 height: 24px;

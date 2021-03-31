@@ -60,7 +60,7 @@ $(document).ready(function () {
 
             // делает header белым при прокрутке больше 50px
             if (mediaQuerySmall.matches) {
-                console.log('small')
+                // console.log('small')
                 if (window.pageYOffset > 50) {
                     // $('.header__overhead').css('background', '#fff')
                     $('.header__overhead').addClass('header-menu-white-on-mobile')

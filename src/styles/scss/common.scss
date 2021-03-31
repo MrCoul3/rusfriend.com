@@ -3,18 +3,23 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 .body-fixed {
-    //position: fixed!important;
-    //padding-left: 10px;
-    //left: 0;
-    //right: 0;
     overflow: hidden;
     padding-right: 16px;
+    @include mediaWidth(767){
+        padding-right: 0;
+    }
 }
+
+//// при открытии login-form сдвиг вправо из-за отсутствия скролбара
+//.header-fixed {
+//    position: relative;
+//    right: 15px;
+//}
 
 .inner {
     max-width: 1024px;
     margin: 0 auto;
-    width: 100%;
+    //width: 100%;
 }
 .main-title {
     text-align: center;
@@ -240,9 +245,9 @@
         width: 100%;
         top: 0;
         padding: 0;
-        z-index: 900;
+        z-index: 1000;
         @include mediaWidth(767) {
-            position: fixed;
+            //position: fixed;
         }
         &__overhead {
             background-image: url("../images/common/Lang-School.png");
@@ -317,7 +322,7 @@
                 }
 
                 .btn-login {
-                     //display: none;
+                     display: none;
                     font-size: 14px;
                     line-height: 23px;
                     width: 96px;
@@ -343,8 +348,8 @@
                 //    display: none;
                 //}
                 .user-login {
-                    //display: flex;
-                    display: none;
+                    display: flex;
+                    //display: none;
                     width: 96px;
                     cursor: pointer;
                     position: relative;

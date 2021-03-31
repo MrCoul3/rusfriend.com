@@ -396,7 +396,8 @@
   bottom: 0;
   background: #FFFFFF;
   opacity: 0.8;
-  width: 460px;
+  max-width: 460px;
+  width: 100%;
   height: 60px;
   text-align: center;
   padding-top: 18px;
@@ -498,6 +499,7 @@
 }
 @media screen and (max-width: 767px) {
   #mysite .about__element--left {
+    opacity: 1;
     order: 2;
     margin: 0 auto;
     width: 100%;
@@ -531,6 +533,7 @@
 @media screen and (max-width: 767px) {
   #mysite .about__element--right .title {
     margin-bottom: 15px;
+    opacity: 1;
   }
 }
 #mysite .about__element--right .about-social-net {
@@ -549,6 +552,7 @@
 }
 @media screen and (max-width: 767px) {
   #mysite .about__element--right .about-social-net {
+    opacity: 1;
     margin: 50px auto !important;
     order: 10;
   }
@@ -585,6 +589,7 @@
 }
 @media screen and (max-width: 767px) {
   #mysite .about__element--right .slogan {
+    opacity: 1;
     white-space: normal;
     letter-spacing: normal;
     margin-bottom: 28px;
@@ -741,11 +746,15 @@
   overflow: hidden;
   padding-right: 16px;
 }
+@media screen and (max-width: 767px) {
+  .body-fixed {
+    padding-right: 0;
+  }
+}
 
 .inner {
   max-width: 1024px;
   margin: 0 auto;
-  width: 100%;
 }
 
 .main-title {
@@ -994,12 +1003,7 @@
   width: 100%;
   top: 0;
   padding: 0;
-  z-index: 900;
-}
-@media screen and (max-width: 767px) {
-  #mysite .header {
-    position: fixed;
-  }
+  z-index: 1000;
 }
 #mysite .header__overhead {
   background-image: url(../images/common/Lang-School.png);
@@ -1077,6 +1081,7 @@
   display: block;
 }
 #mysite .header__overhead .service-btns .btn-login {
+  display: none;
   font-size: 14px;
   line-height: 23px;
   width: 96px;
@@ -1092,7 +1097,7 @@
       user-select: none;
 }
 #mysite .header__overhead .service-btns .user-login {
-  display: none;
+  display: flex;
   width: 96px;
   cursor: pointer;
   position: relative;
@@ -1511,9 +1516,10 @@
 }
 #mysite .authorization-forms .label-email {
   background-image: url(../images/icons/email-ico.svg);
-  width: 21px;
+  width: 20px;
   height: 17px;
   position: absolute;
+  background-size: contain;
 }
 @media screen and (max-width: 767px) {
   #mysite .authorization-forms .label-email {
@@ -3282,16 +3288,31 @@
 #mysite .student-lessons {
   padding-top: 250px;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons {
+    padding-top: 200px;
+  }
+}
 @media screen and (max-width: 767px) {
   #mysite .student-lessons {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 65px;
+    padding-bottom: 0px;
   }
 }
 #mysite .student-lessons .main-title {
   text-align: center;
   font-weight: 300;
   margin: 30px 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .main-title {
+    font-size: 22px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .decor-line {
+    margin: 0 50px;
+  }
 }
 #mysite .student-lessons .block {
   display: flex;
@@ -3302,10 +3323,28 @@
   box-sizing: border-box;
   padding: 20px 0;
 }
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block {
+    flex-direction: column;
+    max-height: none;
+  }
+}
 #mysite .student-lessons .block__elem--title {
   width: 210px;
-  font-weight: 600;
+  font-weight: 500;
   color: #455A64;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .block__elem--title {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block__elem--title {
+    font-size: 14px;
+    width: auto;
+    margin-bottom: 15px;
+  }
 }
 #mysite .student-lessons .block__elem--decor-line-vertical {
   position: relative;
@@ -3314,6 +3353,11 @@
   height: 100%;
   width: 1px;
   background: linear-gradient(360deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.05) 100%);
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block__elem--decor-line-vertical {
+    display: none;
+  }
 }
 #mysite .student-lessons .block__elem--content {
   max-height: 140px;
@@ -3324,9 +3368,27 @@
   line-height: 25px;
   position: relative;
 }
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block__elem--content {
+    max-height: none;
+    height: auto;
+    width: auto;
+  }
+}
 #mysite .student-lessons .block__elem--content .content-elem {
   margin-right: 20px;
   font-family: Montserrat, sans-serif;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .block__elem--content .content-elem {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block__elem--content .content-elem {
+    margin-right: 0;
+    font-size: 12px;
+  }
 }
 
 #mysite .settings {
@@ -3335,9 +3397,17 @@
   height: 100vh;
   position: absolute;
   background: rgba(0, 0, 0, 0.25);
-  z-index: 1000;
+  z-index: 1001;
+}
+@media screen and (max-width: 767px) {
+  #mysite .settings {
+    z-index: 900;
+    height: 0;
+    background: transparent;
+  }
 }
 #mysite .settings .settings-main-frame {
+  top: 50px;
   width: 400px;
   overflow: scroll;
   position: absolute;
@@ -3354,15 +3424,23 @@
 #mysite .settings .settings-main-frame::-webkit-scrollbar {
   width: 0px;
 }
+@media screen and (max-width: 767px) {
+  #mysite .settings .settings-main-frame {
+    position: relative;
+    box-shadow: none;
+    max-width: 100vw;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    top: 73px;
+    transition: all ease 0.2s;
+    left: -766px;
+  }
+}
 #mysite .settings .settings-main-frame__elem--header {
   display: flex;
   align-items: center;
   height: 50px;
-  cursor: pointer;
-}
-#mysite .settings .settings-main-frame__elem--header:hover .move-icon {
-  transition: all ease-in 0.2s;
-  opacity: 0.5;
 }
 #mysite .settings .settings-main-frame__elem--header .move-icon {
   transition: all ease-out 0.2s;
@@ -3376,6 +3454,11 @@
 #mysite .settings .settings-main-frame__elem--header .settings-title {
   color: #FF3E28;
   margin-left: 10px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .settings .settings-main-frame__elem--header .settings-title {
+    font-size: 20px;
+  }
 }
 #mysite .settings .settings-main-frame__elem--header .close-btn {
   top: 20px;
@@ -3477,6 +3560,12 @@
 }
 #mysite .settings-active {
   visibility: visible;
+}
+@media screen and (max-width: 767px) {
+  #mysite .settings-active {
+    transition: all ease 0.2s;
+    left: 0 !important;
+  }
 }
 /*@import '../styles/scss/admin-panel';*/
 .wrap[data-v-c00eaaa2] {
