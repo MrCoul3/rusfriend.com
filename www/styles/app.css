@@ -1005,6 +1005,11 @@
   padding: 0;
   z-index: 1000;
 }
+@media screen and (max-width: 767px) {
+  #mysite .header {
+    position: fixed;
+  }
+}
 #mysite .header__overhead {
   background-image: url(../images/common/Lang-School.png);
   background-repeat: no-repeat;
@@ -1382,7 +1387,7 @@
     background-color: #fff;
     transition: all ease-out 0.1s;
     padding: 0;
-    z-index: 900;
+    z-index: 2000;
   }
 }
 #mysite .menu-item-active {
@@ -1634,6 +1639,11 @@
   font-size: 20px;
   font-style: italic;
 }
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame .login-invalid {
+    top: 161px;
+  }
+}
 #mysite .login-form .form-frame .login-invalid--disable {
   display: none;
 }
@@ -1656,14 +1666,34 @@
 #mysite .login-form .form-frame .login-check-email {
   top: 73px;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .login-form .form-frame .login-check-email {
+    top: 53px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame .login-check-email {
+    top: 97px;
+  }
+}
 #mysite .login-form .form-frame .login-check-password {
   top: 134px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .login-form .form-frame .login-check-password {
+    top: 100px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .login-form .form-frame .login-check-password {
+    top: 185px;
+  }
 }
 #mysite .login-form-active {
   display: block;
 }
 #mysite .register-form {
-  z-index: 1000;
+  z-index: 1100;
   display: none;
 }
 #mysite .register-form .form-frame {
@@ -1982,6 +2012,12 @@
   width: 461px;
   box-shadow: none;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about__element--left {
+    opacity: 1;
+    margin-left: 0;
+  }
+}
 #mysite .about-page .about__element--left:hover {
   transform: none;
 }
@@ -1999,13 +2035,24 @@
   position: relative;
   left: 600px;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about__element--right .about-title {
+    opacity: 1;
+    left: 0;
+  }
+}
 #mysite .about-page .about__element--right .about-social-net {
   opacity: 0;
   position: relative;
   left: 200px;
   order: -1;
   margin: 0px 0 7px;
-  margin-left: 0;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about__element--right .about-social-net {
+    opacity: 1;
+    left: 0;
+  }
 }
 @media screen and (max-width: 767px) {
   #mysite .about-page .about__element--right .about-social-net {
@@ -2023,6 +2070,8 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--right .about-items__item {
+    opacity: 1;
+    left: 0;
     font-size: 16px;
     line-height: 19px;
   }
@@ -2043,6 +2092,12 @@
   margin-left: 0;
   position: relative;
   left: 200px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-page .about__element--right .about-slogan {
+    opacity: 1;
+    left: 0;
+  }
 }
 #mysite .about-page .offers {
   margin: 100px auto;

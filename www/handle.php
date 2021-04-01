@@ -173,6 +173,7 @@ if ($request['method'] === 'sendSkype') {
 
 if ($request['method'] === 'getUserInfo') {
     $getUserInfo = $obj->getUserInfo();
+    echo json_encode($getUserInfo);
 }
 
 if ($request[0]['method'] === 'bookEvent') {

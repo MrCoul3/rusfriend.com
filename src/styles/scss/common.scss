@@ -239,15 +239,13 @@
         }
     }
     .header {
-        //position: relative;
-        // headerabs
         position: absolute;
         width: 100%;
         top: 0;
         padding: 0;
         z-index: 1000;
         @include mediaWidth(767) {
-            //position: fixed;
+            position: fixed;
         }
         &__overhead {
             background-image: url("../images/common/Lang-School.png");
@@ -638,7 +636,7 @@
             //top: 171px;
             transition: all ease-out .1s;
             padding: 0;
-            z-index: 900;
+            z-index: 2000;
         }
     }
     .menu-item-active {

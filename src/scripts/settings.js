@@ -38,6 +38,15 @@ $(document).ready(function () {
                 $("#mysite").addClass("body-fixed");
                 $('.settings-main-frame').addClass('settings-active');
                 $('.settings').addClass('settings-active');
+                // получение данных при открытии
+                axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
+                    .then((response) => {
+                        let dataFromDB = response.data
+                        // console.log(response.data);
+                        $('.main-text--user-name').html(dataFromDB.name)
+                        $('.main-text--email').html(dataFromDB.email);
+                        $('.main-text--skype').html(dataFromDB.skype);
+                    });
 
             })
         }

@@ -274,6 +274,9 @@
                 color: red;
                 font-size: 20px;
                 font-style: italic;
+                @include mediaWidth(767) {
+                    top: 161px;
+                }
                 &--disable {
                     display: none;
                 }
@@ -297,21 +300,21 @@
             }
             .login-check-email {
                 top: 73px;
-                //@include mediaWidth(1024) {
-                //    top: 53px;
-                //}
-                //@include mediaWidth(1024) {
-                //    top: 97px;
-                //}
+                @include mediaWidth(1024) {
+                    top: 53px;
+                }
+                @include mediaWidth(767) {
+                    top: 97px;
+                }
             }
             .login-check-password {
                 top: 134px;
-                //@include mediaWidth(1024) {
-                //    top: 100px;
-                //}
-                //@include mediaWidth(1024) {
-                //    top: 185px;
-                //}
+                @include mediaWidth(1024) {
+                    top: 100px;
+                }
+                @include mediaWidth(767) {
+                    top: 185px;
+                }
             }
         }
     }
@@ -321,7 +324,7 @@
     }
 
     .register-form {
-        z-index: 1000;
+        z-index: 1100;
         display: none;
 
         .form-frame {

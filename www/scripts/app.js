@@ -21302,7 +21302,7 @@ $(document).ready(function () {
     var offersAnimation = function offersAnimation() {
       document.addEventListener("scroll", function (e) {
         // console.log(window.pageYOffset);
-        if (mediaQueryCartDesktop.matches) {
+        if (mediaQueryDesktop.matches) {
           if (window.pageYOffset > 400) {
             animateToOrigin($(".offers-title"));
             animateToOrigin($(".offers-slogan"));
@@ -21320,30 +21320,35 @@ $(document).ready(function () {
 
     var aboutAnimation = function aboutAnimation() {
       if ($('.about-page')) {
-        animateToOrigin($(".about__element--left"));
-        setTimeout(function () {
-          animateToLeft($(".about-title"));
-        }, 300);
-        animateToLeft($(".about-social-net"));
-        setTimeout(function () {
-          animateToLeft($('.about-items .a'));
-        }, 500);
-        setTimeout(function () {
-          animateToLeft($(".about-items .b"));
-        }, 700);
-        setTimeout(function () {
-          animateToLeft($(".about-slogan"));
-        }, 1000);
-        setTimeout(function () {
-          animateToOrigin($(".detail-slogan"));
-        }, 1300);
+        if (mediaQueryDesktop.matches) {
+          animateToOrigin($(".about__element--left"));
+          setTimeout(function () {
+            animateToLeft($(".about-title"));
+          }, 300);
+          animateToLeft($(".about-social-net"));
+          setTimeout(function () {
+            animateToLeft($('.about-items .a'));
+          }, 500);
+          setTimeout(function () {
+            animateToLeft($(".about-items .b"));
+          }, 700);
+          setTimeout(function () {
+            animateToLeft($(".about-slogan"));
+          }, 1000);
+          setTimeout(function () {
+            animateToOrigin($(".detail-slogan"));
+          }, 1300);
+        }
       }
     };
 
     console.log('about');
-    var mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)');
+    var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
     aboutAnimation();
-    offersAnimation();
+    offersAnimation(); // $(window).resize(function () {
+    //     aboutAnimation();
+    // })
+
     $(".owl-carousel-3").owlCarousel((_$$owlCarousel = {
       items: 1,
       margin: 300,
@@ -22018,13 +22023,87 @@ jQuery.extend(jQuery.easing, {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {var mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+/* WEBPACK VAR INJECTION */(function($) {var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
 
 var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
 var mediaQuerySmall = window.matchMedia('(max-width: 767px)');
 $(document).ready(function () {
   if ($("main").hasClass('main-page')) {
-    //end animation----------------------------------
+    // -------- функция делает  header белым при прокрутке больше 50px
+    var whiteHeaderMobile = function whiteHeaderMobile() {
+      if (mediaQuerySmall.matches) {
+        // console.log('small')
+        if (window.pageYOffset > 50) {
+          // $('.header__overhead').css('background', '#fff')
+          $('.header__overhead').addClass('header-menu-white-on-mobile');
+        } else {
+          $('.header__overhead').removeClass('header-menu-white-on-mobile');
+        }
+      }
+    }; // --------------------------------------------------------
+
+
+    var scrollAnimation = function scrollAnimation() {
+      document.addEventListener("scroll", function (e) {
+        // console.log(window.pageYOffset );
+        whiteHeaderMobile();
+
+        if (mediaQueryDesktop.matches) {
+          // анимация for-whom
+          if (window.pageYOffset > 280) {
+            animateToOrigin($(".for-whom-title"));
+          } // анимация offers
+
+
+          if (window.pageYOffset > 900) {
+            animateToOrigin($(".offers-title"));
+            animateToOrigin($(".offers-slogan"));
+          }
+
+          if (window.pageYOffset > 1100) {
+            $(".offers-cards-conteiner").animate({
+              'opacity': 1,
+              'marginTop': 0
+            }, 1000, "easeOutQuart");
+          } // анимация about
+
+
+          if (window.pageYOffset > 1500) {
+            animateToOrigin($(".about__element--left"), 100);
+            animateToOrigin($(".about-title"));
+            animateToOrigin($(".about-slogan"));
+            animateToOrigin($(".about-social-net"));
+          }
+
+          if (window.pageYOffset > 1700) {
+            animateToOrigin($(".about-items .a"));
+          }
+
+          if (window.pageYOffset > 1725) {
+            animateToOrigin($(".about-items .b"));
+          }
+
+          if (window.pageYOffset > 1750) {
+            animateToOrigin($(".about-items .c"));
+          }
+
+          if (window.pageYOffset > 1800) {
+            animateToOrigin($(".about-items .d"));
+          }
+
+          if (window.pageYOffset > 1900) {
+            animateToOrigin($(".detail-slogan"));
+          } //анимация  reviews
+
+
+          if (window.pageYOffset > 2250) {
+            animateToOrigin($(".reviews-title"));
+          }
+        }
+      });
+    }; //end animation----------------------------------
+
+
     var paralaksForMainPhoto = function paralaksForMainPhoto() {
       $(".top-index-photo__elem").each(function (key, val) {
         val.addEventListener("mousemove", function (e) {
@@ -22044,7 +22123,9 @@ $(document).ready(function () {
     };
 
     console.log("js index plugged");
-    paralaksForMainPhoto(); // ------------- функционал кнопки "подробнее про нашу школу"
+    paralaksForMainPhoto();
+    scrollAnimation();
+    whiteHeaderMobile(); // ------------- функционал кнопки "подробнее про нашу школу"
 
     $('.about-school-btn--play-btn').click(function () {
       $("#mysite").addClass("body-fixed");
@@ -22088,72 +22169,6 @@ $(document).ready(function () {
     animateToOrigin($(".top-index-title"));
     animateToOrigin($(".top-index-second-title"));
     animateToOrigin($(".top-index-first-title"));
-    document.addEventListener("scroll", function (e) {
-      console.log(window.pageYOffset); // делает header белым при прокрутке больше 50px
-
-      if (mediaQuerySmall.matches) {
-        // console.log('small')
-        if (window.pageYOffset > 50) {
-          // $('.header__overhead').css('background', '#fff')
-          $('.header__overhead').addClass('header-menu-white-on-mobile');
-        } else {
-          $('.header__overhead').removeClass('header-menu-white-on-mobile');
-        }
-      }
-
-      if (mediaQueryCartDesktop.matches) {
-        // анимация for-whom
-        if (window.pageYOffset > 280) {
-          animateToOrigin($(".for-whom-title"));
-        } // анимация offers
-
-
-        if (window.pageYOffset > 900) {
-          animateToOrigin($(".offers-title"));
-          animateToOrigin($(".offers-slogan"));
-        }
-
-        if (window.pageYOffset > 1100) {
-          $(".offers-cards-conteiner").animate({
-            'opacity': 1,
-            'marginTop': 0
-          }, 1000, "easeOutQuart");
-        } // анимация about
-
-
-        if (window.pageYOffset > 1500) {
-          animateToOrigin($(".about__element--left"), 100);
-          animateToOrigin($(".about-title"));
-          animateToOrigin($(".about-slogan"));
-          animateToOrigin($(".about-social-net"));
-        }
-
-        if (window.pageYOffset > 1700) {
-          animateToOrigin($(".about-items .a"));
-        }
-
-        if (window.pageYOffset > 1725) {
-          animateToOrigin($(".about-items .b"));
-        }
-
-        if (window.pageYOffset > 1750) {
-          animateToOrigin($(".about-items .c"));
-        }
-
-        if (window.pageYOffset > 1800) {
-          animateToOrigin($(".about-items .d"));
-        }
-
-        if (window.pageYOffset > 1900) {
-          animateToOrigin($(".detail-slogan"));
-        } //анимация  reviews
-
-
-        if (window.pageYOffset > 2250) {
-          animateToOrigin($(".reviews-title"));
-        }
-      }
-    });
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22487,18 +22502,16 @@ $(document).ready(function () {
         console.log(data.logout);
 
         if (data.logout === true) {
-          $(".btn-login").removeClass("disable").addClass('active-block');
-          $(".user-login").addClass("disable").removeClass("active-flex");
+          // $(".btn-login").removeClass("disable").addClass('active-block');
+          // $(".user-login").addClass("disable").removeClass("active-flex");
           deleteCookie('name');
-          console.log('logout');
-
-          if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
-            window.location.reload();
-          }
-
-          if ($('main').hasClass('student-lessons')) {
-            document.location.href = '/index.php';
-          }
+          document.location.href = '/index.php';
+          console.log('logout'); // if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
+          //     window.location.reload();
+          // }
+          // if ($('main').hasClass('student-lessons')) {
+          //     document.location.href = '/index.php'
+          // }
         } else {
           console.log('не удалось выйти');
         }
@@ -22708,7 +22721,17 @@ $(document).ready(function () {
     $('.user-login-menu__elem--settings').click(function () {
       $("#mysite").addClass("body-fixed");
       $('.settings-main-frame').addClass('settings-active');
-      $('.settings').addClass('settings-active');
+      $('.settings').addClass('settings-active'); // получение данных при открытии
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getUserInfo'
+      })).then(function (response) {
+        var dataFromDB = response.data; // console.log(response.data);
+
+        $('.main-text--user-name').html(dataFromDB.name);
+        $('.main-text--email').html(dataFromDB.email);
+        $('.main-text--skype').html(dataFromDB.skype);
+      });
     });
   } // -----------------------------
   // ------------ close settings

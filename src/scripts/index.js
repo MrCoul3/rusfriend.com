@@ -1,4 +1,4 @@
-const mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
 const mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
 const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
 
@@ -6,7 +6,8 @@ $(document).ready(function () {
     if ($("main").hasClass('main-page')) {
         console.log("js index plugged");
         paralaksForMainPhoto();
-
+        scrollAnimation();
+        whiteHeaderMobile();
 
         // ------------- функционал кнопки "подробнее про нашу школу"
         $('.about-school-btn--play-btn').click(function () {
@@ -55,10 +56,9 @@ $(document).ready(function () {
         animateToOrigin($(".top-index-title"));
         animateToOrigin($(".top-index-second-title"));
         animateToOrigin($(".top-index-first-title"));
-        document.addEventListener("scroll", function (e) {
-            console.log(window.pageYOffset );
 
-            // делает header белым при прокрутке больше 50px
+        // -------- функция делает  header белым при прокрутке больше 50px
+        function whiteHeaderMobile() {
             if (mediaQuerySmall.matches) {
                 // console.log('small')
                 if (window.pageYOffset > 50) {
@@ -69,54 +69,63 @@ $(document).ready(function () {
 
                 }
             }
+        }
+        // --------------------------------------------------------
 
-            if (mediaQueryCartDesktop.matches) {
-                // анимация for-whom
-                if (window.pageYOffset > 280) {
-                    animateToOrigin($(".for-whom-title"))
-                }
-                // анимация offers
-                if (window.pageYOffset > 900) {
-                    animateToOrigin($(".offers-title"));
-                    animateToOrigin($(".offers-slogan"));
-                }
+        function scrollAnimation() {
+            document.addEventListener("scroll", function (e) {
+                // console.log(window.pageYOffset );
 
-                if (window.pageYOffset > 1100) {
-                    $(".offers-cards-conteiner").animate({
-                        'opacity': 1,
-                        'marginTop': 0
-                    }, 1000, "easeOutQuart");
-                }
+                whiteHeaderMobile();
+                if (mediaQueryDesktop.matches) {
+                    // анимация for-whom
+                    if (window.pageYOffset > 280) {
+                        animateToOrigin($(".for-whom-title"))
+                    }
+                    // анимация offers
+                    if (window.pageYOffset > 900) {
+                        animateToOrigin($(".offers-title"));
+                        animateToOrigin($(".offers-slogan"));
+                    }
 
-                // анимация about
-                if (window.pageYOffset > 1500) {
-                    animateToOrigin($(".about__element--left"), 100);
-                    animateToOrigin($(".about-title"));
-                    animateToOrigin($(".about-slogan"));
-                    animateToOrigin($(".about-social-net"));
+                    if (window.pageYOffset > 1100) {
+                        $(".offers-cards-conteiner").animate({
+                            'opacity': 1,
+                            'marginTop': 0
+                        }, 1000, "easeOutQuart");
+                    }
+
+                    // анимация about
+                    if (window.pageYOffset > 1500) {
+                        animateToOrigin($(".about__element--left"), 100);
+                        animateToOrigin($(".about-title"));
+                        animateToOrigin($(".about-slogan"));
+                        animateToOrigin($(".about-social-net"));
+                    }
+                    if (window.pageYOffset > 1700) {
+                        animateToOrigin($(".about-items .a"));
+                    }
+                    if (window.pageYOffset > 1725) {
+                        animateToOrigin($(".about-items .b"));
+                    }
+                    if (window.pageYOffset > 1750) {
+                        animateToOrigin($(".about-items .c"));
+                    }
+                    if (window.pageYOffset > 1800) {
+                        animateToOrigin($(".about-items .d"));
+                    }
+                    if (window.pageYOffset > 1900) {
+                        animateToOrigin($(".detail-slogan"));
+                    }
+                    //анимация  reviews
+                    if (window.pageYOffset > 2250) {
+                        animateToOrigin($(".reviews-title"));
+                    }
                 }
-                if (window.pageYOffset > 1700) {
-                    animateToOrigin($(".about-items .a"));
-                }
-                if (window.pageYOffset > 1725) {
-                    animateToOrigin($(".about-items .b"));
-                }
-                if (window.pageYOffset > 1750) {
-                    animateToOrigin($(".about-items .c"));
-                }
-                if (window.pageYOffset > 1800) {
-                    animateToOrigin($(".about-items .d"));
-                }
-                if (window.pageYOffset > 1900) {
-                    animateToOrigin($(".detail-slogan"));
-                }
-                //анимация  reviews
-                if (window.pageYOffset > 2250) {
-                    animateToOrigin($(".reviews-title"));
-                }
-            }
-        });
+            });
+        }
         //end animation----------------------------------
+
 
         function paralaksForMainPhoto(){
             $(".top-index-photo__elem").each(function (key, val) {
@@ -127,6 +136,7 @@ $(document).ready(function () {
                 });
             });
         }
+
         function animateToOrigin(element, marginLeft = 0) {
             element.animate({
                 'opacity': 1,

@@ -229,7 +229,7 @@ $res = $obj->checkSkype();
         </div>
     </div>
     <div class="decor-line decor-line--header decor-line--header-mobile"></div>
-    <div class="header__lower inner">
+    <div class="header__lower">
         <div class="decor-line decor-line--header"></div>
         <nav class="header-menu">
             <a class="header-menu--about" href="about.php">Об авторе</a>

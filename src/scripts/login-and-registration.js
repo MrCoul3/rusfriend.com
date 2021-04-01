@@ -315,16 +315,17 @@ $(document).ready(function () {
             }).then(function (data) {
                 console.log(data.logout)
                 if (data.logout === true) {
-                    $(".btn-login").removeClass("disable").addClass('active-block');
-                    $(".user-login").addClass("disable").removeClass("active-flex");
+                    // $(".btn-login").removeClass("disable").addClass('active-block');
+                    // $(".user-login").addClass("disable").removeClass("active-flex");
                     deleteCookie('name');
+                    document.location.href = '/index.php'
                     console.log('logout');
-                    if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
-                        window.location.reload();
-                    }
-                    if ($('main').hasClass('student-lessons')) {
-                        document.location.href = '/index.php'
-                    }
+                    // if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
+                    //     window.location.reload();
+                    // }
+                    // if ($('main').hasClass('student-lessons')) {
+                    //     document.location.href = '/index.php'
+                    // }
                 } else {
                     console.log('не удалось выйти')
                 }

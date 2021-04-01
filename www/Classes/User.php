@@ -148,6 +148,7 @@ class User
 
     public function getUserInfo()
     {
+
         $query = "SELECT * FROM `users` WHERE email = '{$_SESSION['email']}'";
         $result = $this->dbAccess->query($query);
         $getUserInfo = mysqli_fetch_assoc($result);

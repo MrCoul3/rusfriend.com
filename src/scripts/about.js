@@ -1,11 +1,14 @@
 $(document).ready(function () {
     if ($('main').hasClass("about-page")) {
         console.log('about');
-        const mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)');
+        const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
 
         aboutAnimation();
         offersAnimation();
 
+        // $(window).resize(function () {
+        //     aboutAnimation();
+        // })
 
         $(".owl-carousel-3").owlCarousel({
             items: 1,
@@ -41,7 +44,7 @@ $(document).ready(function () {
         function offersAnimation() {
             document.addEventListener("scroll", function (e) {
                 // console.log(window.pageYOffset);
-                if (mediaQueryCartDesktop.matches) {
+                if (mediaQueryDesktop.matches) {
                     if (window.pageYOffset > 400) {
                         animateToOrigin($(".offers-title"));
                         animateToOrigin($(".offers-slogan"));
@@ -58,25 +61,28 @@ $(document).ready(function () {
 
         function aboutAnimation() {
             if ($('.about-page')) {
-                animateToOrigin($(".about__element--left"));
-                setTimeout(function () {
-                    animateToLeft($(".about-title"));
-                }, 300);
+                if (mediaQueryDesktop.matches) {
 
-                animateToLeft($(".about-social-net"));
-                setTimeout(function () {
-                    animateToLeft($('.about-items .a'));
-                }, 500);
-                setTimeout(function () {
-                    animateToLeft($(".about-items .b"));
-                }, 700);
-                setTimeout(function () {
-                    animateToLeft($(".about-slogan"));
-                }, 1000);
+                    animateToOrigin($(".about__element--left"));
+                    setTimeout(function () {
+                        animateToLeft($(".about-title"));
+                    }, 300);
 
-                setTimeout(function () {
-                    animateToOrigin($(".detail-slogan"));
-                }, 1300);
+                    animateToLeft($(".about-social-net"));
+                    setTimeout(function () {
+                        animateToLeft($('.about-items .a'));
+                    }, 500);
+                    setTimeout(function () {
+                        animateToLeft($(".about-items .b"));
+                    }, 700);
+                    setTimeout(function () {
+                        animateToLeft($(".about-slogan"));
+                    }, 1000);
+
+                    setTimeout(function () {
+                        animateToOrigin($(".detail-slogan"));
+                    }, 1300);
+                }
             }
         }
     }
