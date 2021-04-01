@@ -58,7 +58,7 @@ class User
 
         if (count($err) == 0) {
             $_SESSION['email'] = $request['email'];
-
+            $_SESSION['name'] = $request['name'];
             foreach ($request as $k => &$val) {
                 if (!in_array($k, $this->requireFieldsforUsers)) {
                     unset($request[$k]);
@@ -107,7 +107,7 @@ class User
 
     public function checkLogin()
     {
-        if (isset($_SESSION['user_id'])) {
+        if (isset($_SESSION['email'])) {
             if (in_array($_SESSION['email'], $this->adminEmails)) {
                 $_SESSION['status'] = 'admin';
                 return 'admin';
@@ -126,7 +126,7 @@ class User
 
     public function checkSkype()
     {
-        $query = "SELECT `skype` FROM `users` WHERE id = '{$_SESSION['user_id']}'";
+        $query = "SELECT `skype` FROM `users` WHERE email = '{$_SESSION['email']}'";
         $result = $this->dbAccess->query($query);
         $getSkype = mysqli_fetch_assoc($result);
         return $getSkype;

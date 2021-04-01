@@ -10,6 +10,12 @@ html(lang="en")
             a(href="index.php").header-logo
             h1.header-title Светик, приветик!
             div.btn-exit Выход
+            div.burger-btn
+                input(type="checkbox" id="burger").burger-menu.burger-menu-input
+                label(for="burger").burger-menu-label
+                    div.burger-menu-line
+                    div.burger-menu-line
+                    div.burger-menu-line
         div.decor-line.decor-line--admin-header.admin-inner
         nav.admin-menu.admin-inner
             div.admin-menu__element.admin-menu__element--mycalendar(type="my-calendar") Мой календарь
@@ -17,7 +23,7 @@ html(lang="en")
             div.admin-menu__element.admin-menu__element--mystudents(type="my-students") Мои ученики
             div.admin-menu__element.admin-menu__element--messages(type="my-messages") Сообщения
             div.admin-menu__element.admin-menu__element--reviews(type="my-reviews") Отзывы
-        div.decor-line.admin-inner
+        div.decor-line.decor-line--nav-menu.admin-inner
         main(class=`${pageAdditionClass}`)
             block content
         footer.admin-footer

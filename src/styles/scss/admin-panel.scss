@@ -22,18 +22,58 @@
     background-repeat: no-repeat;
     background-position: 131px 5px;
     align-items: center;
+    @include mediaWidth(1024) {
+      background-position-y: -4px;
+      background-position-x: 104px;
+      background-image: url("../images/common/Lang-School-1024.png");
+    }
+    @include mediaWidth(767) {
+      height: 70px;
+      background-position-y: 16px;
+      background-position-x: 64px;
+      margin: 0;
+      background-image: url("../images/common/Lang-School-768.png");
+    }
 
     .header-logo {
       display: block;
       background-image: url("../images/icons/logo.svg");
       background-size: contain;
+      background-repeat: no-repeat;
       width: 120px;
       height: 85px;
+      @include mediaWidth(1024) {
+        width: 120px;
+        height: 85px;
+        background-image: url("../images/icons/logo-1024.svg");
+      }
+      @include mediaWidth(767) {
+        width: 75.33px;
+        height: 53px;
+        background-image: url("../images/icons/logo-768.svg");
+      }
+      @include mediaWidth(390) {
+        width: 52.33px;
+        height: 38px;
+      }
+
     }
 
     .header-title {
       flex-grow: 1;
       color: $colorLightBlack;
+
+      @include mediaWidth(650) {
+        font-size: 20px;
+      }
+      @include mediaWidth(460) {
+        font-size: 16px;
+        width: 30px;
+      }
+      @include mediaWidth(390) {
+        font-size: 14px;
+        width: 30px;
+      }
     }
 
     .btn-exit {
@@ -49,6 +89,17 @@
       -khtml-user-select: none;
       -webkit-user-select: none;
       user-select: none;
+      @include mediaWidth(460) {
+        font-size: 12px;
+        width: 70px;
+      }
+    }
+    .burger-btn {
+      display: none;
+      @include mediaWidth(767) {
+        display: block;
+        margin: 3px 0 0 20px ;
+      }
     }
   }
 
@@ -57,6 +108,15 @@
     margin-top: 20px;
     margin-bottom: 20px;
     justify-content: center;
+    @include mediaWidth(767) {
+      position: relative;
+      padding: 0;
+      //display: none;
+      flex-direction: column;
+      padding-top: 113px;
+      margin: 0;
+      right: 767px;
+    }
 
     &__element {
       margin: 0 20px;
@@ -66,7 +126,12 @@
       line-height: 22px;
       color: $colorLightBlack;
       cursor: pointer;
-
+      @include mediaWidth(1024) {
+        font-size: 14px;
+      }
+      @include mediaWidth(767) {
+        margin-bottom: 32px;
+      }
       &:hover {
         color: $colorRed;
       }
@@ -76,15 +141,30 @@
       color: $colorRed;
     }
   }
+  .decor-line {
+    &--nav-menu {
+      @include mediaWidth(767) {
+        width: 100%;
+        position: fixed;
+        bottom: 80px;
+      }
+    }
+  }
 
   .admin-footer {
     background-image: url("../images/common/footer-trees.svg");
     background-repeat: no-repeat;
     width: 100vw;
     height: 100px;
-    //position: fixed;
+    position: fixed;
     bottom: 0;
     z-index: -1;
+    @include mediaWidth(1024) {
+      background-image: url("../images/common/footer-trees-1024.svg");
+      height: 130px;
+      background-position-y: 66px;
+    }
+
   }
 
   // общие стили для всех компонентов
@@ -101,7 +181,7 @@
 
       &__description {
         margin-top: -20px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       }
     }
 
@@ -128,6 +208,9 @@
             .month {
               margin-right: 10px;
               color: $colorLightBlack;
+              @include mediaWidth(1024) {
+                font-size: 14px;
+              }
             }
 
             .month-btn {
@@ -159,6 +242,10 @@
             font-size: 16px;
             line-height: 19px;
             color: rgba(0, 0, 0, 0.5);
+            @include mediaWidth(1024) {
+              font-size: 12px;
+              width: 215px;
+            }
           }
         }
       }
@@ -178,6 +265,9 @@
           position: absolute;
           top: 0;
           color: #4C59D9;
+          @include mediaWidth(1024) {
+            font-size: 14px;
+          }
         }
 
         .day-time {
@@ -192,6 +282,9 @@
           font-weight: normal;
           font-size: 16px;
           color: $colorLightBlack;
+          @include mediaWidth(1024) {
+            font-size: 12px;
+          }
         }
 
 
@@ -273,9 +366,9 @@
           display: block;
           text-align: center;
           border-radius: 5px;
-          width: 120px;
+          width: 100%;
           white-space: nowrap;
-          overflow: hidden;
+          overflow: scroll;
           color: white;
           cursor: pointer;
           height: 20px;
@@ -444,6 +537,7 @@
 
       .decor-line {
         margin: 20px 0 0;
+
       }
 
       .close-btn {
@@ -484,9 +578,31 @@
 
     #admin-booking-calendar {
       position: absolute;
-      top: 0px;
-      padding: 0;
+      right: 0;
+      left: 0;
+      top: -202px;
+      margin: auto;
+      padding: 300px 20px 0;
+      width: auto;
+      @include mediaWidth(1024) {
+        top: -169px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        padding: 250px 20px 0;
+      }
+      @include mediaWidth(767) {
 
+      }
+      .button {
+        width: 200px;
+        height: 45px;
+        line-height: 43px;
+        font-size: 14px;
+      }
+      .tegs {
+        display: none;
+      }
       .calendar-app {
         padding-bottom: 20px;
       }

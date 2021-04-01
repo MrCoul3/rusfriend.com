@@ -7,7 +7,7 @@
                     <div class="calendar-app-header__element calendar-app-header__element--month-module">
                         <div @click="decrease" class="month-btn month-btn--left-btn"></div>
                         <div @click="increase" class="month-btn month-btn--right-btn"></div>
-                        <p class="month">{{monthes[month]}} {{dateInterval}}, {{year}}</p>
+                        <p class="month">{{monthes[numberMonthOfFirstDayOfWeek]}} {{dateInterval}}, {{year}}</p>
                     </div>
                     <h2 class="calendar-app-header__element calendar-app-header__element--title">Изменить время
                         урока</h2>
@@ -85,6 +85,7 @@
             return {
                 reload: 0,
                 month: new Date().getMonth(),
+                numberMonthOfFirstDayOfWeek: null,
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
                 timeZones: [],
@@ -115,36 +116,62 @@
                 return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()) / 7);
             } // возвращает номер недели
             this.weekNumber = ((new Date()).getWeek() - 1);
+            this.currentWeek = ((new Date()).getWeek() - 1);
             // console.log(this.weekNumber);
         },
         created: function () {
+            this.setCurrentMonth();
 
-            if ((String(this.month + 1).length) == '1') {
-                this.currentMonth = 0 + String(this.month + 1);
-            } else {
-                this.currentMonth = this.month + 1;
-            }
         },
         mounted: function () {
             this.adjustmentDateOfWeek();
             this.getIntervalsFromDB();
             this.changeStateOfItem();
             this.lightingOfToday();
-            // console.log(this.userName);
         },
         updated: function () {
             this.adjustmentDateOfWeek();
             this.lightingOfToday();
             this.getIntervalsFromDB();
             this.changeStateOfItem();
-            if ((String(this.month + 1).length) == '1') {
-                this.currentMonth = 0 + String(this.month + 1);
-            } else {
-                this.currentMonth = this.month + 1;
-            }
+            this.setCurrentMonth();
+
         },
         methods: {
+            setCurrentMonth() {
+                if ((String(this.numberMonthOfFirstDayOfWeek + 1).length) === 1) {
+                    this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
+                } else {
+                    this.currentMonth = this.numberMonthOfFirstDayOfWeek + 1;
+                }
+            },
             //метод корректировки дат недели
+            adjustmentDateOfDay() {
+                let firstElem = $('.calendar-app-content-number:first-child');
+                // console.log(firstElem);
+                let numberFirstElem = firstElem.attr('date').split('.')[0];
+                let monthFirstElem = firstElem.attr('date').split('.')[1];
+                // console.log(numberFirstElem);
+                // console.log(monthFirstElem);
+                // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
+                if (numberFirstElem > 24 && numberFirstElem < 32) {
+                    // console.log(numberFirstElem);
+                    $('.calendar-app-content-number').each(function (k,val) {
+                        // console.log($(this).attr('date').split('.'));
+                        let dateArr = $(this).attr('date').split('.')
+                        if (dateArr[0] > 0 && dateArr[0] < 7) {
+                            // console.log(dateArr[1])
+                            dateArr[1] = String(+monthFirstElem + 1);
+                            if (dateArr[1].length == '1') {
+                                dateArr[1] = 0 + String(dateArr[1]);
+                            }
+                            // console.log(dateArr.join('.'));
+                            let newDate = dateArr.join('.');
+                            val.setAttribute('date', newDate);
+                        }
+                    })
+                }
+            },
             adjustmentDateOfWeek() {
                 let firstElem = $('.time-intrevals-elem:first-child');
                 let numberFirstElem = firstElem.attr('date').split('.')[0];
@@ -173,10 +200,11 @@
             DateOfMondayInWeek(year, weekNumber) {
                 for (var a = 1; ; a++) if ((new Date(year, 0, a)).getDay() == 1) break;
                 a += (weekNumber - 1) * 7;
+                this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth()
                 return (new Date(year, 0, a))
             },
             weekCalendar: function () {
-                let numOfDayInMonth = new Date(this.year, this.month + 1, 0).getDate(); // число дней в текущем мес
+                let numOfDayInMonth = new Date(this.year, this.numberMonthOfFirstDayOfWeek + 1, 0).getDate(); // число дней в текущем мес
                 let week = [];
                 let w = 0;
                 week[w] = [];
@@ -191,7 +219,7 @@
                         week[w].push(a);
                         // week[w].push(i - numOfDayInMonth);
                     }
-                    if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
+                    if (a.index === new Date().getDate() && this.year === new Date().getFullYear()  && this.weekNumber === this.currentWeek) {
                         a.today = 'today';
                         a.color = '#fff';
                         a.font = 'bold';
@@ -204,11 +232,11 @@
                 return week;
             },
             decrease: function () {
-                console.log('w');
+                // console.log('w');
                 this.weekNumber--;
-                this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-                console.log(this.month);
-                console.log(this.weekNumber);
+                this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
+                // console.log(this.month);
+                // console.log(this.weekNumber);
                 if (this.weekNumber === 0) {
                     this.weekNumber = 52
                     this.year--;
@@ -217,8 +245,8 @@
             },
             increase: function () {
                 this.weekNumber++;
-                this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-                console.log(this.weekNumber);
+                this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
+                // console.log(this.weekNumber);
                 if (this.weekNumber === 52) {
                     this.weekNumber = 1;
                     this.year++;
@@ -357,6 +385,8 @@
 </script>
 
 <style scoped>
+
+
     .wrap {
         display: flex;
         max-width: 420px;

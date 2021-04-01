@@ -29,10 +29,10 @@ if ($request['method'] == 'requireAdminComponents') {
 
 <div class="decor-line admin-inner"></div>
 <main class="admin-main">
-    <div id="vue-my-calendar"></div>
-    <div id="vue-my-schedule"></div>
-    <div id="vue-my-students"></div>
+<!--    <div id="vue-my-calendar"></div>-->
+<!--    <div id="vue-my-schedule"></div>-->
+<!--    <div id="vue-my-students"></div>-->
 </main>
-<footer class="admin-footer"></footer>
+<!--<footer class="admin-footer"></footer>-->
 
 </body>

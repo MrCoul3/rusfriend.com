@@ -2042,6 +2042,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     return {
       reload: 0,
       month: new Date().getMonth(),
+      numberMonthOfFirstDayOfWeek: null,
       year: new Date().getFullYear(),
       dFirstMonth: '1',
       timeZones: [],
@@ -2073,35 +2074,63 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     }; // возвращает номер недели
 
 
-    this.weekNumber = new Date().getWeek() - 1; // console.log(this.weekNumber);
+    this.weekNumber = new Date().getWeek() - 1;
+    this.currentWeek = new Date().getWeek() - 1; // console.log(this.weekNumber);
   },
   created: function created() {
-    if (String(this.month + 1).length == '1') {
-      this.currentMonth = 0 + String(this.month + 1);
-    } else {
-      this.currentMonth = this.month + 1;
-    }
+    this.setCurrentMonth();
   },
   mounted: function mounted() {
     this.adjustmentDateOfWeek();
     this.getIntervalsFromDB();
     this.changeStateOfItem();
-    this.lightingOfToday(); // console.log(this.userName);
+    this.lightingOfToday();
   },
   updated: function updated() {
     this.adjustmentDateOfWeek();
     this.lightingOfToday();
     this.getIntervalsFromDB();
     this.changeStateOfItem();
-
-    if (String(this.month + 1).length == '1') {
-      this.currentMonth = 0 + String(this.month + 1);
-    } else {
-      this.currentMonth = this.month + 1;
-    }
+    this.setCurrentMonth();
   },
   methods: {
+    setCurrentMonth: function setCurrentMonth() {
+      if (String(this.numberMonthOfFirstDayOfWeek + 1).length === 1) {
+        this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
+      } else {
+        this.currentMonth = this.numberMonthOfFirstDayOfWeek + 1;
+      }
+    },
     //метод корректировки дат недели
+    adjustmentDateOfDay: function adjustmentDateOfDay() {
+      var firstElem = $('.calendar-app-content-number:first-child'); // console.log(firstElem);
+
+      var numberFirstElem = firstElem.attr('date').split('.')[0];
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
+      // console.log(monthFirstElem);
+      // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
+
+      if (numberFirstElem > 24 && numberFirstElem < 32) {
+        // console.log(numberFirstElem);
+        $('.calendar-app-content-number').each(function (k, val) {
+          // console.log($(this).attr('date').split('.'));
+          var dateArr = $(this).attr('date').split('.');
+
+          if (dateArr[0] > 0 && dateArr[0] < 7) {
+            // console.log(dateArr[1])
+            dateArr[1] = String(+monthFirstElem + 1);
+
+            if (dateArr[1].length == '1') {
+              dateArr[1] = 0 + String(dateArr[1]);
+            } // console.log(dateArr.join('.'));
+
+
+            var newDate = dateArr.join('.');
+            val.setAttribute('date', newDate);
+          }
+        });
+      }
+    },
     adjustmentDateOfWeek: function adjustmentDateOfWeek() {
       var firstElem = $('.time-intrevals-elem:first-child');
       var numberFirstElem = firstElem.attr('date').split('.')[0];
@@ -2136,10 +2165,11 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       }
 
       a += (weekNumber - 1) * 7;
+      this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth();
       return new Date(year, 0, a);
     },
     weekCalendar: function weekCalendar() {
-      var numOfDayInMonth = new Date(this.year, this.month + 1, 0).getDate(); // число дней в текущем мес
+      var numOfDayInMonth = new Date(this.year, this.numberMonthOfFirstDayOfWeek + 1, 0).getDate(); // число дней в текущем мес
 
       var week = [];
       var w = 0;
@@ -2162,7 +2192,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           week[w].push(a); // week[w].push(i - numOfDayInMonth);
         }
 
-        if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
+        if (a.index === new Date().getDate() && this.year === new Date().getFullYear() && this.weekNumber === this.currentWeek) {
           a.today = 'today';
           a.color = '#fff';
           a.font = 'bold';
@@ -2176,11 +2206,10 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       return week;
     },
     decrease: function decrease() {
-      console.log('w');
+      // console.log('w');
       this.weekNumber--;
-      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-      console.log(this.month);
-      console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
+      // console.log(this.weekNumber);
 
       if (this.weekNumber === 0) {
         this.weekNumber = 52;
@@ -2191,8 +2220,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     },
     increase: function increase() {
       this.weekNumber++;
-      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-      console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.weekNumber);
 
       if (this.weekNumber === 52) {
         this.weekNumber = 1;
@@ -2441,6 +2469,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
   data: function data() {
     return {
       month: new Date().getMonth(),
+      numberMonthOfFirstDayOfWeek: null,
       year: new Date().getFullYear(),
       dFirstMonth: '1',
       timeZones: [],
@@ -2448,6 +2477,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       date: new Date(),
       weekNumber: null,
+      currentWeek: null,
       dateInterval: null,
       responseData: [],
       currentMonth: null,
@@ -2457,41 +2487,72 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     };
   },
   beforeMount: function beforeMount() {
+    // возвращает номер недели
     Date.prototype.getWeek = function () {
       var onejan = new Date(this.getFullYear(), 0, 1);
       return Math.ceil(((this - onejan) / 86400000 + onejan.getDay()) / 7);
-    }; // возвращает номер недели
+    };
 
-
-    this.weekNumber = new Date().getWeek() - 1; // console.log(this.weekNumber);
+    this.weekNumber = new Date().getWeek() - 1;
+    this.currentWeek = new Date().getWeek() - 1; // console.log(this.weekNumber);
   },
   created: function created() {
-    if (String(this.month + 1).length == '1') {
-      this.currentMonth = 0 + String(this.month + 1);
-    } else {
-      this.currentMonth = this.month + 1;
-    }
+    this.setCurrentMonth();
   },
   mounted: function mounted() {
+    this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.getIntervalsFromDB();
     this.lightingOfToday();
     this.changeStateOfItem();
   },
   updated: function updated() {
+    this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.lightingOfToday();
     this.changeStateOfItem();
-
-    if (String(this.month + 1).length == '1') {
-      this.currentMonth = 0 + String(this.month + 1);
-    } else {
-      this.currentMonth = this.month + 1;
-    }
+    this.setCurrentMonth();
   },
   methods: {
-    //метод корректировки дат недели
+    setCurrentMonth: function setCurrentMonth() {
+      if (String(this.numberMonthOfFirstDayOfWeek + 1).length === 1) {
+        this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
+      } else {
+        this.currentMonth = this.numberMonthOfFirstDayOfWeek + 1;
+      }
+    },
+    //методы корректировки дат недели
+    adjustmentDateOfDay: function adjustmentDateOfDay() {
+      var firstElem = $('.calendar-app-content-number:first-child'); // console.log(firstElem);
+
+      var numberFirstElem = firstElem.attr('date').split('.')[0];
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
+      // console.log(monthFirstElem);
+      // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
+
+      if (numberFirstElem > 24 && numberFirstElem < 32) {
+        // console.log(numberFirstElem);
+        $('.calendar-app-content-number').each(function (k, val) {
+          // console.log($(this).attr('date').split('.'));
+          var dateArr = $(this).attr('date').split('.');
+
+          if (dateArr[0] > 0 && dateArr[0] < 7) {
+            // console.log(dateArr[1])
+            dateArr[1] = String(+monthFirstElem + 1);
+
+            if (dateArr[1].length == '1') {
+              dateArr[1] = 0 + String(dateArr[1]);
+            } // console.log(dateArr.join('.'));
+
+
+            var newDate = dateArr.join('.');
+            val.setAttribute('date', newDate);
+          }
+        });
+      }
+    },
     adjustmentDateOfWeek: function adjustmentDateOfWeek() {
+      // console.log('adjustmentDateOfWeek');
       var firstElem = $('.time-intrevals-elem:first-child');
       var numberFirstElem = firstElem.attr('date').split('.')[0];
       var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
@@ -2524,11 +2585,13 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         if (new Date(year, 0, a).getDay() == 1) break;
       }
 
-      a += (weekNumber - 1) * 7;
+      a += (weekNumber - 1) * 7; // console.log(new Date(year, 0, a).getMonth())
+
+      this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth();
       return new Date(year, 0, a);
     },
     weekCalendar: function weekCalendar() {
-      var numOfDayInMonth = new Date(this.year, this.month + 1, 0).getDate(); // число дней в текущем мес
+      var numOfDayInMonth = new Date(this.year, this.numberMonthOfFirstDayOfWeek + 1, 0).getDate(); // число дней в текущем мес
 
       var week = [];
       var w = 0;
@@ -2551,12 +2614,17 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           week[w].push(a); // week[w].push(i - numOfDayInMonth);
         }
 
-        if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
+        if (a.index === new Date().getDate() && this.year === new Date().getFullYear() && this.weekNumber === this.currentWeek) {
+          // console.log(i);
           a.today = 'today';
           a.color = '#fff';
           a.font = 'bold';
           a.current = '#006660';
-        }
+        } // console.log(i === new Date().getDate() )
+        // console.log(new Date().getDate());
+        // console.log(this.month);
+        // console.log(new Date().getMonth());
+
       } // console.log(week);
       // console.log(week[w][0].index + ' - ' + week[w][6].index);
 
@@ -2565,9 +2633,9 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       return week;
     },
     decrease: function decrease() {
-      console.log('w');
+      // console.log('w');
       this.weekNumber--;
-      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
       // console.log(this.weekNumber);
 
       if (this.weekNumber === 0) {
@@ -2579,7 +2647,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     },
     increase: function increase() {
       this.weekNumber++;
-      this.month = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
       // console.log(this.weekNumber);
 
       if (this.weekNumber === 52) {
@@ -2640,8 +2708,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       var selectedTime = event.target;
 
       if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
-        console.log(event.target);
-
+        // console.log(event.target);
         if (selectedTime.className.includes('selected-time')) {
           selectedTime.classList.remove('selected-time');
         } else {
@@ -2649,8 +2716,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         }
       }
 
-      selectedTimeArray = [];
-      console.log(selectedTimeArray); // let userName = $('.user-login__elem--user-name').html();
+      selectedTimeArray = []; // console.log(selectedTimeArray)
+      // let userName = $('.user-login__elem--user-name').html();
 
       var userName = getCookie('name');
       var typeOfLesson;
@@ -2673,8 +2740,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           time: time,
           payment: 'unpayed',
           'method': 'bookEvent'
-        };
-        console.log(obj);
+        }; // console.log(obj)
 
         if (day !== null && time !== '') {
           selectedTimeArray.push(obj);
@@ -7734,7 +7800,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("p", { staticClass: "month" }, [
                     _vm._v(
-                      _vm._s(_vm.monthes[_vm.month]) +
+                      _vm._s(_vm.monthes[_vm.numberMonthOfFirstDayOfWeek]) +
                         " " +
                         _vm._s(_vm.dateInterval) +
                         ", " +
@@ -8025,7 +8091,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("p", { staticClass: "month" }, [
                   _vm._v(
-                    _vm._s(_vm.monthes[_vm.month]) +
+                    _vm._s(_vm.monthes[_vm.numberMonthOfFirstDayOfWeek]) +
                       " " +
                       _vm._s(_vm.dateInterval) +
                       ", " +
@@ -21378,76 +21444,70 @@ __webpack_require__.r(__webpack_exports__);
 
 $(document).ready(function () {
   if ($('main').hasClass("admin-main")) {
-    console.log('admin-panel init');
-    $('.header').css('display', 'none'); // убираем header главной страницы
-    // loginOnReload();
-    // переключение элементов меню
-
-    $('.admin-menu__element--mycalendar').addClass('menu-element-colored');
-    $('.admin-menu__element').click(function (e) {
-      $('.admin-menu__element').removeClass('menu-element-colored');
-
-      if (e.target.className.includes('admin-menu__element--mycalendar')) {
+    // убираем header главной страницы
+    // ------------ переключение элементов меню
+    var switchMenuComponents = function switchMenuComponents() {
+      $('.admin-menu__element--mycalendar').addClass('menu-element-colored');
+      $('.admin-menu__element').click(function (e) {
+        $('.admin-menu__element').removeClass('menu-element-colored');
         $('.admin-panel-section').removeClass('calendar-active');
-        $('.my-calendar').addClass('calendar-active');
-        $('.admin-menu__element--mycalendar').addClass('menu-element-colored');
-      }
-
-      if (e.target.className.includes('admin-menu__element--myschedule')) {
-        $('.admin-panel-section').removeClass('calendar-active');
-        $('.my-schedule').addClass('calendar-active');
         $(this).addClass('menu-element-colored');
-      }
 
-      if (e.target.className.includes('admin-menu__element--mystudents')) {
-        $('.admin-panel-section').removeClass('calendar-active');
-        $('.my-students').addClass('calendar-active');
-        $(this).addClass('menu-element-colored');
-      }
+        if (e.target.className.includes('admin-menu__element--mycalendar')) {
+          $('.my-calendar').addClass('calendar-active');
+        }
 
-      if (e.target.className.includes('admin-menu__element--messages')) {
-        $('.admin-panel-section').removeClass('calendar-active');
-        $('.messages').addClass('calendar-active');
-        $(this).addClass('menu-element-colored');
-      }
+        if (e.target.className.includes('admin-menu__element--myschedule')) {
+          $('.my-schedule').addClass('calendar-active');
+        }
 
-      if (e.target.className.includes('admin-menu__element--reviews')) {
-        $('.admin-panel-section').removeClass('calendar-active');
-        $('.reviews').addClass('calendar-active');
-        $(this).addClass('menu-element-colored');
-      }
-    }); // $('.admin-menu__element').click(function () {
-    //     // console.log($(this).attr('type'));
-    //     let type = $(this).attr('type');
-    //     axios.post('pages/requires/admin-panel.php', JSON.stringify({type: type, 'method': 'requireAdminComponents'}))
-    //         // .then((response) => {
-    //         //
-    //         // });
-    // });
-    // logout
+        if (e.target.className.includes('admin-menu__element--mystudents')) {
+          $('.my-students').addClass('calendar-active');
+        }
 
-    $('.btn-exit').click(function (e) {
-      var response = fetch('handle.php', {
-        method: 'Post',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify({
-          'method': 'logout'
-        })
-      });
-      response.then(function (data) {
-        return data.json();
-      }).then(function (data) {
-        console.log(data.logout);
+        if (e.target.className.includes('admin-menu__element--messages')) {
+          $('.messages').addClass('calendar-active');
+        }
 
-        if (data.logout === true) {
-          window.location.reload();
-        } else {
-          console.log('не удалось выйти');
+        if (e.target.className.includes('admin-menu__element--reviews')) {
+          $('.reviews').addClass('calendar-active');
         }
       });
-    }); // function loginOnReload() {
+    }; // ------------------------------
+    // ------------------ logout
+
+
+    var logout = function logout() {
+      $('.btn-exit').click(function (e) {
+        var response = fetch('handle.php', {
+          method: 'Post',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({
+            'method': 'logout'
+          })
+        });
+        response.then(function (data) {
+          return data.json();
+        }).then(function (data) {
+          console.log(data.logout);
+
+          if (data.logout === true) {
+            window.location.reload();
+          } else {
+            console.log('не удалось выйти');
+          }
+        });
+      });
+    }; // ------------------------------
+    // ------------- открытие меню навигации на мобильной версии
+
+
+    var adminMenuMobile = function adminMenuMobile() {
+      if (mediaQueryMobile.matches) {}
+    }; // ------------------------------
+    // function loginOnReload() {
     //     window.addEventListener("load", function (e) {
     //         let data = {
     //             'method': 'reload'
@@ -21474,6 +21534,15 @@ $(document).ready(function () {
     //         });
     //     });
     // }
+
+
+    console.log('admin-panel init');
+    var mediaQueryMobile = window.matchMedia('(max-width: 767px)');
+    switchMenuComponents();
+    logout();
+    adminMenuMobile(); // loginOnReload();
+
+    $('.header').css('display', 'none');
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -21709,6 +21778,9 @@ $(document).ready(function () {
     var navMenuFixing = function navMenuFixing() {
       var lastPos = 0;
       document.addEventListener("scroll", function (e) {
+        // Background white меню на мобильном устройстве
+        headerFixedOnMobile(); // на десктопе и таблете
+
         function headerLowerFixed() {
           if (!mediaQueryMobile.matches) {
             if (window.pageYOffset > 145) {
@@ -21723,16 +21795,18 @@ $(document).ready(function () {
           headerLowerFixed();
         });
         headerLowerFixed();
-        lastPos = window.pageYOffset; // Background white меню на мобильном устройстве
-
-        if (mediaQueryMobile.matches) {
-          if (window.pageYOffset > 35) {
-            $('.header').addClass('header-menu-fixed');
-          } else {
-            $('.header').removeClass('header-menu-fixed');
-          }
-        }
+        lastPos = window.pageYOffset;
       });
+    };
+
+    var headerFixedOnMobile = function headerFixedOnMobile() {
+      if (mediaQueryMobile.matches) {
+        if (window.pageYOffset > 35) {
+          $('.header').addClass('header-menu-fixed');
+        } else {
+          $('.header').removeClass('header-menu-fixed');
+        }
+      }
     }; // -----------------------------------------
     // ----------- функционал и анимация бургер-меню на мобильных устройствах
 
@@ -21806,12 +21880,13 @@ $(document).ready(function () {
 
 
     console.log('common.js init');
-    var mediaQueryMobile = window.matchMedia('min-width: 767px'); // не менее 767
+    var mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
     // -------------------------
 
     resetStates();
     changeLanguage();
     navMenuFixing();
+    headerFixedOnMobile();
     burgerMenuActions();
     coloredNavMenuElems();
     openUserMenu();
@@ -22023,31 +22098,11 @@ jQuery.extend(jQuery.easing, {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
-
-var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
-var mediaQuerySmall = window.matchMedia('(max-width: 767px)');
-$(document).ready(function () {
+/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($("main").hasClass('main-page')) {
-    // -------- функция делает  header белым при прокрутке больше 50px
-    var whiteHeaderMobile = function whiteHeaderMobile() {
-      if (mediaQuerySmall.matches) {
-        // console.log('small')
-        if (window.pageYOffset > 50) {
-          // $('.header__overhead').css('background', '#fff')
-          $('.header__overhead').addClass('header-menu-white-on-mobile');
-        } else {
-          $('.header__overhead').removeClass('header-menu-white-on-mobile');
-        }
-      }
-    }; // --------------------------------------------------------
-
-
     var scrollAnimation = function scrollAnimation() {
       document.addEventListener("scroll", function (e) {
         // console.log(window.pageYOffset );
-        whiteHeaderMobile();
-
         if (mediaQueryDesktop.matches) {
           // анимация for-whom
           if (window.pageYOffset > 280) {
@@ -22123,9 +22178,12 @@ $(document).ready(function () {
     };
 
     console.log("js index plugged");
+    var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+
+    var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
+    var mediaQuerySmall = window.matchMedia('(max-width: 767px)');
     paralaksForMainPhoto();
-    scrollAnimation();
-    whiteHeaderMobile(); // ------------- функционал кнопки "подробнее про нашу школу"
+    scrollAnimation(); // ------------- функционал кнопки "подробнее про нашу школу"
 
     $('.about-school-btn--play-btn').click(function () {
       $("#mysite").addClass("body-fixed");
@@ -22253,12 +22311,19 @@ $(document).ready(function () {
     });
   }
 
+  function registerUser() {
+    // закрытие формы
+    $(".register-form").removeClass("register-form-active"); // открытие сообщение об успешной регистрации
+
+    $(".register-success").addClass("register-success-active");
+  }
+
   function authorizedUser() {
     $(".login-form").removeClass("login-form-active");
     $("#mysite").removeClass("body-fixed");
   }
 
-  function common() {
+  function changeLoginBtnToUserName() {
     $(".btn-login").addClass("disable");
     $(".user-login").removeClass("disable").addClass("active-flex");
   }
@@ -22349,7 +22414,7 @@ $(document).ready(function () {
           if (data.success) {
             setCookie('name', data.name);
             registerUser();
-            common();
+            changeLoginBtnToUserName();
             console.log(data.name);
             $(".user-login__elem--user-name").html(data.name);
           } else {
@@ -22365,11 +22430,6 @@ $(document).ready(function () {
         console.log(errors);
       }
     });
-  }
-
-  function registerUser() {
-    $(".register-form").removeClass("register-form-active");
-    $(".register-success").addClass("register-success-active");
   }
 
   function login() {
@@ -22424,7 +22484,7 @@ $(document).ready(function () {
             if (data.status === 'user') {
               setCookie('name', data.name);
               authorizedUser();
-              common();
+              changeLoginBtnToUserName();
               $(".user-login__elem--user-name").html(data.name); //если user находится на странице бронирования - нужно
               // перезагрузить страницу при входе
 
@@ -22461,10 +22521,9 @@ $(document).ready(function () {
         console.log(data);
 
         if (data.success) {
-          if (data.status === 'user') {
-            authorizedUser();
-            common();
-            $(".user-login__elem--user-name").html(data.name);
+          if (data.status === 'user') {// authorizedUser();
+            // changeLoginBtnToUserName();
+            // $(".user-login__elem--user-name").html(data.name);
           }
         } else {
           deleteCookie('name');

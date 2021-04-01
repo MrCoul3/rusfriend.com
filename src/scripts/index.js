@@ -1,13 +1,14 @@
-const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
-const mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
-const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
+
 
 $(document).ready(function () {
     if ($("main").hasClass('main-page')) {
         console.log("js index plugged");
+        const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+        const mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
+        const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
         paralaksForMainPhoto();
         scrollAnimation();
-        whiteHeaderMobile();
+
 
         // ------------- функционал кнопки "подробнее про нашу школу"
         $('.about-school-btn--play-btn').click(function () {
@@ -57,26 +58,12 @@ $(document).ready(function () {
         animateToOrigin($(".top-index-second-title"));
         animateToOrigin($(".top-index-first-title"));
 
-        // -------- функция делает  header белым при прокрутке больше 50px
-        function whiteHeaderMobile() {
-            if (mediaQuerySmall.matches) {
-                // console.log('small')
-                if (window.pageYOffset > 50) {
-                    // $('.header__overhead').css('background', '#fff')
-                    $('.header__overhead').addClass('header-menu-white-on-mobile')
-                } else {
-                    $('.header__overhead').removeClass('header-menu-white-on-mobile')
 
-                }
-            }
-        }
-        // --------------------------------------------------------
 
         function scrollAnimation() {
             document.addEventListener("scroll", function (e) {
                 // console.log(window.pageYOffset );
 
-                whiteHeaderMobile();
                 if (mediaQueryDesktop.matches) {
                     // анимация for-whom
                     if (window.pageYOffset > 280) {

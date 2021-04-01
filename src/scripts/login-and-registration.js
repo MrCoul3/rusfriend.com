@@ -63,12 +63,19 @@ $(document).ready(function () {
             });
         });
     }
+    function registerUser() {
+        // закрытие формы
+        $(".register-form").removeClass("register-form-active");
+        // открытие сообщение об успешной регистрации
+        $(".register-success").addClass("register-success-active");
+    }
 
     function authorizedUser() {
         $(".login-form").removeClass("login-form-active");
         $("#mysite").removeClass("body-fixed");
     }
-    function common() {
+
+    function changeLoginBtnToUserName() {
         $(".btn-login").addClass("disable");
         $(".user-login").removeClass("disable").addClass("active-flex");
     }
@@ -160,7 +167,7 @@ $(document).ready(function () {
                     if (data.success) {
                         setCookie('name', data.name);
                         registerUser();
-                        common();
+                        changeLoginBtnToUserName();
                         console.log(data.name);
                         $(".user-login__elem--user-name").html(data.name);
                     } else {
@@ -181,10 +188,7 @@ $(document).ready(function () {
         });
     }
 
-    function registerUser() {
-        $(".register-form").removeClass("register-form-active");
-        $(".register-success").addClass("register-success-active");
-    }
+
 
     function login() {
         let loginBtn = document.querySelector(".form-submit-login");
@@ -235,7 +239,7 @@ $(document).ready(function () {
                         if (data.status === 'user') {
                             setCookie('name', data.name);
                             authorizedUser();
-                            common();
+                            changeLoginBtnToUserName();
                             $(".user-login__elem--user-name").html(data.name);
                             //если user находится на странице бронирования - нужно
                             // перезагрузить страницу при входе
@@ -275,9 +279,9 @@ $(document).ready(function () {
                 if (data.success) {
 
                     if (data.status === 'user') {
-                        authorizedUser();
-                        common();
-                        $(".user-login__elem--user-name").html(data.name);
+                        // authorizedUser();
+                        // changeLoginBtnToUserName();
+                        // $(".user-login__elem--user-name").html(data.name);
                     }
 
                 } else {

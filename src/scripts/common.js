@@ -3,16 +3,15 @@
 $(document).ready(function () {
     if ($(".header")) {
         console.log('common.js init')
-        const mediaQueryMobile = window.matchMedia('min-width: 767px'); // не менее 767
+        const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
         // -------------------------
         resetStates();
         changeLanguage();
         navMenuFixing();
+        headerFixedOnMobile();
         burgerMenuActions();
         coloredNavMenuElems();
-
         openUserMenu();
-
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -70,11 +69,16 @@ $(document).ready(function () {
 
         // -----------------------------------------
 
+
         // ----------- функционал фиксирования меню навигации при прокрутке страницы
         function navMenuFixing() {
             let lastPos = 0;
             document.addEventListener("scroll", function (e) {
 
+                // Background white меню на мобильном устройстве
+                headerFixedOnMobile();
+
+                // на десктопе и таблете
                 function headerLowerFixed() {
                     if (!mediaQueryMobile.matches) {
                         if (window.pageYOffset > 145) {
@@ -91,17 +95,19 @@ $(document).ready(function () {
 
                 headerLowerFixed();
                 lastPos = window.pageYOffset;
-
-                // Background white меню на мобильном устройстве
-                if (mediaQueryMobile.matches) {
-                    if (window.pageYOffset > 35) {
-                        $('.header').addClass('header-menu-fixed');
-                    } else {
-                        $('.header').removeClass('header-menu-fixed');
-                    }
-                }
             });
         }
+
+        function headerFixedOnMobile() {
+            if (mediaQueryMobile.matches) {
+                if (window.pageYOffset > 35) {
+                    $('.header').addClass('header-menu-fixed');
+                } else {
+                    $('.header').removeClass('header-menu-fixed');
+                }
+            }
+        }
+
 
         // -----------------------------------------
 
