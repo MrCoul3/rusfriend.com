@@ -115,6 +115,7 @@ $(document).ready(function () {
         // ----------- функционал и анимация бургер-меню на мобильных устройствах
         function burgerMenuActions() {
             $(".burger-menu").click(function () {
+                // console.log('ww')
                 // console.log(window.pageYOffset);
                 if ($(".header-menu").hasClass('header-menu-active')) {
                     $(".header-menu").removeClass('header-menu-active').animate({

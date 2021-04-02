@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
   <link href="styles/app.css" rel="stylesheet"></head>
-  <body id="mysite">
+  <body class="admin" id="mysite">
     <header class="admin-header admin-inner"><a class="header-logo" href="index.php"></a>
       <h1 class="header-title">Светик, приветик!</h1>
       <div class="btn-exit">Выход</div>
-      <div class="burger-btn">
+      <div class="admin-burger-btn">
         <input class="burger-menu burger-menu-input" type="checkbox" id="burger">
         <label class="burger-menu-label" for="burger">
           <div class="burger-menu-line"></div>
@@ -28,9 +28,9 @@
     </nav>
     <div class="decor-line decor-line--nav-menu admin-inner"></div>
     <main class="admin-main">
-      <!--div#vue-my-calendar-->
-      <!--div#vue-my-schedule-->
-      <!--div#vue-my-students-->
+      <div id="vue-my-calendar"></div>
+      <div id="vue-my-schedule"></div>
+      <div id="vue-my-students"></div>
     </main>
     <footer class="admin-footer"></footer>
   <script type="text/javascript" src="scripts/app.js"></script></body>

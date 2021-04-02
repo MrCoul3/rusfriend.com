@@ -15,6 +15,14 @@ if ($request['method'] == 'requireAdminComponents') {
 <header class="admin-header admin-inner"><a class="header-logo" href="index.php"></a>
     <h1 class="header-title">Светик, приветик!</h1>
     <div class="btn-exit">Выход</div>
+<!--    <div class="admin-burger-btn">-->
+<!--        <input class="burger-menu burger-menu-input" type="checkbox" id="burger">-->
+<!--        <label class="burger-menu-label" for="burger">-->
+<!--            <div class="burger-menu-line"></div>-->
+<!--            <div class="burger-menu-line"></div>-->
+<!--            <div class="burger-menu-line"></div>-->
+<!--        </label>-->
+<!--    </div>-->
 </header>
 
 
@@ -27,12 +35,12 @@ if ($request['method'] == 'requireAdminComponents') {
     <div class="admin-menu__element admin-menu__element--reviews" type="my-reviews">Отзывы</div>
 </nav>
 
-<div class="decor-line admin-inner"></div>
+<div class="decor-line decor-line--nav-menu admin-inner"></div>
 <main class="admin-main">
-<!--    <div id="vue-my-calendar"></div>-->
-<!--    <div id="vue-my-schedule"></div>-->
-<!--    <div id="vue-my-students"></div>-->
+    <div id="vue-my-calendar"></div>
+    <div id="vue-my-schedule"></div>
+    <div id="vue-my-students"></div>
 </main>
-<!--<footer class="admin-footer"></footer>-->
+<footer class="admin-footer"></footer>
 
 </body>

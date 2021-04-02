@@ -62,7 +62,7 @@
   display: none;
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.25);
 }
@@ -80,6 +80,11 @@
   transform: translateY(-30px);
   transition: all ease-in 0.2s;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .about-school-video .video-container:hover .close-line {
+    transform: none;
+  }
+}
 #mysite .about-school-video .video-container .close-line {
   transition: all ease-out 0.2s;
   position: absolute;
@@ -89,6 +94,11 @@
   color: #FFFFFF;
   text-align: center;
   line-height: 30px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .about-school-video .video-container .close-line {
+    top: -30px;
+  }
 }
 #mysite .about-school-video .video-container .close-line .close-button {
   cursor: pointer;
@@ -2463,6 +2473,10 @@
   padding: 0 20px;
 }
 
+.admin {
+  min-width: 1024px;
+}
+
 #mysite .admin-header {
   justify-content: space-between;
   margin-top: 20px;
@@ -2473,22 +2487,6 @@
   background-position: 131px 5px;
   align-items: center;
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-header {
-    background-position-y: -4px;
-    background-position-x: 104px;
-    background-image: url(../images/common/Lang-School-1024.png);
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .admin-header {
-    height: 70px;
-    background-position-y: 16px;
-    background-position-x: 64px;
-    margin: 0;
-    background-image: url(../images/common/Lang-School-768.png);
-  }
-}
 #mysite .admin-header .header-logo {
   display: block;
   background-image: url(../images/icons/logo.svg);
@@ -2497,45 +2495,18 @@
   width: 120px;
   height: 85px;
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-header .header-logo {
-    width: 120px;
-    height: 85px;
-    background-image: url(../images/icons/logo-1024.svg);
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .admin-header .header-logo {
-    width: 75.33px;
-    height: 53px;
-    background-image: url(../images/icons/logo-768.svg);
-  }
-}
-@media screen and (max-width: 390px) {
-  #mysite .admin-header .header-logo {
-    width: 52.33px;
-    height: 38px;
-  }
-}
 #mysite .admin-header .header-title {
   flex-grow: 1;
   color: #455A64;
 }
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 1024px) {
   #mysite .admin-header .header-title {
-    font-size: 20px;
+    font-size: 48px;
   }
 }
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 767px) {
   #mysite .admin-header .header-title {
-    font-size: 16px;
-    width: 30px;
-  }
-}
-@media screen and (max-width: 390px) {
-  #mysite .admin-header .header-title {
-    font-size: 14px;
-    width: 30px;
+    font-size: 48px;
   }
 }
 #mysite .admin-header .btn-exit {
@@ -2552,36 +2523,14 @@
   -ms-user-select: none;
       user-select: none;
 }
-@media screen and (max-width: 460px) {
-  #mysite .admin-header .btn-exit {
-    font-size: 12px;
-    width: 70px;
-  }
-}
-#mysite .admin-header .burger-btn {
+#mysite .admin-header .admin-burger-btn {
   display: none;
-}
-@media screen and (max-width: 767px) {
-  #mysite .admin-header .burger-btn {
-    display: block;
-    margin: 3px 0 0 20px;
-  }
 }
 #mysite .admin-menu {
   display: flex;
   margin-top: 20px;
   margin-bottom: 20px;
   justify-content: center;
-}
-@media screen and (max-width: 767px) {
-  #mysite .admin-menu {
-    position: relative;
-    padding: 0;
-    flex-direction: column;
-    padding-top: 113px;
-    margin: 0;
-    right: 767px;
-  }
 }
 #mysite .admin-menu__element {
   margin: 0 20px;
@@ -2591,44 +2540,23 @@
   color: #455A64;
   cursor: pointer;
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-menu__element {
-    font-size: 14px;
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .admin-menu__element {
-    margin-bottom: 32px;
-  }
-}
 #mysite .admin-menu__element:hover {
   color: #FF3E28;
 }
 #mysite .admin-menu .menu-element-colored {
   color: #FF3E28;
 }
-@media screen and (max-width: 767px) {
-  #mysite .decor-line--nav-menu {
-    width: 100%;
-    position: fixed;
-    bottom: 80px;
-  }
+#mysite .admin-menu-active {
+  right: 0;
+  transition: all ease-in 0.2s;
 }
 #mysite .admin-footer {
   background-image: url(../images/common/footer-trees.svg);
   background-repeat: no-repeat;
-  width: 100vw;
   height: 100px;
-  position: fixed;
+  position: relative;
   bottom: 0;
   z-index: -1;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .admin-footer {
-    background-image: url(../images/common/footer-trees-1024.svg);
-    height: 130px;
-    background-position-y: 66px;
-  }
 }
 #mysite .admin-panel-section {
   margin-bottom: 80px !important;
@@ -2667,11 +2595,6 @@
   margin-right: 10px;
   color: #455A64;
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month {
-    font-size: 14px;
-  }
-}
 #mysite .admin-panel-section .wrapper .calendar-header .header-content .month-module .month-btn {
   width: 27px;
   height: 27px;
@@ -2698,12 +2621,6 @@
   line-height: 19px;
   color: rgba(0, 0, 0, 0.5);
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-panel-section .wrapper .calendar-header .header-content .time-zone {
-    font-size: 12px;
-    width: 215px;
-  }
-}
 #mysite .admin-panel-section .wrapper .calendar-table {
   border: 2px solid white;
   border-top: 1px solid #C4C4C4;
@@ -2719,11 +2636,6 @@
   top: 0;
   color: #4C59D9;
 }
-@media screen and (max-width: 1024px) {
-  #mysite .admin-panel-section .wrapper .calendar-table .day-number {
-    font-size: 14px;
-  }
-}
 #mysite .admin-panel-section .wrapper .calendar-table .day-time {
   font-family: "Exo 2";
   display: block;
@@ -2735,11 +2647,6 @@
   font-weight: normal;
   font-size: 16px;
   color: #455A64;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .admin-panel-section .wrapper .calendar-table th {
-    font-size: 12px;
-  }
 }
 #mysite .admin-panel-section .wrapper .calendar-table th, #mysite .admin-panel-section .wrapper .calendar-table td {
   padding: 3px;
@@ -2805,7 +2712,6 @@
   border-radius: 5px;
   width: 100%;
   white-space: nowrap;
-  overflow: scroll;
   color: white;
   cursor: pointer;
   height: 20px;
@@ -2983,15 +2889,6 @@
   margin: auto;
   padding: 300px 20px 0;
   width: auto;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .my-calendar #admin-booking-calendar {
-    top: -169px;
-    right: 0;
-    left: 0;
-    margin: auto;
-    padding: 250px 20px 0;
-  }
 }
 #mysite .my-calendar #admin-booking-calendar .button {
   width: 200px;

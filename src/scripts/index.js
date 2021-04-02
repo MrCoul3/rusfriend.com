@@ -8,17 +8,22 @@ $(document).ready(function () {
         const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
         paralaksForMainPhoto();
         scrollAnimation();
+        aboutSchoolVideoOpen();
 
 
         // ------------- функционал кнопки "подробнее про нашу школу"
-        $('.about-school-btn--play-btn').click(function () {
-            $("#mysite").addClass("body-fixed");
-            $('.about-school-video').addClass('detailed-about-school-active');
-        });
-        $('.close-button').click(function () {
-            $("#mysite").removeClass("body-fixed");
-            $('.about-school-video').removeClass('detailed-about-school-active');
-        });
+        function aboutSchoolVideoOpen() {
+            $('.about-school-btn--play-btn').click(function () {
+                $("#mysite").addClass("body-fixed");
+                $('.about-school-video').addClass('detailed-about-school-active');
+            });
+            $('.close-button').click(function () {
+                document.getElementById('about-video').contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                $("#mysite").removeClass("body-fixed");
+                $('.about-school-video').removeClass('detailed-about-school-active');
+            });
+        }
+
         // ------------------------------------------------------------
 
 

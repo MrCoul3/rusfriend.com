@@ -9,7 +9,7 @@ $(document).ready(function () {
         logout();
         adminMenuMobile();
         // loginOnReload();
-        
+
         $('.header').css('display', 'none');// убираем header главной страницы
 
         // ------------ переключение элементов меню
@@ -65,12 +65,16 @@ $(document).ready(function () {
         }
         // ------------------------------
 
-
         // ------------- открытие меню навигации на мобильной версии
-        function adminMenuMobile() {
-            if (mediaQueryMobile.matches) {
 
-            }
+        function adminMenuMobile() {
+            $('.burger-menu-label').click(function () {
+                if (!$('.admin-menu').hasClass('admin-menu-active')) {
+                    $('.admin-menu').addClass('admin-menu-active');
+                } else {
+                    $('.admin-menu').removeClass('admin-menu-active');
+                }
+            })
         }
         // ------------------------------
 

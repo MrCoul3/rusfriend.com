@@ -1,6 +1,20 @@
 $(document).ready(function () {
 
-    const mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+    const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+    const mediaQueryTablet = window.matchMedia('(max-width: 1024px)'); // работает только не более 1024
+    // const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
+    rotateCards();
+    openLinkByOffersCardsMobile();
+    $(window).resize(function () {
+        // при смене ширины экрана возврат в исходное карточек предложений
+        if (mediaQueryTablet.matches) {
+            $('.offers-cards__card').removeClass('card-rotate-forward');
+            $('.card-content--front').addClass('card-side-active');
+            $('.card-content--end ').removeClass('card-side-active');
+        }
+        rotateCards();
+        openLinkByOffersCardsMobile();
+    });
 
     // --------------- вращение карточек предложений
     // function rotateCards() {
@@ -42,7 +56,7 @@ $(document).ready(function () {
     //     }
     // }
     function rotateCards() {
-        if (mediaQueryCartDesktop.matches) {
+        if (mediaQueryDesktop.matches) {
             $(".detail-btn").each(function (key, val) {
                 $(this).click(function (e) {
                     // console.log($(this).parent().parent())
@@ -62,9 +76,28 @@ $(document).ready(function () {
         }
     }
 
-    $(window).resize(function (e) {
-        rotateCards();
-    });
-    rotateCards();
-
+    // ---------- открытие ссылок по клику на кнопку начать карточек предложений на таблете и мобильной версии
+    function openLinkByOffersCardsMobile() {
+            $('.offers-cards-conteiner--courses').click(function (e) {
+                if (mediaQueryTablet.matches) {
+                    if ($(e.target).closest('.offers-cards__card--courses .card-content')) {
+                        $(location).attr('href', '/courses.php');
+                    }
+                }
+            })
+            $('.offers-cards-conteiner--private').click(function (e) {
+                if (mediaQueryTablet.matches) {
+                    if ($(e.target).closest('.offers-cards__card--private .card-content')) {
+                        $(location).attr('href', '/private-lesson.php');
+                    }
+                }
+            })
+            $('.offers-cards-conteiner--s-club').click(function (e) {
+                if (mediaQueryTablet.matches) {
+                    if ($(e.target).closest('.offers-cards__card--s-club .card-content')) {
+                        $(location).attr('href', '/speaking-club.php');
+                    }
+                }
+            })
+        }
 });

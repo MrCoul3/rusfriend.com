@@ -21505,7 +21505,13 @@ $(document).ready(function () {
 
 
     var adminMenuMobile = function adminMenuMobile() {
-      if (mediaQueryMobile.matches) {}
+      $('.burger-menu-label').click(function () {
+        if (!$('.admin-menu').hasClass('admin-menu-active')) {
+          $('.admin-menu').addClass('admin-menu-active');
+        } else {
+          $('.admin-menu').removeClass('admin-menu-active');
+        }
+      });
     }; // ------------------------------
     // function loginOnReload() {
     //     window.addEventListener("load", function (e) {
@@ -21813,6 +21819,7 @@ $(document).ready(function () {
 
     var burgerMenuActions = function burgerMenuActions() {
       $(".burger-menu").click(function () {
+        // console.log('ww')
         // console.log(window.pageYOffset);
         if ($(".header-menu").hasClass('header-menu-active')) {
           $(".header-menu").removeClass('header-menu-active').animate({
@@ -22100,6 +22107,21 @@ jQuery.extend(jQuery.easing, {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($("main").hasClass('main-page')) {
+    // ------------- функционал кнопки "подробнее про нашу школу"
+    var aboutSchoolVideoOpen = function aboutSchoolVideoOpen() {
+      $('.about-school-btn--play-btn').click(function () {
+        $("#mysite").addClass("body-fixed");
+        $('.about-school-video').addClass('detailed-about-school-active');
+      });
+      $('.close-button').click(function () {
+        document.getElementById('about-video').contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        $("#mysite").removeClass("body-fixed");
+        $('.about-school-video').removeClass('detailed-about-school-active');
+      });
+    }; // ------------------------------------------------------------
+    // карусели
+
+
     var scrollAnimation = function scrollAnimation() {
       document.addEventListener("scroll", function (e) {
         // console.log(window.pageYOffset );
@@ -22183,18 +22205,8 @@ jQuery.extend(jQuery.easing, {
     var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
     var mediaQuerySmall = window.matchMedia('(max-width: 767px)');
     paralaksForMainPhoto();
-    scrollAnimation(); // ------------- функционал кнопки "подробнее про нашу школу"
-
-    $('.about-school-btn--play-btn').click(function () {
-      $("#mysite").addClass("body-fixed");
-      $('.about-school-video').addClass('detailed-about-school-active');
-    });
-    $('.close-button').click(function () {
-      $("#mysite").removeClass("body-fixed");
-      $('.about-school-video').removeClass('detailed-about-school-active');
-    }); // ------------------------------------------------------------
-    // карусели
-
+    scrollAnimation();
+    aboutSchoolVideoOpen();
     $(".owl-carousel-1").owlCarousel({
       margin: 100,
       autoWidth: true,
@@ -22636,8 +22648,24 @@ $(document).ready(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
-  var mediaQueryCartDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
-  // --------------- вращение карточек предложений
+  var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
+
+  var mediaQueryTablet = window.matchMedia('(max-width: 1024px)'); // работает только не более 1024
+  // const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
+
+  rotateCards();
+  openLinkByOffersCardsMobile();
+  $(window).resize(function () {
+    // при смене ширины экрана возврат в исходное карточек предложений
+    if (mediaQueryTablet.matches) {
+      $('.offers-cards__card').removeClass('card-rotate-forward');
+      $('.card-content--front').addClass('card-side-active');
+      $('.card-content--end ').removeClass('card-side-active');
+    }
+
+    rotateCards();
+    openLinkByOffersCardsMobile();
+  }); // --------------- вращение карточек предложений
   // function rotateCards() {
   //     if (mediaQueryCartDesktop.matches) {
   //         $(".offers-cards-conteiner").each(function (key, val) {
@@ -22678,7 +22706,7 @@ $(document).ready(function () {
   // }
 
   function rotateCards() {
-    if (mediaQueryCartDesktop.matches) {
+    if (mediaQueryDesktop.matches) {
       $(".detail-btn").each(function (key, val) {
         $(this).click(function (e) {
           // console.log($(this).parent().parent())
@@ -22694,12 +22722,32 @@ $(document).ready(function () {
         });
       });
     }
-  }
+  } // ---------- открытие ссылок по клику на кнопку начать карточек предложений на таблете и мобильной версии
 
-  $(window).resize(function (e) {
-    rotateCards();
-  });
-  rotateCards();
+
+  function openLinkByOffersCardsMobile() {
+    $('.offers-cards-conteiner--courses').click(function (e) {
+      if (mediaQueryTablet.matches) {
+        if ($(e.target).closest('.offers-cards__card--courses .card-content')) {
+          $(location).attr('href', '/courses.php');
+        }
+      }
+    });
+    $('.offers-cards-conteiner--private').click(function (e) {
+      if (mediaQueryTablet.matches) {
+        if ($(e.target).closest('.offers-cards__card--private .card-content')) {
+          $(location).attr('href', '/private-lesson.php');
+        }
+      }
+    });
+    $('.offers-cards-conteiner--s-club').click(function (e) {
+      if (mediaQueryTablet.matches) {
+        if ($(e.target).closest('.offers-cards__card--s-club .card-content')) {
+          $(location).attr('href', '/speaking-club.php');
+        }
+      }
+    });
+  }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
 

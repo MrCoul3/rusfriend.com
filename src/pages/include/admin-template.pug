@@ -5,12 +5,12 @@ html(lang="en")
         title #{pageTitle}
         meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
         meta(charset='utf-8')
-    body#mysite
+    body#mysite(class=`${bodyAdditionClass}`)
         header.admin-header.admin-inner
             a(href="index.php").header-logo
             h1.header-title Светик, приветик!
             div.btn-exit Выход
-            div.burger-btn
+            div.admin-burger-btn
                 input(type="checkbox" id="burger").burger-menu.burger-menu-input
                 label(for="burger").burger-menu-label
                     div.burger-menu-line
