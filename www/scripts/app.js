@@ -2456,6 +2456,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2483,14 +2494,19 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       currentMonth: null,
       enterSkype: false,
       validationSkype: false,
-      preLoader: false
+      freeLesson: false,
+      instruction: true,
+      payment: 'unpayed',
+      freeLessBookSuccess: false
     };
   },
   beforeMount: function beforeMount() {
     // возвращает номер недели
     Date.prototype.getWeek = function () {
-      var onejan = new Date(this.getFullYear(), 0, 1);
-      return Math.ceil(((this - onejan) / 86400000 + onejan.getDay()) / 7);
+      var oneJan = new Date(this.getFullYear(), 0, 1);
+      var weekNum = ((this - oneJan) / 86400000 + oneJan.getDay() - 1) / 7; // console.log(weekNum);
+
+      return Math.ceil(((this - oneJan) / 86400000 + oneJan.getDay() - 1) / 7);
     };
 
     this.weekNumber = new Date().getWeek() - 1;
@@ -2505,6 +2521,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.getIntervalsFromDB();
     this.lightingOfToday();
     this.changeStateOfItem();
+    this.isFreeLesson();
   },
   updated: function updated() {
     this.adjustmentDateOfDay();
@@ -2514,6 +2531,19 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.setCurrentMonth();
   },
   methods: {
+    // ----- Для страницы "free-lesson.php"
+    isFreeLesson: function isFreeLesson() {
+      if ($("main").hasClass('free-lesson')) {
+        this.instruction = false;
+        this.freeLesson = true;
+        this.payment = 'free';
+      }
+    },
+    closeFreeLessSuccess: function closeFreeLessSuccess() {
+      this.freeLessBookSuccess = false;
+      window.location.href = '/student-lessons.php';
+    },
+    // -----------------------------------
     setCurrentMonth: function setCurrentMonth() {
       if (String(this.numberMonthOfFirstDayOfWeek + 1).length === 1) {
         this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
@@ -2595,7 +2625,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
 
       var week = [];
       var w = 0;
-      week[w] = [];
+      week[w] = []; // console.log(this.weekNumber)
+
       var dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
 
       for (var i = dayInCurrentWeek; i <= dayInCurrentWeek + 6; i++) {
@@ -2705,6 +2736,11 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       });
     },
     chooseTime: function chooseTime(event) {
+      // ---- Для free-lesson возможность выбрать только одно занятие
+      if (this.freeLesson) {
+        $('.selected-time').removeClass('selected-time');
+      }
+
       var selectedTime = event.target;
 
       if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
@@ -2724,11 +2760,14 @@ var selectedTimeArray = []; // пришлось ввести, так как из
 
       if ($('.header-menu--private').hasClass('menu-item-active')) {
         typeOfLesson = 'private';
+      } else if (this.freeLesson) {
+        typeOfLesson = 'free';
       } else {
         typeOfLesson = 's-club';
       }
 
       document.cookie = "type=" + typeOfLesson;
+      var payment = this.payment;
       $('.selected-time').each(function (k, val) {
         var day = val.parentNode.getAttribute('date');
         var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
@@ -2738,14 +2777,14 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           type: typeOfLesson,
           day: day,
           time: time,
-          payment: 'unpayed',
+          payment: payment,
           'method': 'bookEvent'
         }; // console.log(obj)
 
         if (day !== null && time !== '') {
           selectedTimeArray.push(obj);
         }
-      }); // console.log(array);
+      }); // console.log(selectedTimeArray);
       // this.selectedTimeArray = array.slice(0);
     },
     bookEvent: function bookEvent() {
@@ -2775,8 +2814,17 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             if (dataFromDB.status === 'empty') {
               _this.enterSkype = true;
             } else {
-              axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray));
-              window.location.href = "payment.php";
+              axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray)); // ---- для бесплатного занятия
+
+              if (_this.freeLesson) {
+                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+                  'method': 'changeSatusOnActive'
+                }));
+                _this.freeLessBookSuccess = true;
+              } else {
+                // --- для платного - страница оплаты
+                window.location.href = "payment.php";
+              }
             }
           });
         }
@@ -2985,6 +3033,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3013,7 +3065,8 @@ __webpack_require__.r(__webpack_exports__);
       detailSkype: null,
       preloader: false,
       cancelLessShow: false,
-      showBookCalendar: false
+      showBookCalendar: false,
+      freeLesson: false
     };
   },
   mounted: function mounted() {
@@ -3108,13 +3161,20 @@ __webpack_require__.r(__webpack_exports__);
         'method': 'getBooksTime'
       })).then(function (response) {
         // console.log(response.data);
-        var data = response.data;
+        var data = response.data; // console.log(data)
+
+        var freeLesson = null;
         data.forEach(function (val, k) {
           var typeFromDb = val.type;
           var nameFromDb = val.name;
           var dateFromDb = val.day;
           var timeFromDb = val.time;
           var paymentFromDb = val.payment;
+
+          if (typeFromDb === 'free') {
+            freeLesson = true;
+          }
+
           $('.calendar-table-days').each(function (k, val) {
             var day = $(this);
             var dateOfcell = $(this).attr('date');
@@ -3136,7 +3196,9 @@ __webpack_require__.r(__webpack_exports__);
               }
             }
           });
-        });
+        }); // console.log(freeLesson)
+
+        _this.freeLesson = freeLesson;
         _this.preloader = false;
       });
     },
@@ -3159,6 +3221,10 @@ __webpack_require__.r(__webpack_exports__);
 
         if (target.getAttribute('type') === 's-club') {
           this.detailType = 'Speaking - Club';
+        }
+
+        if (target.getAttribute('type') === 'free') {
+          this.detailType = 'Пробный урок';
         }
 
         this.detailUserName = target.getAttribute('name');
@@ -8026,20 +8092,22 @@ var render = function() {
     "section",
     { staticClass: "your-calendar inner", attrs: { id: "booking-calendar" } },
     [
-      _c(
-        "div",
-        {
-          directives: [
+      _vm.freeLesson
+        ? _c(
+            "h3",
             {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.preLoader,
-              expression: "preLoader"
-            }
-          ]
-        },
-        [_vm._v("Загрузка")]
-      ),
+              staticClass:
+                "description your-calendar__element your-calendar__element--main-title main-title"
+            },
+            [
+              _vm._v("\n        Забронируй "),
+              _c("span", { staticStyle: { color: "#FF3E28" } }, [
+                _vm._v("бесплатный")
+              ]),
+              _vm._v(" получасовой урок с преподавателем прямо сейчас\n    ")
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "h3",
@@ -8054,7 +8122,46 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm._m(0),
+      _vm.instruction
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "your-calendar__element your-calendar__element--instruction instruction"
+            },
+            [
+              _c("p", { staticClass: "instruction__element" }, [
+                _vm._v("1. Выберите удобное для вас время")
+              ]),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "instruction__element instruction__element--separator"
+                },
+                [_vm._v(">")]
+              ),
+              _vm._v(" "),
+              _c("p", { staticClass: "instruction__element" }, [
+                _vm._v("2. Оплатите урок")
+              ]),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass:
+                    "instruction__element instruction__element--separator"
+                },
+                [_vm._v(">")]
+              ),
+              _vm._v(" "),
+              _c("p", { staticClass: "instruction__element" }, [
+                _vm._v("3. Готовьтесь к уроку")
+              ])
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "div",
@@ -8110,7 +8217,7 @@ var render = function() {
               [_vm._v("Календарь занятий")]
             ),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(0)
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "decor-line" }),
@@ -8119,7 +8226,7 @@ var render = function() {
             "div",
             { staticClass: "calendar-app-content" },
             [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "div",
@@ -8208,7 +8315,7 @@ var render = function() {
             [_vm._v("забронировать")]
           ),
           _vm._v(" "),
-          _vm._m(3),
+          _vm._m(2),
           _vm._v(" "),
           _c(
             "div",
@@ -8228,7 +8335,7 @@ var render = function() {
                 _vm._v("Все занятия проходят в skype")
               ]),
               _vm._v(" "),
-              _vm._m(4),
+              _vm._m(3),
               _vm._v(" "),
               _c("div", { staticClass: "flex" }, [
                 _c("div", { staticClass: "skype-icon-for-input" }),
@@ -8274,7 +8381,48 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(5)
+              _vm._m(4)
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.freeLessBookSuccess,
+                  expression: "freeLessBookSuccess"
+                }
+              ],
+              staticClass: "free-lesson-success"
+            },
+            [
+              _c("h2", { staticClass: "free-lesson-success__elem" }, [
+                _vm._v("Вы успешно забронировали урок")
+              ]),
+              _vm._v(" "),
+              _c("h3", { staticClass: "free-lesson-success__elem" }, [
+                _vm._v("Не забудте придти вовремя")
+              ]),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "button ok-btn",
+                  on: {
+                    click: function($event) {
+                      return _vm.closeFreeLessSuccess()
+                    }
+                  }
+                },
+                [_vm._v("ok")]
+              ),
+              _vm._v(" "),
+              _vm._m(6)
             ]
           )
         ]
@@ -8283,47 +8431,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "your-calendar__element your-calendar__element--instruction instruction"
-      },
-      [
-        _c("p", { staticClass: "instruction__element" }, [
-          _vm._v("1. Выберите удобное для вас время")
-        ]),
-        _vm._v(" "),
-        _c(
-          "p",
-          {
-            staticClass: "instruction__element instruction__element--separator"
-          },
-          [_vm._v(">")]
-        ),
-        _vm._v(" "),
-        _c("p", { staticClass: "instruction__element" }, [
-          _vm._v("2. Оплатите урок")
-        ]),
-        _vm._v(" "),
-        _c(
-          "p",
-          {
-            staticClass: "instruction__element instruction__element--separator"
-          },
-          [_vm._v(">")]
-        ),
-        _vm._v(" "),
-        _c("p", { staticClass: "instruction__element" }, [
-          _vm._v("3. Готовьтесь к уроку")
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -8399,6 +8506,32 @@ var staticRenderFns = [
       _vm._v("Skype преподавателя: "),
       _c("span", [_vm._v("svetlana tutorOnline")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "free-lesson-success__elem" }, [
+      _vm._v("Если остались вопросы напишите "),
+      _c(
+        "span",
+        {
+          staticClass: "send-message",
+          staticStyle: { "text-decoration": "underline", cursor: "pointer" }
+        },
+        [_vm._v("сообщение")]
+      ),
+      _vm._v("\n                преподавателю")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", { staticClass: "free-lesson-success__elem" }, [
+      _vm._v("Skype преподавателя: "),
+      _c("span", [_vm._v("svetlana tutorOnline")])
+    ])
   }
 ]
 render._withStripped = true
@@ -8457,7 +8590,31 @@ var render = function() {
           [
             _c("div", { staticClass: "calendar-header" }, [
               _c("div", { staticClass: "header-content" }, [
-                _vm._m(0),
+                _c("div", { staticClass: "tegs" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.freeLesson,
+                          expression: "freeLesson"
+                        }
+                      ],
+                      staticClass: "tegs__element"
+                    },
+                    [
+                      _c("div", { staticClass: "circle circle--free" }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Пробный урок")])
+                    ]
+                  )
+                ]),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -8481,7 +8638,7 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(1)
+                _vm._m(2)
               ])
             ]),
             _vm._v(" "),
@@ -8580,7 +8737,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(3)
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "wrap skype" }, [
@@ -8709,18 +8866,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "tegs" }, [
-      _c("div", { staticClass: "tegs__element" }, [
-        _c("div", { staticClass: "circle circle--s-club" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Speaking - club")])
-      ]),
+    return _c("div", { staticClass: "tegs__element" }, [
+      _c("div", { staticClass: "circle circle--s-club" }),
       _vm._v(" "),
-      _c("div", { staticClass: "tegs__element" }, [
-        _c("div", { staticClass: "circle circle--private" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Занятие с преподавателем")])
-      ])
+      _c("span", [_vm._v("Speaking - club")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tegs__element" }, [
+      _c("div", { staticClass: "circle circle--private" }),
+      _vm._v(" "),
+      _c("span", [_vm._v("Занятие с преподавателем")])
     ])
   },
   function() {
@@ -21565,7 +21724,6 @@ $(document).ready(function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index */ "./scripts/index.js");
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _student_lessons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./student-lessons */ "./scripts/student-lessons.js");
 /* harmony import */ var _student_lessons__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_student_lessons__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./settings */ "./scripts/settings.js");
@@ -21589,19 +21747,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_lessons__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_my_lessons__WEBPACK_IMPORTED_MODULE_11__);
 /* harmony import */ var _admin_panel__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./admin-panel */ "./scripts/admin-panel.js");
 /* harmony import */ var _login_and_registration__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./login-and-registration */ "./scripts/login-and-registration.js");
-/* harmony import */ var _login_and_registration__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_login_and_registration__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var owl_carousel__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! owl.carousel */ "../node_modules/owl.carousel/dist/owl.carousel.js");
 /* harmony import */ var owl_carousel__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(owl_carousel__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var _easing_plugin__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easing-plugin */ "./scripts/easing-plugin.js");
 /* harmony import */ var _easing_plugin__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_easing_plugin__WEBPACK_IMPORTED_MODULE_15__);
 /* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service */ "./scripts/service.js");
 /* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_service__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
-/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
-/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
-/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
-/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
+/* harmony import */ var _free_lesson__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./free-lesson */ "./scripts/free-lesson.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
+/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
+/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
+/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
+/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
+
 
 
 
@@ -21626,7 +21785,7 @@ __webpack_require__.r(__webpack_exports__);
 
  // -----------------------------------------------------------
 
-vue__WEBPACK_IMPORTED_MODULE_17__["default"].config.productionTip = false;
+vue__WEBPACK_IMPORTED_MODULE_18__["default"].config.productionTip = false;
 $(document).ready(function () {
   console.log('app.js init'); // -----------------------------------------
   // ----------------- ПОДКЛЮЧЕНИЯ VUE КОМПОНЕНТОВ ---------------- \\
@@ -21634,11 +21793,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-calendar')) {
     console.log('init vue-my-calendar');
-    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_17__["default"]({
+    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-calendar',
       template: "<MyCalendar/>",
       components: {
-        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
       }
     });
   } // ----------- мое расписание (админ-панель)
@@ -21646,11 +21805,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-schedule')) {
     console.log('init vue-my-schedule');
-    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_17__["default"]({
+    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-schedule',
       template: "<MySchedule/>",
       components: {
-        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
+        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
       }
     });
   } // ----------- мои ученики (админ-панель)
@@ -21658,11 +21817,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-students')) {
     console.log('init vue-my-students');
-    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_17__["default"]({
+    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-my-students",
       template: "<MyStudents/>",
       components: {
-        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
+        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
       }
     });
   } // ----------- компонент для редактирования времени урока (админ-панель)
@@ -21671,11 +21830,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-admin-book-calendar')) {
     console.log('init vue-admin-book-calendar');
 
-    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_17__["default"]({
+    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-admin-book-calendar',
       template: "<AdminBookCalendar/>",
       components: {
-        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
+        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
       }
     });
   } // ----------- календарь бронирования (в private-lesson и s-club)
@@ -21684,11 +21843,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-book-calendar')) {
     console.log('init vue-book-calendar');
 
-    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_17__["default"]({
+    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-book-calendar",
       template: "<BookCalendar/>",
       components: {
-        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
+        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
       }
     });
   } // -----------------------------------------
@@ -22082,6 +22241,40 @@ jQuery.extend(jQuery.easing, {
 
 /***/ }),
 
+/***/ "./scripts/free-lesson.js":
+/*!********************************!*\
+  !*** ./scripts/free-lesson.js ***!
+  \********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+$(document).ready(function () {
+  if ($("main").hasClass('free-lesson')) {
+    console.log('free-lesson init'); // console.log(localStorage.getItem('status'));
+    // --------- проверка
+
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php ', JSON.stringify({
+      'method': 'checkLoginOnBookedLesson'
+    })).then(function (response) {
+      if (response.data['success'] === false) {
+        $(location).attr('href', '/index.php');
+      } else {
+        if (response.data['status_2'] !== 'new') {
+          $(location).attr('href', '/index.php');
+        }
+      }
+    });
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
+
+/***/ }),
+
 /***/ "./scripts/guide.js":
 /*!**************************!*\
   !*** ./scripts/guide.js ***!
@@ -22102,10 +22295,15 @@ jQuery.extend(jQuery.easing, {
 /*!**************************!*\
   !*** ./scripts/index.js ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+$(document).ready(function () {
   if ($("main").hasClass('main-page')) {
     // ------------- функционал кнопки "подробнее про нашу школу"
     var aboutSchoolVideoOpen = function aboutSchoolVideoOpen() {
@@ -22197,7 +22395,8 @@ jQuery.extend(jQuery.easing, {
         'opacity': 1,
         'marginLeft': marginLeft
       }, 1000, "easeOutQuart");
-    };
+    }; // ---------- получить бесплатное занятие
+
 
     console.log("js index plugged");
     var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
@@ -22239,6 +22438,27 @@ jQuery.extend(jQuery.easing, {
     animateToOrigin($(".top-index-title"));
     animateToOrigin($(".top-index-second-title"));
     animateToOrigin($(".top-index-first-title"));
+    $('.get-free-lesson-btn').click(function () {
+      localStorage.setItem('status', 'free-lesson');
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'checkLoginOnBookedLesson'
+      })).then(function (response) {
+        // console.log(response.data['success']);
+        if (response.data['success'] === false) {
+          // открытие формы логина
+          if (!$(".register-form").hasClass('register-form-active')) {
+            $(".register-form").addClass('register-form-active');
+            $("#mysite").addClass("body-fixed");
+          }
+        } else {
+          if (response.data['status_2'] === 'new') {
+            $(location).attr('href', '/free-lesson.php');
+          } else {
+            console.log('пользователь уже бронировал бесплатный урок');
+          }
+        }
+      });
+    });
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22249,14 +22469,19 @@ jQuery.extend(jQuery.easing, {
 /*!*******************************************!*\
   !*** ./scripts/login-and-registration.js ***!
   \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 $(document).ready(function () {
   if (!$('body').hasClass('admin')) {
@@ -22287,6 +22512,8 @@ $(document).ready(function () {
 
   function closeLoginForm() {
     $(".form-close-btn").click(function () {
+      delete localStorage.status;
+
       if ($(".login-form").hasClass('login-form-active')) {
         $(".login-form").removeClass('login-form-active');
       }
@@ -22408,7 +22635,7 @@ $(document).ready(function () {
           password: password,
           email: email,
           skype: skype,
-          status: 'active',
+          status: 'new',
           'method': 'register'
         };
         var response = fetch('handle.php', {
@@ -22426,9 +22653,15 @@ $(document).ready(function () {
           if (data.success) {
             setCookie('name', data.name);
             registerUser();
-            changeLoginBtnToUserName();
-            console.log(data.name);
+            changeLoginBtnToUserName(); // console.log(data.name);
+
             $(".user-login__elem--user-name").html(data.name);
+            /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
+                 * То редирект на страницу free-lesson*/
+
+            if (localStorage.getItem('status') === 'free-lesson') {
+              $(location).attr('href', '/free-lesson.php');
+            }
           } else {
             $(".reg-check-email").removeClass("reg-check--disable").html('пользователь с таким email уже существует');
           }
@@ -22489,15 +22722,26 @@ $(document).ready(function () {
 
           if (data.success) {
             if (data.status === 'admin') {
-              document.location.href = '/index.php';
-              authorizedUser();
+              document.location.href = '/index.php'; // authorizedUser();
             }
 
             if (data.status === 'user') {
               setCookie('name', data.name);
               authorizedUser();
               changeLoginBtnToUserName();
-              $(".user-login__elem--user-name").html(data.name); //если user находится на странице бронирования - нужно
+              $(".user-login__elem--user-name").html(data.name);
+              /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
+              * То редирект на страницу free-lesson*/
+
+              axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+                'method': 'checkLoginOnBookedLesson'
+              })).then(function (response) {
+                if (localStorage.getItem('status') === 'free-lesson') {
+                  if (response.data['status_2'] === 'new') {
+                    $(location).attr('href', '/free-lesson.php');
+                  }
+                }
+              }); // если user находится на странице бронирования - нужно
               // перезагрузить страницу при входе
 
               if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
@@ -22517,6 +22761,8 @@ $(document).ready(function () {
 
   function loginOnReload() {
     window.addEventListener("load", function (e) {
+      // ----  удалить Localstorage
+      delete localStorage.status;
       var data = {
         'method': 'reload'
       };

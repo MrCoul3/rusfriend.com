@@ -18,6 +18,10 @@
                                 <div class="circle circle--private"></div>
                                 <span>Занятие с преподавателем</span>
                             </div>
+                            <div v-show="freeLesson" class="tegs__element">
+                                <div class="circle circle--free"></div>
+                                <span>Пробный урок</span>
+                            </div>
                         </div>
                         <div class="month-module header-content__element">
                             <p class="month">{{monthes[month]}} {{year}}</p>
@@ -132,6 +136,7 @@
                 preloader: false,
                 cancelLessShow: false,
                 showBookCalendar: false,
+                freeLesson: false,
             }
         },
         mounted: function () {
@@ -206,6 +211,7 @@
             },
 
             getBooksTimeFromDB() {
+
                 // this.preloader = true;
                 // console.log('getintervals')
                 // очищает ячейки при обновлении компонента
@@ -214,12 +220,17 @@
                     .then((response) => {
                         // console.log(response.data);
                         let data = response.data;
+                        // console.log(data)
+                        let freeLesson = null;
                         data.forEach(function (val, k) {
                             let typeFromDb = val.type;
                             let nameFromDb = val.name;
                             let dateFromDb = val.day;
                             let timeFromDb = val.time;
                             let paymentFromDb = val.payment;
+                            if (typeFromDb === 'free') {
+                                freeLesson = true;
+                            }
                             $('.calendar-table-days').each(function (k, val) {
                                 let day = $(this);
                                 let dateOfcell = $(this).attr('date');
@@ -242,6 +253,8 @@
                             })
 
                         });
+                        // console.log(freeLesson)
+                        this.freeLesson = freeLesson;
                         this.preloader = false;
                     });
             },
@@ -261,6 +274,9 @@
                     }
                     if (target.getAttribute('type') === 's-club') {
                         this.detailType = 'Speaking - Club';
+                    }
+                    if (target.getAttribute('type') === 'free') {
+                        this.detailType = 'Пробный урок';
                     }
                     this.detailUserName = target.getAttribute('name');
                     axios.post('/handle.php', JSON.stringify({name: this.detailUserName, 'method': 'getUserSkype'}))

@@ -1,0 +1,141 @@
+/* стили для страниц private-lesson и speaking-club*/
+#mysite {
+  .book-lesson {
+    .description-block {
+      padding-top: 260px;
+      color: $colorLightBlack;
+      @include mediaWidth(1024) {
+        padding-top: 210px;
+      }
+      @include mediaWidth(767) {
+        padding-top: 90px;
+      }
+      .title {
+        font-weight: 400;
+        position: relative;
+        text-align: center;
+        color: $colorLightBlack;
+        @include mediaWidth(1024) {
+          //top: 220px;
+        }
+        @include mediaWidth(767) {
+          //top: 85px;
+        }
+      }
+
+      .description {
+        text-align: center;
+        margin: 20px auto;
+        max-width: 786px;
+        @include mediaWidth(1024) {
+          font-size: 16px;
+          max-width: 750px;
+        }
+        @include mediaWidth(767) {
+          //top: 85px;
+          font-size: 14px;
+        }
+      }
+
+      .decor-line {
+        max-width: 586px;
+      }
+
+      .params {
+        width: 260px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        font-weight: 500;
+        font-size: 32px;
+        font-family: Montserrat, sans-serif;
+        margin: 0 auto;
+        @include mediaWidth(1024) {
+          font-size: 22px;
+          width: 200px;
+        }
+        @include mediaWidth(767) {
+          font-size: 18px;
+          width: 150px;
+        }
+        .clock-ico {
+          margin-right: 10px;
+          width: 58px;
+          height: 58px;
+          background-size: contain;
+          @include mediaWidth(1024) {
+            font-size: 22px;
+            width: 42px;
+            height: 42px;
+          }
+          @include mediaWidth(767) {
+            margin-right: 6px;
+            width: 36px;
+            height: 36px;
+          }
+          &--private {
+            background-image: url("../images/icons/clock-private.svg");
+
+          }
+          &--s-club {
+            background-image: url("../images/icons/clock-s-club.svg");
+
+          }
+        }
+
+        .lesson-time {
+          margin-right: 15px;
+          font-weight: 800;
+          @include mediaWidth(767) {
+            margin-right: 10px;
+          }
+          span {
+            font-family: sans-serif, "Exo 2";
+            font-weight: 400;
+          }
+        }
+        .price {
+          font-weight: 900;
+        }
+      }
+    }
+
+    .private-lesson {
+      //.privateless {
+      //  display: none;
+      //  padding-top: 300px;
+      //  .book-privateless-btn {
+      //    width: 280px;
+      //    height: 80px;
+      //    background-color: $colorRed;
+      //    line-height: 76px;
+      //  }
+      //}
+
+      .show-session {
+        display: block !important;
+      }
+
+      .hide-session {
+        display: none;
+      }
+
+    }
+
+    .speaking-club {
+      .title {
+        font-weight: 400;
+        position: relative;
+        top: 265px;
+        text-align: center;
+        color: $colorLightBlack;
+        @include mediaWidth(1024) {
+          top: 220px;
+        }
+
+      }
+    }
+  }
+
+
+}

@@ -281,5 +281,12 @@ class User
         }
     }
 
+    // ----- изменить статус new На active при оплате занятия
+    public function changeSatusOnActive()
+    {
+        $query = "UPDATE `users` SET `status` = 'active' WHERE `email` = '{$_SESSION['email']}'";
+        $this->dbAccess->query($query);
+    }
+
 }
 

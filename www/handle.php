@@ -75,7 +75,8 @@ if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedL
             'success' => true,
             'name' => $userName['name'],
             'sessionName' => $_SESSION['email'],
-            'status' => 'user'
+            'status' => 'user',
+            'status_2' => $userName['status'], // new / active / blocked
         ];
     }
     else {
@@ -252,4 +253,9 @@ if ($request['method'] === 'unBlockUser') {
 if ($request['method'] === 'changeSettings') {
     $result = $obj->changeSettings($request);
     echo json_encode($result);
+}
+
+// ----- изменить статус new На active при оплате занятия
+if ($request['method'] === 'changeSatusOnActive') {
+    $obj->changeSatusOnActive();
 }

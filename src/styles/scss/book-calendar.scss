@@ -2,15 +2,15 @@
 #mysite {
   .your-calendar {
     display: block;
-    padding-top: 300px;
+    //padding-top: 300px;
     max-width: 1024px;
     //width: 100%;
     margin: 0 auto 20px;
     @include mediaWidth(1024) {
-      padding-top: 250px;
+      //padding-top: 250px;
     }
     @include mediaWidth(767) {
-      padding-top: 85px;
+      //padding-top: 85px;
     }
     &__element {
       &--main-title {
@@ -305,7 +305,7 @@
       position: absolute;
       width: 553px;
       height: 250px;
-      background: #169E94;
+      background: #D1D1D1;
       box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
       border-radius: 40px;
       bottom: 126px;
@@ -314,6 +314,18 @@
       margin: auto;
       padding: 20px;
       box-sizing: border-box;
+      @include mediaWidth(1024) {
+        width: 449px;
+        height: 195px;
+      }
+      @include mediaWidth(767) {
+        width: 100%;
+        //top: -420px;
+        padding: 15px;
+      }
+      @include mediaWidth(360) {
+        height: 230px;
+      }
       &__element {
         text-align: center;
       }
@@ -321,13 +333,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        @include mediaWidth(360) {
+          flex-direction: column;
+        }
       }
       .skype-icon-for-input {
         background-image: url("../images/icons/skype-ico.svg");
         width: 21px;
         height: 20.95px;
-        position: absolute;
-        left: 140px;
+        position: relative;
+        left: 29px;
+        @include mediaWidth(360) {
+          left: -89px;
+          top: 34px;
+        }
+
       }
       .input-skype {
         text-align: left;
@@ -341,6 +361,9 @@
         padding-left: 33px;
         margin: 20px auto;
         margin-right: 4px;
+        @include mediaWidth(360) {
+          margin: 6px auto;
+        }
       }
       .send-skype {
         width: 72px;

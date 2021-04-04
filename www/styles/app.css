@@ -1813,7 +1813,6 @@
 }
 #mysite .register-form-active {
   display: block;
-  overflow: scroll;
 }
 #mysite .register-success {
   position: fixed;
@@ -2419,41 +2418,117 @@
     padding-bottom: 100px;
   }
 }
-#mysite .private-lesson .title {
-  font-weight: 400;
-  position: relative;
-  top: 265px;
-  text-align: center;
+/* стили для страниц private-lesson и speaking-club*/
+#mysite .book-lesson .description-block {
+  padding-top: 260px;
   color: #455A64;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .private-lesson .title {
-    top: 220px;
+  #mysite .book-lesson .description-block {
+    padding-top: 210px;
   }
 }
 @media screen and (max-width: 767px) {
-  #mysite .private-lesson .title {
-    top: 85px;
+  #mysite .book-lesson .description-block {
+    padding-top: 90px;
   }
 }
-#mysite .private-lesson .privateless {
-  display: none;
-  padding-top: 300px;
+#mysite .book-lesson .description-block .title {
+  font-weight: 400;
+  position: relative;
+  text-align: center;
+  color: #455A64;
 }
-#mysite .private-lesson .privateless .book-privateless-btn {
-  width: 280px;
-  height: 80px;
-  background-color: #FF3E28;
-  line-height: 76px;
+#mysite .book-lesson .description-block .description {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 786px;
 }
-#mysite .private-lesson .show-session {
+@media screen and (max-width: 1024px) {
+  #mysite .book-lesson .description-block .description {
+    font-size: 16px;
+    max-width: 750px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .book-lesson .description-block .description {
+    font-size: 14px;
+  }
+}
+#mysite .book-lesson .description-block .decor-line {
+  max-width: 586px;
+}
+#mysite .book-lesson .description-block .params {
+  width: 260px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 32px;
+  font-family: Montserrat, sans-serif;
+  margin: 0 auto;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .book-lesson .description-block .params {
+    font-size: 22px;
+    width: 200px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .book-lesson .description-block .params {
+    font-size: 18px;
+    width: 150px;
+  }
+}
+#mysite .book-lesson .description-block .params .clock-ico {
+  margin-right: 10px;
+  width: 58px;
+  height: 58px;
+  background-size: contain;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .book-lesson .description-block .params .clock-ico {
+    font-size: 22px;
+    width: 42px;
+    height: 42px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .book-lesson .description-block .params .clock-ico {
+    margin-right: 6px;
+    width: 36px;
+    height: 36px;
+  }
+}
+#mysite .book-lesson .description-block .params .clock-ico--private {
+  background-image: url(../images/icons/clock-private.svg);
+}
+#mysite .book-lesson .description-block .params .clock-ico--s-club {
+  background-image: url(../images/icons/clock-s-club.svg);
+}
+#mysite .book-lesson .description-block .params .lesson-time {
+  margin-right: 15px;
+  font-weight: 800;
+}
+@media screen and (max-width: 767px) {
+  #mysite .book-lesson .description-block .params .lesson-time {
+    margin-right: 10px;
+  }
+}
+#mysite .book-lesson .description-block .params .lesson-time span {
+  font-family: sans-serif, "Exo 2";
+  font-weight: 400;
+}
+#mysite .book-lesson .description-block .params .price {
+  font-weight: 900;
+}
+#mysite .book-lesson .private-lesson .show-session {
   display: block !important;
 }
-#mysite .private-lesson .hide-session {
+#mysite .book-lesson .private-lesson .hide-session {
   display: none;
 }
-
-#mysite .speaking-club .title {
+#mysite .book-lesson .speaking-club .title {
   font-weight: 400;
   position: relative;
   top: 265px;
@@ -2461,7 +2536,7 @@
   color: #455A64;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .speaking-club .title {
+  #mysite .book-lesson .speaking-club .title {
     top: 220px;
   }
 }
@@ -2705,6 +2780,9 @@
 #mysite .my-calendar .tegs .circle--private {
   background: #4C9CD8;
 }
+#mysite .my-calendar .tegs .circle--free {
+  background: #FF3E28;
+}
 #mysite .my-calendar .calendar-table .calendar-table-days .book {
   font-size: 12px;
   display: block;
@@ -2726,6 +2804,9 @@
 }
 #mysite .my-calendar .calendar-table .calendar-table-days .s-club {
   background: #34CFBE;
+}
+#mysite .my-calendar .calendar-table .calendar-table-days .free {
+  background: #FF3E28;
 }
 #mysite .my-calendar .calendar-detail {
   padding: 12px 24px 20px;
@@ -3140,19 +3221,8 @@
 
 #mysite .your-calendar {
   display: block;
-  padding-top: 300px;
   max-width: 1024px;
   margin: 0 auto 20px;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .your-calendar {
-    padding-top: 250px;
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .your-calendar {
-    padding-top: 85px;
-  }
 }
 #mysite .your-calendar__element--main-title {
   margin: 0 auto;
@@ -3467,7 +3537,7 @@
   position: absolute;
   width: 553px;
   height: 250px;
-  background: #169E94;
+  background: #D1D1D1;
   box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
   border-radius: 40px;
   bottom: 126px;
@@ -3477,6 +3547,23 @@
   padding: 20px;
   box-sizing: border-box;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .your-calendar .enter-your-skype {
+    width: 449px;
+    height: 195px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .enter-your-skype {
+    width: 100%;
+    padding: 15px;
+  }
+}
+@media screen and (max-width: 360px) {
+  #mysite .your-calendar .enter-your-skype {
+    height: 230px;
+  }
+}
 #mysite .your-calendar .enter-your-skype__element {
   text-align: center;
 }
@@ -3485,12 +3572,23 @@
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 360px) {
+  #mysite .your-calendar .enter-your-skype .flex {
+    flex-direction: column;
+  }
+}
 #mysite .your-calendar .enter-your-skype .skype-icon-for-input {
   background-image: url(../images/icons/skype-ico.svg);
   width: 21px;
   height: 20.95px;
-  position: absolute;
-  left: 140px;
+  position: relative;
+  left: 29px;
+}
+@media screen and (max-width: 360px) {
+  #mysite .your-calendar .enter-your-skype .skype-icon-for-input {
+    left: -89px;
+    top: 34px;
+  }
 }
 #mysite .your-calendar .enter-your-skype .input-skype {
   text-align: left;
@@ -3504,6 +3602,11 @@
   padding-left: 33px;
   margin: 20px auto;
   margin-right: 4px;
+}
+@media screen and (max-width: 360px) {
+  #mysite .your-calendar .enter-your-skype .input-skype {
+    margin: 6px auto;
+  }
 }
 #mysite .your-calendar .enter-your-skype .send-skype {
   width: 72px;
@@ -3541,11 +3644,16 @@
 }
 
 #mysite .student-lessons {
+  background-image: url(../images/student-lesson/main.png);
+  background-repeat: no-repeat;
   padding-top: 250px;
+  background-position: center 222px;
+  padding-bottom: 120px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .student-lessons {
     padding-top: 200px;
+    padding-bottom: 22px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -3564,15 +3672,104 @@
     font-size: 22px;
   }
 }
+#mysite .student-lessons .empty-lesson-block {
+  display: none;
+  padding: 0 0 50px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block {
+    padding: 20px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .secondary-title {
+  text-align: center;
+  font-size: 22px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .empty-lesson-block .secondary-title {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block .secondary-title {
+    font-size: 16px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .flex {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 45px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block .flex {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .elem {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 383px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .empty-lesson-block .elem {
+    max-width: 340px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block .elem {
+    margin-bottom: 40px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .elem p {
+  font-size: 20px;
+  line-height: 28px;
+  color: #455A64;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .empty-lesson-block .elem p {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block .elem p {
+    font-size: 14px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .book-btn {
+  width: 200px;
+  height: 45px;
+  font-weight: 500;
+  line-height: 43px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .empty-lesson-block .book-btn {
+    font-size: 18px;
+  }
+}
+#mysite .student-lessons .empty-lesson-block .book-btn--private {
+  background-color: #4C59D8;
+}
+#mysite .student-lessons .empty-lesson-block .book-btn--s-club {
+  background-color: #33DCD9;
+}
+#mysite .student-lessons .empty-lesson-block-active {
+  display: block;
+}
 @media screen and (max-width: 767px) {
   #mysite .student-lessons .decor-line {
     margin: 0 50px;
   }
 }
+#mysite .student-lessons .decor-disable {
+  display: none;
+}
 #mysite .student-lessons .block {
-  display: flex;
+  display: none;
   max-height: 150px;
-  height: 100%;
   justify-content: space-evenly;
   align-items: center;
   box-sizing: border-box;
@@ -3645,10 +3842,13 @@
     font-size: 12px;
   }
 }
+#mysite .student-lessons .block-active {
+  display: flex;
+}
 
 #mysite .settings {
   visibility: hidden;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   position: absolute;
   background: rgba(0, 0, 0, 0.25);
@@ -3820,6 +4020,100 @@
   #mysite .settings-active {
     transition: all ease 0.2s;
     left: 0 !important;
+  }
+}
+
+#mysite .free-lesson .your-calendar {
+  padding-top: 260px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .free-lesson .your-calendar {
+    padding-top: 220px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .free-lesson .your-calendar {
+    padding-top: 90px;
+  }
+}
+#mysite .free-lesson .your-calendar .description {
+  font-weight: 600;
+}
+#mysite .free-lesson .your-calendar__element {
+  margin-bottom: 20px;
+}
+#mysite .free-lesson .your-calendar__element .free-lesson-success {
+  position: absolute;
+  width: 553px;
+  height: 250px;
+  background: #D1D1D1;
+  box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
+  border-radius: 40px;
+  bottom: 126px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+    width: 449px;
+    height: 195px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+    width: 100%;
+    top: -525px;
+    padding: 15px;
+  }
+}
+@media screen and (max-width: 340px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+    height: 214px;
+  }
+}
+#mysite .free-lesson .your-calendar__element .free-lesson-success h2, #mysite .free-lesson .your-calendar__element .free-lesson-success h3 {
+  color: white;
+  font-weight: normal;
+}
+@media screen and (max-width: 767px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success h2, #mysite .free-lesson .your-calendar__element .free-lesson-success h3 {
+    font-size: 12px;
+  }
+}
+#mysite .free-lesson .your-calendar__element .free-lesson-success h2 {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+}
+#mysite .free-lesson .your-calendar__element .free-lesson-success__elem {
+  text-align: center;
+  margin-bottom: 16px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success__elem {
+    margin-bottom: 10px;
+  }
+}
+#mysite .free-lesson .your-calendar__element .free-lesson-success .ok-btn {
+  width: 72px;
+  height: 36px;
+  background: #FF3E28;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 32px;
+  margin: 0 auto;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .free-lesson .your-calendar__element .free-lesson-success .ok-btn {
+    margin-bottom: 10px;
   }
 }
 /*@import '../styles/scss/admin-panel';*/

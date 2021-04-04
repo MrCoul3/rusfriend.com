@@ -53,7 +53,7 @@
                 <div class="carousel-img-description">Для тех, кому нужен русский для работы</div>
             </div>
         </div>
-        <a class="get-free-lesson-btn button red-btn" href="../">получить <br> бесплатное занятие</a>
+        <div class="get-free-lesson-btn button red-btn">получить <br> бесплатное занятие</div>
     </section>
 
     <section class="offers section inner">

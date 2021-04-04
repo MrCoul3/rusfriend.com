@@ -1,3 +1,5 @@
+import axios from "axios";
+
 $(document).ready(function () {
     if (!$('body').hasClass('admin')) {
         console.log('login and register init')
@@ -31,9 +33,9 @@ $(document).ready(function () {
 
     function closeLoginForm() {
         $(".form-close-btn").click(function () {
+            delete localStorage.status;
             if ($(".login-form").hasClass('login-form-active')) {
                 $(".login-form").removeClass('login-form-active');
-
             }
             if ($(".register-form").hasClass('register-form-active')) {
                 $(".register-form").removeClass('register-form-active');
@@ -150,7 +152,7 @@ $(document).ready(function () {
                     password: password,
                     email: email,
                     skype: skype,
-                    status: 'active',
+                    status: 'new',
                     'method': 'register'
                 };
                 let response = fetch('handle.php', {
@@ -168,8 +170,14 @@ $(document).ready(function () {
                         setCookie('name', data.name);
                         registerUser();
                         changeLoginBtnToUserName();
-                        console.log(data.name);
+                        // console.log(data.name);
                         $(".user-login__elem--user-name").html(data.name);
+                        /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
+                             * То редирект на страницу free-lesson*/
+                        if (localStorage.getItem('status') === 'free-lesson') {
+                            $(location).attr('href', '/free-lesson.php');
+                        }
+
                     } else {
                         $(".reg-check-email").removeClass("reg-check--disable").html('пользователь с таким email уже существует');
                     }
@@ -234,14 +242,25 @@ $(document).ready(function () {
                     if (data.success) {
                         if (data.status === 'admin') {
                             document.location.href = '/index.php'
-                            authorizedUser();
+                            // authorizedUser();
                         }
                         if (data.status === 'user') {
                             setCookie('name', data.name);
                             authorizedUser();
                             changeLoginBtnToUserName();
                             $(".user-login__elem--user-name").html(data.name);
-                            //если user находится на странице бронирования - нужно
+                             /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
+                             * То редирект на страницу free-lesson*/
+                            axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
+                                .then((response) => {
+                                    if (localStorage.getItem('status') === 'free-lesson') {
+                                        if (response.data['status_2'] === 'new') {
+                                            $(location).attr('href', '/free-lesson.php');
+                                        }
+                                    }
+                                });
+
+                            // если user находится на странице бронирования - нужно
                             // перезагрузить страницу при входе
                             if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
                                 window.location.reload();
@@ -261,6 +280,8 @@ $(document).ready(function () {
 
     function loginOnReload() {
         window.addEventListener("load", function (e) {
+            // ----  удалить Localstorage
+            delete localStorage.status;
             let data = {
                 'method': 'reload'
             };

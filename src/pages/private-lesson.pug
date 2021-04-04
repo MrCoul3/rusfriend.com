@@ -3,9 +3,15 @@ append sharedVars
     - const pageUrl = '/';
     - const pageTitle = 'Занятие с преподавателем';
     - const bodyAdditionClass = '';
-    - const pageAdditionClass = 'private-lesson';
+    - const pageAdditionClass = 'book-lesson private-lesson';
 block content
-    h2.title Занятие с преподавателем
-    //section.privateless.inner
-    //    a(href='/').button.book-privateless-btn забронировать
+    div.description-block
+        h2.title Занятие с преподавателем
+        p.description Забронируй 60-минутный урок с преподавателем в удобное для тебя время. Вместе мы определим индивидуальный план развития.
+        p.description Урок включает грамматику и работу с упражнениями.
+        div.decor-line
+        div.params
+            div.clock-ico.clock-ico--private
+            p.lesson-time 60 <span> мин </span>
+            p.price  $25
     div#vue-book-calendar

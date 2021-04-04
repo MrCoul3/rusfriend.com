@@ -1,3 +1,4 @@
+import axios from "axios";
 
 
 $(document).ready(function () {
@@ -136,5 +137,26 @@ $(document).ready(function () {
             }, 1000, "easeOutQuart");
         }
 
+        // ---------- получить бесплатное занятие
+        $('.get-free-lesson-btn').click(function () {
+            localStorage.setItem('status', 'free-lesson');
+            axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
+                .then((response) => {
+                    // console.log(response.data['success']);
+                    if (response.data['success'] === false) {
+                        // открытие формы логина
+                        if (!$(".register-form").hasClass('register-form-active')) {
+                            $(".register-form").addClass('register-form-active');
+                            $("#mysite").addClass("body-fixed");
+                        }
+                    } else {
+                        if (response.data['status_2'] === 'new') {
+                            $(location).attr('href', '/free-lesson.php');
+                        } else {
+                            console.log('пользователь уже бронировал бесплатный урок');
+                        }
+                    }
+                })
+        });
     }
 });

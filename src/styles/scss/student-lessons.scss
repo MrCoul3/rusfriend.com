@@ -1,8 +1,13 @@
 #mysite {
   .student-lessons {
+    background-image: url("../images/student-lesson/main.png");
+    background-repeat: no-repeat;
     padding-top: 250px;
+    background-position: center 222px;
+    padding-bottom: 120px;
     @include mediaWidth(1024) {
       padding-top: 200px;
+      padding-bottom: 22px;
     }
     @include mediaWidth(767) {
       padding-top: 65px;
@@ -17,16 +22,101 @@
         font-size: 22px;
       }
     }
+
+    .empty-lesson-block {
+      display: none;
+      padding: 0 0 50px;
+      @include mediaWidth(767) {
+        padding: 20px;
+      }
+      .secondary-title {
+        text-align: center;
+        font-size: 22px;
+        @include mediaWidth(1024) {
+          font-size: 18px;
+        }
+        @include mediaWidth(767) {
+          font-size: 16px;
+        }
+      }
+
+      .flex {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 45px;
+        @include mediaWidth(767) {
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+        }
+      }
+
+      .elem {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 383px;
+        @include mediaWidth(1024) {
+          max-width: 340px;
+        }
+        @include mediaWidth(767) {
+          margin-bottom: 40px;
+        }
+
+        p {
+          font-size: 20px;
+          line-height: 28px;
+          color: $colorLightBlack;
+          @include mediaWidth(1024) {
+            font-size: 16px;
+          }
+          @include mediaWidth(767) {
+            font-size: 14px;
+
+          }
+        }
+      }
+
+      .book-btn {
+        width: 200px;
+        height: 45px;
+        font-weight: 500;
+        line-height: 43px;
+        @include mediaWidth(1024) {
+        }
+        @include mediaWidth(767) {
+          font-size: 18px;
+        }
+
+        &--private {
+          background-color: #4C59D8;
+        }
+
+        &--s-club {
+          background-color: #33DCD9;
+        }
+      }
+    }
+
+    .empty-lesson-block-active {
+      display: block;
+    }
+
     .decor-line {
       @include mediaWidth(767) {
         margin: 0 50px;
       }
     }
 
+    .decor-disable {
+      display: none;
+    }
+
     .block {
-      display: flex;
+      display: none;
       max-height: 150px;
-      height: 100%;
+      //height: 100%;
       justify-content: space-evenly;
       align-items: center;
       box-sizing: border-box;
@@ -35,6 +125,8 @@
         flex-direction: column;
         max-height: none;
       }
+
+
       &__elem {
         &--title {
           width: 210px;
@@ -49,6 +141,7 @@
             margin-bottom: 15px;
           }
         }
+
         &--decor-line-vertical {
           position: relative;
           display: block;
@@ -60,6 +153,7 @@
             display: none;
           }
         }
+
         &--content {
           max-height: 140px;
           display: flex;
@@ -74,6 +168,7 @@
             height: auto;
             width: auto;
           }
+
           .content-elem {
             margin-right: 20px;
             font-family: Montserrat, sans-serif;
@@ -87,10 +182,10 @@
           }
         }
       }
-
-
     }
 
-
+    .block-active {
+      display: flex;
+    }
   }
 }

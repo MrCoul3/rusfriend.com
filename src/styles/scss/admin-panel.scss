@@ -375,6 +375,9 @@
         &--private {
           background: #4C9CD8;
         }
+        &--free {
+          background: $colorRed;
+        }
       }
     }
 
@@ -404,6 +407,10 @@
 
         .s-club {
           background: #34CFBE;
+        }
+
+        .free {
+          background: $colorRed;
         }
       }
     }

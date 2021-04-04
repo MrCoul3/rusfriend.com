@@ -1,9 +1,11 @@
 <template>
     <section id="booking-calendar" class="your-calendar inner">
-        <div v-show="preLoader">Загрузка</div>
+        <h3 v-if="freeLesson" class="description your-calendar__element your-calendar__element--main-title main-title">
+            Забронируй <span style="color: #FF3E28">бесплатный</span> получасовой урок с преподавателем прямо сейчас
+        </h3>
         <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online-Занятия с
             преподавателем проходят в Skype</h3>
-        <div class="your-calendar__element your-calendar__element--instruction instruction">
+        <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
             <p class="instruction__element">1. Выберите удобное для вас время</p>
             <p class="instruction__element instruction__element--separator">></p>
             <p class="instruction__element">2. Оплатите урок</p>
@@ -83,12 +85,22 @@
                 </div>
                 <h3 class="enter-your-skype__element">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
             </div>
+            <div v-show="freeLessBookSuccess" class="free-lesson-success">
+                <h2 class="free-lesson-success__elem">Вы успешно забронировали урок</h2>
+                <h3 class="free-lesson-success__elem">Не забудте придти вовремя</h3>
+                <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer">сообщение</span>
+                    преподавателю</h3>
+                <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
+                <h3 class="free-lesson-success__elem">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
+
+            </div>
         </div>
     </section>
 </template>
 
 <script>
     import axios from 'axios';
+
     function getCookie(name) {
         let matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -115,15 +127,20 @@
                 currentMonth: null,
                 enterSkype: false,
                 validationSkype: false,
-                preLoader: false,
+                freeLesson: false,
+                instruction: true,
+                payment: 'unpayed',
+                freeLessBookSuccess: false,
             }
         },
 
         beforeMount: function () {
             // возвращает номер недели
             Date.prototype.getWeek = function () {
-                var onejan = new Date(this.getFullYear(), 0, 1);
-                return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()) / 7);
+                let oneJan = new Date(this.getFullYear(), 0, 1)
+                let weekNum = (((this - oneJan) / 86400000) + oneJan.getDay()-1) / 7
+                // console.log(weekNum);
+                return Math.ceil((((this - oneJan) / 86400000) + oneJan.getDay()-1) / 7);
             }
             this.weekNumber = ((new Date()).getWeek() - 1);
             this.currentWeek = ((new Date()).getWeek() - 1);
@@ -138,9 +155,9 @@
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
-
+            this.isFreeLesson()
         },
-        updated () {
+        updated() {
             this.adjustmentDateOfDay();
             this.adjustmentDateOfWeek();
             this.lightingOfToday();
@@ -148,6 +165,20 @@
             this.setCurrentMonth();
         },
         methods: {
+            // ----- Для страницы "free-lesson.php"
+            isFreeLesson() {
+                if ($("main").hasClass('free-lesson')) {
+                    this.instruction = false;
+                    this.freeLesson = true;
+                    this.payment = 'free';
+                }
+
+            },
+            closeFreeLessSuccess() {
+                this.freeLessBookSuccess = false;
+                window.location.href = '/student-lessons.php';
+            },
+            // -----------------------------------
             setCurrentMonth() {
                 if ((String(this.numberMonthOfFirstDayOfWeek + 1).length) === 1) {
                     this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
@@ -166,7 +197,7 @@
                 // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
                 if (numberFirstElem > 24 && numberFirstElem < 32) {
                     // console.log(numberFirstElem);
-                    $('.calendar-app-content-number').each(function (k,val) {
+                    $('.calendar-app-content-number').each(function (k, val) {
                         // console.log($(this).attr('date').split('.'));
                         let dateArr = $(this).attr('date').split('.')
                         if (dateArr[0] > 0 && dateArr[0] < 7) {
@@ -192,7 +223,7 @@
                 // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
                 if (numberFirstElem > 24 && numberFirstElem < 32) {
                     // console.log(numberFirstElem);
-                    $('.time-intrevals-elem').each(function (k,val) {
+                    $('.time-intrevals-elem').each(function (k, val) {
                         // console.log($(this).attr('date').split('.'));
                         let dateArr = $(this).attr('date').split('.')
                         if (dateArr[0] > 0 && dateArr[0] < 7) {
@@ -221,6 +252,7 @@
                 let week = [];
                 let w = 0;
                 week[w] = [];
+                // console.log(this.weekNumber)
                 let dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
                 for (let i = dayInCurrentWeek; i <= dayInCurrentWeek + 6; i++) {
                     let a = {index: i};
@@ -233,7 +265,7 @@
                         week[w].push(a);
                         // week[w].push(i - numOfDayInMonth);
                     }
-                    if (a.index === new Date().getDate() && this.year === new Date().getFullYear()  && this.weekNumber === this.currentWeek) {
+                    if (a.index === new Date().getDate() && this.year === new Date().getFullYear() && this.weekNumber === this.currentWeek) {
                         // console.log(i);
                         a.today = 'today';
                         a.color = '#fff';
@@ -324,6 +356,10 @@
                     });
             },
             chooseTime: function (event) {
+                // ---- Для free-lesson возможность выбрать только одно занятие
+                if (this.freeLesson) {
+                    $('.selected-time').removeClass('selected-time');
+                }
 
                 let selectedTime = event.target;
                 if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
@@ -335,19 +371,21 @@
                     }
                 }
 
-
                 selectedTimeArray = [];
                 // console.log(selectedTimeArray)
                 // let userName = $('.user-login__elem--user-name').html();
                 let userName = getCookie('name');
                 let typeOfLesson;
+
                 if ($('.header-menu--private').hasClass('menu-item-active')) {
                     typeOfLesson = 'private';
+                } else if (this.freeLesson) {
+                    typeOfLesson = 'free';
                 } else {
                     typeOfLesson = 's-club';
                 }
                 document.cookie = "type=" + typeOfLesson;
-
+                let payment = this.payment;
                 $('.selected-time').each(function (k, val) {
                     let day = val.parentNode.getAttribute('date');
                     let time = val.innerHTML;
@@ -357,16 +395,15 @@
                         type: typeOfLesson,
                         day: day,
                         time: time,
-                        payment: 'unpayed',
+                        payment: payment,
                         'method': 'bookEvent'
-
                     };
                     // console.log(obj)
                     if (day !== null && time !== '') {
                         selectedTimeArray.push(obj);
                     }
                 });
-                // console.log(array);
+                // console.log(selectedTimeArray);
                 // this.selectedTimeArray = array.slice(0);
             },
             bookEvent: function () {
@@ -382,7 +419,6 @@
                                 $(".login-form").addClass('login-form-active');
                                 $("#mysite").addClass("body-fixed");
                             }
-
                         } else {
                             //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
                             axios.post('/handle.php', JSON.stringify({'method': 'checkSkype'}))
@@ -392,9 +428,15 @@
                                     if (dataFromDB.status === 'empty') {
                                         this.enterSkype = true;
                                     } else {
-
                                         axios.post('/handle.php', JSON.stringify(selectedTimeArray))
-                                        window.location.href = "payment.php";
+                                        // ---- для бесплатного занятия
+                                        if (this.freeLesson) {
+                                            axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
+                                            this.freeLessBookSuccess = true;
+                                        } else {
+                                            // --- для платного - страница оплаты
+                                            window.location.href = "payment.php";
+                                        }
                                     }
                                 });
                         }
@@ -449,7 +491,6 @@
                             }
 
 
-
                             if (userNameFromDB !== getCookie('name')) {
                                 // console.log(userNameFromDB);
 
@@ -476,7 +517,7 @@
                                     // console.log(month)
                                     // console.log(data.getMonth())
                                     // console.log(month <= data.getMonth() +1 )
-                                    if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth()+1) {
+                                    if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
                                         // console.log($(this).children());
                                         $(this).children().each(function (k, val) {
                                             val.classList.add('booked-for-other-users');
