@@ -158,18 +158,6 @@
               background-image: url("../images/icons/user-ico.svg");
               margin: 0 auto;
             }
-            //.apply-avatar {
-            //  display: none;
-            //  color: $colorRed;
-            //  text-align: center;
-            //  cursor: pointer;
-            //  &:hover {
-            //    text-decoration: underline;
-            //  }
-            //}
-            //.apply-avatar-active {
-            //  display: block;
-            //}
 
             .input-wrap {
               display: none;
@@ -253,16 +241,35 @@
   }
   .box-modal {
     height: 490px;
+    @include mediaWidth(1024) {
+      top: -60px;
+      height: 350px;
+      width: 350px;
+    }
+    @include mediaWidth(767) {
+      width: 260px;
+
+    }
   }
   .croppie-container {
     height: 400px;
+    @include mediaWidth(1024) {
+      height: 250px;
+    }
   }
   .js-main-image {
     width: 200px;
     height: 45px;
     margin: 5px auto;
-    background: red;
+    background: $colorRed;
     position: relative;
     top: 43px;
+    @include mediaWidth(1024) {
+      top: 43px;
+    }
+    @include mediaWidth(767) {
+      top: 47px;
+
+    }
   }
 }

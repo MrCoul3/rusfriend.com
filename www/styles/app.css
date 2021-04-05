@@ -4039,16 +4039,43 @@
 #mysite .box-modal {
   height: 490px;
 }
+@media screen and (max-width: 1024px) {
+  #mysite .box-modal {
+    top: -60px;
+    height: 350px;
+    width: 350px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .box-modal {
+    width: 260px;
+  }
+}
 #mysite .croppie-container {
   height: 400px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .croppie-container {
+    height: 250px;
+  }
 }
 #mysite .js-main-image {
   width: 200px;
   height: 45px;
   margin: 5px auto;
-  background: red;
+  background: #FF3E28;
   position: relative;
   top: 43px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .js-main-image {
+    top: 43px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .js-main-image {
+    top: 47px;
+  }
 }
 
 #mysite .free-lesson .your-calendar {
