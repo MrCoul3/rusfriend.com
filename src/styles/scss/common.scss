@@ -352,6 +352,10 @@
                     cursor: pointer;
                     position: relative;
                     &__elem {
+                        &--avatar {
+                            width: 28px;
+                            height: 28px;
+                        }
                         &--user-name {
                             font-size: 12px;
                             display: inline;

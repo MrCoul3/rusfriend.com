@@ -138,6 +138,7 @@
                     <p class="about-items__item d">Основатель онлайн-школы Taiga и автор образовательных курсов по
                         русскому языку</p>
                 </div>
+                <h3 class="slogan about-slogan about-slogan--name">Светлана</h3>
             </div>
         </div>
         <h2 class="detail-slogan">Буду очень рада видеть тебя <br> на моих online-занятиях</h2><a

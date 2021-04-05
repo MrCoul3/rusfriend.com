@@ -88,7 +88,7 @@
             <div v-show="freeLessBookSuccess" class="free-lesson-success">
                 <h2 class="free-lesson-success__elem">Вы успешно забронировали урок</h2>
                 <h3 class="free-lesson-success__elem">Не забудте придти вовремя</h3>
-                <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer">сообщение</span>
+                <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer; color: #F8D6B0">сообщение</span>
                     преподавателю</h3>
                 <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
                 <h3 class="free-lesson-success__elem">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
@@ -156,6 +156,10 @@
             this.lightingOfToday();
             this.changeStateOfItem();
             this.isFreeLesson()
+
+
+
+
         },
         updated() {
             this.adjustmentDateOfDay();
@@ -427,12 +431,14 @@
                                     let dataFromDB = response.data;
                                     if (dataFromDB.status === 'empty') {
                                         this.enterSkype = true;
+                                        // $("#mysite").addClass("body-fixed");
                                     } else {
                                         axios.post('/handle.php', JSON.stringify(selectedTimeArray))
                                         // ---- для бесплатного занятия
                                         if (this.freeLesson) {
-                                            axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
+                                            // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
                                             this.freeLessBookSuccess = true;
+                                            // $("#mysite").addClass("body-fixed");
                                         } else {
                                             // --- для платного - страница оплаты
                                             window.location.href = "payment.php";
@@ -453,6 +459,7 @@
                 } else {
                     axios.post('/handle.php', JSON.stringify({'method': 'sendSkype', 'skype': skype.val()}))
                     this.enterSkype = false;
+                    // $("#mysite").removeClass("body-fixed");
                 }
             },
             // функция изменения состояния интервала в календаре при

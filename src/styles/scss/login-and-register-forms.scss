@@ -475,33 +475,37 @@
     }
 
     .register-success {
+        backdrop-filter: blur(4px);
         position: fixed;
         background: rgba(0, 0, 0, 0.25);
-        width: 100vw;
+        width: 100%;
         height: 100vh;
         display: none;
-        z-index: 1000;
+        z-index: 1200;
         @include mediaWidth(767) {
-            background: #717CD8;
+            //background: #717CD8;
         }
         .register-success__frame {
-            padding: 25px;
-            box-sizing: border-box;
-            margin: 200px auto;
-            width: 800px;
-            height: 385px;
-            background: #717CD8;
-            backdrop-filter: blur(4px);
-            border-radius: 20px;
+            position: relative;
+            top: 60px;
+            //padding: 25px;
+            //box-sizing: border-box;
+            margin: 0 auto;
+            //width: 800px;
+            //height: 385px;
+            //background: #717CD8;
+            //backdrop-filter: blur(4px);
+            //border-radius: 20px;
             text-align: center;
             @include mediaWidth(1024) {
-                width: 572px;
-                height: 272px;
-                padding: 15px;
+                //width: 572px;
+                //height: 272px;
+                //padding: 15px;
             }
             @include mediaWidth(767) {
-                margin: 0;
-                width: auto;
+                //margin: 0;
+                //width: auto;
+                top: 35px;
             }
             .success-img {
                 @include mediaWidth(1024) {

@@ -1,8 +1,7 @@
 import axios from 'axios';
-
 $(document).ready(function () {
         console.log('settings init');
-
+        let user_id = null;
         // -------------------------
         // moveSettingWindow();
         openSettings();
@@ -35,6 +34,7 @@ $(document).ready(function () {
         // ----------- открыть настройки пользователя
         function openSettings() {
             $('.user-login-menu__elem--settings').click(function () {
+                console.log(localStorage.getItem('user_id'));
                 $("#mysite").addClass("body-fixed");
                 $('.settings-main-frame').addClass('settings-active');
                 $('.settings').addClass('settings-active');
@@ -42,15 +42,19 @@ $(document).ready(function () {
                 axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
                     .then((response) => {
                         let dataFromDB = response.data
+                        user_id = dataFromDB.id;
                         // console.log(response.data);
                         $('.main-text--user-name').html(dataFromDB.name)
                         $('.main-text--email').html(dataFromDB.email);
                         $('.main-text--skype').html(dataFromDB.skype);
+                        // ---------- подгрузка аватара
+                        if (dataFromDB.avatar.trim() !== '') {
+                            $('.avatar').css('backgroundImage', 'url(' + dataFromDB.avatar + ')');
+                        }
                     });
 
             })
         }
-
         // -----------------------------
 
         // ------------ close settings
@@ -61,7 +65,6 @@ $(document).ready(function () {
                 $('.settings').removeClass('settings-active');
             });
         }
-
         // -----------------------------------------
 
         // ------------ change settings
@@ -78,6 +81,10 @@ $(document).ready(function () {
                     // console.log(wrap.nextElementSibling);
                     wrap.classList.add('wrap-hidden');
                     inputWrap.classList.add('input-wrap-active');
+                }
+
+                if (e.target.className.includes('change-btn--avatar')) {
+
                 }
 
                 // при нажатии на кнопку "ИЗМЕНИТЬ" после ввода в инпут
@@ -236,8 +243,47 @@ $(document).ready(function () {
 
 
             });
-        }
+            // ------- загрузка аватара ../scripts/croppie/script.js
 
+            // function readURL(input) {
+            //     if (input.files && input.files[0]) {
+            //         let reader = new FileReader();
+            //         // console.log(reader)
+            //         reader.onload = function(e) {
+            //             $('.avatar').css('backgroundImage', 'url(' + e.target.result + ')');
+            //         }
+            //         reader.readAsDataURL(input.files[0]);
+            //     }
+            // }
+            // $('#download-avatar').change(function(){
+            //     axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
+            //         .then((response) => {
+            //             let dataFromDB = response.data
+            //             console.log(dataFromDB)
+            //             user_id = dataFromDB.id;
+            //         });
+            //     readURL(this);
+            //     $('.apply-avatar').addClass('apply-avatar-active ');
+            // });
+            // $('.apply-avatar').click(function () {
+            //
+            //     let data = new FormData();
+            //     // console.log(document.getElementById('download-avatar').files)
+            //     // console.log(document.getElementById('download-avatar').files[0])
+            //     let input  = document.getElementById('download-avatar');
+            //     data.append('img_path', input.files[0]);
+            //     data.append('method','setAvatar');
+            //     data.append('user_id', user_id);
+            //     console.log(data);
+            //     let response = fetch('/handle.php', {
+            //         method: 'POST',
+            //         headers: {},
+            //         body: data,
+            //     });
+            // })
+            // -----------------------------------------
+
+        }
         // -----------------------------------------
     }
 );

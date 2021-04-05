@@ -522,11 +522,11 @@
         }
         @include mediaWidth(1024) {
           //margin-left: 0;
+          opacity: 1;
           min-width: 280.74px;
           height: 373.53px;
         }
         @include mediaWidth(767) {
-          opacity: 1;
           order: 2;
           margin: 0 auto;
           width: 100%;
@@ -552,10 +552,10 @@
           margin-left: 300px;
           @include mediaWidth(1024) {
             margin-left: 0;
+            opacity: 1;
           }
           @include mediaWidth(767) {
             margin-bottom: 15px;
-            opacity: 1;
           }
         }
 
@@ -567,11 +567,11 @@
           margin: 10px 0 15px;
           margin-left: 400px;
           @include mediaWidth(1024) {
+            opacity: 1;
             margin-left: 0;
             width: 60px;
           }
           @include mediaWidth(767) {
-            opacity: 1;
             margin: 50px auto !important;
             order: 10;
           }
@@ -605,13 +605,22 @@
           white-space: nowrap;
           @include mediaWidth(1024) {
             margin-left: 0;
+            opacity: 1;
           }
           @include mediaWidth(767) {
-            opacity: 1;
             white-space: normal;
             letter-spacing: normal;
             margin-bottom: 28px;
             font-size: 18px;
+          }
+
+        }
+        .about-slogan{
+          &--name {
+            top: 40px;
+            @include mediaWidth(1024) {
+              top: 20px;
+            }
           }
         }
 

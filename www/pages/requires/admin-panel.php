@@ -7,9 +7,6 @@ if ($request['method'] == 'requireAdminComponents') {
 }
 ?>
 <title>Страница преподавателя</title>
-<style>
-
-</style>
 <body class="admin" id="mysite">
 
 <header class="admin-header admin-inner"><a class="header-logo" href="index.php"></a>

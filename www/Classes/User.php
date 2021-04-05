@@ -13,7 +13,9 @@ class User
         'password',
         'email',
         'skype',
-        'status'
+        'register',
+        'status',
+        'avatar'
     ];
 
     protected $adminEmails = [
@@ -57,8 +59,13 @@ class User
         }
 
         if (count($err) == 0) {
-            $_SESSION['email'] = $request['email'];
-            $_SESSION['name'] = $request['name'];
+//            $_SESSION['email'] = $request['email'];
+//            $_SESSION['name'] = $request['name'];
+            $_SESSION = array(
+                'email' => $request['email'],
+                'name' => $request['name'],
+                'isActive'=>'active',
+            );
             foreach ($request as $k => &$val) {
                 if (!in_array($k, $this->requireFieldsforUsers)) {
                     unset($request[$k]);
@@ -77,6 +84,7 @@ class User
             $requestKeys = implode(',', array_keys($request));
             $requestVals = implode(',', $request);
             $registerQuery = "INSERT INTO `users` ({$requestKeys}) VALUES ({$requestVals});";
+//            var_dump($registerQuery);
             $this->dbAccess->query($registerQuery);
             return true;
         }
@@ -87,35 +95,44 @@ class User
         $query = "SELECT  * FROM users WHERE email = '{$request['email']}'";
         $result = $this->dbAccess->query($query);
         $dataFromDB = mysqli_fetch_assoc($result);
-
-        if ($dataFromDB['password'] === $this->getPassHash($request['password'])) {
-            $_SESSION = array(
-                'user_id' => $dataFromDB['id'],
-                'email' => $dataFromDB['email'],
-                'name' => $dataFromDB['name']
-            );
-            if (in_array($dataFromDB['email'], $this->adminEmails)) {
-                $_SESSION['status'] = 'admin';
-                return 'admin';
-            } else {
-                $_SESSION['status'] = 'user';
-                return 'user';
+        // проверка на блокировку пользователя
+        if ($dataFromDB['status'] !== 'blocked') {
+            if ($dataFromDB['password'] === $this->getPassHash($request['password'])) {
+                $_SESSION = array(
+                    'user_id' => $dataFromDB['id'],
+                    'email' => $dataFromDB['email'],
+                    'name' => $dataFromDB['name'],
+                    'isActive'=>$dataFromDB['status'],
+                );
+                if (in_array($dataFromDB['email'], $this->adminEmails)) {
+                    $_SESSION['status'] = 'admin';
+                    return 'admin';
+                } else {
+                    $_SESSION['status'] = 'user';
+                    return 'user';
+                }
             }
+        } else {
+            return 'blocked';
         }
+
     }
 
 
     public function checkLogin()
     {
-        if (isset($_SESSION['email'])) {
-            if (in_array($_SESSION['email'], $this->adminEmails)) {
-                $_SESSION['status'] = 'admin';
-                return 'admin';
-            } else {
-                $_SESSION['status'] = 'user';
-                return 'user';
+
+            if (isset($_SESSION['email'])) {
+                if (in_array($_SESSION['email'], $this->adminEmails)) {
+                    $_SESSION['status'] = 'admin';
+                    return 'admin';
+                } else {
+                    $_SESSION['status'] = 'user';
+                    return 'user';
+                }
             }
-        }
+
+
     }
 
     public function logout()
@@ -148,11 +165,10 @@ class User
 
     public function getUserInfo()
     {
-
         $query = "SELECT * FROM `users` WHERE email = '{$_SESSION['email']}'";
         $result = $this->dbAccess->query($query);
         $getUserInfo = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $getUserInfo['name'];
+        $_SESSION['name'] = $getUserInfo['name'];
         return $getUserInfo;
     }
 
@@ -281,10 +297,18 @@ class User
         }
     }
 
+
+
     // ----- изменить статус new На active при оплате занятия
     public function changeSatusOnActive()
     {
         $query = "UPDATE `users` SET `status` = 'active' WHERE `email` = '{$_SESSION['email']}'";
+        $this->dbAccess->query($query);
+    }
+    public function addAvatar($request)
+    {
+//        var_dump($request);
+        $query = "UPDATE `users` SET `avatar` = '{$request}' WHERE `email` = '{$_SESSION['email']}'";
         $this->dbAccess->query($query);
     }
 

@@ -1,27 +1,32 @@
 <?php session_start();
 require('service.html');
-//var_dump($_SESSION['name']);
+//var_dump($_SESSION);
 if (isset($_SESSION['email'])) {
     $status = [
         'logout' => ['disable', 'disable'],
-        'login'=>['active-block', 'active-flex']
+        'login' => ['active-block', 'active-flex']
     ];
 } else {
     $status = [
         'logout' => ['active-block', 'active-flex'],
-        'login'=>['disable', 'disable']
+        'login' => ['disable', 'disable']
     ];
 }
 require("vendor/autoload.php");
 $obj = new \Classes\User();
 $res = $obj->checkSkype();
+$userInfo = $obj->getUserInfo();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
+    <link rel="stylesheet" href="../../styles/croppie/croppie.css"/>
+    <link rel="stylesheet" href="../../styles/croppie/jquery.arcticmodal.css"/>
+    <link rel="stylesheet" href="../../styles/croppie/themes/simple.css">
 </head>
+
 <body id="mysite">
 
 <section class="login-form authorization-forms">
@@ -88,10 +93,15 @@ $res = $obj->checkSkype();
 </section>
 <section class="register-success">
     <div class="register-success__frame"><img class="success-img" src="../images/icons/succes.svg" alt="success">
-        <h2>Поздравляем, <br> Вы успешно зарегистрировались!</h2>
-        <h3>Теперь вы можете полностью использовать функционал сайта. <br> Что бы забронировать урок - перейдите в
-            раздел<br> <a href="">“Занятие с преподавателем” </a></h3>
-        <div class="button reg-success-btn">далее</div>
+        <h2>Поздравляем, <br> Ты успешно зарегистрировался!</h2>
+        <h3>Теперь ты можешь полностью использовать функционал сайта. <br> Что бы забронировать урок - перейди в
+            раздел<br> <a href="/private-lesson.php">“Занятие с преподавателем”,</a>если ты только начинаешь учить
+            русский,
+            <br> или в раздел <a href="/speaking-club.php">“Speaking - Club”,</a>
+            если ты уже немного говоришь по-русски.
+
+        </h3>
+        <div class="button reg-success-btn">закрыть</div>
     </div>
 </section>
 
@@ -110,7 +120,7 @@ $res = $obj->checkSkype();
                         <p class="placeholder">имя пользователя</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
-                    <div class="main-text main-text--user-name"><?=$_SESSION['name']?></div>
+                    <div class="main-text main-text--user-name"><?= $_SESSION['name'] ?></div>
                 </div>
                 <div class="input-wrap">
                     <div class="flex">
@@ -131,11 +141,14 @@ $res = $obj->checkSkype();
                 </div>
                 <div class="input-wrap input-wrap--pass">
                     <div class="check check--old-pass">неверный пароль</div>
-                    <input class="input input--old-pas input--password" type="password" placeholder="введите старый пароль">
-                    <input class="input input--new-pas input--password" type="password" placeholder="введите новый пароль">
+                    <input class="input input--old-pas input--password" type="password"
+                           placeholder="введите старый пароль">
+                    <input class="input input--new-pas input--password" type="password"
+                           placeholder="введите новый пароль">
                     <div class="flex">
                         <div class="check"></div>
-                        <input class="input input--repeat-new-pas input--password" type="password" placeholder="повторите новый пароль">
+                        <input class="input input--repeat-new-pas input--password" type="password"
+                               placeholder="повторите новый пароль">
                         <div data-type="password" class="button change-button change-button--password">изменить</div>
                     </div>
                 </div>
@@ -147,7 +160,7 @@ $res = $obj->checkSkype();
                         <p class="placeholder">email</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
-                    <div class="main-text main-text--email"><?=$_SESSION['email']?></div>
+                    <div class="main-text main-text--email"><?= $_SESSION['email'] ?></div>
                 </div>
                 <div class="input-wrap input-wrap--email">
                     <div class="flex">
@@ -164,7 +177,7 @@ $res = $obj->checkSkype();
                         <p class="placeholder">skype</p>
                         <div class="change-btn change-btn--input">изменить</div>
                     </div>
-                    <div class="main-text main-text--skype"><?=$res['skype']?></div>
+                    <div class="main-text main-text--skype"><?= $res['skype'] ?></div>
                 </div>
                 <div class="input-wrap">
                     <div class="flex">
@@ -178,7 +191,28 @@ $res = $obj->checkSkype();
             <div class="setting-content-elem setting-content-elem--avatar">
                 <div class="flex">
                     <p class="placeholder">фото профиля</p>
-                    <div class="change-btn">изменить</div>
+                    <div class="perscab-photoedit-body">
+                        <a href="#" class="add-photo download-avatar-btn">изменить</a>
+                        <input style="display:none;" id="c_input24" name="file" multiple="false" type="file">
+                        <input style="display:none;" name="photo_c" multiple="false" type="hidden" value="">
+                        <input style="display:none;" name="photo_i" value="" multiple="false" type="hidden">
+                    </div>
+                </div>
+                <div class="perscab-photoedit-img">
+                    <img src="#" alt="">
+                </div>
+                <div style="display:none">
+                    <div class="profile-modal-photo box-modal">
+                        <div class="box-modal_close arcticmodal-close"></div>
+                        <div>
+                            <img class="profile_photo_i" src="">
+                        </div>
+                        <div class="modal-footer center-wrap">
+                            <button class="button reg-btn reg-btn_empty reg-btn_empty-wht reg-btn_blk-hover js-main-image">
+                                сохранить
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="avatar"></div>
             </div>
@@ -189,29 +223,33 @@ $res = $obj->checkSkype();
 <header class="header">
     <div class="header__overhead">
         <div class="social-net-btns social-net-btns--header">
-            <a class="social-net-btns__elem social-net-btns__elem--instagram" href="https://www.instagram.com/svetlana_totrova/" target="_blank"></a>
+            <a class="social-net-btns__elem social-net-btns__elem--instagram"
+               href="https://www.instagram.com/svetlana_totrova/" target="_blank"></a>
             <a class="social-net-btns__elem social-net-btns__elem--tiktok" href="../"></a>
         </div>
         <a class="header-logo" href="index.php">
             <!--img(src="images/icons/logo.svg", alt="logo")--></a>
         <div class="service-btns">
-            <div class="btn-change-lang language <?=$_COOKIE['btnLang'] ? $_COOKIE['btnLang'] : 'eng-lang'?>">
-                <div class="lang-changer language <?=$_COOKIE['langChanger'] ? $_COOKIE['langChanger'] : 'rus-lang'?>"></div>
+            <div class="btn-change-lang language <?= $_COOKIE['btnLang'] ? $_COOKIE['btnLang'] : 'eng-lang' ?>">
+                <div class="lang-changer language <?= $_COOKIE['langChanger'] ? $_COOKIE['langChanger'] : 'rus-lang' ?>"></div>
             </div>
 
             <div class="btn-login <?= $status['logout'][0] ?>">Войти</div>
 
             <div class="user-login <?= $status['login'][1] ?>">
-                <img class="user-login__elem" src="images/icons/user-ico.svg" alt="">
+                <img class="user-login__elem user-login__elem--avatar" src="<?=$userInfo['avatar'] ? $userInfo['avatar'] : '../images/icons/user-ico.svg'?>" alt="">
+
+
                 <p class="user-login__elem user-login__elem--user-name">
-                    <?=$_SESSION['name']?>
+                    <?= $_SESSION['name'] ?>
                 </p>
                 <img class="user-login__elem"
-                                                                                            src="images/icons/user-arrow.svg"
-                                                                                            alt="">
+                     src="images/icons/user-arrow.svg"
+                     alt="">
                 <div class="user-login-menu">
                     <a class="user-login-menu__elem user-login-menu__elem--messages" href="/">Сообщения</a>
-                    <a class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">Мои уроки</a>
+                    <a class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">Мои
+                        уроки</a>
                     <div class="user-login-menu__elem user-login-menu__elem--settings">Настройки</div>
                     <div class="decor-line decor-line--user-login-menu"></div>
                     <a class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Выход</a>

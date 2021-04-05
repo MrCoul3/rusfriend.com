@@ -65,7 +65,7 @@
                             if (val.status !== 'admin') {
                                 array.push(val);
                             }
-                            if (val.status === 'active') {
+                            if (val.status === 'active' || val.status === 'new') {
                                 val.text = 'заблокировать';
                             }
                             if (val.status === 'blocked') {
@@ -81,7 +81,7 @@
                 let email = event.target.getAttribute('email');
                 let status = event.target.getAttribute('status');
                 let method = null;
-                if (status === 'active') {
+                if (status === 'active' || status === 'new') {
                     method = 'blockUser';
                     this.statusColor = 'status-blocked';
                 } else {

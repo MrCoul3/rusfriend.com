@@ -2,12 +2,27 @@
 require("vendor/autoload.php");
 $request = json_decode(file_get_contents('php://input'), true);
 //echo "<pre>";
-//print_r($request['method']);
+//print_r($_REQUEST);
 //echo "</pre>";
+//var_dump($_SESSION);
+
+// ------- загрузка аватарки
+//if ($_REQUEST['method'] === 'setAvatar') {
+//    if (isset($_FILES)) {
+////        var_dump($_FILES['img_path']['type']);
+//        $userID = $_REQUEST['user_id'];
+//        $type = explode('/', $_FILES['img_path']['type'])[1];
+//        $destDir = dirname(__FILE__) . '/images/user-avatars/' . $userID . '.' . $type;
+////        var_dump($destDir);
+//        move_uploaded_file($_FILES['img_path']['tmp_name'], $destDir);
+//    }
+//}
+// -----------------------------
+
+
 
 $obj = new \Classes\User();
 $objCalendar = new \Classes\Calendar();
-
 // --------------------- регистрация
 if ($request['method'] == 'register') {
     $response = [];
@@ -19,7 +34,7 @@ if ($request['method'] == 'register') {
             'name' => $userName['name']
         ];
     } else {
-        $response =[
+        $response = [
             'success' => false
         ];
     }
@@ -31,25 +46,30 @@ if ($request['method'] == 'register') {
 if ($request['method'] == 'login') {
     $response = [];
     $login = $obj->login($request);
-    $userName = $obj->getUserInfo();
-
+    $userInfo = $obj->getUserInfo();
 
     if ($login === 'admin') {
         $response = [
             'success' => true,
-            'name' => $userName['name'],
+            'name' => $userInfo['name'],
             'status' => 'admin'
         ];
-    }
-    elseif ($login === 'user') {
+    } elseif ($login === 'user') {
         $response = [
             'success' => true,
-            'name' => $userName['name'],
-            'status' => 'user'
+            'userID' => $userInfo['id'],
+            'name' => $userInfo['name'],
+            'status' => 'user',
+            'avatar' => $userInfo['avatar'],
         ];
 
+    } elseif ($login === 'blocked') {
+        $response = [
+            'success' => false,
+            'status' => 'blocked'
+        ];
     } else {
-        $response =[
+        $response = [
             'success' => false
         ];
     }
@@ -58,29 +78,32 @@ if ($request['method'] == 'login') {
 // -----------------------------------
 
 // --------------------- проверка лоина при перезагрузке
-if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedLesson') {
+if ($request['method'] == 'reload' or $request['method'] == 'checkLoginOnBookedLesson') {
     $response = [];
     $check = $obj->checkLogin();
-    $userName = $obj->getUserInfo();
+    $userInfo = $obj->getUserInfo();
+    if ($userInfo['status'] === 'blocked') {
+        $obj->logout();
+    }
+//    $_SESSION['isActive'] = $userInfo['status'];
     if ($check === 'admin') {
         $response = [
             'success' => true,
-            'name' => $userName['name'],
+            'name' => $userInfo['name'],
             'sessionName' => $_SESSION['email'],
             'status' => 'admin'
         ];
-    }
-    elseif ($check === 'user') {
+    } elseif ($check === 'user') {
         $response = [
             'success' => true,
-            'name' => $userName['name'],
+            'name' => $userInfo['name'],
             'sessionName' => $_SESSION['email'],
             'status' => 'user',
-            'status_2' => $userName['status'], // new / active / blocked
+            'status_2' => $userInfo['status'], // new / active / blocked
+            'avatar' => $userInfo['avatar'],
         ];
-    }
-    else {
-        $response =[
+    } else {
+        $response = [
             'success' => false
         ];
     }
@@ -92,11 +115,11 @@ if ($request['method'] == 'reload' OR $request['method'] == 'checkLoginOnBookedL
 if ($request['method'] == 'logout') {
     $logout = $obj->logout();
     if ($logout) {
-        $response =[
+        $response = [
             'logout' => true
         ];
     } else {
-        $response =[
+        $response = [
             'logout' => false
         ];
     }
@@ -116,10 +139,10 @@ if ($request['method'] == 'language') {
 if ($request['method'] == 'addTimeIntervals') {
     $objCalendar->addTimeIntervals($request);
     $timeIntervals = $objCalendar->returnTimeIntervals();
-    foreach ($timeIntervals as $day=>$time) {
+    foreach ($timeIntervals as $day => $time) {
         $response[] = [
-            'day'=>$time[0],
-            'time'=>$time[1]
+            'day' => $time[0],
+            'time' => $time[1]
         ];
     }
     echo json_encode($response);
@@ -127,10 +150,10 @@ if ($request['method'] == 'addTimeIntervals') {
 
 if ($request['method'] == 'getTimeIntervals') {
     $timeIntervals = $objCalendar->returnTimeIntervals();
-    foreach ($timeIntervals as $day=>$time) {
+    foreach ($timeIntervals as $day => $time) {
         $response[] = [
-            'day'=>$time[0],
-            'time'=>$time[1]
+            'day' => $time[0],
+            'time' => $time[1]
         ];
     }
     echo json_encode($response);
@@ -138,13 +161,13 @@ if ($request['method'] == 'getTimeIntervals') {
 
 if ($request['method'] == 'getBooksTime') {
     $timeIntervals = $objCalendar->returnBooksTime();
-    foreach ($timeIntervals as $day=>$time) {
+    foreach ($timeIntervals as $day => $time) {
         $response[] = [
-            'name'   => $time[0],
-            'day'    => $time[1],
-            'time'   => $time[2],
-            'type'   => $time[3],
-            'payment'=> $time[4]
+            'name' => $time[0],
+            'day' => $time[1],
+            'time' => $time[2],
+            'type' => $time[3],
+            'payment' => $time[4]
         ];
     }
     echo json_encode($response);
@@ -156,16 +179,16 @@ if ($request['method'] == 'deleteTimeIntervals') {
 
 if ($request['method'] == 'checkSkype') {
     $checkSkype = $obj->checkSkype();
-    if (trim($checkSkype['skype'])  != "") {
-        $response= [
+    if (trim($checkSkype['skype']) != "") {
+        $response = [
             'status' => 'filled'
         ];
     } else {
-        $response= [
+        $response = [
             'status' => 'empty'
         ];
     }
-    echo json_encode(($response) );
+    echo json_encode(($response));
 }
 
 if ($request['method'] === 'sendSkype') {
@@ -190,7 +213,7 @@ if ($request[0]['method'] === 'bookEvent') {
 
 if ($request['method'] === 'getLessons') {
     $result = $objCalendar->getLessons();
-    echo json_encode(($result) );
+    echo json_encode(($result));
 }
 
 if ($request['method'] === 'successPay') {
@@ -207,11 +230,11 @@ if ($request['method'] === 'getAllUsersInfo') {
     $booksTime = $objCalendar->returnBooksTime();
     array_reverse($booksTime);
     $arr = [];
-    foreach ($result as $k=>$val) {
+    foreach ($result as $k => $val) {
         $arr[] = $val;
     }
 
-    foreach ($arr as $k=>$val) {
+    foreach ($arr as $k => $val) {
         foreach ($booksTime as $item) {
 //            print_r($item[0]);
             if ($item[0] === $val['name']) {
@@ -254,7 +277,14 @@ if ($request['method'] === 'changeSettings') {
     $result = $obj->changeSettings($request);
     echo json_encode($result);
 }
+if ($setAvatar) {
+    var_dump('setavat');
 
+    return $obj->setAvatar();
+}
+
+
+//--------------------------------------------
 // ----- изменить статус new На active при оплате занятия
 if ($request['method'] === 'changeSatusOnActive') {
     $obj->changeSatusOnActive();

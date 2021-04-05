@@ -17,4 +17,9 @@ require("vendor/autoload.php");
 </footer>
 
 </body>
+<script src="../../scripts/croppie/jquery-3.1.1.min.js"></script>
+<script src="../../scripts/croppie/croppie.min.js"></script>
+<script src="../../scripts/croppie/jquery.arcticmodal.js"></script>
+<script src="../../scripts/croppie/script.js"></script>
+
 </html>

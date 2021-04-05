@@ -10,7 +10,12 @@ $(document).ready(function () {
         adminMenuMobile();
         // loginOnReload();
 
-        $('.header').css('display', 'none');// убираем header главной страницы
+        // $('.header').css('display', 'none');// убираем header главной страницы
+        $('.header').remove();// убираем header главной страницы
+        $('.login-form').remove();
+        $('.register-form').remove();
+        $('.register-success').remove();
+        $('.settings').remove();
 
         // ------------ переключение элементов меню
         function switchMenuComponents() {

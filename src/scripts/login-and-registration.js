@@ -144,17 +144,29 @@ $(document).ready(function () {
                     $(this).next("div").addClass("reg-check--disable");
                 });
             });
+            function getFormatDate(join){
+                join = join || ' '; // разделитель по дефолту
 
+                var d = new Date();
+                return addZero(d.getFullYear() + join + addZero(d.getMonth() + 1) + join + d.getDate());
+            }
+            function addZero(num){ return +num < 10 ? '0' + num : num }
+            // console.log(getFormatDate('.'));
+            let registerDate = getFormatDate('.');
             // FETCH
+
             if (errors.length === 0) {
                 let params = {
                     name: name,
                     password: password,
                     email: email,
                     skype: skype,
+                    register: registerDate,
                     status: 'new',
+                    avatar: ' ',
                     'method': 'register'
                 };
+                console.log(params);
                 let response = fetch('handle.php', {
                     method: 'POST',
                     headers: {
@@ -239,6 +251,9 @@ $(document).ready(function () {
                     return data.json()
                 }).then(function (data) {
                     console.log(data);
+                    // установка localstor user_id для croppie
+                    localStorage.setItem('user_id', data.userID);
+                    // console.log(localStorage.getItem('user_id'));
                     if (data.success) {
                         if (data.status === 'admin') {
                             document.location.href = '/index.php'
@@ -249,8 +264,9 @@ $(document).ready(function () {
                             authorizedUser();
                             changeLoginBtnToUserName();
                             $(".user-login__elem--user-name").html(data.name);
-                             /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
-                             * То редирект на страницу free-lesson*/
+
+                            // -- если логин после нажатия на кнопку "получить беспдатное занятие"
+                            // то редирект на страницу free-lesson
                             axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
                                 .then((response) => {
                                     if (localStorage.getItem('status') === 'free-lesson') {
@@ -265,8 +281,18 @@ $(document).ready(function () {
                             if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
                                 window.location.reload();
                             }
+                            // ---------- подгрузка аватара в header
+                            if (data.avatar.trim() !== '') {
+                                // $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
+                                $('.user-login__elem--avatar').attr('src', '..' + data.avatar +'');
+                            }
                         }
                     } else {
+                        if (data.status === 'blocked') {
+                            $(".login-invalid p").html('пользователь заблокирован');
+                        } else {
+                            $(".login-invalid p").html('неверные email или пароль');
+                        }
                         $(".login-invalid").removeClass("login-invalid--disable");
                     }
                     // login
@@ -303,6 +329,11 @@ $(document).ready(function () {
                         // authorizedUser();
                         // changeLoginBtnToUserName();
                         // $(".user-login__elem--user-name").html(data.name);
+                        // ---------- подгрузка аватара в настройки и header
+                        // if (data.avatar.trim() !== '') {
+                        //     $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
+                        //     // $('.user-login__elem--avatar').attr('src', '..' + data.avatar +'');
+                        // }
                     }
 
                 } else {

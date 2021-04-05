@@ -2812,15 +2812,13 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
-              _this.enterSkype = true;
+              _this.enterSkype = true; // $("#mysite").addClass("body-fixed");
             } else {
               axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray)); // ---- для бесплатного занятия
 
               if (_this.freeLesson) {
-                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
-                  'method': 'changeSatusOnActive'
-                }));
-                _this.freeLessBookSuccess = true;
+                // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
+                _this.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
               } else {
                 // --- для платного - страница оплаты
                 window.location.href = "payment.php";
@@ -2842,7 +2840,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           'method': 'sendSkype',
           'skype': skype.val()
         }));
-        this.enterSkype = false;
+        this.enterSkype = false; // $("#mysite").removeClass("body-fixed");
       }
     },
     // функция изменения состояния интервала в календаре при
@@ -3778,7 +3776,7 @@ __webpack_require__.r(__webpack_exports__);
             array.push(val);
           }
 
-          if (val.status === 'active') {
+          if (val.status === 'active' || val.status === 'new') {
             val.text = 'заблокировать';
           }
 
@@ -3795,7 +3793,7 @@ __webpack_require__.r(__webpack_exports__);
       var status = event.target.getAttribute('status');
       var method = null;
 
-      if (status === 'active') {
+      if (status === 'active' || status === 'new') {
         method = 'blockUser';
         this.statusColor = 'status-blocked';
       } else {
@@ -8517,7 +8515,11 @@ var staticRenderFns = [
         "span",
         {
           staticClass: "send-message",
-          staticStyle: { "text-decoration": "underline", cursor: "pointer" }
+          staticStyle: {
+            "text-decoration": "underline",
+            cursor: "pointer",
+            color: "#F8D6B0"
+          }
         },
         [_vm._v("сообщение")]
       ),
@@ -21603,7 +21605,6 @@ __webpack_require__.r(__webpack_exports__);
 
 $(document).ready(function () {
   if ($('main').hasClass("admin-main")) {
-    // убираем header главной страницы
     // ------------ переключение элементов меню
     var switchMenuComponents = function switchMenuComponents() {
       $('.admin-menu__element--mycalendar').addClass('menu-element-colored');
@@ -21706,8 +21707,14 @@ $(document).ready(function () {
     switchMenuComponents();
     logout();
     adminMenuMobile(); // loginOnReload();
+    // $('.header').css('display', 'none');// убираем header главной страницы
 
-    $('.header').css('display', 'none');
+    $('.header').remove(); // убираем header главной страницы
+
+    $('.login-form').remove();
+    $('.register-form').remove();
+    $('.register-success').remove();
+    $('.settings').remove();
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22627,7 +22634,21 @@ $(document).ready(function () {
 
           $(this).next("div").addClass("reg-check--disable");
         });
-      }); // FETCH
+      });
+
+      function getFormatDate(join) {
+        join = join || ' '; // разделитель по дефолту
+
+        var d = new Date();
+        return addZero(d.getFullYear() + join + addZero(d.getMonth() + 1) + join + d.getDate());
+      }
+
+      function addZero(num) {
+        return +num < 10 ? '0' + num : num;
+      } // console.log(getFormatDate('.'));
+
+
+      var registerDate = getFormatDate('.'); // FETCH
 
       if (errors.length === 0) {
         var params = {
@@ -22635,9 +22656,12 @@ $(document).ready(function () {
           password: password,
           email: email,
           skype: skype,
+          register: registerDate,
           status: 'new',
+          avatar: ' ',
           'method': 'register'
         };
+        console.log(params);
         var response = fetch('handle.php', {
           method: 'POST',
           headers: {
@@ -22718,7 +22742,9 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          console.log(data);
+          console.log(data); // установка localstor user_id для croppie
+
+          localStorage.setItem('user_id', data.userID); // console.log(localStorage.getItem('user_id'));
 
           if (data.success) {
             if (data.status === 'admin') {
@@ -22729,9 +22755,8 @@ $(document).ready(function () {
               setCookie('name', data.name);
               authorizedUser();
               changeLoginBtnToUserName();
-              $(".user-login__elem--user-name").html(data.name);
-              /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
-              * То редирект на страницу free-lesson*/
+              $(".user-login__elem--user-name").html(data.name); // -- если логин после нажатия на кнопку "получить беспдатное занятие"
+              // то редирект на страницу free-lesson
 
               axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
                 'method': 'checkLoginOnBookedLesson'
@@ -22746,9 +22771,21 @@ $(document).ready(function () {
 
               if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
                 window.location.reload();
+              } // ---------- подгрузка аватара в header
+
+
+              if (data.avatar.trim() !== '') {
+                // $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
+                $('.user-login__elem--avatar').attr('src', '..' + data.avatar + '');
               }
             }
           } else {
+            if (data.status === 'blocked') {
+              $(".login-invalid p").html('пользователь заблокирован');
+            } else {
+              $(".login-invalid p").html('неверные email или пароль');
+            }
+
             $(".login-invalid").removeClass("login-invalid--disable");
           } // login
 
@@ -22782,6 +22819,11 @@ $(document).ready(function () {
           if (data.status === 'user') {// authorizedUser();
             // changeLoginBtnToUserName();
             // $(".user-login__elem--user-name").html(data.name);
+            // ---------- подгрузка аватара в настройки и header
+            // if (data.avatar.trim() !== '') {
+            //     $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
+            //     // $('.user-login__elem--avatar').attr('src', '..' + data.avatar +'');
+            // }
           }
         } else {
           deleteCookie('name');
@@ -23042,7 +23084,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 $(document).ready(function () {
-  console.log('settings init'); // -------------------------
+  console.log('settings init');
+  var user_id = null; // -------------------------
   // moveSettingWindow();
 
   openSettings();
@@ -23072,6 +23115,7 @@ $(document).ready(function () {
 
   function openSettings() {
     $('.user-login-menu__elem--settings').click(function () {
+      console.log(localStorage.getItem('user_id'));
       $("#mysite").addClass("body-fixed");
       $('.settings-main-frame').addClass('settings-active');
       $('.settings').addClass('settings-active'); // получение данных при открытии
@@ -23079,11 +23123,16 @@ $(document).ready(function () {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getUserInfo'
       })).then(function (response) {
-        var dataFromDB = response.data; // console.log(response.data);
+        var dataFromDB = response.data;
+        user_id = dataFromDB.id; // console.log(response.data);
 
         $('.main-text--user-name').html(dataFromDB.name);
         $('.main-text--email').html(dataFromDB.email);
-        $('.main-text--skype').html(dataFromDB.skype);
+        $('.main-text--skype').html(dataFromDB.skype); // ---------- подгрузка аватара
+
+        if (dataFromDB.avatar.trim() !== '') {
+          $('.avatar').css('backgroundImage', 'url(' + dataFromDB.avatar + ')');
+        }
       });
     });
   } // -----------------------------
@@ -23111,7 +23160,9 @@ $(document).ready(function () {
 
         wrap.classList.add('wrap-hidden');
         inputWrap.classList.add('input-wrap-active');
-      } // при нажатии на кнопку "ИЗМЕНИТЬ" после ввода в инпут
+      }
+
+      if (e.target.className.includes('change-btn--avatar')) {} // при нажатии на кнопку "ИЗМЕНИТЬ" после ввода в инпут
 
 
       if (e.target.className.includes('change-button')) {
@@ -23250,7 +23301,44 @@ $(document).ready(function () {
           }
         }
       }
-    });
+    }); // ------- загрузка аватара ../scripts/croppie/script.js
+    // function readURL(input) {
+    //     if (input.files && input.files[0]) {
+    //         let reader = new FileReader();
+    //         // console.log(reader)
+    //         reader.onload = function(e) {
+    //             $('.avatar').css('backgroundImage', 'url(' + e.target.result + ')');
+    //         }
+    //         reader.readAsDataURL(input.files[0]);
+    //     }
+    // }
+    // $('#download-avatar').change(function(){
+    //     axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
+    //         .then((response) => {
+    //             let dataFromDB = response.data
+    //             console.log(dataFromDB)
+    //             user_id = dataFromDB.id;
+    //         });
+    //     readURL(this);
+    //     $('.apply-avatar').addClass('apply-avatar-active ');
+    // });
+    // $('.apply-avatar').click(function () {
+    //
+    //     let data = new FormData();
+    //     // console.log(document.getElementById('download-avatar').files)
+    //     // console.log(document.getElementById('download-avatar').files[0])
+    //     let input  = document.getElementById('download-avatar');
+    //     data.append('img_path', input.files[0]);
+    //     data.append('method','setAvatar');
+    //     data.append('user_id', user_id);
+    //     console.log(data);
+    //     let response = fetch('/handle.php', {
+    //         method: 'POST',
+    //         headers: {},
+    //         body: data,
+    //     });
+    // })
+    // -----------------------------------------
   } // -----------------------------------------
 
 });

@@ -22,7 +22,6 @@ import MyCalendar from "../vue/MyCalendar.vue";
 import BookCalendar from "../vue/BookCalendar.vue";
 import MyStudents from "../vue/MyStudents.vue";
 import AdminBookCalendar from "../vue/AdminBookCalendar.vue";
-
 // -----------------------------------------------------------
 Vue.config.productionTip = false;
 $(document).ready(function () {
