@@ -4,6 +4,7 @@ $(document).ready(function () {
     if ($(".header")) {
         console.log('common.js init')
         const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
+        let langFlag;
         // -------------------------
         resetStates();
         changeLanguage();
@@ -12,6 +13,7 @@ $(document).ready(function () {
         burgerMenuActions();
         coloredNavMenuElems();
         openUserMenu();
+        switchLang(getCookie('btnLang'));
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -41,7 +43,8 @@ $(document).ready(function () {
                     $(".lang-changer").removeClass('active');
                 }
             });
-            $('.lang-changer').click(function () {
+            $('.lang-changer').click(function (e) {
+                langFlag = true;
                 let langsObj = {
                     'method': 'language'
                 };
@@ -64,11 +67,77 @@ $(document).ready(function () {
                     },
                     body: JSON.stringify(langsObj)
                 });
+                response.then(function (data) {
+                    return data.json()
+                }).then(function (data) {
+                     console.log(data); // eng-lang || rus-eng
+                    switchLang(data);
+
+                });
+
             });
         }
 
-        // -----------------------------------------
+        function switchLang(data) {
+            let allElems = document.getElementsByTagName("*");
+            let i = 1;
+            for (let elem of allElems) {
+                if (elem.getAttribute('switch-lang')) {
+                    console.log(elem)
+                    elem.setAttribute('switch-lang', data);
+                    let string = elem.getAttribute('switchable-text');
 
+                    if (elem.getAttribute('switch-lang') === 'rus-lang') {
+                    // console.log(string); // switchable-text
+                        elem.setAttribute('eng-text', elem.innerHTML);
+                        elem.innerHTML = string;
+                        elem.setAttribute('switchable-text', elem.getAttribute('eng-text'));
+                        elem.removeAttribute('eng-text');
+                    //
+                    //     let fType = function() {
+                    //         if (i <= string.length) {
+                    //             elem.innerHTML = string.substring(0, i)
+                    //             setTimeout(arguments.callee, 30);
+                    //         }
+                    //         i++;
+                    //     }
+                    //
+                    //     if (langFlag) {
+                    //         fType();
+                    //     } else {
+                    //         elem.innerHTML = string;
+                    //     }
+
+                    }
+                    //
+                    if (elem.getAttribute('switch-lang') === 'eng-lang') {
+                        // console.log(getCookie('btnLang'))
+                        // console.log(elem)
+                        elem.setAttribute('rus-text', elem.innerHTML);
+                        elem.innerHTML = elem.getAttribute('switchable-text');
+                        elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
+                        // elem.removeAttribute('rus-text');
+                    //     let fType = function() {
+                    //         if (i <= string.length) {
+                    //             elem.innerHTML = string.substring(0, i)
+                    //             setTimeout(arguments.callee, 30);
+                    //         }
+                    //         i++;
+                    //     }
+                    //
+                    //     if (langFlag) {
+                    //         fType();
+                    //     } else {
+                    //         elem.innerHTML = string;
+                    //     }
+                    //
+                    //     elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
+                    //     elem.removeAttribute('rus-text');
+                    }
+                }
+            }
+        }
+        // -----------------------------------------
 
         // ----------- функционал фиксирования меню навигации при прокрутке страницы
         function navMenuFixing() {
@@ -188,6 +257,14 @@ $(document).ready(function () {
         }
         // -----------------------------------------
 
+        // ----------- getCookie
+        function getCookie(name) {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+        //----------------------------------------------
 
     }
 });

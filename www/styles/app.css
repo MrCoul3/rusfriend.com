@@ -1092,6 +1092,7 @@
   background-image: url(../images/icons/btn-change-lang-russian.svg);
 }
 #mysite .header__overhead .service-btns .eng-lang {
+  cursor: pointer;
   background-image: url(../images/icons/btn-change-lang-english.svg);
 }
 #mysite .header__overhead .service-btns .lang-changer {

@@ -132,6 +132,12 @@ if ($request['method'] == 'logout') {
 if ($request['method'] == 'language') {
     setcookie('btnLang', $request['btnLang']);
     setcookie('langChanger', $request['langChanger']);
+    if ($request['btnLang'] === 'eng-lang') {
+        $response = 'eng-lang';
+    } else {
+        $response = 'rus-lang';
+    }
+    echo json_encode($response);
 }
 // -----------------------------------
 

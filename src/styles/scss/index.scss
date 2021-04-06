@@ -46,6 +46,20 @@
       outline: none !important;
     }
   }
+  .owl-carousel-2 {
+    .owl-nav {
+      display: flex;
+      justify-content: space-between;
+      font-size: 62px;
+      width: 100%;
+      bottom: 211px;
+      position: absolute;
+      font-size: 62px;
+    }
+    .owl-dots {
+      display: none;
+    }
+  }
 
   // ------- видео "подробнее про нашу школу"
   .about-school-video {

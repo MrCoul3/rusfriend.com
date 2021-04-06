@@ -1,3 +1,16 @@
+<?php
+//print_r($_COOKIE['btnLang']);
+function switchLang()
+{
+//    $_COOKIE['btnLang'] ? $_COOKIE['btnLang'] : 'eng-lang';
+    if ( $_COOKIE['btnLang']) {
+        return $_COOKIE['btnLang'];
+    } else {
+        return 'eng-lang';
+    }
+}
+?>
+
 <title>Главная</title>
 <main class="main-page">
 
@@ -12,9 +25,10 @@
 
     <section class="top-index">
         <div class="inner">
+
             <div class="top-index__element top-index__element--left">
-                <h1 class="top-index-title">Online - школа <span>русского</span> языка как иностранного</h1>
-                <h2 class="top-index-second-title">Русский язык от носителя <br> с любовью из России</h2>
+                <h1 switch-lang="<?=switchLang()?>" rus-text="" switchable-text="Онлайн - школа <span>русского</span> языка как иностранного" class="top-index-title">Online school of <span>Russian</span> as a foreign language</h1>
+                <h2 switch-lang="<?=switchLang()?>" rus-text="" switchable-text="Русский язык от носителя <br> с любовью из России" class="top-index-second-title">Russian with a native speaker from Russia with love</h2>
                 <h2 class="top-index-first-title">Начни изучать алфавит <br> прямо сейчас</h2><a
                     class="button get-guide-btn red-btn" href="/guide.php">получить гайд <br> бесплатно</a>
             </div>

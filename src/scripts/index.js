@@ -44,6 +44,7 @@ $(document).ready(function () {
         });
         $(".owl-carousel-2").owlCarousel({
             items: 1,
+            nav: true,
             margin: 300,
             center: true,
             dotsEach: true,
