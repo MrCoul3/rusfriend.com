@@ -55,7 +55,10 @@
                 </div>
 
             </div>
-            <a @click.prevent="bookEvent()" href="" class="button book-btn">забронировать</a>
+            <div style="position: relative;">
+                <div class="prompt">нужно выбрать время урока</div>
+                <a @click.prevent="bookEvent($event)" href="" class="button book-btn">забронировать</a>
+            </div>
 
             <div class="tegs">
                 <div class="tegs__element">
@@ -152,10 +155,11 @@
         mounted: function () {
             this.adjustmentDateOfDay();
             this.adjustmentDateOfWeek();
+            this.isFreeLesson()
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
-            this.isFreeLesson()
+
 
 
 
@@ -328,6 +332,7 @@
             },
 
             getIntervalsFromDB: function () {
+                let freeLesson = this.freeLesson;
                 // ----- удаление неоплаченых бронирований
                 axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
 
@@ -346,13 +351,29 @@
                                 // console.log(val.getAttribute('date'));
                                 let dateNumber = val;
                                 if (dataFromDB.day === dateNumber.getAttribute('date')) {
-                                    // console.log(dataFromDB.time);
                                     let arr = dataFromDB.time.split(',');
-                                    // console.log(arr);
-                                    let str = arr.join('</div><div>');
-                                    // console.log(str);
-                                    // console.log(dateNumber.innerHTML);
-                                    dateNumber.innerHTML = '<div>' + str + '</div>';
+
+                                    if (freeLesson) {
+                                        let newArr = [];
+                                        // console.log(arr); // ["06:00 - 06:30",...
+                                        arr.forEach(function (val, k) {
+                                            newArr.push(val.split('-')[0]);
+                                            // console.log(val.split('-')[0]);
+                                        })
+                                        // console.log(newArr);
+                                        let str = newArr.join('</div><div>');
+                                        // console.log(str);
+                                        // console.log(dateNumber.innerHTML);
+                                        dateNumber.innerHTML = '<div>' + str + '</div>';
+
+                                    } else {
+                                        // console.log(dataFromDB.time);
+                                        // console.log(arr);
+                                        let str = arr.join('</div><div>');
+                                        // console.log(str);
+                                        // console.log(dateNumber.innerHTML);
+                                        dateNumber.innerHTML = '<div>' + str + '</div>';
+                                    }
                                 }
                             });
 
@@ -410,7 +431,7 @@
                 // console.log(selectedTimeArray);
                 // this.selectedTimeArray = array.slice(0);
             },
-            bookEvent: function () {
+            bookEvent: function (event) {
                 // console.log(selectedTimeArray);
                 // нужно сделать проверку на логин, если не залогинен то открыть форму
                 // Регистрации
@@ -433,16 +454,24 @@
                                         this.enterSkype = true;
                                         // $("#mysite").addClass("body-fixed");
                                     } else {
-                                        axios.post('/handle.php', JSON.stringify(selectedTimeArray))
-                                        // ---- для бесплатного занятия
-                                        if (this.freeLesson) {
-                                            // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
-                                            this.freeLessBookSuccess = true;
-                                            // $("#mysite").addClass("body-fixed");
+                                        if (selectedTimeArray.length !== 0) {
+                                            axios.post('/handle.php', JSON.stringify(selectedTimeArray))
+                                            // ---- для бесплатного занятия
+                                            if (this.freeLesson) {
+                                                // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
+                                                this.freeLessBookSuccess = true;
+                                                // $("#mysite").addClass("body-fixed");
+                                            } else {
+                                                // --- для платного - страница оплаты
+                                                window.location.href = "payment.php";
+                                            }
                                         } else {
-                                            // --- для платного - страница оплаты
-                                            window.location.href = "payment.php";
+                                            $(event.target).prev(".prompt").fadeTo("slow", 1);
+                                            setTimeout(function () {
+                                                $(event.target).prev(".prompt").fadeOut();
+                                            },1000)
                                         }
+
                                     }
                                 });
                         }
@@ -540,5 +569,17 @@
 </script>
 
 <style scoped>
-
+    .prompt {
+        position: absolute;
+        opacity: 0;
+        font-size: 14px;
+        width: 211px;
+        color: #FF3E28;
+        font-style: italic;
+        text-align: center;
+        bottom: 50px;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
 </style>

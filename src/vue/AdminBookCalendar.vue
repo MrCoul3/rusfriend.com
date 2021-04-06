@@ -47,7 +47,8 @@
 
                 </div>
                 <div class="wrap">
-                    <div @click.prevent="bookEvent()" class="button book-btn">изменить время урока</div>
+                    <div class="prompt">нужно выбрать время урока</div>
+                    <div data="test" @click.prevent="bookEvent($event)" class="button book-btn">изменить время урока</div>
                     <div @click="closeAdminBookCalendar()" class="button cancel-btn">отмена</div>
                 </div>
                 <div class="tegs">
@@ -331,15 +332,23 @@
                         selectedTimeArray.push(obj);
                     }
                 });
-                // console.log(array);
+                console.log(selectedTimeArray);
                 // this.selectedTimeArray = array.slice(0);
             },
 
             // "изменить время урока"
-            bookEvent: function () {
-                this.$emit('update');
-                axios.post('/handle.php', JSON.stringify(selectedTimeArray))
-                this.reload += 1;
+            bookEvent: function (event) {
+                if (selectedTimeArray.length !== 0) {
+                    this.$emit('update');
+                    axios.post('/handle.php', JSON.stringify(selectedTimeArray))
+                    this.reload += 1;
+                } else {
+                    // console.log($(event.target));
+                    $(event.target).prev(".prompt").fadeTo("slow", 1);
+                    setTimeout(function () {
+                        $(event.target).prev(".prompt").fadeOut();
+                    },1000)
+                }
             },
 
             // функция изменения состояния интервала в календаре при
@@ -386,6 +395,16 @@
 
 <style scoped>
 
+    .prompt {
+        position: absolute;
+        opacity: 0;
+        font-size: 14px;
+        width: 211px;
+        color: #FF3E28;
+        font-style: italic;
+        text-align: center;
+        bottom: 70px;
+    }
 
     .wrap {
         display: flex;

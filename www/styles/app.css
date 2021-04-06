@@ -3028,6 +3028,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  position: relative;
 }
 #mysite .my-calendar .cancel-lesson-frame .wrap .button {
   width: 110px;
@@ -4263,6 +4264,16 @@
   }
 }
 /*@import '../styles/scss/admin-panel';*/
+.prompt[data-v-c00eaaa2] {
+  position: absolute;
+  opacity: 0;
+  font-size: 14px;
+  width: 211px;
+  color: #FF3E28;
+  font-style: italic;
+  text-align: center;
+  bottom: 70px;
+}
 .wrap[data-v-c00eaaa2] {
   display: flex;
   max-width: 420px;
@@ -4299,6 +4310,19 @@
   height: 100%;
   overflow: visible;
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+}
+.prompt[data-v-678606de] {
+  position: absolute;
+  opacity: 0;
+  font-size: 14px;
+  width: 211px;
+  color: #FF3E28;
+  font-style: italic;
+  text-align: center;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 /*# sourceMappingURL=app.css.map*/

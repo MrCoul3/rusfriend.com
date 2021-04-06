@@ -2028,6 +2028,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 function getCookie(name) {
@@ -2304,14 +2305,22 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         if (day !== null && time !== '') {
           selectedTimeArray.push(obj);
         }
-      }); // console.log(array);
-      // this.selectedTimeArray = array.slice(0);
+      });
+      console.log(selectedTimeArray); // this.selectedTimeArray = array.slice(0);
     },
     // "изменить время урока"
-    bookEvent: function bookEvent() {
-      this.$emit('update');
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray));
-      this.reload += 1;
+    bookEvent: function bookEvent(event) {
+      if (selectedTimeArray.length !== 0) {
+        this.$emit('update');
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray));
+        this.reload += 1;
+      } else {
+        // console.log($(event.target));
+        $(event.target).prev(".prompt").fadeTo("slow", 1);
+        setTimeout(function () {
+          $(event.target).prev(".prompt").fadeOut();
+        }, 1000);
+      }
     },
     // функция изменения состояния интервала в календаре при
     // забронированных интервалах для данного пользователя
@@ -2467,6 +2476,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2518,10 +2530,10 @@ var selectedTimeArray = []; // пришлось ввести, так как из
   mounted: function mounted() {
     this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
+    this.isFreeLesson();
     this.getIntervalsFromDB();
     this.lightingOfToday();
     this.changeStateOfItem();
-    this.isFreeLesson();
   },
   updated: function updated() {
     this.adjustmentDateOfDay();
@@ -2703,7 +2715,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       });
     },
     getIntervalsFromDB: function getIntervalsFromDB() {
-      // ----- удаление неоплаченых бронирований
+      var freeLesson = this.freeLesson; // ----- удаление неоплаченых бронирований
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'delUnpayedBooks'
       }));
@@ -2723,13 +2736,28 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             var dateNumber = val;
 
             if (dataFromDB.day === dateNumber.getAttribute('date')) {
-              // console.log(dataFromDB.time);
-              var arr = dataFromDB.time.split(','); // console.log(arr);
+              var arr = dataFromDB.time.split(',');
 
-              var str = arr.join('</div><div>'); // console.log(str);
-              // console.log(dateNumber.innerHTML);
+              if (freeLesson) {
+                var newArr = []; // console.log(arr); // ["06:00 - 06:30",...
 
-              dateNumber.innerHTML = '<div>' + str + '</div>';
+                arr.forEach(function (val, k) {
+                  newArr.push(val.split('-')[0]); // console.log(val.split('-')[0]);
+                }); // console.log(newArr);
+
+                var str = newArr.join('</div><div>'); // console.log(str);
+                // console.log(dateNumber.innerHTML);
+
+                dateNumber.innerHTML = '<div>' + str + '</div>';
+              } else {
+                // console.log(dataFromDB.time);
+                // console.log(arr);
+                var _str = arr.join('</div><div>'); // console.log(str);
+                // console.log(dateNumber.innerHTML);
+
+
+                dateNumber.innerHTML = '<div>' + _str + '</div>';
+              }
             }
           });
         });
@@ -2787,7 +2815,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       }); // console.log(selectedTimeArray);
       // this.selectedTimeArray = array.slice(0);
     },
-    bookEvent: function bookEvent() {
+    bookEvent: function bookEvent(event) {
       var _this = this;
 
       // console.log(selectedTimeArray);
@@ -2814,14 +2842,21 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             if (dataFromDB.status === 'empty') {
               _this.enterSkype = true; // $("#mysite").addClass("body-fixed");
             } else {
-              axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray)); // ---- для бесплатного занятия
+              if (selectedTimeArray.length !== 0) {
+                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray)); // ---- для бесплатного занятия
 
-              if (_this.freeLesson) {
-                // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
-                _this.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                if (_this.freeLesson) {
+                  // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
+                  _this.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                } else {
+                  // --- для платного - страница оплаты
+                  window.location.href = "payment.php";
+                }
               } else {
-                // --- для платного - страница оплаты
-                window.location.href = "payment.php";
+                $(event.target).prev(".prompt").fadeTo("slow", 1);
+                setTimeout(function () {
+                  $(event.target).prev(".prompt").fadeOut();
+                }, 1000);
               }
             }
           });
@@ -3844,6 +3879,17 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! jQuery v3.5.
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ../node_modules/mini-css-extract-plugin/dist/loader.js??ref--0-0!../node_modules/css-loader/dist/cjs.js??ref--0-1!../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../node_modules/postcss-loader/src??postcss!../node_modules/sass-loader/dist/cjs.js??ref--0-3!../node_modules/vue-loader/lib??vue-loader-options!./vue/AdminBookCalendar.vue?vue&type=style&index=0&id=c00eaaa2&scoped=true&lang=css& ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "../node_modules/mini-css-extract-plugin/dist/loader.js?!../node_modules/css-loader/dist/cjs.js?!../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../node_modules/postcss-loader/src/index.js?!../node_modules/sass-loader/dist/cjs.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ../node_modules/mini-css-extract-plugin/dist/loader.js??ref--0-0!../node_modules/css-loader/dist/cjs.js??ref--0-1!../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../node_modules/postcss-loader/src??postcss!../node_modules/sass-loader/dist/cjs.js??ref--0-3!../node_modules/vue-loader/lib??vue-loader-options!./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7971,14 +8017,19 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "wrap" }, [
+              _c("div", { staticClass: "prompt" }, [
+                _vm._v("нужно выбрать время урока")
+              ]),
+              _vm._v(" "),
               _c(
                 "div",
                 {
                   staticClass: "button book-btn",
+                  attrs: { data: "test" },
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.bookEvent()
+                      return _vm.bookEvent($event)
                     }
                   }
                 },
@@ -8298,20 +8349,26 @@ var render = function() {
             2
           ),
           _vm._v(" "),
-          _c(
-            "a",
-            {
-              staticClass: "button book-btn",
-              attrs: { href: "" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.bookEvent()
+          _c("div", { staticStyle: { position: "relative" } }, [
+            _c("div", { staticClass: "prompt" }, [
+              _vm._v("нужно выбрать время урока")
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "button book-btn",
+                attrs: { href: "" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.bookEvent($event)
+                  }
                 }
-              }
-            },
-            [_vm._v("забронировать")]
-          ),
+              },
+              [_vm._v("забронировать")]
+            )
+          ]),
           _vm._v(" "),
           _vm._m(2),
           _vm._v(" "),
@@ -23503,7 +23560,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookCalendar.vue?vue&type=template&id=678606de&scoped=true& */ "./vue/BookCalendar.vue?vue&type=template&id=678606de&scoped=true&");
 /* harmony import */ var _BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookCalendar.vue?vue&type=script&lang=js& */ "./vue/BookCalendar.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "../node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css& */ "./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "../node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -23511,7 +23570,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _BookCalendar_vue_vue_type_template_id_678606de_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -23540,6 +23599,22 @@ component.options.__file = "vue/BookCalendar.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_1_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--1!../../node_modules/vue-loader/lib??vue-loader-options!./BookCalendar.vue?vue&type=script&lang=js& */ "../node_modules/babel-loader/lib/index.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_1_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css&":
+/*!***************************************************************************************!*\
+  !*** ./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css& ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_0_0_node_modules_css_loader_dist_cjs_js_ref_0_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_postcss_node_modules_sass_loader_dist_cjs_js_ref_0_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/mini-css-extract-plugin/dist/loader.js??ref--0-0!../../node_modules/css-loader/dist/cjs.js??ref--0-1!../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../node_modules/postcss-loader/src??postcss!../../node_modules/sass-loader/dist/cjs.js??ref--0-3!../../node_modules/vue-loader/lib??vue-loader-options!./BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css& */ "../node_modules/mini-css-extract-plugin/dist/loader.js?!../node_modules/css-loader/dist/cjs.js?!../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../node_modules/postcss-loader/src/index.js?!../node_modules/sass-loader/dist/cjs.js?!../node_modules/vue-loader/lib/index.js?!./vue/BookCalendar.vue?vue&type=style&index=0&id=678606de&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_0_0_node_modules_css_loader_dist_cjs_js_ref_0_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_postcss_node_modules_sass_loader_dist_cjs_js_ref_0_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_0_0_node_modules_css_loader_dist_cjs_js_ref_0_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_postcss_node_modules_sass_loader_dist_cjs_js_ref_0_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_mini_css_extract_plugin_dist_loader_js_ref_0_0_node_modules_css_loader_dist_cjs_js_ref_0_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_postcss_node_modules_sass_loader_dist_cjs_js_ref_0_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_mini_css_extract_plugin_dist_loader_js_ref_0_0_node_modules_css_loader_dist_cjs_js_ref_0_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_postcss_node_modules_sass_loader_dist_cjs_js_ref_0_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BookCalendar_vue_vue_type_style_index_0_id_678606de_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 
