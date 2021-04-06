@@ -2479,6 +2479,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2509,7 +2512,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       freeLesson: false,
       instruction: true,
       payment: 'unpayed',
-      freeLessBookSuccess: false
+      freeLessBookSuccess: false,
+      preloader: true
     };
   },
   beforeMount: function beforeMount() {
@@ -2715,6 +2719,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       });
     },
     getIntervalsFromDB: function getIntervalsFromDB() {
+      var _this = this;
+
       var freeLesson = this.freeLesson; // ----- удаление неоплаченых бронирований
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
@@ -2761,6 +2767,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             }
           });
         });
+        _this.preloader = false;
       });
     },
     chooseTime: function chooseTime(event) {
@@ -2816,7 +2823,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       // this.selectedTimeArray = array.slice(0);
     },
     bookEvent: function bookEvent(event) {
-      var _this = this;
+      var _this2 = this;
 
       // console.log(selectedTimeArray);
       // нужно сделать проверку на логин, если не залогинен то открыть форму
@@ -2840,14 +2847,14 @@ var selectedTimeArray = []; // пришлось ввести, так как из
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
-              _this.enterSkype = true; // $("#mysite").addClass("body-fixed");
+              _this2.enterSkype = true; // $("#mysite").addClass("body-fixed");
             } else {
               if (selectedTimeArray.length !== 0) {
                 axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray)); // ---- для бесплатного занятия
 
-                if (_this.freeLesson) {
+                if (_this2.freeLesson) {
                   // axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
-                  _this.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                  _this2.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
                 } else {
                   // --- для платного - страница оплаты
                   window.location.href = "payment.php";
@@ -3096,7 +3103,7 @@ __webpack_require__.r(__webpack_exports__);
       typeOfLesson: null,
       detailUserName: null,
       detailSkype: null,
-      preloader: false,
+      preloader: true,
       cancelLessShow: false,
       showBookCalendar: false,
       freeLesson: false
@@ -8137,353 +8144,373 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "your-calendar inner", attrs: { id: "booking-calendar" } },
-    [
-      _vm.freeLesson
-        ? _c(
-            "h3",
-            {
-              staticClass:
-                "description your-calendar__element your-calendar__element--main-title main-title"
-            },
-            [
-              _vm._v("\n        Забронируй "),
-              _c("span", { staticStyle: { color: "#FF3E28" } }, [
-                _vm._v("бесплатный")
-              ]),
-              _vm._v(" получасовой урок с преподавателем прямо сейчас\n    ")
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "h3",
+  return _c("div", [
+    _c("div", {
+      directives: [
         {
-          staticClass:
-            "your-calendar__element your-calendar__element--main-title main-title"
-        },
-        [
-          _vm._v(
-            "Все online - занятия с\n        преподавателем проходят в Skype"
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _vm.instruction
-        ? _c(
-            "div",
-            {
-              staticClass:
-                "your-calendar__element your-calendar__element--instruction instruction"
-            },
-            [
-              _c("p", { staticClass: "instruction__element" }, [
-                _vm._v("1. Выберите удобное для вас время")
-              ]),
-              _vm._v(" "),
-              _c(
-                "p",
-                {
-                  staticClass:
-                    "instruction__element instruction__element--separator"
-                },
-                [_vm._v(">")]
-              ),
-              _vm._v(" "),
-              _c("p", { staticClass: "instruction__element" }, [
-                _vm._v("2. Оплатите урок")
-              ]),
-              _vm._v(" "),
-              _c(
-                "p",
-                {
-                  staticClass:
-                    "instruction__element instruction__element--separator"
-                },
-                [_vm._v(">")]
-              ),
-              _vm._v(" "),
-              _c("p", { staticClass: "instruction__element" }, [
-                _vm._v("3. Готовьтесь к уроку")
-              ])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "your-calendar__element your-calendar__element--calendar-app calendar-app"
-        },
-        [
-          _c("div", { staticClass: "calendar-app-header" }, [
-            _c(
+          name: "show",
+          rawName: "v-show",
+          value: _vm.preloader,
+          expression: "preloader"
+        }
+      ],
+      attrs: { id: "preloader" }
+    }),
+    _vm._v(" "),
+    _c(
+      "section",
+      { staticClass: "your-calendar inner", attrs: { id: "booking-calendar" } },
+      [
+        _vm.freeLesson
+          ? _c(
+              "h3",
+              {
+                staticClass:
+                  "description your-calendar__element your-calendar__element--main-title main-title"
+              },
+              [
+                _vm._v("\n            Забронируй "),
+                _c("span", { staticStyle: { color: "#FF3E28" } }, [
+                  _vm._v("бесплатный")
+                ]),
+                _vm._v(
+                  " получасовой урок с преподавателем прямо сейчас\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "h3",
+          {
+            staticClass:
+              "your-calendar__element your-calendar__element--main-title main-title"
+          },
+          [
+            _vm._v(
+              "Все online - занятия с\n            преподавателем проходят в Skype"
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm.instruction
+          ? _c(
               "div",
               {
                 staticClass:
-                  "calendar-app-header__element calendar-app-header__element--month-module"
+                  "your-calendar__element your-calendar__element--instruction instruction"
               },
               [
-                _c("div", {
-                  staticClass: "month-btn month-btn--left-btn",
-                  on: {
-                    click: function($event) {
-                      return _vm.decrease()
-                    }
-                  }
-                }),
+                _c("p", { staticClass: "instruction__element" }, [
+                  _vm._v("1. Выберите удобное для вас время")
+                ]),
                 _vm._v(" "),
-                _c("div", {
-                  staticClass: "month-btn month-btn--right-btn",
-                  on: {
-                    click: function($event) {
-                      return _vm.increase()
-                    }
-                  }
-                }),
+                _c(
+                  "p",
+                  {
+                    staticClass:
+                      "instruction__element instruction__element--separator"
+                  },
+                  [_vm._v(">")]
+                ),
                 _vm._v(" "),
-                _c("p", { staticClass: "month" }, [
-                  _vm._v(
-                    _vm._s(_vm.monthes[_vm.numberMonthOfFirstDayOfWeek]) +
-                      " " +
-                      _vm._s(_vm.dateInterval) +
-                      ", " +
-                      _vm._s(_vm.year)
-                  )
+                _c("p", { staticClass: "instruction__element" }, [
+                  _vm._v("2. Оплатите урок")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  {
+                    staticClass:
+                      "instruction__element instruction__element--separator"
+                  },
+                  [_vm._v(">")]
+                ),
+                _vm._v(" "),
+                _c("p", { staticClass: "instruction__element" }, [
+                  _vm._v("3. Готовьтесь к уроку")
                 ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "your-calendar__element your-calendar__element--calendar-app calendar-app"
+          },
+          [
+            _c("div", { staticClass: "calendar-app-header" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "calendar-app-header__element calendar-app-header__element--month-module"
+                },
+                [
+                  _c("div", {
+                    staticClass: "month-btn month-btn--left-btn",
+                    on: {
+                      click: function($event) {
+                        return _vm.decrease()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "month-btn month-btn--right-btn",
+                    on: {
+                      click: function($event) {
+                        return _vm.increase()
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "month" }, [
+                    _vm._v(
+                      _vm._s(_vm.monthes[_vm.numberMonthOfFirstDayOfWeek]) +
+                        " " +
+                        _vm._s(_vm.dateInterval) +
+                        ", " +
+                        _vm._s(_vm.year)
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "h2",
+                {
+                  staticClass:
+                    "calendar-app-header__element calendar-app-header__element--title"
+                },
+                [_vm._v("Календарь занятий")]
+              ),
+              _vm._v(" "),
+              _vm._m(0)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "decor-line" }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "calendar-app-content" },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "calendar-app-content-col" },
+                  _vm._l(_vm.day, function(d) {
+                    return _c(
+                      "div",
+                      { staticClass: "calendar-app-content-day" },
+                      [_vm._v(_vm._s(d))]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.weekCalendar(), function(week) {
+                  return _c(
+                    "div",
+                    { staticClass: "calendar-app-content-col" },
+                    _vm._l(week, function(day) {
+                      return _c(
+                        "div",
+                        {
+                          staticClass: "calendar-app-content-number",
+                          style: {
+                            "background-color": day.current,
+                            color: day.color,
+                            "font-weight": day.font
+                          },
+                          attrs: {
+                            today: day.today,
+                            date:
+                              day.index +
+                              "." +
+                              _vm.currentMonth +
+                              "." +
+                              _vm.year
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(day.index) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.weekCalendar(), function(week) {
+                  return _c(
+                    "div",
+                    { staticClass: "time-intrevals-from-db" },
+                    _vm._l(week, function(day) {
+                      return _c("div", {
+                        staticClass:
+                          "time-intrevals-elem time-intrevals-from-db__item",
+                        attrs: {
+                          date:
+                            day.index + "." + _vm.currentMonth + "." + _vm.year
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.chooseTime($event)
+                          }
+                        }
+                      })
+                    }),
+                    0
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticStyle: { position: "relative" } }, [
+              _c("div", { staticClass: "prompt" }, [
+                _vm._v("нужно выбрать время урока")
+              ]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "button book-btn",
+                  attrs: { href: "" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.bookEvent($event)
+                    }
+                  }
+                },
+                [_vm._v("забронировать")]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(2),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.enterSkype,
+                    expression: "enterSkype"
+                  }
+                ],
+                staticClass: "enter-your-skype"
+              },
+              [
+                _c("h2", { staticClass: "enter-your-skype__element" }, [
+                  _vm._v("Все занятия проходят в skype")
+                ]),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex" }, [
+                  _c("div", { staticClass: "skype-icon-for-input" }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "flex", attrs: { id: "enter-your-skype" } },
+                    [
+                      _c("input", {
+                        staticClass: "enter-your-skype__element input-skype",
+                        attrs: { type: "text", placeholder: "skype" }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "button send-skype",
+                          on: {
+                            click: function($event) {
+                              return _vm.sendSkype()
+                            }
+                          }
+                        },
+                        [_vm._v("send")]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.validationSkype,
+                          expression: "validationSkype"
+                        }
+                      ],
+                      staticClass: "validation-skype"
+                    },
+                    [_vm._v("поле не должно быть пустым")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(4)
               ]
             ),
             _vm._v(" "),
             _c(
-              "h2",
+              "div",
               {
-                staticClass:
-                  "calendar-app-header__element calendar-app-header__element--title"
-              },
-              [_vm._v("Календарь занятий")]
-            ),
-            _vm._v(" "),
-            _vm._m(0)
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "decor-line" }),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "calendar-app-content" },
-            [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "calendar-app-content-col" },
-                _vm._l(_vm.day, function(d) {
-                  return _c(
-                    "div",
-                    { staticClass: "calendar-app-content-day" },
-                    [_vm._v(_vm._s(d))]
-                  )
-                }),
-                0
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.weekCalendar(), function(week) {
-                return _c(
-                  "div",
-                  { staticClass: "calendar-app-content-col" },
-                  _vm._l(week, function(day) {
-                    return _c(
-                      "div",
-                      {
-                        staticClass: "calendar-app-content-number",
-                        style: {
-                          "background-color": day.current,
-                          color: day.color,
-                          "font-weight": day.font
-                        },
-                        attrs: {
-                          today: day.today,
-                          date:
-                            day.index + "." + _vm.currentMonth + "." + _vm.year
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(day.index) +
-                            "\n                "
-                        )
-                      ]
-                    )
-                  }),
-                  0
-                )
-              }),
-              _vm._v(" "),
-              _vm._l(_vm.weekCalendar(), function(week) {
-                return _c(
-                  "div",
-                  { staticClass: "time-intrevals-from-db" },
-                  _vm._l(week, function(day) {
-                    return _c("div", {
-                      staticClass:
-                        "time-intrevals-elem time-intrevals-from-db__item",
-                      attrs: {
-                        date:
-                          day.index + "." + _vm.currentMonth + "." + _vm.year
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.chooseTime($event)
-                        }
-                      }
-                    })
-                  }),
-                  0
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c("div", { staticStyle: { position: "relative" } }, [
-            _c("div", { staticClass: "prompt" }, [
-              _vm._v("нужно выбрать время урока")
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "button book-btn",
-                attrs: { href: "" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.bookEvent($event)
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.freeLessBookSuccess,
+                    expression: "freeLessBookSuccess"
                   }
-                }
+                ],
+                staticClass: "free-lesson-success"
               },
-              [_vm._v("забронировать")]
-            )
-          ]),
-          _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.enterSkype,
-                  expression: "enterSkype"
-                }
-              ],
-              staticClass: "enter-your-skype"
-            },
-            [
-              _c("h2", { staticClass: "enter-your-skype__element" }, [
-                _vm._v("Все занятия проходят в skype")
-              ]),
-              _vm._v(" "),
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex" }, [
-                _c("div", { staticClass: "skype-icon-for-input" }),
+              [
+                _c("h2", { staticClass: "free-lesson-success__elem" }, [
+                  _vm._v("Вы успешно забронировали урок")
+                ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "flex", attrs: { id: "enter-your-skype" } },
-                  [
-                    _c("input", {
-                      staticClass: "enter-your-skype__element input-skype",
-                      attrs: { type: "text", placeholder: "skype" }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "button send-skype",
-                        on: {
-                          click: function($event) {
-                            return _vm.sendSkype()
-                          }
-                        }
-                      },
-                      [_vm._v("send")]
-                    )
-                  ]
-                ),
+                _c("h3", { staticClass: "free-lesson-success__elem" }, [
+                  _vm._v("Не забудте придти вовремя")
+                ]),
+                _vm._v(" "),
+                _vm._m(5),
                 _vm._v(" "),
                 _c(
                   "div",
                   {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.validationSkype,
-                        expression: "validationSkype"
+                    staticClass: "button ok-btn",
+                    on: {
+                      click: function($event) {
+                        return _vm.closeFreeLessSuccess()
                       }
-                    ],
-                    staticClass: "validation-skype"
-                  },
-                  [_vm._v("поле не должно быть пустым")]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._m(4)
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.freeLessBookSuccess,
-                  expression: "freeLessBookSuccess"
-                }
-              ],
-              staticClass: "free-lesson-success"
-            },
-            [
-              _c("h2", { staticClass: "free-lesson-success__elem" }, [
-                _vm._v("Вы успешно забронировали урок")
-              ]),
-              _vm._v(" "),
-              _c("h3", { staticClass: "free-lesson-success__elem" }, [
-                _vm._v("Не забудте придти вовремя")
-              ]),
-              _vm._v(" "),
-              _vm._m(5),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "button ok-btn",
-                  on: {
-                    click: function($event) {
-                      return _vm.closeFreeLessSuccess()
                     }
-                  }
-                },
-                [_vm._v("ok")]
-              ),
-              _vm._v(" "),
-              _vm._m(6)
-            ]
-          )
-        ]
-      )
-    ]
-  )
+                  },
+                  [_vm._v("ok")]
+                ),
+                _vm._v(" "),
+                _vm._m(6)
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -8550,7 +8577,7 @@ var staticRenderFns = [
     return _c("h3", { staticClass: "enter-your-skype__element" }, [
       _vm._v("Для продолжения введите номер "),
       _c("br"),
-      _vm._v(" своего skype и нажмите ‘далее’\n            ")
+      _vm._v(" своего skype и нажмите ‘далее’\n                ")
     ])
   },
   function() {
@@ -8580,7 +8607,7 @@ var staticRenderFns = [
         },
         [_vm._v("сообщение")]
       ),
-      _vm._v("\n                преподавателю")
+      _vm._v("\n                    преподавателю")
     ])
   },
   function() {
@@ -21952,6 +21979,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 $(document).ready(function () {
   if ($(".header")) {
+    // switchLang(getCookie('btnLang'));
     // -------------------------
     // ----------- сброс активных состояний
     var resetStates = function resetStates() {
@@ -22059,8 +22087,8 @@ $(document).ready(function () {
               // console.log(elem)
               elem.setAttribute('rus-text', elem.innerHTML);
               elem.innerHTML = elem.getAttribute('switchable-text');
-              elem.setAttribute('switchable-text', elem.getAttribute('rus-text')); // elem.removeAttribute('rus-text');
-              //     let fType = function() {
+              elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
+              elem.removeAttribute('rus-text'); //     let fType = function() {
               //         if (i <= string.length) {
               //             elem.innerHTML = string.substring(0, i)
               //             setTimeout(arguments.callee, 30);
@@ -22212,7 +22240,6 @@ $(document).ready(function () {
     burgerMenuActions();
     coloredNavMenuElems();
     openUserMenu();
-    switchLang(getCookie('btnLang'));
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22589,6 +22616,7 @@ $(document).ready(function () {
     });
     $(".owl-carousel-2").owlCarousel({
       items: 1,
+      nav: true,
       margin: 300,
       center: true,
       dotsEach: true,

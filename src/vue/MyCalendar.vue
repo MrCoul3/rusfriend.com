@@ -133,7 +133,7 @@
                 typeOfLesson: null,
                 detailUserName: null,
                 detailSkype: null,
-                preloader: false,
+                preloader: true,
                 cancelLessShow: false,
                 showBookCalendar: false,
                 freeLesson: false,

@@ -13,7 +13,7 @@ $(document).ready(function () {
         burgerMenuActions();
         coloredNavMenuElems();
         openUserMenu();
-        switchLang(getCookie('btnLang'));
+        // switchLang(getCookie('btnLang'));
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -116,7 +116,7 @@ $(document).ready(function () {
                         elem.setAttribute('rus-text', elem.innerHTML);
                         elem.innerHTML = elem.getAttribute('switchable-text');
                         elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
-                        // elem.removeAttribute('rus-text');
+                        elem.removeAttribute('rus-text');
                     //     let fType = function() {
                     //         if (i <= string.length) {
                     //             elem.innerHTML = string.substring(0, i)

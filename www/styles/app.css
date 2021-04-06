@@ -58,6 +58,29 @@
 #mysite .owl-carousel button {
   outline: none !important;
 }
+#mysite .owl-carousel-2 .owl-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 84px;
+  margin: 0 auto;
+  position: relative;
+  bottom: 40px;
+  font-size: 50px;
+}
+#mysite .owl-carousel-2 .owl-nav .owl-prev, #mysite .owl-carousel-2 .owl-nav .owl-next {
+  color: #455A64;
+  opacity: 0.3;
+  transition: all ease-in 0.2s;
+}
+#mysite .owl-carousel-2 .owl-nav .owl-prev:hover, #mysite .owl-carousel-2 .owl-nav .owl-next:hover {
+  transition: all ease-in 0.2s;
+  opacity: 1;
+  background: white;
+  color: #455A64;
+}
+#mysite .owl-carousel-2 .owl-dots {
+  display: none;
+}
 #mysite .about-school-video {
   display: none;
   width: 100vw;
@@ -4324,6 +4347,18 @@
   left: 0;
   right: 0;
   margin: auto;
+}
+#preloader[data-v-678606de] {
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
 }
 
 /*# sourceMappingURL=app.css.map*/

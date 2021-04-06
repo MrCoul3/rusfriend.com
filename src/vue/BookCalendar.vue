@@ -1,104 +1,107 @@
 <template>
-    <section id="booking-calendar" class="your-calendar inner">
-        <h3 v-if="freeLesson" class="description your-calendar__element your-calendar__element--main-title main-title">
-            Забронируй <span style="color: #FF3E28">бесплатный</span> получасовой урок с преподавателем прямо сейчас
-        </h3>
-        <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online - занятия с
-            преподавателем проходят в Skype</h3>
-        <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
-            <p class="instruction__element">1. Выберите удобное для вас время</p>
-            <p class="instruction__element instruction__element--separator">></p>
-            <p class="instruction__element">2. Оплатите урок</p>
-            <p class="instruction__element instruction__element--separator">></p>
-            <p class="instruction__element">3. Готовьтесь к уроку</p>
-        </div>
-        <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
-            <div class="calendar-app-header">
-                <div class="calendar-app-header__element calendar-app-header__element--month-module">
-                    <div @click="decrease()" class="month-btn month-btn--left-btn"></div>
-                    <div @click="increase()" class="month-btn month-btn--right-btn"></div>
-                    <p class="month">{{monthes[numberMonthOfFirstDayOfWeek]}} {{dateInterval}}, {{year}}</p>
-                </div>
-                <h2 class="calendar-app-header__element calendar-app-header__element--title">Календарь занятий</h2>
-                <select class="calendar-app-header__element calendar-app-header__element--time-zone">
-                    <option>Europe/Moscow GMT +3:00</option>
-                </select>
+    <div>
+        <div v-show="preloader" id="preloader"></div>
+        <section id="booking-calendar" class="your-calendar inner">
+            <h3 v-if="freeLesson" class="description your-calendar__element your-calendar__element--main-title main-title">
+                Забронируй <span style="color: #FF3E28">бесплатный</span> получасовой урок с преподавателем прямо сейчас
+            </h3>
+            <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online - занятия с
+                преподавателем проходят в Skype</h3>
+            <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
+                <p class="instruction__element">1. Выберите удобное для вас время</p>
+                <p class="instruction__element instruction__element--separator">></p>
+                <p class="instruction__element">2. Оплатите урок</p>
+                <p class="instruction__element instruction__element--separator">></p>
+                <p class="instruction__element">3. Готовьтесь к уроку</p>
             </div>
-            <div class="decor-line"></div>
-            <div class="calendar-app-content">
-
-                <div class="decor-dates">
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
-                    <div class="decor-dates__elem"></div>
+            <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
+                <div class="calendar-app-header">
+                    <div class="calendar-app-header__element calendar-app-header__element--month-module">
+                        <div @click="decrease()" class="month-btn month-btn--left-btn"></div>
+                        <div @click="increase()" class="month-btn month-btn--right-btn"></div>
+                        <p class="month">{{monthes[numberMonthOfFirstDayOfWeek]}} {{dateInterval}}, {{year}}</p>
+                    </div>
+                    <h2 class="calendar-app-header__element calendar-app-header__element--title">Календарь занятий</h2>
+                    <select class="calendar-app-header__element calendar-app-header__element--time-zone">
+                        <option>Europe/Moscow GMT +3:00</option>
+                    </select>
                 </div>
-                <div class="calendar-app-content-col">
-                    <div v-for="d in day" class="calendar-app-content-day">{{d}}</div>
+                <div class="decor-line"></div>
+                <div class="calendar-app-content">
+
+                    <div class="decor-dates">
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                        <div class="decor-dates__elem"></div>
+                    </div>
+                    <div class="calendar-app-content-col">
+                        <div v-for="d in day" class="calendar-app-content-day">{{d}}</div>
+                    </div>
+
+                    <div v-for="week in weekCalendar()" class="calendar-app-content-col">
+                        <div v-for="day in week" :today="day.today"
+                             :style="{'background-color': day.current, 'color': day.color, 'font-weight': day.font}"
+                             class="calendar-app-content-number" :date="day.index + '.' + currentMonth + '.' + year">
+                            {{day.index}}
+                        </div>
+                    </div>
+
+                    <div v-for="week in weekCalendar()" class="time-intrevals-from-db">
+                        <div @click="chooseTime($event)" v-for="day in week"
+                             :date="day.index + '.' + currentMonth + '.' + year"
+                             class="time-intrevals-elem time-intrevals-from-db__item"></div>
+                    </div>
+
+                </div>
+                <div style="position: relative;">
+                    <div class="prompt">нужно выбрать время урока</div>
+                    <a @click.prevent="bookEvent($event)" href="" class="button book-btn">забронировать</a>
                 </div>
 
-                <div v-for="week in weekCalendar()" class="calendar-app-content-col">
-                    <div v-for="day in week" :today="day.today"
-                         :style="{'background-color': day.current, 'color': day.color, 'font-weight': day.font}"
-                         class="calendar-app-content-number" :date="day.index + '.' + currentMonth + '.' + year">
-                        {{day.index}}
+                <div class="tegs">
+                    <div class="tegs__element">
+                        <div class="circle circle--booked"></div>
+                        <span>Забронированное занятие</span>
+                    </div>
+                    <div class="tegs__element">
+                        <div class="circle circle--available"></div>
+                        <span>Доступное время</span>
+                    </div>
+                    <div class="tegs__element">
+                        <div class="circle circle--unavailable"></div>
+                        <span>Недоступное время</span>
                     </div>
                 </div>
-
-                <div v-for="week in weekCalendar()" class="time-intrevals-from-db">
-                    <div @click="chooseTime($event)" v-for="day in week"
-                         :date="day.index + '.' + currentMonth + '.' + year"
-                         class="time-intrevals-elem time-intrevals-from-db__item"></div>
-                </div>
-
-            </div>
-            <div style="position: relative;">
-                <div class="prompt">нужно выбрать время урока</div>
-                <a @click.prevent="bookEvent($event)" href="" class="button book-btn">забронировать</a>
-            </div>
-
-            <div class="tegs">
-                <div class="tegs__element">
-                    <div class="circle circle--booked"></div>
-                    <span>Забронированное занятие</span>
-                </div>
-                <div class="tegs__element">
-                    <div class="circle circle--available"></div>
-                    <span>Доступное время</span>
-                </div>
-                <div class="tegs__element">
-                    <div class="circle circle--unavailable"></div>
-                    <span>Недоступное время</span>
-                </div>
-            </div>
-            <div v-show="enterSkype" class="enter-your-skype">
-                <h2 class="enter-your-skype__element">Все занятия проходят в skype</h2>
-                <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’
-                </h3>
-                <div class="flex">
-                    <div class="skype-icon-for-input"></div>
-                    <div id="enter-your-skype" class="flex">
-                        <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
-                        <div @click="sendSkype()" class="button send-skype">send</div>
+                <div v-show="enterSkype" class="enter-your-skype">
+                    <h2 class="enter-your-skype__element">Все занятия проходят в skype</h2>
+                    <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’
+                    </h3>
+                    <div class="flex">
+                        <div class="skype-icon-for-input"></div>
+                        <div id="enter-your-skype" class="flex">
+                            <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
+                            <div @click="sendSkype()" class="button send-skype">send</div>
+                        </div>
+                        <div v-show="validationSkype" class="validation-skype">поле не должно быть пустым</div>
                     </div>
-                    <div v-show="validationSkype" class="validation-skype">поле не должно быть пустым</div>
+                    <h3 class="enter-your-skype__element">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
                 </div>
-                <h3 class="enter-your-skype__element">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
-            </div>
-            <div v-show="freeLessBookSuccess" class="free-lesson-success">
-                <h2 class="free-lesson-success__elem">Вы успешно забронировали урок</h2>
-                <h3 class="free-lesson-success__elem">Не забудте придти вовремя</h3>
-                <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer; color: #F8D6B0">сообщение</span>
-                    преподавателю</h3>
-                <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
-                <h3 class="free-lesson-success__elem">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
+                <div v-show="freeLessBookSuccess" class="free-lesson-success">
+                    <h2 class="free-lesson-success__elem">Вы успешно забронировали урок</h2>
+                    <h3 class="free-lesson-success__elem">Не забудте придти вовремя</h3>
+                    <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer; color: #F8D6B0">сообщение</span>
+                        преподавателю</h3>
+                    <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
+                    <h3 class="free-lesson-success__elem">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
 
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -134,6 +137,7 @@
                 instruction: true,
                 payment: 'unpayed',
                 freeLessBookSuccess: false,
+                preloader: true,
             }
         },
 
@@ -378,6 +382,7 @@
                             });
 
                         })
+                        this.preloader = false;
                     });
             },
             chooseTime: function (event) {
@@ -581,5 +586,17 @@
         left: 0;
         right: 0;
         margin: auto;
+    }
+    #preloader {
+        /*visibility: hidden;*/
+        /*opacity: 0;*/
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
     }
 </style>
