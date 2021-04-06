@@ -3,7 +3,7 @@
         <h3 v-if="freeLesson" class="description your-calendar__element your-calendar__element--main-title main-title">
             Забронируй <span style="color: #FF3E28">бесплатный</span> получасовой урок с преподавателем прямо сейчас
         </h3>
-        <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online-Занятия с
+        <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online - занятия с
             преподавателем проходят в Skype</h3>
         <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
             <p class="instruction__element">1. Выберите удобное для вас время</p>

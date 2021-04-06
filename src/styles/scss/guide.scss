@@ -1,0 +1,109 @@
+#mysite {
+  .guide {
+    section {
+      margin-bottom: 70px;
+      @include mediaWidth(1024) {
+        margin-bottom: 10px;
+      }
+      @include mediaWidth(767) {
+      }
+    }
+    .button {
+      &--dwnl-guide-btn {
+        width: 240px;
+        height: 50px;
+        background: $colorRed;
+        margin: 40px auto 0;
+        line-height: 45px;
+        @include mediaWidth(1024) {
+          width: 200px;
+        }
+        @include mediaWidth(767) {
+          width: 150px;
+          height: 35px;
+          line-height: 34px;
+          font-size: 18px;
+          margin: 20px auto 0;
+        }
+      }
+    }
+    .dwnl-description {
+      color: #C6C6C6;
+      text-align: center;
+      font-size: 20px;
+      @include mediaWidth(1024) {
+        font-size: 18px;
+      }
+      @include mediaWidth(767) {
+        font-size: 14px;
+      }
+    }
+    .video-block {
+      padding-top: 260px;
+      @include mediaWidth(1024) {
+        padding-top: 195px;
+      }
+      @include mediaWidth(767) {
+        padding-top: 71px;
+      }
+      .main-title {
+        margin: 52px 0;
+        @include mediaWidth(1024) {
+          margin: 21px 0;
+        }
+        @include mediaWidth(767) {
+          margin: 16px 0;
+        }
+      }
+      .guide-video {
+        .video-container {
+          text-align: center;
+          #guide-video {
+            max-width: 821px;
+            width: 100%;
+            height: 460px;
+            @include mediaWidth(1024) {
+              //max-width: 708px;
+            }
+            @include mediaWidth(767) {
+              height: 56vw;
+            }
+          }
+
+        }
+
+      }
+
+    }
+    .alphabet-slider {
+      .owl-carousel-1 {
+        .carousel-img {
+          max-width: 871px;
+          width: 100vw;
+
+          //&--one {
+          //
+          //}
+          //&--two {
+          //}
+          //&--three {
+          //  background-image: url("../../images/guide/alphabet_3.jpg");
+          //}
+          //&--four {
+          //  background-image: url("../../images/guide/alphabet_4.jpg");
+          //}
+          //&--five {
+          //  background-image: url("../../images/guide/alphabet_5.jpg");
+          //}
+          //&--six {
+          //  background-image: url("../../images/guide/alphabet_6.jpg");
+          //}
+          //&--seven {
+          //  background-image: url("../../images/guide/alphabet_7.jpg");
+          //}
+        }
+      }
+    }
+  }
+  
+}

@@ -7,7 +7,7 @@ require("vendor/autoload.php");
     <div class="description-block">
         <h2 class="title">Speaking - Club</h2>
         <p class="description">Если ты уже немного говоришь по-русски и хочешь увеличить словарный запас, а так же приятно провести время за разговором - Speaking-Club как раз для тебя.</p>
-        <p class="description">Не включает грамматику и подходит для любого уровня.</p>
+        <p class="description">Урок НЕ включает грамматику и работу с упражнениями.</p>
         <div class="decor-line"></div>
         <div class="params">
             <div class="clock-ico clock-ico--s-club"></div>

@@ -8115,7 +8115,7 @@ var render = function() {
         },
         [
           _vm._v(
-            "Все online-Занятия с\n        преподавателем проходят в Skype"
+            "Все online - занятия с\n        преподавателем проходят в Skype"
           )
         ]
       ),
@@ -22291,7 +22291,18 @@ $(document).ready(function () {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($('main').hasClass('guide')) {
-    console.log('guide.js init'); // console.log(document.getElementById('myvue'));
+    console.log('guide.js init'); // карусели
+
+    $(".owl-carousel-1").owlCarousel({
+      margin: 250,
+      autoWidth: true,
+      dotsEach: true,
+      navSpeed: 500,
+      loop: true,
+      center: true,
+      autoplay: false // navText:[`<img src=${require('../images/icons/icon-arrow--left.svg')}>`, `<img src=${require('../images/icons/icon-arrow--right.svg')}>`],
+
+    });
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -23117,8 +23128,13 @@ $(document).ready(function () {
     $('.user-login-menu__elem--settings').click(function () {
       console.log(localStorage.getItem('user_id'));
       $("#mysite").addClass("body-fixed");
-      $('.settings-main-frame').addClass('settings-active');
-      $('.settings').addClass('settings-active'); // получение данных при открытии
+      $('.settings-main-frame').animate({
+        'opacity': 1
+      }, 400);
+      $('.settings').addClass('settings-active').animate({
+        'opacity': 1
+      }, 400);
+      ; // получение данных при открытии
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getUserInfo'
@@ -23142,8 +23158,12 @@ $(document).ready(function () {
   function closeSettings() {
     $('.close-btn--settings').click(function () {
       $("#mysite").removeClass("body-fixed");
-      $('.settings-main-frame').removeClass('settings-active');
-      $('.settings').removeClass('settings-active');
+      $('.settings-main-frame').animate({
+        'opacity': 0
+      }, 200);
+      $('.settings').removeClass('settings-active').animate({
+        'opacity': 0
+      }, 200);
     });
   } // -----------------------------------------
   // ------------ change settings
