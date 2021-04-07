@@ -6,7 +6,7 @@ require("vendor/autoload.php");
     <div class="footer-content">
         <a class="footer-content__element footer-content__element--logo" href="/index.php"></a>
         <div class="footer-content__element footer-content__element--text">
-            <h2 class="footer-questions">Если возникли вопросы:</h2>
+            <h2 switch-lang="<?=switchLang()?>" switchable-text="Если возникли вопросы:" class="footer-questions">If you have any questions:</h2>
             <h2 class="footer-email">svetlana.totr@gmail.com</h2>
         </div>
         <div class="footer-content__element social-net-btns">

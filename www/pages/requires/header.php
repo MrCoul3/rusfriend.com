@@ -16,6 +16,15 @@ require("vendor/autoload.php");
 $obj = new \Classes\User();
 $res = $obj->checkSkype();
 $userInfo = $obj->getUserInfo();
+
+function switchLang()
+{
+    if ( $_COOKIE['btnLang']) {
+        return $_COOKIE['btnLang'];
+    } else {
+        return 'eng-lang';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,7 +118,7 @@ $userInfo = $obj->getUserInfo();
     <div class="settings-main-frame">
         <div class="settings-main-frame__elem settings-main-frame__elem--header">
             <div class="move-icon"></div>
-            <h3 class="settings-title">Настройки</h3>
+            <h3 switch-lang="<?=switchLang()?>" switchable-text="Настройки" class="settings-title">Settings</h3>
             <div class="close-btn close-btn--settings"></div>
         </div>
         <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
@@ -117,16 +126,16 @@ $userInfo = $obj->getUserInfo();
             <div class="setting-content-elem setting-content-elem--name">
                 <div class="wrap">
                     <div class="flex">
-                        <p class="placeholder">имя пользователя</p>
-                        <div class="change-btn change-btn--input">изменить</div>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="имя пользователя" class="placeholder">user name</p>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" class="change-btn change-btn--input">change</div>
                     </div>
                     <div class="main-text main-text--user-name"><?= $_SESSION['name'] ?></div>
                 </div>
                 <div class="input-wrap">
                     <div class="flex">
                         <div class="check"></div>
-                        <input class="input input--name" type="text" placeholder="введите новое имя">
-                        <div data-type='name' class="button change-button">изменить</div>
+                        <input switch-lang="<?=switchLang()?>" switchable-text="введите новое имя" class="input input--name" type="text" placeholder="enter a new name">
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" data-type='name' class="button change-button">change</div>
                     </div>
                 </div>
             </div>
@@ -134,22 +143,19 @@ $userInfo = $obj->getUserInfo();
             <div class="setting-content-elem setting-content-elem--password">
                 <div class="wrap wrap--pass">
                     <div class="flex">
-                        <p class="placeholder">пароль</p>
-                        <div class="change-btn change-btn--input">изменить</div>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="пароль" class="placeholder">password</p>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" class="change-btn change-btn--input">change</div>
                     </div>
                     <div class="main-text main-text--password">**********</div>
                 </div>
                 <div class="input-wrap input-wrap--pass">
-                    <div class="check check--old-pass">неверный пароль</div>
-                    <input class="input input--old-pas input--password" type="password"
-                           placeholder="введите старый пароль">
-                    <input class="input input--new-pas input--password" type="password"
-                           placeholder="введите новый пароль">
+                    <div switch-lang="<?=switchLang()?>" switchable-text="неверный пароль" class="check check--old-pass">invalid password</div>
+                    <input class="input input--old-pas input--password" type="password" placeholder="введите старый пароль">
+                    <input class="input input--new-pas input--password" type="password" placeholder="введите новый пароль">
                     <div class="flex">
                         <div class="check"></div>
-                        <input class="input input--repeat-new-pas input--password" type="password"
-                               placeholder="повторите новый пароль">
-                        <div data-type="password" class="button change-button change-button--password">изменить</div>
+                        <input class="input input--repeat-new-pas input--password" type="password" placeholder="повторите новый пароль">
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" data-type="password" class="button change-button change-button--password">change</div>
                     </div>
                 </div>
             </div>
@@ -157,8 +163,8 @@ $userInfo = $obj->getUserInfo();
             <div class="setting-content-elem setting-content-elem--email">
                 <div class="wrap wrap--email">
                     <div class="flex">
-                        <p class="placeholder">email</p>
-                        <div class="change-btn change-btn--input">изменить</div>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="почта" class="placeholder">email</p>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" class="change-btn change-btn--input">change</div>
                     </div>
                     <div class="main-text main-text--email"><?= $_SESSION['email'] ?></div>
                 </div>
@@ -166,7 +172,7 @@ $userInfo = $obj->getUserInfo();
                     <div class="flex">
                         <div class="check check--email"></div>
                         <input class="input input--email" type="text" placeholder="введите новый email">
-                        <div data-type='email' class="button change-button change-button--email">изменить</div>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" data-type='email' class="button change-button change-button--email">change</div>
                     </div>
                 </div>
             </div>
@@ -174,8 +180,8 @@ $userInfo = $obj->getUserInfo();
             <div class="setting-content-elem setting-content-elem--skype">
                 <div class="wrap">
                     <div class="flex">
-                        <p class="placeholder">skype</p>
-                        <div class="change-btn change-btn--input">изменить</div>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="скайп" class="placeholder">skype</p>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" class="change-btn change-btn--input">change</div>
                     </div>
                     <div class="main-text main-text--skype"><?= $res['skype'] ?></div>
                 </div>
@@ -183,16 +189,16 @@ $userInfo = $obj->getUserInfo();
                     <div class="flex">
                         <div class="check"></div>
                         <input class="input input--skype" type="text" placeholder="введите skype">
-                        <div data-type='skype' class="button change-button">изменить</div>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="изменить" data-type='skype' class="button change-button">change</div>
                     </div>
                 </div>
             </div>
             <div class="settings-main-frame__elem settings-main-frame__elem--decor-line decor-line"></div>
             <div class="setting-content-elem setting-content-elem--avatar">
                 <div class="flex">
-                    <p class="placeholder">фото профиля</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="фото профиля" class="placeholder">profile photo</p>
                     <div class="perscab-photoedit-body">
-                        <a href="#" class="add-photo download-avatar-btn">изменить</a>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="изменить" href="#" class="add-photo download-avatar-btn">change</a>
                         <input style="display:none;" id="c_input24" name="file" multiple="false" type="file">
                         <input style="display:none;" name="photo_c" multiple="false" type="hidden" value="">
                         <input style="display:none;" name="photo_i" value="" multiple="false" type="hidden">
@@ -208,8 +214,8 @@ $userInfo = $obj->getUserInfo();
                             <img class="profile_photo_i" src="">
                         </div>
                         <div class="modal-footer center-wrap">
-                            <button class="button reg-btn reg-btn_empty reg-btn_empty-wht reg-btn_blk-hover js-main-image">
-                                сохранить
+                            <button switch-lang="<?=switchLang()?>" switchable-text="сохранить" class="button reg-btn reg-btn_empty reg-btn_empty-wht reg-btn_blk-hover js-main-image">
+                                save
                             </button>
                         </div>
                     </div>
@@ -234,7 +240,7 @@ $userInfo = $obj->getUserInfo();
                 <div class="lang-changer language <?= $_COOKIE['langChanger'] ? $_COOKIE['langChanger'] : 'rus-lang' ?>"></div>
             </div>
 
-            <div class="btn-login <?= $status['logout'][0] ?>">Войти</div>
+            <div switch-lang="<?=switchLang()?>" switchable-text="Войти" class="btn-login <?= $status['logout'][0] ?>">Login</div>
 
             <div class="user-login <?= $status['login'][1] ?>">
                 <img class="user-login__elem user-login__elem--avatar" src="<?=$userInfo['avatar'] ? $userInfo['avatar'] : '../images/icons/user-ico.svg'?>" alt="">
@@ -247,12 +253,11 @@ $userInfo = $obj->getUserInfo();
                      src="images/icons/user-arrow.svg"
                      alt="">
                 <div class="user-login-menu">
-                    <a class="user-login-menu__elem user-login-menu__elem--messages" href="/">Сообщения</a>
-                    <a class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">Мои
-                        уроки</a>
-                    <div class="user-login-menu__elem user-login-menu__elem--settings">Настройки</div>
+                    <a switch-lang="<?=switchLang()?>" switchable-text="Сообщения" class="user-login-menu__elem user-login-menu__elem--messages" href="/">Messages</a>
+                    <a switch-lang="<?=switchLang()?>" switchable-text="Мои уроки" class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">My lessons</a>
+                    <div switch-lang="<?=switchLang()?>" switchable-text="Настройки" class="user-login-menu__elem user-login-menu__elem--settings">Settings</div>
                     <div class="decor-line decor-line--user-login-menu"></div>
-                    <a class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Выход</a>
+                    <a switch-lang="<?=switchLang()?>" switchable-text="Выход" class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Logout</a>
                 </div>
             </div>
 
@@ -270,11 +275,11 @@ $userInfo = $obj->getUserInfo();
     <div class="header__lower">
         <div class="decor-line decor-line--header"></div>
         <nav class="header-menu">
-            <a class="header-menu--about" href="about.php">Об авторе</a>
-            <a class="header-menu--courses" href="courses.php">Курсы</a>
-            <a class="header-menu--private" href="private-lesson.php">Занятие с преподавателем</a>
-            <a class="header-menu--s-club" href="speaking-club.php">Speaking-club</a>
-            <a class="header-menu--guide" href="guide.php">Гайд</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Об авторе" class="header-menu--about" href="about.php">About me</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Курсы" class="header-menu--courses" href="courses.php">Courses</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем" class="header-menu--private" href="private-lesson.php">Individual lesson</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="header-menu--s-club" href="speaking-club.php">Speaking-club</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Гайд" class="header-menu--guide" href="guide.php">Guide</a>
         </nav>
         <div class="decor-line decor-line--header decor-line-mobile-hide"></div>
     </div>

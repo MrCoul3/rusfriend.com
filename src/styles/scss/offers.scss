@@ -1,13 +1,13 @@
 #mysite {
   .offers {
     .title {
-      margin-left: -1000px;
+      margin-left: -2000px;
       font-weight: 300;
       text-align: center;
       opacity: 0;
       @include mediaWidth(1024) {
         margin-left: 0;
-        opacity: 1;
+        //opacity: 1;
       }
 
       @include mediaWidth(767) {
@@ -16,14 +16,16 @@
     }
 
     .slogan {
+      visibility: hidden;
       text-align: center;
       margin: 10px 0 35px;
-      margin-left: 500px;
+      margin-left: 400px;
       opacity: 0;
       white-space: nowrap;
       @include mediaWidth(1024) {
         margin-left: 0;
-        opacity: 1;
+        visibility: visible;
+        //opacity: 1;
       }
       @include mediaWidth(767) {
         white-space: normal;

@@ -34,14 +34,10 @@ $(document).ready(function () {
         // ----------- открыть настройки пользователя
         function openSettings() {
             $('.user-login-menu__elem--settings').click(function () {
-                console.log(localStorage.getItem('user_id'));
+                // console.log(localStorage.getItem('user_id'));
                 $("#mysite").addClass("body-fixed");
-                $('.settings-main-frame').animate({
-                    'opacity': 1
-                },400);
-                $('.settings').addClass('settings-active').animate({
-                    'opacity': 1
-                },400);;
+                $('.settings-main-frame').addClass('settings-active');
+                $('.settings').addClass('settings-active');
                 // получение данных при открытии
                 axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
                     .then((response) => {
@@ -65,12 +61,8 @@ $(document).ready(function () {
         function closeSettings() {
             $('.close-btn--settings').click(function () {
                 $("#mysite").removeClass("body-fixed");
-                $('.settings-main-frame').animate({
-                    'opacity': 0
-                },200);
-                $('.settings').removeClass('settings-active').animate({
-                    'opacity': 0
-                },200);
+                $('.settings-main-frame').removeClass('settings-active');
+                $('.settings').removeClass('settings-active');
             });
         }
         // -----------------------------------------

@@ -21971,15 +21971,8 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-$(document).ready(function () {
+/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($(".header")) {
-    // switchLang(getCookie('btnLang'));
     // -------------------------
     // ----------- сброс активных состояний
     var resetStates = function resetStates() {
@@ -21997,7 +21990,7 @@ $(document).ready(function () {
 
       });
     }; // -----------------------------------------
-    // ----------- функционал кнопки смены языка
+    // ----------- функционал смены языка
 
 
     var changeLanguage = function changeLanguage() {
@@ -22010,7 +22003,6 @@ $(document).ready(function () {
         }
       });
       $('.lang-changer').click(function (e) {
-        langFlag = true;
         var langsObj = {
           'method': 'language'
         };
@@ -22037,80 +22029,75 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          console.log(data); // eng-lang || rus-eng
-
+          // console.log(data); // eng-lang || rus-eng
           switchLang(data);
+          elemStyleOnSwitchLang();
         });
       });
     };
 
+    var langStateOnReload = function langStateOnReload() {
+      // console.log(getCookie('btnLang'));
+      elemStyleOnSwitchLang();
+      $('*').each(function (k, val) {
+        // console.log($(this));
+        if ($(this).attr('switch-lang') === 'rus-lang') {
+          $(this).attr('eng-text', $(this).html());
+          $(this).html($(this).attr('switchable-text')).animate({
+            'opacity': 1
+          }, 400);
+          $(this).attr('switchable-text', $(this).attr('eng-text'));
+          $(this).removeAttr('eng-text');
+        }
+
+        if ($(this).attr('switch-lang') === 'eng-lang') {
+          $(this).animate({
+            'opacity': 1
+          }, 400);
+        }
+      });
+    };
+
     var switchLang = function switchLang(data) {
-      var allElems = document.getElementsByTagName("*");
-      var i = 1;
+      $('*').each(function (k, val) {
+        if ($(this).attr('switch-lang')) {
+          $(this).css('opacity', '0');
+          $(this).attr('switch-lang', data);
 
-      var _iterator = _createForOfIteratorHelper(allElems),
-          _step;
+          if ($(this).attr('switch-lang') === 'rus-lang') {
+            $(this).attr('eng-text', $(this).html());
+            $(this).html($(this).attr('switchable-text')).animate({
+              'opacity': 1
+            }, 400);
+            $(this).attr('switchable-text', $(this).attr('eng-text'));
+            $(this).removeAttr('eng-text'); // для инпутов
 
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var elem = _step.value;
+            if ($(this).attr('placeholder')) {
+              $(this).attr('placeholder', $(this).attr('switchable-text'));
+            }
+          }
 
-          if (elem.getAttribute('switch-lang')) {
-            console.log(elem);
-            elem.setAttribute('switch-lang', data);
-            var string = elem.getAttribute('switchable-text');
+          if ($(this).attr('switch-lang') === 'eng-lang') {
+            $(this).attr('rus-text', $(this).html());
+            $(this).html($(this).attr('switchable-text')).animate({
+              'opacity': 1
+            }, 400);
+            $(this).attr('switchable-text', $(this).attr('rus-text'));
+            $(this).removeAttr('rus-text');
 
-            if (elem.getAttribute('switch-lang') === 'rus-lang') {
-              // console.log(string); // switchable-text
-              elem.setAttribute('eng-text', elem.innerHTML);
-              elem.innerHTML = string;
-              elem.setAttribute('switchable-text', elem.getAttribute('eng-text'));
-              elem.removeAttribute('eng-text'); //
-              //     let fType = function() {
-              //         if (i <= string.length) {
-              //             elem.innerHTML = string.substring(0, i)
-              //             setTimeout(arguments.callee, 30);
-              //         }
-              //         i++;
-              //     }
-              //
-              //     if (langFlag) {
-              //         fType();
-              //     } else {
-              //         elem.innerHTML = string;
-              //     }
-            } //
-
-
-            if (elem.getAttribute('switch-lang') === 'eng-lang') {
-              // console.log(getCookie('btnLang'))
-              // console.log(elem)
-              elem.setAttribute('rus-text', elem.innerHTML);
-              elem.innerHTML = elem.getAttribute('switchable-text');
-              elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
-              elem.removeAttribute('rus-text'); //     let fType = function() {
-              //         if (i <= string.length) {
-              //             elem.innerHTML = string.substring(0, i)
-              //             setTimeout(arguments.callee, 30);
-              //         }
-              //         i++;
-              //     }
-              //
-              //     if (langFlag) {
-              //         fType();
-              //     } else {
-              //         elem.innerHTML = string;
-              //     }
-              //
-              //     elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
-              //     elem.removeAttribute('rus-text');
+            if ($(this).attr('placeholder')) {
+              $(this).attr('placeholder', $(this).attr('switchable-text'));
             }
           }
         }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
+      });
+    };
+
+    var elemStyleOnSwitchLang = function elemStyleOnSwitchLang() {
+      if (getCookie('btnLang') === 'eng-lang') {
+        $('.top-index-photo__elem--description').css('backgroundImage', "url('../images/index/photodescription-eng.svg')");
+      } else {
+        $('.top-index-photo__elem--description').css('backgroundImage', "url('../images/index/photodescription-ru.svg')");
       }
     }; // -----------------------------------------
     // ----------- функционал фиксирования меню навигации при прокрутке страницы
@@ -22230,8 +22217,7 @@ $(document).ready(function () {
 
     console.log('common.js init');
     var mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
-
-    var langFlag; // -------------------------
+    // -------------------------
 
     resetStates();
     changeLanguage();
@@ -22240,6 +22226,7 @@ $(document).ready(function () {
     burgerMenuActions();
     coloredNavMenuElems();
     openUserMenu();
+    langStateOnReload();
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22590,6 +22577,9 @@ $(document).ready(function () {
         'opacity': 1,
         'marginLeft': marginLeft
       }, 1000, "easeOutQuart");
+      setTimeout(function () {
+        element.css('visibility', 'visible');
+      }, 300);
     }; // ---------- получить бесплатное занятие
 
 
@@ -23304,15 +23294,10 @@ $(document).ready(function () {
 
   function openSettings() {
     $('.user-login-menu__elem--settings').click(function () {
-      console.log(localStorage.getItem('user_id'));
+      // console.log(localStorage.getItem('user_id'));
       $("#mysite").addClass("body-fixed");
-      $('.settings-main-frame').animate({
-        'opacity': 1
-      }, 400);
-      $('.settings').addClass('settings-active').animate({
-        'opacity': 1
-      }, 400);
-      ; // получение данных при открытии
+      $('.settings-main-frame').addClass('settings-active');
+      $('.settings').addClass('settings-active'); // получение данных при открытии
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getUserInfo'
@@ -23336,12 +23321,8 @@ $(document).ready(function () {
   function closeSettings() {
     $('.close-btn--settings').click(function () {
       $("#mysite").removeClass("body-fixed");
-      $('.settings-main-frame').animate({
-        'opacity': 0
-      }, 200);
-      $('.settings').removeClass('settings-active').animate({
-        'opacity': 0
-      }, 200);
+      $('.settings-main-frame').removeClass('settings-active');
+      $('.settings').removeClass('settings-active');
     });
   } // -----------------------------------------
   // ------------ change settings

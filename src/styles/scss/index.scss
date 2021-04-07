@@ -264,6 +264,14 @@
           @include mediaWidth(767) {
             margin: 23px auto;
           }
+          span {
+            line-height: 54px;
+
+            @include mediaWidth(1024) {
+              line-height: 36px;
+
+            }
+          }
         }
       }
 
@@ -322,7 +330,7 @@
             }
 
             &--description {
-              background-image: url("../images/index/photodescription.svg");
+              background-image: url("../images/index/photodescription-eng.svg");
 
               width: 267px;
               height: 33px;
@@ -419,10 +427,12 @@
       font-weight: 300;
       text-align: center;
       margin-bottom: 60px;
-      margin-left: -1000px;
+      margin-left: -2000px;
       opacity: 0;
+      visibility: hidden;
       @include mediaWidth(1024) {
-        opacity: 1;
+        //opacity: 1;
+        visibility: visible;
         margin-left: 0;
       }
       @include mediaWidth(767) {
@@ -449,8 +459,8 @@
         .carousel-img-description {
           position: absolute;
           bottom: 0;
-          background: #FFFFFF;
-          opacity: 0.8;
+          background: rgba(255, 255, 255, 0.44);
+          //opacity: 0.8;
           max-width: 460px;
           width: 100%;
           height: 60px;
@@ -580,12 +590,14 @@
         }
 
         .title {
+          visibility: hidden;
           opacity: 0;
           font-weight: 300;
           margin-left: 300px;
           @include mediaWidth(1024) {
+            visibility: visible;
             margin-left: 0;
-            opacity: 1;
+            //opacity: 1;
           }
           @include mediaWidth(767) {
             margin-bottom: 15px;
@@ -593,6 +605,7 @@
         }
 
         .about-social-net {
+          visibility: hidden;
           opacity: 0;
           display: flex;
           justify-content: space-between;
@@ -600,7 +613,8 @@
           margin: 10px 0 15px;
           margin-left: 400px;
           @include mediaWidth(1024) {
-            opacity: 1;
+            visibility: visible;
+            //opacity: 1;
             margin-left: 0;
             width: 60px;
           }
@@ -630,6 +644,7 @@
         }
 
         .slogan {
+          visibility: hidden;
           opacity: 0;
           font-weight: 600;
           //letter-spacing: 0.1em;
@@ -637,8 +652,9 @@
           margin-left: 280px;
           white-space: nowrap;
           @include mediaWidth(1024) {
+            visibility: visible;
             margin-left: 0;
-            opacity: 1;
+            //opacity: 1;
           }
           @include mediaWidth(767) {
             white-space: normal;
@@ -651,7 +667,9 @@
         .about-slogan{
           &--name {
             top: 40px;
+            visibility: hidden;
             @include mediaWidth(1024) {
+              visibility: visible;
               top: 20px;
             }
           }
@@ -665,14 +683,16 @@
           }
 
           &__item {
+            visibility: hidden;
             opacity: 0;
             margin-left: 150px;
             //white-space: nowrap;
             //letter-spacing: 0.1em;
             font-weight: 300;
             @include mediaWidth(1024) {
+              visibility: visible;
               margin-left: 0;
-              opacity: 1;
+              //opacity: 1;
               font-size: 14px;
             }
             @include mediaWidth(767) {
@@ -711,9 +731,11 @@
     .detail-slogan {
       margin-left: -400px;
       opacity: 0;
+      visibility: hidden;
       @include mediaWidth(1024) {
+        visibility: visible;
         margin-left: 0;
-        opacity: 1;
+        //opacity: 1;
       }
       @include mediaWidth(767) {
         display: none;
@@ -751,11 +773,13 @@
       text-align: center;
       font-weight: 300;
       margin-bottom: 60px;
-      margin-left: -400px;
+      margin-left: -2000px;
       opacity: 0;
+      visibility: hidden;
       @include mediaWidth(1024) {
         margin-left: 0;
-        opacity: 1;
+        visibility: visible;
+        //opacity: 1;
         margin-bottom: 45px;
       }
     }

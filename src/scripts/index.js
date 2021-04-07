@@ -136,6 +136,9 @@ $(document).ready(function () {
                 'opacity': 1,
                 'marginLeft': marginLeft
             }, 1000, "easeOutQuart");
+            setTimeout(function () {
+                element.css('visibility', 'visible');
+            }, 300);
         }
 
         // ---------- получить бесплатное занятие

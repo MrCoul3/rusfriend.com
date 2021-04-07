@@ -1,22 +1,9 @@
-<?php
-//print_r($_COOKIE['btnLang']);
-function switchLang()
-{
-//    $_COOKIE['btnLang'] ? $_COOKIE['btnLang'] : 'eng-lang';
-    if ( $_COOKIE['btnLang']) {
-        return $_COOKIE['btnLang'];
-    } else {
-        return 'eng-lang';
-    }
-}
-?>
-
 <title>Главная</title>
 <main class="main-page">
 
     <section class="about-school-video">
         <div class="video-container">
-            <div class="close-line">Подробнее про нашу школу
+            <div switch-lang="<?=switchLang()?>" switchable-text="Подробнее про нашу школу" class="close-line">Learn more about our school
                 <div class="close-button"></div>
             </div>
             <iframe id="about-video" class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -27,10 +14,10 @@ function switchLang()
         <div class="inner">
 
             <div class="top-index__element top-index__element--left">
-                <h1 switch-lang="<?=switchLang()?>" rus-text="" switchable-text="Онлайн - школа <span>русского</span> языка как иностранного" class="top-index-title">Online school of <span>Russian</span> as a foreign language</h1>
-                <h2 switch-lang="<?=switchLang()?>" rus-text="" switchable-text="Русский язык от носителя <br> с любовью из России" class="top-index-second-title">Russian with a native speaker from Russia with love</h2>
-                <h2 class="top-index-first-title">Начни изучать алфавит <br> прямо сейчас</h2><a
-                    class="button get-guide-btn red-btn" href="/guide.php">получить гайд <br> бесплатно</a>
+                <h1 switch-lang="<?=switchLang()?>" switchable-text="Онлайн - школа <span>русского</span> языка как иностранного" class="top-index-title">Online school of <span>Russian</span> as a foreign language</h1>
+                <h2 switch-lang="<?=switchLang()?>" switchable-text="Русский язык от носителя <br> с любовью из России" class="top-index-second-title">Russian with a native speaker <br> from Russia with love</h2>
+                <h2 switch-lang="<?=switchLang()?>" switchable-text="Начни изучать алфавит <br> прямо сейчас" class="top-index-first-title">Start learning the alphabet <br> right now</h2>
+                <a switch-lang="<?=switchLang()?>" switchable-text="получить гайд <br> бесплатно" class="button get-guide-btn red-btn" href="/guide.php"><span>guide for free</span></a>
             </div>
             <div class="top-index__element top-index__element--right">
                 <div class="top-index-photo">
@@ -41,7 +28,7 @@ function switchLang()
                 </div>
             </div>
             <div class="about-school-btn">
-                <p>Подробнее про нашу школу</p>
+                <p switch-lang="<?=switchLang()?>" switchable-text="Подробнее про нашу школу">Learn more about our school</p>
                 <div class="about-school-btn--play-btn"></div>
                 <!--img(src="../images/icons/play.png" alt="play").about-school-btn--play-btn-->
             </div>
@@ -49,30 +36,30 @@ function switchLang()
     </section>
 
     <section class="for-whom section">
-        <h1 class="title for-whom-title">ДЛЯ КОГО НАША ШКОЛА?</h1>
+        <h1 switch-lang="<?=switchLang()?>" switchable-text="ДЛЯ КОГО НАША ШКОЛА?" class="title for-whom-title">WHO IS OUR SCHOOL FOR?</h1>
         <div class="owl-carousel owl-theme owl-carousel-1">
             <div class="carousel-img carousel-img--one">
-                <div class="carousel-img-description">Для тех, кто хочет найти вторую <br> половинку</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, кто хочет найти вторую <br> половинку" class="carousel-img-description">For those who want to find a <br> soul mate</div>
             </div>
             <div class="carousel-img carousel-img--two">
-                <div class="carousel-img-description">Для тех, кто любит русскую культуру</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, кто любит русскую культуру" class="carousel-img-description">For those who love Russian culture</div>
             </div>
             <div class="carousel-img carousel-img--three">
-                <div class="carousel-img-description">Для тех, чья вторая половинка <br>говорит по русски</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, чья вторая половинка <br>говорит по русски" class="carousel-img-description">For those whose partner <br> speaks Russian </div>
             </div>
             <div class="carousel-img carousel-img--four">
-                <div class="carousel-img-description">Для тех, кто хочет приехать в Россию</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, кто хочет приехать в Россию" class="carousel-img-description">For those who want to come to Russia</div>
             </div>
             <div class="carousel-img carousel-img--five">
-                <div class="carousel-img-description">Для тех, кому нужен русский для работы</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, кому нужен русский для работы" class="carousel-img-description">For those who need Russian for work</div>
             </div>
         </div>
-        <div class="get-free-lesson-btn button red-btn">получить <br> бесплатное занятие</div>
+        <div switch-lang="<?=switchLang()?>" switchable-text="получить <br> бесплатное занятие" class="get-free-lesson-btn button red-btn">get a free <br>  lesson</div>
     </section>
 
     <section class="offers section inner">
-        <h1 class="title offers-title">НАШИ ПРЕДЛОЖЕНИЯ</h1>
-        <h3 class="slogan offers-slogan">После наших уроков мы заговорим на одном языке</h3>
+        <h1 switch-lang="<?=switchLang()?>" switchable-text="НАШИ ПРЕДЛОЖЕНИЯ" class="title offers-title">OUR PROGRAMS</h1>
+        <h3 switch-lang="<?=switchLang()?>" switchable-text="После наших уроков мы заговорим на одном языке" class="slogan offers-slogan">After our lessons we will speak the same language</h3>
         <div class="offers-cards">
             <div class="offers-cards-conteiner offers-cards-conteiner--courses">
                 <div class="offers-cards__card offers-cards__card--courses">
@@ -80,14 +67,15 @@ function switchLang()
                         <div class="card-icon"></div>
                         <!--img(src="../images/index/card-logo-bear.svg").card-icon-->
                         <div class="wrap">
-                            <h3 class="card-title">Курсы</h3>
-                            <p class="card-description card-description--front card-side-active">Подписка на видеокурс, который подходит именно тебе</p>
+                            <h3 switch-lang="<?=switchLang()?>" switchable-text="Курсы" class="card-title">Courses</h3>
+                            <p switch-lang="<?=switchLang()?>" switchable-text="Подписка на видеокурс, который подходит именно тебе" class="card-description card-description--front card-side-active">Subscribe to the video course that is right for you</p>
                         </div>
-                        <div class="begin-btn detail-btn">подробнее</div>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="подробнее" class="begin-btn detail-btn">read more</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Здесь ты можешь выбрать грамматический курс , который подходит именно тебе, в каждом курсе ты получишь видеоуроки с домашними заданиями, полезными материалами и обратной связью.</p>
-                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/courses.php">начать</a>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Здесь ты можешь выбрать грамматический курс , который подходит именно тебе, в каждом курсе ты получишь видеоуроки с домашними заданиями, полезными материалами и обратной связью." class="card-description card-description--back">Here you can choose a grammar course that is right for you, and in each course you will receive video tutorials with homework, useful material and feedback.</p>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="от 25$" class="card-content-price">from 25$</p>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="начать" class="begin-btn" href="/courses.php">start</a>
                     </div>
                 </div>
             </div>
@@ -97,14 +85,15 @@ function switchLang()
                         <div class="card-icon"></div>
                         <!--img(src="../images/index/card-logo-balalayka.svg").card-icon-->
                         <div class="wrap">
-                            <h3 class="card-title">Занятия с <br> преподавателем</h3>
-                            <p class="card-description card-description--front">Индивидуальные занятия по видеосвязи для любого уровня</p>
+                            <h3 switch-lang="<?=switchLang()?>" switchable-text="Занятия с <br> преподавателем" class="card-title">Individual lesson</h3>
+                            <p switch-lang="<?=switchLang()?>" switchable-text="Индивидуальные занятия по видеосвязи для любого уровня" class="card-description card-description--front">Individual video lessons for any level</p>
                         </div>
-                        <div class="begin-btn detail-btn">подробнее</div>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="подробнее" class="begin-btn detail-btn">read more</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Забронируй 60-минутный урок с преподавателем в удобное для тебя время. Вместе мы определим индивидуальный план развития. <br> <br> Урок включает грамматику и работу с упражнениями.</p>
-                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/private-lesson.php">начать</a>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Забронируй 60-минутный урок с преподавателем в удобное для тебя время. Вместе мы определим индивидуальный план развития. <br> <br> Урок включает грамматику и работу с упражнениями." class="card-description card-description--back">Book a 60-minute lesson with a teacher at your convenience. Together, we will define an individual development plan. <br> <br> The lesson includes grammar and working with exercises.</p>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="от 25$" class="card-content-price">from 25$</p>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="начать" class="begin-btn" href="/private-lesson.php">start</a>
                     </div>
                 </div>
             </div>
@@ -114,15 +103,16 @@ function switchLang()
                         <div class="card-icon"></div>
                         <!--img(src="../images/index/card-logo-samovar.svg").card-icon-->
                         <div class="wrap">
-                            <h3 class="card-title">Speaking-Сlub</h3>
-                            <p class="card-description card-description--front">Для тех, кто немного говорит по-русски и хочет улучшить разговорные навыки</p>
+                            <h3 switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="card-title">Speaking-Сlub</h3>
+                            <p switch-lang="<?=switchLang()?>" switchable-text="Для тех, кто немного говорит по-русски и хочет улучшить разговорные навыки" class="card-description card-description--front">For those who speak a little Russian and want to improve their conversational skills</p>
                         </div>
-                        <div class="begin-btn detail-btn">подробнее</div>
+                        <div switch-lang="<?=switchLang()?>" switchable-text="подробнее" class="begin-btn detail-btn">read more</div>
                     </div>
                     <div class="card-content card-content--end">
-                        <p class="card-description card-description--back">Если ты уже немного говоришь по-русски и хочешь увеличить словарный запас, а так же приятно провести время за разговором - Speaking-Club как раз для тебя.</p>
-                        <p class="card-description card-description--back card-description--addition">Не включает грамматику и подходит для любого уровня.</p>
-                        <p class="card-content-price">от 25$</p><a class="begin-btn" href="/speaking-club.php">начать</a>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Если ты уже немного говоришь по-русски и хочешь увеличить словарный запас, а так же приятно провести время за разговором - Speaking-Club как раз для тебя." class="card-description card-description--back">If you already speak a little Russian and want to increase your vocabulary, as well as have a good time talking - Speaking-Club is just for you. Does not include grammar and is suitable for any level.</p>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Не включает грамматику и подходит для любого уровня." class="card-description card-description--back card-description--addition">Does not include grammar and is suitable for any level.</p>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="от 25$" class="card-content-price">from 25$</p>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="начать" class="begin-btn" href="/speaking-club.php">start</a>
                     </div>
                 </div>
             </div>
@@ -135,32 +125,29 @@ function switchLang()
                 <!--img(src="../images/index/top-index-main-photo.png")-->
             </div>
             <div class="about__element about__element--right">
-                <h1 class="title about-title">ОБО МНЕ</h1>
+                <h1 switch-lang="<?=switchLang()?>" switchable-text="ОБО МНЕ" class="title about-title">ABOUT ME</h1>
                 <div class="about-social-net">
                     <a class="about-social-net__elem about-social-net__elem--insta" href="https://www.instagram.com/svetlana_totrova/" target="_blank">
                         <!--img(src="../images/icons/about-insta-icon.svg")--></a>
                     <a class="about-social-net__elem about-social-net__elem--tiktok" href="../">
                         <!--img(src="../images/icons/about-tiktok.svg")--></a>
                 </div>
-                <h3 class="slogan about-slogan">Носитель русского языка из России</h3>
+                <h3 switch-lang="<?=switchLang()?>" switchable-text="Носитель русского языка из России" class="slogan about-slogan">Native Russian speaker from Russia</h3>
                 <div class="about-items">
-                    <p class="about-items__item a">Сертифицированный преподаватель <br> русского языка как иностранного
-                    </p>
-                    <p class="about-items__item b">Более 3-х лет обучаю иностранцев со всего мира</p>
-                    <p class="about-items__item c">Веду блог о русском языке, России и своей культуре в Instagram и Tik
-                        Tok</p>
-                    <p class="about-items__item d">Основатель онлайн-школы Taiga и автор образовательных курсов по
-                        русскому языку</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Сертифицированный преподаватель <br> русского языка как иностранного" class="about-items__item a">Certified teacher of Russian as a foreign language</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Более 3-х лет обучаю иностранцев со всего мира" class="about-items__item b">I have been teaching foreigners from all over the world for more than 3 years</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Веду блог о русском языке, России и своей культуре в Instagram и Tik-Tok" class="about-items__item c">I have blogs on Instagram and Tik-Tok about the Russian language, Russia, and my culture</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Основатель онлайн-школы и автор образовательных курсов по русскому языку" class="about-items__item d">Founder of the Taiga online school and author of educational courses in the Russian language</p>
                 </div>
-                <h3 class="slogan about-slogan about-slogan--name">Светлана</h3>
+                <h3 switch-lang="<?=switchLang()?>" switchable-text="Светлана" class="slogan about-slogan about-slogan--name">Svetlana</h3>
             </div>
         </div>
-        <h2 class="detail-slogan">Буду очень рада видеть тебя <br> на моих online-занятиях</h2><a
-            class="button detail-btn red-btn" href="/about.php"> подробнее</a>
+        <h2 switch-lang="<?=switchLang()?>" switchable-text="Буду очень рада видеть тебя <br> на моих online-занятиях" class="detail-slogan">I'll be very happy to see you in my online classes</h2>
+        <a switch-lang="<?=switchLang()?>" switchable-text="подробнее" class="button detail-btn red-btn" href="/about.php">read more</a>
     </section>
 
     <section class="reviews">
-        <h1 class="title reviews-title">ЧТО ГОВОРЯТ СТУДЕНТЫ</h1>
+        <h1 switch-lang="<?=switchLang()?>" switchable-text="ЧТО ГОВОРЯТ СТУДЕНТЫ" class="title reviews-title">WHAT STUDENTS ARE SAYING</h1>
         <div class="inner">
             <div class="reviews-container">
                 <div class="reviews-col reviews-col--left">
@@ -179,20 +166,35 @@ function switchLang()
                 </div>
             </div>
             <div class="owl-carousel owl-carousel-2 owl-theme">
-                <!--div.carousel-item.carousel-item--a-->
-                <!--div.carousel-item.carousel-item--b-->
-                <!--div.carousel-item.carousel-item--c-->
-                <!--div.carousel-item.carousel-item--d-->
-                <!--div.carousel-item.carousel-item--e-->
-                <!--div.carousel-item.carousel-item--f-->
-                <!--div.carousel-item.carousel-item--g-->
-                <img class="carousel-item" src="../images/index/reviews-carousel_1.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_2.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_3.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_4.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_5.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_6.svg">
-                <img class="carousel-item" src="../images/index/reviews-carousel_7.svg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(1).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(2).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(3).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(4).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(5).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(6).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(7).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(8).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(9).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(10).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(11).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(12).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(13).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(14).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(15).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(16).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(17).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(18).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(19).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(20).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(21).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(22).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(23).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(24).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(25).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(26).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(27).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(28).jpg">
+                <img class="carousel-item" src="../images/index/rewiews/reviews-carousel(29).jpg">
             </div>
         </div>
     </section>

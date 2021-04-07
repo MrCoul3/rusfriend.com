@@ -1,10 +1,7 @@
-
-
 $(document).ready(function () {
     if ($(".header")) {
         console.log('common.js init')
         const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
-        let langFlag;
         // -------------------------
         resetStates();
         changeLanguage();
@@ -13,7 +10,7 @@ $(document).ready(function () {
         burgerMenuActions();
         coloredNavMenuElems();
         openUserMenu();
-        // switchLang(getCookie('btnLang'));
+        langStateOnReload();
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -33,7 +30,7 @@ $(document).ready(function () {
 
         // -----------------------------------------
 
-        // ----------- функционал кнопки смены языка
+        // ----------- функционал смены языка
         function changeLanguage() {
             $(".btn-change-lang").click(function () {
                 // console.log($(".lang-changer").hasClass('lang-changer-active'));
@@ -43,11 +40,12 @@ $(document).ready(function () {
                     $(".lang-changer").removeClass('active');
                 }
             });
+
             $('.lang-changer').click(function (e) {
-                langFlag = true;
                 let langsObj = {
                     'method': 'language'
                 };
+
                 if ($('.lang-changer').hasClass('eng-lang')) {
                     $('.lang-changer').addClass('rus-lang').removeClass('eng-lang');
                     $(".btn-change-lang").removeClass('rus-lang').addClass('eng-lang');
@@ -70,74 +68,68 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                     console.log(data); // eng-lang || rus-eng
+                    // console.log(data); // eng-lang || rus-eng
                     switchLang(data);
-
+                    elemStyleOnSwitchLang();
                 });
-
             });
         }
 
-        function switchLang(data) {
-            let allElems = document.getElementsByTagName("*");
-            let i = 1;
-            for (let elem of allElems) {
-                if (elem.getAttribute('switch-lang')) {
-                    console.log(elem)
-                    elem.setAttribute('switch-lang', data);
-                    let string = elem.getAttribute('switchable-text');
-
-                    if (elem.getAttribute('switch-lang') === 'rus-lang') {
-                    // console.log(string); // switchable-text
-                        elem.setAttribute('eng-text', elem.innerHTML);
-                        elem.innerHTML = string;
-                        elem.setAttribute('switchable-text', elem.getAttribute('eng-text'));
-                        elem.removeAttribute('eng-text');
-                    //
-                    //     let fType = function() {
-                    //         if (i <= string.length) {
-                    //             elem.innerHTML = string.substring(0, i)
-                    //             setTimeout(arguments.callee, 30);
-                    //         }
-                    //         i++;
-                    //     }
-                    //
-                    //     if (langFlag) {
-                    //         fType();
-                    //     } else {
-                    //         elem.innerHTML = string;
-                    //     }
-
-                    }
-                    //
-                    if (elem.getAttribute('switch-lang') === 'eng-lang') {
-                        // console.log(getCookie('btnLang'))
-                        // console.log(elem)
-                        elem.setAttribute('rus-text', elem.innerHTML);
-                        elem.innerHTML = elem.getAttribute('switchable-text');
-                        elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
-                        elem.removeAttribute('rus-text');
-                    //     let fType = function() {
-                    //         if (i <= string.length) {
-                    //             elem.innerHTML = string.substring(0, i)
-                    //             setTimeout(arguments.callee, 30);
-                    //         }
-                    //         i++;
-                    //     }
-                    //
-                    //     if (langFlag) {
-                    //         fType();
-                    //     } else {
-                    //         elem.innerHTML = string;
-                    //     }
-                    //
-                    //     elem.setAttribute('switchable-text', elem.getAttribute('rus-text'));
-                    //     elem.removeAttribute('rus-text');
-                    }
+        function langStateOnReload() {
+            // console.log(getCookie('btnLang'));
+            elemStyleOnSwitchLang();
+            $('*').each(function (k, val) {
+                // console.log($(this));
+                if ($(this).attr('switch-lang') === 'rus-lang') {
+                    $(this).attr('eng-text', $(this).html());
+                    $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                    $(this).attr('switchable-text', $(this).attr('eng-text'));
+                    $(this).removeAttr('eng-text');
+                } if ($(this).attr('switch-lang') === 'eng-lang') {
+                    $(this).animate({'opacity': 1}, 400);
                 }
+            })
+        }
+
+        function switchLang(data) {
+            $('*').each(function (k, val) {
+                if ($(this).attr('switch-lang')) {
+                    $(this).css('opacity', '0');
+                    $(this).attr('switch-lang', data);
+
+                    if ($(this).attr('switch-lang') === 'rus-lang') {
+                        $(this).attr('eng-text', $(this).html());
+                        $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                        $(this).attr('switchable-text', $(this).attr('eng-text'));
+                        $(this).removeAttr('eng-text');
+                        // для инпутов
+                        if ($(this).attr('placeholder')) {
+                            $(this).attr('placeholder', $(this).attr('switchable-text'));
+                        }
+                    }
+                    if ($(this).attr('switch-lang') === 'eng-lang') {
+                        $(this).attr('rus-text', $(this).html());
+                        $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                        $(this).attr('switchable-text', $(this).attr('rus-text'));
+                        $(this).removeAttr('rus-text');
+                        if ($(this).attr('placeholder')) {
+                            $(this).attr('placeholder', $(this).attr('switchable-text'));
+                        }
+                    }
+
+                }
+            });
+        }
+
+        function elemStyleOnSwitchLang() {
+            if (getCookie('btnLang') === 'eng-lang') {
+                $('.top-index-photo__elem--description').css('backgroundImage', "url('../images/index/photodescription-eng.svg')");
+            } else {
+                $('.top-index-photo__elem--description').css('backgroundImage', "url('../images/index/photodescription-ru.svg')");
             }
         }
         // -----------------------------------------
+
 
         // ----------- функционал фиксирования меню навигации при прокрутке страницы
         function navMenuFixing() {
@@ -255,6 +247,7 @@ $(document).ready(function () {
             //     e.preventDefault();
             // });
         }
+
         // -----------------------------------------
 
         // ----------- getCookie
@@ -264,6 +257,7 @@ $(document).ready(function () {
             ));
             return matches ? decodeURIComponent(matches[1]) : undefined;
         }
+
         //----------------------------------------------
 
     }

@@ -240,6 +240,14 @@
     margin: 23px auto;
   }
 }
+#mysite .top-index__element--left .get-guide-btn span {
+  line-height: 54px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .top-index__element--left .get-guide-btn span {
+    line-height: 36px;
+  }
+}
 @media screen and (max-width: 1024px) {
   #mysite .top-index__element--right {
     margin-right: 40px;
@@ -299,7 +307,7 @@
   }
 }
 #mysite .top-index__element--right .top-index-photo__elem--description {
-  background-image: url(../images/index/photodescription.svg);
+  background-image: url(../images/index/photodescription-eng.svg);
   width: 267px;
   height: 33px;
   top: 386px;
@@ -399,12 +407,13 @@
   font-weight: 300;
   text-align: center;
   margin-bottom: 60px;
-  margin-left: -1000px;
+  margin-left: -2000px;
   opacity: 0;
+  visibility: hidden;
 }
 @media screen and (max-width: 1024px) {
   #mysite .for-whom .title {
-    opacity: 1;
+    visibility: visible;
     margin-left: 0;
   }
 }
@@ -427,8 +436,7 @@
 #mysite .for-whom .owl-carousel-1 .carousel-img .carousel-img-description {
   position: absolute;
   bottom: 0;
-  background: #FFFFFF;
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.44);
   max-width: 460px;
   width: 100%;
   height: 60px;
@@ -554,14 +562,15 @@
   }
 }
 #mysite .about__element--right .title {
+  visibility: hidden;
   opacity: 0;
   font-weight: 300;
   margin-left: 300px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .title {
+    visibility: visible;
     margin-left: 0;
-    opacity: 1;
   }
 }
 @media screen and (max-width: 767px) {
@@ -570,6 +579,7 @@
   }
 }
 #mysite .about__element--right .about-social-net {
+  visibility: hidden;
   opacity: 0;
   display: flex;
   justify-content: space-between;
@@ -579,7 +589,7 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .about-social-net {
-    opacity: 1;
+    visibility: visible;
     margin-left: 0;
     width: 60px;
   }
@@ -609,6 +619,7 @@
   background-image: url(../images/icons/about-tiktok.svg);
 }
 #mysite .about__element--right .slogan {
+  visibility: hidden;
   opacity: 0;
   font-weight: 600;
   position: relative;
@@ -617,8 +628,8 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .slogan {
+    visibility: visible;
     margin-left: 0;
-    opacity: 1;
   }
 }
 @media screen and (max-width: 767px) {
@@ -631,9 +642,11 @@
 }
 #mysite .about__element--right .about-slogan--name {
   top: 40px;
+  visibility: hidden;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .about-slogan--name {
+    visibility: visible;
     top: 20px;
   }
 }
@@ -647,14 +660,15 @@
   }
 }
 #mysite .about__element--right .about-items__item {
+  visibility: hidden;
   opacity: 0;
   margin-left: 150px;
   font-weight: 300;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .about-items__item {
+    visibility: visible;
     margin-left: 0;
-    opacity: 1;
     font-size: 14px;
   }
 }
@@ -690,11 +704,12 @@
 #mysite .about .detail-slogan {
   margin-left: -400px;
   opacity: 0;
+  visibility: hidden;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about .detail-slogan {
+    visibility: visible;
     margin-left: 0;
-    opacity: 1;
   }
 }
 @media screen and (max-width: 767px) {
@@ -735,13 +750,14 @@
   text-align: center;
   font-weight: 300;
   margin-bottom: 60px;
-  margin-left: -400px;
+  margin-left: -2000px;
   opacity: 0;
+  visibility: hidden;
 }
 @media screen and (max-width: 1024px) {
   #mysite .reviews .title {
     margin-left: 0;
-    opacity: 1;
+    visibility: visible;
     margin-bottom: 45px;
   }
 }
@@ -922,7 +938,7 @@
   background-color: #FF3E28;
   width: 280px;
   height: 80px;
-  padding-top: 11px;
+  padding-top: 14px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .red-btn {
@@ -1438,6 +1454,9 @@
 }
 #mysite .menu-item-active {
   color: #FF3E28 !important;
+}
+#mysite *[switch-lang] {
+  opacity: 0;
 }
 
 .header-menu-white-on-mobile {
@@ -2147,7 +2166,7 @@
 }
 
 #mysite .offers .title {
-  margin-left: -1000px;
+  margin-left: -2000px;
   font-weight: 300;
   text-align: center;
   opacity: 0;
@@ -2155,20 +2174,20 @@
 @media screen and (max-width: 1024px) {
   #mysite .offers .title {
     margin-left: 0;
-    opacity: 1;
   }
 }
 #mysite .offers .slogan {
+  visibility: hidden;
   text-align: center;
   margin: 10px 0 35px;
-  margin-left: 500px;
+  margin-left: 400px;
   opacity: 0;
   white-space: nowrap;
 }
 @media screen and (max-width: 1024px) {
   #mysite .offers .slogan {
     margin-left: 0;
-    opacity: 1;
+    visibility: visible;
   }
 }
 @media screen and (max-width: 767px) {
@@ -3972,7 +3991,6 @@
   }
 }
 #mysite .settings .settings-main-frame {
-  opacity: 0;
   top: 50px;
   width: 400px;
   overflow: scroll;
@@ -3980,12 +3998,13 @@
   z-index: 9999;
   background-color: #EFF4F9;
   border-radius: 40px;
-  left: 0;
   right: 0;
+  left: -2000px;
   margin: 0 auto;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   padding: 0 25px;
+  transition: all ease 0.2s;
 }
 #mysite .settings .settings-main-frame::-webkit-scrollbar {
   width: 0px;
@@ -4140,12 +4159,8 @@
 }
 #mysite .settings-active {
   visibility: visible;
-}
-@media screen and (max-width: 767px) {
-  #mysite .settings-active {
-    transition: all ease 0.2s;
-    left: 0 !important;
-  }
+  left: 0 !important;
+  transition: all ease 0.2s;
 }
 #mysite .arcticmodal-overlay, #mysite .arcticmodal-container {
   z-index: 1500;

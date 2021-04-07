@@ -13,7 +13,6 @@
       background: transparent;
     }
     .settings-main-frame {
-      opacity: 0;
       top: 50px;
       width: 400px;
       overflow: scroll;
@@ -21,19 +20,20 @@
       z-index: 9999;
       background-color: #EFF4F9;
       border-radius: 40px;
-      left: 0;
+      //left: 0;
       right: 0;
+      left: -2000px;
       margin: 0 auto;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
       box-sizing: border-box;
       padding: 0 25px;
+      transition: all ease .2s;
 
       &::-webkit-scrollbar {
         width: 0px;
       }
 
       @include mediaWidth(1024) {
-
       }
       @include mediaWidth(767) {
         position: relative;
@@ -230,9 +230,11 @@
 
   .settings-active {
     visibility: visible;
+    left: 0!important;
+    transition: all ease .2s;
     @include mediaWidth(767) {
-      transition: all ease .2s;
-      left: 0!important;
+      //transition: all ease .2s;
+      //left: 0!important;
     }
   }
 

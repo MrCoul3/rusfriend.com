@@ -133,7 +133,7 @@
         background-color: $colorRed;
         width: 280px;
         height: 80px;
-        padding-top: 11px;
+        padding-top: 14px;
         @include mediaWidth(1024) {
             width: 200px;
             height: 50px;
@@ -646,6 +646,10 @@
     }
     .menu-item-active {
         color: $colorRed!important;
+    }
+
+    *[switch-lang] {
+        opacity: 0;
     }
 
 
