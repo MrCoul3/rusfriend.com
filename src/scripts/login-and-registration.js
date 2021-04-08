@@ -85,6 +85,7 @@ $(document).ready(function () {
 
 
     function registration() {
+        let checkText;
         let registerBtn = document.querySelector(".form-submit-register");
         registerBtn.addEventListener("click", function (e) {
             e.preventDefault();
@@ -105,35 +106,65 @@ $(document).ready(function () {
             // проверка username на соответствие регулярному выражению
             if ((!$("#username").val().match((/^[а-яА-ЯёЁa-zA-Z0-9]+\s+[а-яА-ЯёЁa-zA-Z0-9]+$/g))) && (!$("#username").val().match((/^[а-яА-ЯёЁa-zA-Z0-9]+$/g)))) {
                 errors.push('логин может состоять только из букв английского алфавита и цифр');
-                $(".reg-check-name").removeClass("reg-check--disable").html('ввести можно только буквы и цифры');
+                if (getCookie('btnLang') === 'rus-lang') {
+                    checkText = 'ввести можно только буквы и цифры';
+                } else {
+                    checkText = 'only letters and numbers can be entered';
+                }
+                $(".reg-check-name").removeClass("reg-check--disable").html(checkText);
             }
 
             if ($("#username").val().length < 3 || $("#username").val().length > 30) {
                 errors.push('имя может быть от 3 до 30 символов');
-                $(".reg-check-name").removeClass("reg-check--disable").html('имя должно быть от 3 до 30 символов');
+                if (getCookie('btnLang') === 'rus-lang') {
+                    checkText = 'имя должно быть от 3 до 30 символов';
+                } else {
+                    checkText = 'the name must be between 3 and 30 characters long';
+                }
+                $(".reg-check-name").removeClass("reg-check--disable").html(checkText);
             }
 
             // проверка email на соответствие регулярному выражению
             if (!$("#reg-email").val().match((/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/g)) == true) {
                 errors.push('некорректный email');
-                $(".reg-check-email").removeClass("reg-check--disable").html('формат: name@email.com');
+                if (getCookie('btnLang') === 'rus-lang') {
+                    checkText = 'формат: name@email.com';
+                } else {
+                    checkText = 'format: name@email.com';
+                }
+                $(".reg-check-email").removeClass("reg-check--disable").html(checkText);
             }
 
             // проверка пароля на количество символов
             if ($("#reg-password").val().length < 6) {
                 errors.push('пароль не может быть меньше 6 символов');
-                $(".reg-check-pass").removeClass("reg-check--disable").html('пароль не может быть меньше 6 символов');
+                if (getCookie('btnLang') === 'rus-lang') {
+                    checkText = 'пароль не может быть меньше 6 символов';
+                } else {
+                    checkText = 'password cannot be less than 6 characters';
+                }
+                $(".reg-check-pass").removeClass("reg-check--disable").html(checkText);
             }
             if (!$("#reg-password").val().match(/^(?=.*[a-z])(?=.*[A-Z])(?=(.*[a-zA-Z])).{6,20}$/g)) {
                 errors.push('пароль не может быть меньше 6 символов');
-                $(".reg-check-pass").removeClass("reg-check--disable").html('пароль должен содержать заглавные буквы и цифры');
+                if (getCookie('btnLang') === 'rus-lang') {
+                    checkText = 'пароль должен содержать заглавные буквы и цифры';
+                } else {
+                    checkText = 'the password must contain capital letters and numbers';
+                }
+                $(".reg-check-pass").removeClass("reg-check--disable").html(checkText);
             }
 
             // проверка на пустоту
             $(".register-form .required-input").each(function (k, val) {
                 if ($(this).val() == '') {
                     errors.push('не заполнено ' + $(this).attr('placeholder'));
-                    $(this).next("div").removeClass("reg-check--disable").html('поле обязательно для заполнения');
+                    if (getCookie('btnLang') === 'rus-lang') {
+                        checkText = 'поле обязательно для заполнения';
+                    } else {
+                        checkText = 'this field is required';
+                    }
+                    $(this).next("div").removeClass("reg-check--disable").html(checkText);
                 }
 
                 // сброс check-ов при фокусе
@@ -191,7 +222,12 @@ $(document).ready(function () {
                         }
 
                     } else {
-                        $(".reg-check-email").removeClass("reg-check--disable").html('пользователь с таким email уже существует');
+                        if (getCookie('btnLang') === 'rus-lang') {
+                            checkText = 'пользователь с таким email уже существует';
+                        } else {
+                            checkText = 'a user with this email already exists';
+                        }
+                        $(".reg-check-email").removeClass("reg-check--disable").html(checkText);
                     }
                 });
 
@@ -219,14 +255,14 @@ $(document).ready(function () {
             // проверка email на соответствие регулярному выражению
             if (!$("#email").val().match((/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/g)) == true) {
                 errors.push('некорректный email');
-                $(".login-check-email").removeClass("login-check--disable").html('формат: name@email.com');
+                $(".login-check-email").removeClass("login-check--disable");
             }
 
             $(".login-form .form-input").each(function (k, val) {
                 // проверка на пустоту
                 if ($(this).val() == '') {
                     errors.push('не заполнено ' + $(this).attr('placeholder'));
-                    $(this).next("div").removeClass("login-check--disable").html('поле обязательно для заполнения');
+                    $(this).next("div").removeClass("login-check--disable");
                 }
                 // сброс check-ов при фокусе
                 $(this).focus(function () {
@@ -289,11 +325,18 @@ $(document).ready(function () {
                         }
                     } else {
                         if (data.status === 'blocked') {
-                            $(".login-invalid p").html('пользователь заблокирован');
+                            let checkText;
+                            if (getCookie('btnLang') === 'rus-lang') {
+                                checkText = 'пользователь заблокирован';
+                            } else {
+                                checkText = 'the user is blocked';
+                            }
+                            $(".login-invalid p").html(checkText);
                         } else {
-                            $(".login-invalid p").html('неверные email или пароль');
+                            // $(".login-invalid p").html('неверные email или пароль');
+                            $(".login-invalid").removeClass("login-invalid--disable");
                         }
-                        $(".login-invalid").removeClass("login-invalid--disable");
+
                     }
                     // login
                 });
@@ -394,6 +437,8 @@ $(document).ready(function () {
             'max-age': -1
         })
     }
+    // ----------- COOKIE
+    // ----------- setCookie
     function setCookie(name, value, options = {}) {
 
         options = {
@@ -418,5 +463,15 @@ $(document).ready(function () {
 
         document.cookie = updatedCookie;
     }
+    // ----------- getCookie
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    //----------------------------------------------
+
 
 });

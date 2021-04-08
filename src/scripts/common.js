@@ -81,16 +81,29 @@ $(document).ready(function () {
             $('*').each(function (k, val) {
                 // console.log($(this));
                 if ($(this).attr('switch-lang') === 'rus-lang') {
-                    $(this).attr('eng-text', $(this).html());
-                    $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+
+                    if ($(this).attr('placeholder')) {
+                        $(this).animate({'opacity': 1}, 400);
+                        $(this).attr('eng-text', $(this).attr('placeholder'));
+                        $(this).attr('placeholder', $(this).attr('switchable-text'));
+                    } else if ($(this).attr('submit')) {
+                        $(this).animate({'opacity': 1}, 400);
+                        $(this).attr('eng-text', $(this).attr('value'));
+                        $(this).attr('value', $(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                    } else {
+                        $(this).attr('eng-text', $(this).html());
+                        $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                    }
+
                     $(this).attr('switchable-text', $(this).attr('eng-text'));
                     $(this).removeAttr('eng-text');
-                } if ($(this).attr('switch-lang') === 'eng-lang') {
+                }
+                if ($(this).attr('switch-lang') === 'eng-lang') {
                     $(this).animate({'opacity': 1}, 400);
                 }
             })
         }
-
+        console.log($('.form-submit-login').attr("type=['submit']"))
         function switchLang(data) {
             $('*').each(function (k, val) {
                 if ($(this).attr('switch-lang')) {
@@ -98,23 +111,45 @@ $(document).ready(function () {
                     $(this).attr('switch-lang', data);
 
                     if ($(this).attr('switch-lang') === 'rus-lang') {
-                        $(this).attr('eng-text', $(this).html());
-                        $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+
+                        // для инпутов placeholder
+                        if ($(this).attr('placeholder')) {
+                            $(this).animate({'opacity': 1}, 400);
+                            $(this).attr('eng-text', $(this).attr('placeholder'));
+                            $(this).attr('placeholder', $(this).attr('switchable-text'));
+                        // для инпутов value
+                        } else if ($(this).attr('submit')) {
+                            $(this).animate({'opacity': 1}, 400);
+                            $(this).attr('eng-text', $(this).attr('value'));
+                            $(this).attr('value', $(this).attr('switchable-text'));
+                            // Для остальных элементов
+                        } else {
+                            $(this).attr('eng-text', $(this).html());
+                            $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                        }
+
                         $(this).attr('switchable-text', $(this).attr('eng-text'));
                         $(this).removeAttr('eng-text');
-                        // для инпутов
-                        if ($(this).attr('placeholder')) {
-                            $(this).attr('placeholder', $(this).attr('switchable-text'));
-                        }
                     }
                     if ($(this).attr('switch-lang') === 'eng-lang') {
-                        $(this).attr('rus-text', $(this).html());
-                        $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                        // для инпутов placeholder
+                        if ($(this).attr('placeholder')) {
+                            $(this).animate({'opacity': 1}, 400);
+                            $(this).attr('rus-text', $(this).attr('placeholder'));
+                            $(this).attr('placeholder', $(this).attr('switchable-text'));
+                        // для инпутов value
+                        } else if ($(this).attr('submit')) {
+                            $(this).animate({'opacity': 1}, 400);
+                            $(this).attr('rus-text', $(this).attr('value'));
+                            $(this).attr('value', $(this).attr('switchable-text'));
+                        // Для остальных элементов
+                        } else {
+                            $(this).attr('rus-text', $(this).html());
+                            $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                        }
                         $(this).attr('switchable-text', $(this).attr('rus-text'));
                         $(this).removeAttr('rus-text');
-                        if ($(this).attr('placeholder')) {
-                            $(this).attr('placeholder', $(this).attr('switchable-text'));
-                        }
+
                     }
 
                 }
@@ -128,6 +163,7 @@ $(document).ready(function () {
                 $('.top-index-photo__elem--description').css('backgroundImage', "url('../images/index/photodescription-ru.svg')");
             }
         }
+
         // -----------------------------------------
 
 

@@ -295,13 +295,13 @@
                     display: none;
                 }
                 @include mediaWidth(1024) {
-                    font-size: 14px;
+                    font-size: 12px;
                 }
             }
             .login-check-email {
                 top: 73px;
                 @include mediaWidth(1024) {
-                    top: 53px;
+                    top: 69px;
                 }
                 @include mediaWidth(767) {
                     top: 97px;
@@ -310,7 +310,6 @@
             .login-check-password {
                 top: 134px;
                 @include mediaWidth(1024) {
-                    top: 100px;
                 }
                 @include mediaWidth(767) {
                     top: 185px;

@@ -1725,7 +1725,7 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .login-form .form-frame .login-check {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 #mysite .login-form .form-frame .login-check-email {
@@ -1733,7 +1733,7 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .login-form .form-frame .login-check-email {
-    top: 53px;
+    top: 69px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -1743,11 +1743,6 @@
 }
 #mysite .login-form .form-frame .login-check-password {
   top: 134px;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .login-form .form-frame .login-check-password {
-    top: 100px;
-  }
 }
 @media screen and (max-width: 767px) {
   #mysite .login-form .form-frame .login-check-password {
