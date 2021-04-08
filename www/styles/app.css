@@ -1899,6 +1899,10 @@
 #mysite .register-success .register-success__frame h2, #mysite .register-success .register-success__frame h3 {
   color: white;
 }
+#mysite .register-success .register-success__frame span, #mysite .register-success .register-success__frame a {
+  font-size: 20px;
+  color: #fff;
+}
 #mysite .register-success .register-success__frame h2 {
   margin: 10px 0;
 }
@@ -2003,6 +2007,9 @@
   transition: top 0.15s, transform 0.15s 0.15s;
 }
 
+#mysite .about-page .about-title, #mysite .about-page .about-social-net, #mysite .about-page .about-items__item, #mysite .about-page .about-slogan, #mysite .about-page .detail-slogan {
+  visibility: visible;
+}
 #mysite .about-page .about {
   padding-top: 300px;
 }

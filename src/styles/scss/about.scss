@@ -1,7 +1,9 @@
 #mysite {
 
   .about-page {
-
+    .about-title, .about-social-net, .about-items__item, .about-slogan, .detail-slogan {
+      visibility: visible;
+    }
 
     .about {
       padding-top: 300px;
