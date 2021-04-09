@@ -99,11 +99,12 @@ $(document).ready(function () {
                     $(this).removeAttr('eng-text');
                 }
                 if ($(this).attr('switch-lang') === 'eng-lang') {
+                    // console.log($(this))
                     $(this).animate({'opacity': 1}, 400);
                 }
             })
         }
-        console.log($('.form-submit-login').attr("type=['submit']"))
+
         function switchLang(data) {
             $('*').each(function (k, val) {
                 if ($(this).attr('switch-lang')) {
@@ -149,7 +150,6 @@ $(document).ready(function () {
                         }
                         $(this).attr('switchable-text', $(this).attr('rus-text'));
                         $(this).removeAttr('rus-text');
-
                     }
 
                 }

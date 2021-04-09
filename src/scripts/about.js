@@ -22,7 +22,7 @@ $(document).ready(function () {
             autoplay: true,
             autoplaySpeed: 1000,
             autoplayHoverPause: true,
-            autoplayTimeout: 5000
+            autoplayTimeout: 7000
         });
 
         // ----------- возврат в исходное состояние
@@ -31,6 +31,9 @@ $(document).ready(function () {
                 'opacity': 1,
                 'marginLeft': marginLeft
             }, 1000, "easeOutQuart");
+            setTimeout(function () {
+                element.css('visibility', 'visible');
+            }, 100);
         }
 
         // ----------- возврат в исходное состояние
@@ -39,6 +42,9 @@ $(document).ready(function () {
                 'left': left,
                 'opacity': 1
             })
+            setTimeout(function () {
+                element.css('visibility', 'visible');
+            }, 100);
         }
         // ----------- анимация карточек предложений
         function offersAnimation() {

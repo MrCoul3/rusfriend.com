@@ -12,6 +12,11 @@
     @include mediaWidth(767) {
       //padding-top: 85px;
     }
+    .description {
+      span {
+        color: $colorRed;
+      }
+    }
     &__element {
       &--main-title {
         margin: 0 auto;

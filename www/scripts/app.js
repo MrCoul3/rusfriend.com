@@ -2482,6 +2482,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2489,6 +2514,7 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
+var language = null;
 var selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2499,8 +2525,11 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       year: new Date().getFullYear(),
       dFirstMonth: '1',
       timeZones: [],
-      day: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
-      monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      dayRus: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
+      day: ["MOТ", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+      monthesEng: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      monthesRus: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+      monthes: [],
       date: new Date(),
       weekNumber: null,
       currentWeek: null,
@@ -2513,7 +2542,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       instruction: true,
       payment: 'unpayed',
       freeLessBookSuccess: false,
-      preloader: true
+      preloader: true,
+      language: 'eng-lang'
     };
   },
   beforeMount: function beforeMount() {
@@ -2538,6 +2568,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.getIntervalsFromDB();
     this.lightingOfToday();
     this.changeStateOfItem();
+    this.switchLangOnReload();
+    this.switchLang();
   },
   updated: function updated() {
     this.adjustmentDateOfDay();
@@ -2546,7 +2578,81 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.changeStateOfItem();
     this.setCurrentMonth();
   },
+  computed: {},
   methods: {
+    // ---- для смены языка
+    switchMonth: function switchMonth() {
+      this.monthes = [];
+
+      if (language === 'eng-lang') {
+        this.monthes = this.monthesEng;
+      }
+
+      if (language === 'rus-lang') {
+        this.monthes = this.monthesRus;
+      }
+    },
+    switchLang: function switchLang() {
+      $('.lang-changer').click(function (e) {
+        if ($(this).hasClass('eng-lang')) {
+          language = 'rus-lang';
+        } else {
+          language = 'eng-lang';
+        }
+
+        $('.trigger').trigger('click');
+        $('*').each(function (k, val) {
+          if ($(this).attr('language')) {
+            $(this).css('opacity', '0');
+            $(this).attr('language', getCookie('btnLang'));
+
+            if ($(this).attr('language') === 'rus-lang') {
+              $(this).attr('eng-text', $(this).html());
+              $(this).html($(this).attr('switchable-text')).animate({
+                'opacity': 1
+              }, 400);
+              $(this).attr('switchable-text', $(this).attr('eng-text'));
+              $(this).removeAttr('eng-text');
+            }
+
+            if ($(this).attr('language') === 'eng-lang') {
+              $(this).attr('rus-text', $(this).html());
+              $(this).html($(this).attr('switchable-text')).animate({
+                'opacity': 1
+              }, 400);
+              $(this).attr('switchable-text', $(this).attr('rus-text'));
+              $(this).removeAttr('rus-text');
+            }
+          }
+        });
+      });
+
+      if (getCookie('btnLang') === 'rus-lang') {
+        this.monthes = this.monthesRus;
+      } else {
+        this.monthes = this.monthesEng;
+      }
+    },
+    switchLangOnReload: function switchLangOnReload() {
+      window.addEventListener("load", function (e) {
+        $('*').each(function (k, val) {
+          if ($(this).attr('language') === 'rus-lang') {
+            $(this).attr('eng-text', $(this).html());
+            $(this).html($(this).attr('switchable-text')).animate({
+              'opacity': 1
+            }, 400);
+            $(this).attr('switchable-text', $(this).attr('eng-text'));
+            $(this).removeAttr('eng-text');
+          }
+
+          if ($(this).attr('language') === 'eng-lang') {
+            $(this).animate({
+              'opacity': 1
+            }, 400);
+          }
+        });
+      });
+    },
     // ----- Для страницы "free-lesson.php"
     isFreeLesson: function isFreeLesson() {
       if ($("main").hasClass('free-lesson')) {
@@ -2860,9 +2966,13 @@ var selectedTimeArray = []; // пришлось ввести, так как из
                   window.location.href = "payment.php";
                 }
               } else {
-                $(event.target).prev(".prompt").fadeTo("slow", 1);
+                // $(event.target).prev(".prompt").fadeTo("slow", 1);
+                $(event.target).prev(".prompt").css('visibility', 'visible'); // setTimeout(function () {
+                //     $(event.target).prev(".prompt").fadeOut();
+                // },1000)
+
                 setTimeout(function () {
-                  $(event.target).prev(".prompt").fadeOut();
+                  $(event.target).prev(".prompt").css('visibility', 'hidden');
                 }, 1000);
               }
             }
@@ -8166,16 +8276,17 @@ var render = function() {
               "h3",
               {
                 staticClass:
-                  "description your-calendar__element your-calendar__element--main-title main-title"
+                  "description your-calendar__element your-calendar__element--main-title main-title",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text":
+                    "Забронируй <span>бесплатный</span> получасовой урок с преподавателем прямо сейчас"
+                }
               },
               [
-                _vm._v("\n            Забронируй "),
-                _c("span", { staticStyle: { color: "#FF3E28" } }, [
-                  _vm._v("бесплатный")
-                ]),
-                _vm._v(
-                  " получасовой урок с преподавателем прямо сейчас\n        "
-                )
+                _vm._v("\n            Book a"),
+                _c("span", [_vm._v(" free ")]),
+                _vm._v(" half-hour lesson with a teacher right now\n        ")
               ]
             )
           : _vm._e(),
@@ -8184,11 +8295,16 @@ var render = function() {
           "h3",
           {
             staticClass:
-              "your-calendar__element your-calendar__element--main-title main-title"
+              "your-calendar__element your-calendar__element--main-title main-title",
+            attrs: {
+              language: _vm.language,
+              "switchable-text":
+                "Все онлайн - занятия с\n        преподавателем проходят в Skype"
+            }
           },
           [
             _vm._v(
-              "Все online - занятия с\n            преподавателем проходят в Skype"
+              "All online classes with\n            the teacher takes place in Skype"
             )
           ]
         ),
@@ -8201,9 +8317,17 @@ var render = function() {
                   "your-calendar__element your-calendar__element--instruction instruction"
               },
               [
-                _c("p", { staticClass: "instruction__element" }, [
-                  _vm._v("1. Выберите удобное для вас время")
-                ]),
+                _c(
+                  "p",
+                  {
+                    staticClass: "instruction__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "1. Выберите удобное для вас время"
+                    }
+                  },
+                  [_vm._v("1. Choose a convenient time for you")]
+                ),
                 _vm._v(" "),
                 _c(
                   "p",
@@ -8214,9 +8338,17 @@ var render = function() {
                   [_vm._v(">")]
                 ),
                 _vm._v(" "),
-                _c("p", { staticClass: "instruction__element" }, [
-                  _vm._v("2. Оплатите урок")
-                ]),
+                _c(
+                  "p",
+                  {
+                    staticClass: "instruction__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "2. Оплатите урок"
+                    }
+                  },
+                  [_vm._v("2. Pay for the\n                lesson")]
+                ),
                 _vm._v(" "),
                 _c(
                   "p",
@@ -8227,9 +8359,17 @@ var render = function() {
                   [_vm._v(">")]
                 ),
                 _vm._v(" "),
-                _c("p", { staticClass: "instruction__element" }, [
-                  _vm._v("3. Готовьтесь к уроку")
-                ])
+                _c(
+                  "p",
+                  {
+                    staticClass: "instruction__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "3. Готовьтесь к уроку"
+                    }
+                  },
+                  [_vm._v("3. Prepare\n                for the lesson")]
+                )
               ]
             )
           : _vm._e(),
@@ -8279,13 +8419,27 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
+              _c("div", {
+                staticClass: "trigger",
+                staticStyle: { display: "none" },
+                on: {
+                  click: function($event) {
+                    return _vm.switchMonth()
+                  }
+                }
+              }),
+              _vm._v(" "),
               _c(
                 "h2",
                 {
                   staticClass:
-                    "calendar-app-header__element calendar-app-header__element--title"
+                    "calendar-app-header__element calendar-app-header__element--title",
+                  attrs: {
+                    language: _vm.language,
+                    "switchable-text": "Календарь занятий"
+                  }
                 },
-                [_vm._v("Календарь занятий")]
+                [_vm._v("Lesson calendar")]
               ),
               _vm._v(" "),
               _vm._m(0)
@@ -8376,15 +8530,31 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticStyle: { position: "relative" } }, [
-              _c("div", { staticClass: "prompt" }, [
-                _vm._v("нужно выбрать время урока")
-              ]),
+              _c(
+                "div",
+                {
+                  staticClass: "prompt",
+                  attrs: {
+                    language: _vm.language,
+                    "switchable-text": "нужно выбрать время урока"
+                  }
+                },
+                [
+                  _vm._v(
+                    "you need to\n                    choose the time of the lesson\n                "
+                  )
+                ]
+              ),
               _vm._v(" "),
               _c(
                 "a",
                 {
                   staticClass: "button book-btn",
-                  attrs: { href: "" },
+                  attrs: {
+                    language: _vm.language,
+                    "switchable-text": "забронировать",
+                    href: ""
+                  },
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -8392,11 +8562,56 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("забронировать")]
+                [_vm._v("book")]
               )
             ]),
             _vm._v(" "),
-            _vm._m(2),
+            _c("div", { staticClass: "tegs" }, [
+              _c("div", { staticClass: "tegs__element" }, [
+                _c("div", { staticClass: "circle circle--booked" }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Забронированное занятие"
+                    }
+                  },
+                  [_vm._v("Booked lesson")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tegs__element" }, [
+                _c("div", { staticClass: "circle circle--available" }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Доступное время"
+                    }
+                  },
+                  [_vm._v("Available time")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tegs__element" }, [
+                _c("div", { staticClass: "circle circle--unavailable" }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Недоступное время"
+                    }
+                  },
+                  [_vm._v("Unavailable time")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
@@ -8412,11 +8627,34 @@ var render = function() {
                 staticClass: "enter-your-skype"
               },
               [
-                _c("h2", { staticClass: "enter-your-skype__element" }, [
-                  _vm._v("Все занятия проходят в skype")
-                ]),
+                _c(
+                  "h2",
+                  {
+                    staticClass: "enter-your-skype__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Все занятия проходят в skype"
+                    }
+                  },
+                  [_vm._v("All lessons are held on skype")]
+                ),
                 _vm._v(" "),
-                _vm._m(3),
+                _c(
+                  "h3",
+                  {
+                    staticClass: "enter-your-skype__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text":
+                        "Для продолжения введите <br> свой скайп и нажмите отправить"
+                    }
+                  },
+                  [
+                    _vm._v("\n                    To continue, enter "),
+                    _c("br"),
+                    _vm._v(" your skype and click send\n                ")
+                  ]
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "flex" }, [
                   _c("div", { staticClass: "skype-icon-for-input" }),
@@ -8434,13 +8672,17 @@ var render = function() {
                         "div",
                         {
                           staticClass: "button send-skype",
+                          attrs: {
+                            language: _vm.language,
+                            "switchable-text": "отправить"
+                          },
                           on: {
                             click: function($event) {
                               return _vm.sendSkype()
                             }
                           }
                         },
-                        [_vm._v("send")]
+                        [_vm._v("send\n                        ")]
                       )
                     ]
                   ),
@@ -8456,13 +8698,35 @@ var render = function() {
                           expression: "validationSkype"
                         }
                       ],
-                      staticClass: "validation-skype"
+                      staticClass: "validation-skype",
+                      attrs: {
+                        language: _vm.language,
+                        "switchable-text": "поле не должно быть пустым"
+                      }
                     },
-                    [_vm._v("поле не должно быть пустым")]
+                    [
+                      _vm._v(
+                        "the field must not be empty\n                    "
+                      )
+                    ]
                   )
                 ]),
                 _vm._v(" "),
-                _vm._m(4)
+                _c(
+                  "h3",
+                  {
+                    staticClass: "enter-your-skype__element",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text":
+                        "Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                    }
+                  },
+                  [
+                    _vm._v("Tutor Skype: "),
+                    _c("span", [_vm._v("svetlana TutorOnline")])
+                  ]
+                )
               ]
             ),
             _vm._v(" "),
@@ -8480,15 +8744,46 @@ var render = function() {
                 staticClass: "free-lesson-success"
               },
               [
-                _c("h2", { staticClass: "free-lesson-success__elem" }, [
-                  _vm._v("Вы успешно забронировали урок")
-                ]),
+                _c(
+                  "h2",
+                  {
+                    staticClass: "free-lesson-success__elem",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Вы успешно забронировали урок"
+                    }
+                  },
+                  [_vm._v("You have successfully booked a lesson")]
+                ),
                 _vm._v(" "),
-                _c("h3", { staticClass: "free-lesson-success__elem" }, [
-                  _vm._v("Не забудте придти вовремя")
-                ]),
+                _c(
+                  "h3",
+                  {
+                    staticClass: "free-lesson-success__elem",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Не забудте придти вовремя"
+                    }
+                  },
+                  [_vm._v("Do not forget to come on time")]
+                ),
                 _vm._v(" "),
-                _vm._m(5),
+                _c(
+                  "h3",
+                  {
+                    staticClass: "free-lesson-success__elem",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text":
+                        "Если остались вопросы напишите <span>сообщение</span>\n                    преподавателю"
+                    }
+                  },
+                  [
+                    _vm._v("If you still have questions, write a "),
+                    _c("span", [_vm._v("message")]),
+                    _vm._v("\n                    to the teacher")
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -8503,7 +8798,21 @@ var render = function() {
                   [_vm._v("ok")]
                 ),
                 _vm._v(" "),
-                _vm._m(6)
+                _c(
+                  "h3",
+                  {
+                    staticClass: "free-lesson-success__elem",
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text":
+                        "Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                    }
+                  },
+                  [
+                    _vm._v("Tutor Skype: "),
+                    _c("span", [_vm._v("svetlana TutorOnline")])
+                  ]
+                )
               ]
             )
           ]
@@ -8544,79 +8853,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "decor-dates__elem" }),
       _vm._v(" "),
       _c("div", { staticClass: "decor-dates__elem" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "tegs" }, [
-      _c("div", { staticClass: "tegs__element" }, [
-        _c("div", { staticClass: "circle circle--booked" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Забронированное занятие")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "tegs__element" }, [
-        _c("div", { staticClass: "circle circle--available" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Доступное время")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "tegs__element" }, [
-        _c("div", { staticClass: "circle circle--unavailable" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Недоступное время")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "enter-your-skype__element" }, [
-      _vm._v("Для продолжения введите номер "),
-      _c("br"),
-      _vm._v(" своего skype и нажмите ‘далее’\n                ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "enter-your-skype__element" }, [
-      _vm._v("Skype преподавателя: "),
-      _c("span", [_vm._v("svetlana tutorOnline")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "free-lesson-success__elem" }, [
-      _vm._v("Если остались вопросы напишите "),
-      _c(
-        "span",
-        {
-          staticClass: "send-message",
-          staticStyle: {
-            "text-decoration": "underline",
-            cursor: "pointer",
-            color: "#F8D6B0"
-          }
-        },
-        [_vm._v("сообщение")]
-      ),
-      _vm._v("\n                    преподавателю")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h3", { staticClass: "free-lesson-success__elem" }, [
-      _vm._v("Skype преподавателя: "),
-      _c("span", [_vm._v("svetlana tutorOnline")])
     ])
   }
 ]
@@ -21598,6 +21834,9 @@ $(document).ready(function () {
         'opacity': 1,
         'marginLeft': marginLeft
       }, 1000, "easeOutQuart");
+      setTimeout(function () {
+        element.css('visibility', 'visible');
+      }, 100);
     }; // ----------- возврат в исходное состояние
 
 
@@ -21607,6 +21846,9 @@ $(document).ready(function () {
         'left': left,
         'opacity': 1
       });
+      setTimeout(function () {
+        element.css('visibility', 'visible');
+      }, 100);
     }; // ----------- анимация карточек предложений
 
 
@@ -21668,7 +21910,7 @@ $(document).ready(function () {
       autoWidth: true,
       navSpeed: 500,
       loop: true
-    }, _defineProperty(_$$owlCarousel, "center", true), _defineProperty(_$$owlCarousel, "autoplay", true), _defineProperty(_$$owlCarousel, "autoplaySpeed", 1000), _defineProperty(_$$owlCarousel, "autoplayHoverPause", true), _defineProperty(_$$owlCarousel, "autoplayTimeout", 5000), _$$owlCarousel));
+    }, _defineProperty(_$$owlCarousel, "center", true), _defineProperty(_$$owlCarousel, "autoplay", true), _defineProperty(_$$owlCarousel, "autoplaySpeed", 1000), _defineProperty(_$$owlCarousel, "autoplayHoverPause", true), _defineProperty(_$$owlCarousel, "autoplayTimeout", 7000), _$$owlCarousel));
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -22068,6 +22310,7 @@ $(document).ready(function () {
         }
 
         if ($(this).attr('switch-lang') === 'eng-lang') {
+          // console.log($(this))
           $(this).animate({
             'opacity': 1
           }, 400);
@@ -22268,7 +22511,6 @@ $(document).ready(function () {
     coloredNavMenuElems();
     openUserMenu();
     langStateOnReload();
-    console.log($('.form-submit-login').attr("type=['submit']"));
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))

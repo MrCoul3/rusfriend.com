@@ -2007,9 +2007,6 @@
   transition: top 0.15s, transform 0.15s 0.15s;
 }
 
-#mysite .about-page .about-title, #mysite .about-page .about-social-net, #mysite .about-page .about-items__item, #mysite .about-page .about-slogan, #mysite .about-page .detail-slogan {
-  visibility: visible;
-}
 #mysite .about-page .about {
   padding-top: 300px;
 }
@@ -2079,6 +2076,7 @@
   color: #455A64;
 }
 #mysite .about-page .about__element--right .about-title {
+  visibility: hidden;
   opacity: 0;
   margin-left: 0;
   position: relative;
@@ -2086,11 +2084,13 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--right .about-title {
+    visibility: visible;
     opacity: 1;
     left: 0;
   }
 }
 #mysite .about-page .about__element--right .about-social-net {
+  visibility: hidden;
   opacity: 0;
   position: relative;
   left: 200px;
@@ -2099,6 +2099,7 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--right .about-social-net {
+    visibility: visible;
     opacity: 1;
     left: 0;
   }
@@ -2109,6 +2110,7 @@
   }
 }
 #mysite .about-page .about__element--right .about-items__item {
+  visibility: hidden;
   opacity: 0;
   margin-left: 0;
   position: relative;
@@ -2119,6 +2121,7 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--right .about-items__item {
+    visibility: visible;
     opacity: 1;
     left: 0;
     font-size: 16px;
@@ -2141,9 +2144,11 @@
   margin-left: 0;
   position: relative;
   left: 200px;
+  visibility: hidden;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--right .about-slogan {
+    visibility: visible;
     opacity: 1;
     left: 0;
   }
@@ -3353,6 +3358,9 @@
   max-width: 1024px;
   margin: 0 auto 20px;
 }
+#mysite .your-calendar .description span {
+  color: #FF3E28;
+}
 #mysite .your-calendar__element--main-title {
   margin: 0 auto;
   text-align: center;
@@ -4354,7 +4362,8 @@
 }
 .prompt[data-v-678606de] {
   position: absolute;
-  opacity: 0;
+  /*opacity: 0;*/
+  visibility: hidden;
   font-size: 14px;
   width: 211px;
   color: #FF3E28;
@@ -4376,6 +4385,14 @@
   height: 100%;
   overflow: visible;
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+}
+*[language][data-v-678606de] {
+  opacity: 0;
+}
+.free-lesson-success__elem > span[data-v-678606de] {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #F8D6B0;
 }
 
 /*# sourceMappingURL=app.css.map*/

@@ -26,18 +26,18 @@ require("vendor/autoload.php");
                         <!--img(src="../images/icons/about-tiktok.svg")--></a>
                 </div>
                 <div class="about-items">
-                    <p switch-lang="<?=switchLang()?>" switchable-text="" class="about-items__item a">Я сертифицированный преподаватель русского языка как иностранного. Я
+                    <p class="about-items__item a">Я сертифицированный преподаватель русского языка как иностранного. Я
                         преподаю русский уже более 3-х лет и мои студенты по всему миру уже стали моими друзьями и я с
                         удовольствием стану твоим другом тоже. В моем блоге в Instagram И TikTok рассказываю больше о
                         России и нашей культуре.</p>
-                    <p switch-lang="<?=switchLang()?>" switchable-text="" class="about-items__item b">После наших уроков мы заговорим на одном языке.</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="После наших уроков мы заговорим на одном языке." class="about-items__item b">After our lessons we will speak the same language.</p>
                     <!--p.about-items__item.c Веду блог о русском языке, России и своей культуре в Instagram и Tik Tok-->
                     <!--p.about-items__item.d Основатель онлайн-школы Taiga и автор образовательных курсов по русскому языку-->
                 </div>
-                <h3 switch-lang="<?=switchLang()?>" switchable-text="" class="slogan about-slogan">Светлана</h3>
+                <h3 switch-lang="<?=switchLang()?>" switchable-text="Светлана" class="slogan about-slogan">Svetlana</h3>
             </div>
         </div>
-        <h2 switch-lang="<?=switchLang()?>" switchable-text="" class="detail-slogan">Буду очень рада видеть тебя <br> на моих online-занятиях</h2>
+        <h2 switch-lang="<?=switchLang()?>" switchable-text="Буду очень рада видеть тебя <br> на моих online-занятиях " class="detail-slogan">I'll be very happy to see you <br> in my online classes</h2>
         <!--a(href="../").button.detail-btn.red-btn  подробнее-->
     </section>
 

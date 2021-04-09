@@ -2,17 +2,25 @@
     <div>
         <div v-show="preloader" id="preloader"></div>
         <section id="booking-calendar" class="your-calendar inner">
-            <h3 v-if="freeLesson" class="description your-calendar__element your-calendar__element--main-title main-title">
-                Забронируй <span style="color: #FF3E28">бесплатный</span> получасовой урок с преподавателем прямо сейчас
+            <h3 :language="language"
+                switchable-text="Забронируй <span>бесплатный</span> получасовой урок с преподавателем прямо сейчас"
+                v-if="freeLesson"
+                class="description your-calendar__element your-calendar__element--main-title main-title">
+                Book a<span> free </span> half-hour lesson with a teacher right now
             </h3>
-            <h3 class="your-calendar__element your-calendar__element--main-title main-title">Все online - занятия с
-                преподавателем проходят в Skype</h3>
+            <h3 :language="language" switchable-text="Все онлайн - занятия с
+            преподавателем проходят в Skype"
+                class="your-calendar__element your-calendar__element--main-title main-title">All online classes with
+                the teacher takes place in Skype</h3>
             <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
-                <p class="instruction__element">1. Выберите удобное для вас время</p>
+                <p :language="language" switchable-text="1. Выберите удобное для вас время"
+                   class="instruction__element">1. Choose a convenient time for you</p>
                 <p class="instruction__element instruction__element--separator">></p>
-                <p class="instruction__element">2. Оплатите урок</p>
+                <p :language="language" switchable-text="2. Оплатите урок" class="instruction__element">2. Pay for the
+                    lesson</p>
                 <p class="instruction__element instruction__element--separator">></p>
-                <p class="instruction__element">3. Готовьтесь к уроку</p>
+                <p :language="language" switchable-text="3. Готовьтесь к уроку" class="instruction__element">3. Prepare
+                    for the lesson</p>
             </div>
             <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
                 <div class="calendar-app-header">
@@ -21,7 +29,9 @@
                         <div @click="increase()" class="month-btn month-btn--right-btn"></div>
                         <p class="month">{{monthes[numberMonthOfFirstDayOfWeek]}} {{dateInterval}}, {{year}}</p>
                     </div>
-                    <h2 class="calendar-app-header__element calendar-app-header__element--title">Календарь занятий</h2>
+                    <div class="trigger" @click="switchMonth()" style="display: none"></div>
+                    <h2 :language="language" switchable-text="Календарь занятий"
+                        class="calendar-app-header__element calendar-app-header__element--title">Lesson calendar</h2>
                     <select class="calendar-app-header__element calendar-app-header__element--time-zone">
                         <option>Europe/Moscow GMT +3:00</option>
                     </select>
@@ -58,46 +68,61 @@
 
                 </div>
                 <div style="position: relative;">
-                    <div class="prompt">нужно выбрать время урока</div>
-                    <a @click.prevent="bookEvent($event)" href="" class="button book-btn">забронировать</a>
+                    <div :language="language" switchable-text="нужно выбрать время урока" class="prompt">you need to
+                        choose the time of the lesson
+                    </div>
+                    <a :language="language" switchable-text="забронировать" @click.prevent="bookEvent($event)" href=""
+                       class="button book-btn">book</a>
                 </div>
 
                 <div class="tegs">
                     <div class="tegs__element">
                         <div class="circle circle--booked"></div>
-                        <span>Забронированное занятие</span>
+                        <span :language="language" switchable-text="Забронированное занятие">Booked lesson</span>
                     </div>
                     <div class="tegs__element">
                         <div class="circle circle--available"></div>
-                        <span>Доступное время</span>
+                        <span :language="language" switchable-text="Доступное время">Available time</span>
                     </div>
                     <div class="tegs__element">
                         <div class="circle circle--unavailable"></div>
-                        <span>Недоступное время</span>
+                        <span :language="language" switchable-text="Недоступное время">Unavailable time</span>
                     </div>
                 </div>
                 <div v-show="enterSkype" class="enter-your-skype">
-                    <h2 class="enter-your-skype__element">Все занятия проходят в skype</h2>
-                    <h3 class="enter-your-skype__element">Для продолжения введите номер <br> своего skype и нажмите ‘далее’
+                    <h2 :language="language" switchable-text="Все занятия проходят в skype"
+                        class="enter-your-skype__element">All lessons are held on skype</h2>
+                    <h3 :language="language"
+                        switchable-text="Для продолжения введите <br> свой скайп и нажмите отправить"
+                        class="enter-your-skype__element">
+                        To continue, enter <br> your skype and click send
                     </h3>
                     <div class="flex">
                         <div class="skype-icon-for-input"></div>
                         <div id="enter-your-skype" class="flex">
                             <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
-                            <div @click="sendSkype()" class="button send-skype">send</div>
+                            <div :language="language" switchable-text="отправить" @click="sendSkype()"
+                                 class="button send-skype">send
+                            </div>
                         </div>
-                        <div v-show="validationSkype" class="validation-skype">поле не должно быть пустым</div>
+                        <div :language="language" switchable-text="поле не должно быть пустым" v-show="validationSkype"
+                             class="validation-skype">the field must not be empty
+                        </div>
                     </div>
-                    <h3 class="enter-your-skype__element">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
+                    <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                        class="enter-your-skype__element">Tutor Skype: <span>svetlana TutorOnline</span></h3>
                 </div>
                 <div v-show="freeLessBookSuccess" class="free-lesson-success">
-                    <h2 class="free-lesson-success__elem">Вы успешно забронировали урок</h2>
-                    <h3 class="free-lesson-success__elem">Не забудте придти вовремя</h3>
-                    <h3 class="free-lesson-success__elem">Если остались вопросы напишите <span class="send-message" style="text-decoration: underline; cursor: pointer; color: #F8D6B0">сообщение</span>
-                        преподавателю</h3>
+                    <h2 :language="language" switchable-text="Вы успешно забронировали урок"
+                        class="free-lesson-success__elem">You have successfully booked a lesson</h2>
+                    <h3 :language="language" switchable-text="Не забудте придти вовремя"
+                        class="free-lesson-success__elem">Do not forget to come on time</h3>
+                    <h3 :language="language" switchable-text="Если остались вопросы напишите <span>сообщение</span>
+                        преподавателю" class="free-lesson-success__elem">If you still have questions, write a <span>message</span>
+                        to the teacher</h3>
                     <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
-                    <h3 class="free-lesson-success__elem">Skype преподавателя: <span>svetlana tutorOnline</span></h3>
-
+                    <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                        class="free-lesson-success__elem">Tutor Skype: <span>svetlana TutorOnline</span></h3>
                 </div>
             </div>
         </section>
@@ -113,7 +138,7 @@
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
-
+    let language = null;
     let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
     export default {
         data() {
@@ -123,8 +148,11 @@
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
                 timeZones: [],
-                day: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
-                monthes: ["January", "Февраль", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                dayRus: ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"],
+                day: ["MOТ", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+                monthesEng: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                monthesRus: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                monthes: [],
                 date: new Date(),
                 weekNumber: null,
                 currentWeek: null,
@@ -138,6 +166,7 @@
                 payment: 'unpayed',
                 freeLessBookSuccess: false,
                 preloader: true,
+                language: 'eng-lang',
             }
         },
 
@@ -145,9 +174,9 @@
             // возвращает номер недели
             Date.prototype.getWeek = function () {
                 let oneJan = new Date(this.getFullYear(), 0, 1)
-                let weekNum = (((this - oneJan) / 86400000) + oneJan.getDay()-1) / 7
+                let weekNum = (((this - oneJan) / 86400000) + oneJan.getDay() - 1) / 7
                 // console.log(weekNum);
-                return Math.ceil((((this - oneJan) / 86400000) + oneJan.getDay()-1) / 7);
+                return Math.ceil((((this - oneJan) / 86400000) + oneJan.getDay() - 1) / 7);
             }
             this.weekNumber = ((new Date()).getWeek() - 1);
             this.currentWeek = ((new Date()).getWeek() - 1);
@@ -163,11 +192,8 @@
             this.getIntervalsFromDB();
             this.lightingOfToday();
             this.changeStateOfItem();
-
-
-
-
-
+            this.switchLangOnReload();
+            this.switchLang();
         },
         updated() {
             this.adjustmentDateOfDay();
@@ -176,7 +202,73 @@
             this.changeStateOfItem();
             this.setCurrentMonth();
         },
+        computed: {},
         methods: {
+            // ---- для смены языка
+            switchMonth() {
+                this.monthes = [];
+                if (language === 'eng-lang') {
+                    this.monthes = this.monthesEng;
+                }
+                if (language === 'rus-lang') {
+                    this.monthes = this.monthesRus;
+                }
+            },
+            switchLang() {
+
+                $('.lang-changer').click(function (e) {
+                    if ($(this).hasClass('eng-lang')) {
+                        language = 'rus-lang';
+                    } else {
+                        language = 'eng-lang';
+                    }
+                    $('.trigger').trigger('click');
+
+                    $('*').each(function (k, val) {
+                        if ($(this).attr('language')) {
+                            $(this).css('opacity', '0');
+                            $(this).attr('language', getCookie('btnLang'));
+
+                            if ($(this).attr('language') === 'rus-lang') {
+                                $(this).attr('eng-text', $(this).html());
+                                $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                                $(this).attr('switchable-text', $(this).attr('eng-text'));
+                                $(this).removeAttr('eng-text');
+                            }
+
+                            if ($(this).attr('language') === 'eng-lang') {
+                                $(this).attr('rus-text', $(this).html());
+                                $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                                $(this).attr('switchable-text', $(this).attr('rus-text'));
+                                $(this).removeAttr('rus-text');
+                            }
+                        }
+                    });
+                });
+                if (getCookie('btnLang') === 'rus-lang') {
+                    this.monthes = this.monthesRus;
+                } else {
+                    this.monthes = this.monthesEng;
+                }
+            },
+            switchLangOnReload() {
+                window.addEventListener("load", function (e) {
+                    $('*').each(function (k, val) {
+                        if ($(this).attr('language') === 'rus-lang') {
+                            $(this).attr('eng-text', $(this).html());
+                            $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
+                            $(this).attr('switchable-text', $(this).attr('eng-text'));
+                            $(this).removeAttr('eng-text');
+                        }
+                        if ($(this).attr('language') === 'eng-lang') {
+                            $(this).animate({'opacity': 1}, 400);
+                        }
+                    });
+
+                })
+
+            },
+
             // ----- Для страницы "free-lesson.php"
             isFreeLesson() {
                 if ($("main").hasClass('free-lesson')) {
@@ -471,10 +563,16 @@
                                                 window.location.href = "payment.php";
                                             }
                                         } else {
-                                            $(event.target).prev(".prompt").fadeTo("slow", 1);
+                                            // $(event.target).prev(".prompt").fadeTo("slow", 1);
+                                            $(event.target).prev(".prompt").css('visibility', 'visible');
+
+
+                                            // setTimeout(function () {
+                                            //     $(event.target).prev(".prompt").fadeOut();
+                                            // },1000)
                                             setTimeout(function () {
-                                                $(event.target).prev(".prompt").fadeOut();
-                                            },1000)
+                                                $(event.target).prev(".prompt").css('visibility', 'hidden');
+                                            }, 1000)
                                         }
 
                                     }
@@ -576,7 +674,8 @@
 <style scoped>
     .prompt {
         position: absolute;
-        opacity: 0;
+        /*opacity: 0;*/
+        visibility: hidden;
         font-size: 14px;
         width: 211px;
         color: #FF3E28;
@@ -587,6 +686,7 @@
         right: 0;
         margin: auto;
     }
+
     #preloader {
         /*visibility: hidden;*/
         /*opacity: 0;*/
@@ -598,5 +698,15 @@
         height: 100%;
         overflow: visible;
         background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
+    }
+
+    *[language] {
+        opacity: 0;
+    }
+
+    .free-lesson-success__elem > span {
+        text-decoration: underline;
+        cursor: pointer;
+        color: #F8D6B0
     }
 </style>

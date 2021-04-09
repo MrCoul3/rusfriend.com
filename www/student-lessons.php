@@ -25,30 +25,32 @@ foreach ($result as $item) {
 }
 
 ?>
-    <title>Мои занятия</title>
+    <title switch-lang="<?=switchLang()?>" switchable-text="Мои занятия">My lessons</title>
     <main class="student-lessons">
         <section class="inner">
-            <h2 class="main-title">Мои занятия</h2>
+            <h2 switch-lang="<?=switchLang()?>" switchable-text="Мои занятия" class="main-title">My lessons</h2>
             <div class="empty-lesson-block <?=$activity?>">
-                <h3 class="secondary-title">у тебя пока нет предстоящих занятий</h3>
+                <h3 switch-lang="<?=switchLang()?>" switchable-text="у тебя пока нет предстоящих занятий" class="secondary-title">you don't have any upcoming classes yet</h3>
                 <div class="flex">
                     <div class="elem elem--left">
-                        <p>Если ты только начинаешь изучать русский язык, то забронируй 60-минутный урок с
-                            преподавателем</p>
-                        <a href="/private-lesson.php" class="button book-btn book-btn--private">забронировать</a>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Если ты только начинаешь изучать русский язык, то забронируй 60-минутный урок с
+                            преподавателем">If you are just starting to learn Russian, then book a 60-minute lesson with
+                            as a tutor</p>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="забронировать" href="/private-lesson.php" class="button book-btn book-btn--private">book</a>
                     </div>
 
                     <div class="elem elem--right">
-                        <p>Для тех, кто немного говорит по-русски и хочет улучшить разговорные навыки -
-                            Speaking - Club</p>
-                        <a href="/speaking-club.php" class="button book-btn book-btn--s-club">забронировать</a>
+                        <p switch-lang="<?=switchLang()?>" switchable-text="Для тех, кто немного говорит по-русски и хочет улучшить разговорные навыки -
+                            Разговорный клуб">For those who speak a little Russian and want to improve their conversational skills -
+                            Speaking-Club</p>
+                        <a switch-lang="<?=switchLang()?>" switchable-text="забронировать" href="/speaking-club.php" class="button book-btn book-btn--s-club">book</a>
                     </div>
                 </div>
 
             </div>
             <div class="decor-line <?=$decorLine?>"></div>
             <div class="block free-less <?= $freeActive ?>">
-                <div class="block__elem block__elem--title">Пробные уроки</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Пробные уроки" class="block__elem block__elem--title">Trial lessons</div>
                 <div class="block__elem block__elem--decor-line-vertical"></div>
                 <div class="block__elem block__elem--content">
                     <?php foreach ($result as $item):
@@ -62,7 +64,7 @@ foreach ($result as $item) {
             </div>
             <div class="decor-line  <?=$decorLine?>"></div>
             <div class="block private-less <?= $privateActive ?>">
-                <div class="block__elem block__elem--title">Занятия с преподавателем</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text="Занятия с преподавателем" class="block__elem block__elem--title">Individual lesson</div>
                 <div class="block__elem block__elem--decor-line-vertical"></div>
                 <div class="block__elem block__elem--content">
                     <?php foreach ($result as $item):
@@ -76,7 +78,7 @@ foreach ($result as $item) {
             </div>
             <div class="decor-line  <?=$decorLine?>"></div>
             <div class="block s-club-less <?= $sClubActive ?>">
-                <div class="block__elem block__elem--title">Speaking - club</div>
+                <div switch-lang="<?=switchLang()?>" switchable-text=" Разговорный клуб" class="block__elem block__elem--title">Speaking - club</div>
                 <div class="block__elem block__elem--decor-line-vertical"></div>
                 <div class="block__elem block__elem--content">
                     <?php foreach ($result as $item):

@@ -10,7 +10,7 @@ require("vendor/autoload.php");
             <div class="video-container">
                 <iframe id="guide-video" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-        </div><a class="button button--dwnl-guide-btn" href="../images/guide/russian_alphabet.pdf" target="_blank">скачать</a>
+        </div><a class="button button--dwnl-guide-btn" href="../images/guide/russian_alphabet.pdf" target="_blank">download</a>
         <div class="dwnl-description">russian_alphabet.pdf</div>
     </section>
     <section class="alphabet-slider">
@@ -22,7 +22,7 @@ require("vendor/autoload.php");
             <!--div.carousel-img.carousel-img--five-->
             <!--div.carousel-img.carousel-img--six-->
             <!--div.carousel-img.carousel-img--seven-->
-        </div><a class="button button--dwnl-guide-btn" href="../images/guide/russian_alphabet.pdf" target="_blank">скачать</a>
+        </div><a class="button button--dwnl-guide-btn" href="../images/guide/russian_alphabet.pdf" target="_blank">download</a>
         <div class="dwnl-description">russian_alphabet.pdf</div>
     </section>
 </main>
