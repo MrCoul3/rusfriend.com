@@ -3781,6 +3781,9 @@
   color: #C4C4C4 !important;
   pointer-events: none;
 }
+#mysite .your-calendar .booked-free {
+  display: none;
+}
 
 #mysite .student-lessons {
   background-image: url(../images/student-lesson/main.png);
@@ -3955,7 +3958,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 210px;
+  max-width: 225px;
+  width: 100%;
   line-height: 25px;
   position: relative;
 }

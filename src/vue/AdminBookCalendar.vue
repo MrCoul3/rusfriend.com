@@ -279,23 +279,26 @@
                         // console.log(response.data);
                         let dataFromDB = response.data;
                         // console.log(dataFromDB[0]);
-                        dataFromDB.forEach(function (dataFromDB, k) {
-                            // console.log(dataFromDB.day); // ...7.03.2021...
-                            $('.time-intrevals-elem ').each((k, val) => {
-                                // console.log(val.getAttribute('date'));
-                                let dateNumber = val;
-                                if (dataFromDB.day === dateNumber.getAttribute('date')) {
-                                    // console.log(dataFromDB.time);
-                                    let arr = dataFromDB.time.split(',');
-                                    // console.log(arr);
-                                    let str = arr.join('</div><div>');
-                                    // console.log(str);
-                                    // console.log(dateNumber.innerHTML);
-                                    dateNumber.innerHTML = '<div>' + str + '</div>';
-                                }
-                            });
+                        if (dataFromDB !== null) {
+                            dataFromDB.forEach(function (dataFromDB, k) {
+                                // console.log(dataFromDB.day); // ...7.03.2021...
+                                $('.time-intrevals-elem ').each((k, val) => {
+                                    // console.log(val.getAttribute('date'));
+                                    let dateNumber = val;
+                                    if (dataFromDB.day === dateNumber.getAttribute('date')) {
+                                        // console.log(dataFromDB.time);
+                                        let arr = dataFromDB.time.split(',');
+                                        // console.log(arr);
+                                        let str = arr.join('</div><div>');
+                                        // console.log(str);
+                                        // console.log(dateNumber.innerHTML);
+                                        dateNumber.innerHTML = '<div>' + str + '</div>';
+                                    }
+                                });
 
-                        })
+                            })
+
+                        }
                     });
             },
 

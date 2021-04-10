@@ -143,12 +143,13 @@ if ($request['method'] == 'language') {
 
 
 if ($request['method'] == 'addTimeIntervals') {
-    $objCalendar->addTimeIntervals($request);
+  $res= $objCalendar->addTimeIntervals($request);
     $timeIntervals = $objCalendar->returnTimeIntervals();
     foreach ($timeIntervals as $day => $time) {
         $response[] = [
             'day' => $time[0],
-            'time' => $time[1]
+            'time' => $time[1],
+            'gmt' => $time[2],
         ];
     }
     echo json_encode($response);
@@ -159,7 +160,8 @@ if ($request['method'] == 'getTimeIntervals') {
     foreach ($timeIntervals as $day => $time) {
         $response[] = [
             'day' => $time[0],
-            'time' => $time[1]
+            'time' => $time[1],
+            'gmt' => $time[2],
         ];
     }
     echo json_encode($response);

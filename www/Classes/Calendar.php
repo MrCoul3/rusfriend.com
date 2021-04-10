@@ -10,7 +10,8 @@ class Calendar
     protected $requireFields = [
         'id',
         'day',
-        'time'
+        'time',
+        'gmt'
     ];
     protected $requireFieldsForBooksTime = [
         'id',
@@ -18,6 +19,7 @@ class Calendar
         'day',
         'time',
         'type',
+        'gmt',
         'payment'
     ];
     public function __construct()
@@ -29,6 +31,8 @@ class Calendar
         $times = [];
         $errors =[];
         $requestDay = "'" . trim($request['day']) . "'";
+        $requestGmt = "'" . trim($request['gmt']) . "'";
+
         $identicalNameQuery = "DELETE FROM `time-intervals` WHERE `day` = {$requestDay}";
         $this->dbAccess->query($identicalNameQuery);
 
@@ -48,7 +52,7 @@ class Calendar
             }
             $requestKeys = implode(', ', array_keys($request));
             $requestTimes = "'" . implode(', ', $times) . "'";
-            $query = "INSERT INTO `time-intervals` ({$requestKeys}) VALUES ({$requestDay}, {$requestTimes});";
+            $query = "INSERT INTO `time-intervals` ({$requestKeys}) VALUES ({$requestDay}, {$requestTimes}, {$requestGmt});";
             $this->dbAccess->query($query);
         }
     }
@@ -60,7 +64,7 @@ class Calendar
     }
     public function returnTimeIntervals()
     {
-        $query = "SELECT `day`, `time` FROM `time-intervals` WHERE 1";
+        $query = "SELECT `day`, `time`, `gmt` FROM `time-intervals` WHERE 1";
         $result = mysqli_fetch_all($this->dbAccess->query($query));
         return $result;
     }

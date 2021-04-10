@@ -29,7 +29,7 @@
                             <div v-on:click="increase" class="month-btn month-btn--right-btn"></div>
                         </div>
                         <select class="time-zone header-content__element">
-                            <option>Europe/Moscow GMT +3:00</option>
+                            <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{gmt}}</option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +118,8 @@
                 month: new Date().getMonth(),
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
-                timeZones: [],
+                timeZones: ['GMT -12:00', 'GMT -11:00', 'GMT -10:00', 'GMT -09:00', 'GMT -08:00', 'GMT -07:00', 'GMT -06:00', 'GMT -05:00', 'GMT -04:00', 'GMT -03:00', 'GMT -02:00', 'GMT -01:00', 'GMT +00:00', 'GMT +01:00', 'GMT +02:00', 'GMT +03:00', 'GMT +04:00', 'GMT +05:00', 'GMT +06:00', 'GMT +07:00', 'GMT +08:00', 'GMT +09:00', 'GMT +10:00', 'GMT +11:00', 'GMT +12:00'],
+                timeZone: 'GMT +03:00',
                 day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
                 daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
                 monthes: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"],
@@ -141,6 +142,8 @@
         },
         mounted: function () {
             this.getBooksTimeFromDB();
+            this.setTimeZone();
+
         },
         beforeUpdate() {
         },
@@ -154,6 +157,19 @@
             this.setCurrentMonth();
         },
         methods: {
+            // установка текущего часового пояса
+            setTimeZone() {
+                let zone = new Date().toString().split(' ')[5];
+                let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
+                this.timeZone = gmt; // GMT +03:00
+
+                $('.time-zone-option').each(function (val, k) {
+                    if ($(this).val() === gmt) {
+                        $(this).attr('selected', true)
+                    }
+                });
+            },
+
             calendar: function () {
                 var days = [];
                 var week = 0;
@@ -211,7 +227,6 @@
             },
 
             getBooksTimeFromDB() {
-
                 // this.preloader = true;
                 // console.log('getintervals')
                 // очищает ячейки при обновлении компонента
@@ -222,37 +237,39 @@
                         let data = response.data;
                         // console.log(data)
                         let freeLesson = null;
-                        data.forEach(function (val, k) {
-                            let typeFromDb = val.type;
-                            let nameFromDb = val.name;
-                            let dateFromDb = val.day;
-                            let timeFromDb = val.time;
-                            let paymentFromDb = val.payment;
-                            if (typeFromDb === 'free') {
-                                freeLesson = true;
-                            }
-                            $('.calendar-table-days').each(function (k, val) {
-                                let day = $(this);
-                                let dateOfcell = $(this).attr('date');
-
-                                if (dateOfcell === dateFromDb) {
-                                    // не добавлять интервалы если уже существуют
-                                    if (paymentFromDb === 'payed') {
-                                        $(this).children().each(function (k, val) {
-                                            // console.log(val);
-                                            let valName = val.getAttribute('name');
-                                            let valType = val.getAttribute('type');
-                                            let valTime = val.getAttribute('time');
-                                            let valDate = val.getAttribute('data');
-                                            if (typeFromDb !== valType && nameFromDb !== valName && dateFromDb !== valDate && timeFromDb !== valTime) {
-                                                day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
-                                            }
-                                        });
-                                    }
+                        if (data !== null) {
+                            data.forEach(function (val, k) {
+                                let typeFromDb = val.type;
+                                let nameFromDb = val.name;
+                                let dateFromDb = val.day;
+                                let timeFromDb = val.time;
+                                let paymentFromDb = val.payment;
+                                if (typeFromDb === 'free') {
+                                    freeLesson = true;
                                 }
-                            })
+                                $('.calendar-table-days').each(function (k, val) {
+                                    let day = $(this);
+                                    let dateOfcell = $(this).attr('date');
 
-                        });
+                                    if (dateOfcell === dateFromDb) {
+                                        // не добавлять интервалы если уже существуют
+                                        if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
+                                            $(this).children().each(function (k, val) {
+                                                // console.log(val);
+                                                let valName = val.getAttribute('name');
+                                                let valType = val.getAttribute('type');
+                                                let valTime = val.getAttribute('time');
+                                                let valDate = val.getAttribute('data');
+                                                if (typeFromDb !== valType && nameFromDb !== valName && dateFromDb !== valDate && timeFromDb !== valTime) {
+                                                    day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                                }
+                                            });
+                                        }
+                                    }
+                                })
+
+                            });
+                        }
                         // console.log(freeLesson)
                         this.freeLesson = freeLesson;
                         this.preloader = false;

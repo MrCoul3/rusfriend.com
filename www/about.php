@@ -26,10 +26,10 @@ require("vendor/autoload.php");
                         <!--img(src="../images/icons/about-tiktok.svg")--></a>
                 </div>
                 <div class="about-items">
-                    <p class="about-items__item a">Я сертифицированный преподаватель русского языка как иностранного. Я
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Я сертифицированный преподаватель русского языка как иностранного. Я
                         преподаю русский уже более 3-х лет и мои студенты по всему миру уже стали моими друзьями и я с
                         удовольствием стану твоим другом тоже. В моем блоге в Instagram И TikTok рассказываю больше о
-                        России и нашей культуре.</p>
+                        России и нашей культуре." class="about-items__item a"> I'm certificated teacher of russian as foreign language. I've been teaching Russian for more then 3 years</p>
                     <p switch-lang="<?=switchLang()?>" switchable-text="После наших уроков мы заговорим на одном языке." class="about-items__item b">After our lessons we will speak the same language.</p>
                     <!--p.about-items__item.c Веду блог о русском языке, России и своей культуре в Instagram и Tik Tok-->
                     <!--p.about-items__item.d Основатель онлайн-школы Taiga и автор образовательных курсов по русскому языку-->

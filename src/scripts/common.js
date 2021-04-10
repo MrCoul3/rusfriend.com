@@ -118,7 +118,7 @@ $(document).ready(function () {
                             $(this).animate({'opacity': 1}, 400);
                             $(this).attr('eng-text', $(this).attr('placeholder'));
                             $(this).attr('placeholder', $(this).attr('switchable-text'));
-                        // для инпутов value
+                            // для инпутов value
                         } else if ($(this).attr('submit')) {
                             $(this).animate({'opacity': 1}, 400);
                             $(this).attr('eng-text', $(this).attr('value'));
@@ -138,12 +138,12 @@ $(document).ready(function () {
                             $(this).animate({'opacity': 1}, 400);
                             $(this).attr('rus-text', $(this).attr('placeholder'));
                             $(this).attr('placeholder', $(this).attr('switchable-text'));
-                        // для инпутов value
+                            // для инпутов value
                         } else if ($(this).attr('submit')) {
                             $(this).animate({'opacity': 1}, 400);
                             $(this).attr('rus-text', $(this).attr('value'));
                             $(this).attr('value', $(this).attr('switchable-text'));
-                        // Для остальных элементов
+                            // Для остальных элементов
                         } else {
                             $(this).attr('rus-text', $(this).html());
                             $(this).html($(this).attr('switchable-text')).animate({'opacity': 1}, 400);
@@ -285,6 +285,13 @@ $(document).ready(function () {
         }
 
         // -----------------------------------------
+
+        $('.social-net-btns__elem--tiktok').click(function (e) {
+            e.preventDefault();
+        })
+        $('.about-social-net__elem--tiktok').click(function (e) {
+            e.preventDefault();
+        })
 
         // ----------- getCookie
         function getCookie(name) {

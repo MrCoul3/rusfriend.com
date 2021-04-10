@@ -2,17 +2,20 @@
     <div>
         <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section ">
             <h2 class="main-title">Мое расписание</h2>
-            <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку календаря и выберите интервалы</h3>
+            <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку
+                календаря и выберите интервалы</h3>
             <div class="wrapper">
                 <div class="calendar-header">
                     <div class="header-content">
                         <div class="month-module header-content__element">
                             <p class="month">{{monthes[month]}} {{year}}</p>
-                            <div v-on:click="decrease" @click="setCurrentMonth" class="month-btn month-btn--left-btn"></div>
-                            <div v-on:click="increase" @click="setCurrentMonth" class="month-btn month-btn--right-btn"></div>
+                            <div v-on:click="decrease" @click="setCurrentMonth"
+                                 class="month-btn month-btn--left-btn"></div>
+                            <div v-on:click="increase" @click="setCurrentMonth"
+                                 class="month-btn month-btn--right-btn"></div>
                         </div>
-                        <select class="time-zone header-content__element">
-                            <option>Europe/Moscow GMT +3:00</option>
+                        <select @click="switchTimeZone($event)" class="time-zone header-content__element">
+                            <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{gmt}}</option>
                         </select>
                     </div>
                 </div>
@@ -26,7 +29,8 @@
                     <tr v-for="week in calendar()">
 
                         <td class="calendar-table-day" @click="openTimeChanger($event)" v-for="day in week"
-                            :style="{'background-color': day.current}" :date="day.index + '.' + currentMonth + '.' + year"><span
+                            :style="{'background-color': day.current}"
+                            :date="day.index + '.' + currentMonth + '.' + year"><span
                                 class="day-number">{{ day.index }}</span><span class="day-time"></span></td>
 
                     </tr>
@@ -62,17 +66,21 @@
                             </div>
 
                             <div class="time-changer-content__element time-changer-content__element--time-list-modul">
-                                <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index" :value="item">
+                                <div class="time-elem" v-for="(item,index) in timeIntervals" :index="index"
+                                     :value="item">
                                     <div class="time">{{item}}</div>
                                     <div @click="delTime($event)" class="del-btn"></div>
                                 </div>
                             </div>
-                            <div @click="applyBtn" class="time-changer-button time-changer-button--apply-to-current-day">
+                            <div @click="applyBtn"
+                                 class="time-changer-button time-changer-button--apply-to-current-day">
                                 применить к <span style="font-weight: bold">текущему</span> дню
                             </div>
-                            <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням: <span
-                                    style="font-weight: bold">{{dayOfWeek}}</span></div>
-                            <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">очистить
+                            <div class="time-changer-button time-changer-button--apply-to-all-day">применить ко дням:
+                                <span
+                                        style="font-weight: bold">{{dayOfWeek}}</span></div>
+                            <div @click="delBtn" class="time-changer-button time-changer-button--clear-schedule">
+                                очистить
                                 расписание
                             </div>
 
@@ -90,13 +98,15 @@
 
 <script>
     import axios from 'axios';
+
     export default {
         data() {
             return {
                 month: new Date().getMonth(),
                 year: new Date().getFullYear(),
                 dFirstMonth: '1',
-                timeZones: [],
+                timeZones: ['GMT -12:00', 'GMT -11:00', 'GMT -10:00', 'GMT -09:00', 'GMT -08:00', 'GMT -07:00', 'GMT -06:00', 'GMT -05:00', 'GMT -04:00', 'GMT -03:00', 'GMT -02:00', 'GMT -01:00', 'GMT +00:00', 'GMT +01:00', 'GMT +02:00', 'GMT +03:00', 'GMT +04:00', 'GMT +05:00', 'GMT +06:00', 'GMT +07:00', 'GMT +08:00', 'GMT +09:00', 'GMT +10:00', 'GMT +11:00', 'GMT +12:00'],
+                timeZone: 'GMT +03:00',
                 day: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
                 daySun: ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
                 monthes: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"],
@@ -110,11 +120,14 @@
                 timeIsSet: false,
                 dataFromDB: [],
                 dayOfWeek: null,
+                // currentGMT: null,
                 // preloader: true,
             }
         },
         mounted: function () {
             this.getIntervalsFromDB();
+            this.setTimeZone();
+
         },
         created: function () {
             // console.log(this.currentDayOfWeek);
@@ -125,6 +138,29 @@
             }
         },
         methods: {
+            // установка текущего часового пояса
+            setTimeZone() {
+                let zone = new Date().toString().split(' ')[5];
+                let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
+                // this.currentGMT = gmt;
+                this.timeZone = gmt; // GMT +03:00
+
+                $('.time-zone-option').each(function (val, k) {
+                    if ($(this).val() === gmt) {
+                        $(this).attr('selected', true)
+                    }
+                });
+            },
+
+            // переключениe часового пояса
+            switchTimeZone(event) {
+                let select = event.target;
+                this.timeZone = event.target.value;
+                // console.log(this.timeZone);
+                select.addEventListener('change', ()=>{
+                    this.getIntervalsFromDB();
+                });
+            },
             calendar: function () {
                 var days = [];
                 var week = 0;
@@ -215,7 +251,7 @@
                 // время выбранной ячейки
                 let timeInCell = event.target.closest('.calendar-table-day');
                 // console.log(timeInCell.childNodes[1].childElementCount)
-                if(timeInCell.childNodes[1].childElementCount === 0) {
+                if (timeInCell.childNodes[1].childElementCount === 0) {
                     this.timeIsSet = false;
                 } else {
                     this.timeIsSet = true;
@@ -315,6 +351,7 @@
                     let inputData = {
                         day: this.currentDate,
                         time: this.timeIntervals,
+                        gmt: this.timeZone,
                         'method': 'addTimeIntervals'
                     }
                     let response = fetch('handle.php', {
@@ -326,9 +363,7 @@
 
                     });
                     this.getIntervalsFromDB();
-                }
-
-                else {
+                } else {
                     let inputData = {
                         day: this.currentDate,
                         'method': 'deleteTimeIntervals'
@@ -355,22 +390,64 @@
                 });
                 axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
                     .then((response) => {
-                        // console.log(response.data);
+                        console.log(response.data);
                         let data = response.data;
-                        $('.calendar-table-day').each(function (k, val) {
-                            let dateOfcell = $(this).attr('date');
-                            let day = $(this);
-                            data.forEach(function (val, k) {
-                                let dateFromDb = val.day;
-                                let timeFromDb = val.time;
-                                if (dateOfcell === dateFromDb) {
-                                    let arrTime = timeFromDb.split(',');
-                                    let str = arrTime.join('</span><span>');
-                                    let dayTime = day.find('.day-time')[0];
-                                    dayTime.innerHTML = '<span>' + str + '</span>';
-                                }
+                        if (data !== null) {
+                            $('.calendar-table-day').each((k, val) => {
+                                // let dateOfcell = $(this).attr('date');
+                                // let day = $(this);
+                                let dateOfcell = val.getAttribute('date'); // ..01.01.2021..
+                                let day = val; // ...element td class="calendar-table-day"...
+                                // console.log(dateOfcell)
+                                // console.log(day)
+                                data.forEach((val, k) => {
+                                    let dateFromDb = val.day; // ..01.01.2021..
+                                    let timeFromDb = val.time; // ..06:00 - 06:30, 06:30 - 07:00..
+                                    let gmtFromDb = val.gmt;
+                                    let str;
+                                    if (dateOfcell === dateFromDb) {
+                                        // console.log(this.timeZone)
+                                        let arrTime = timeFromDb.split(','); // ..["06:00 - 06:30", " 06:30 - 07:00"]
+                                        let dayTime = day.lastElementChild;
+                                        // если this.timeZone === gmtFromDb
+                                        if (this.timeZone === gmtFromDb) {
+                                            str = arrTime.join('</span><span>'); // ..06:00 - 06:30</span><span> 06:30 - 07:00..
+                                            // let dayTime = day.find('.day-time')[0];
+                                        } else {
+                                            let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                                            let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+                                            let delta = timeZoneNum - gmtFromDbNum;
+                                            // console.log(timeZoneNum);
+                                            // console.log(gmtFromDbNum);
+                                            // console.log(delta);
+                                            let newArrTime = [];
+                                            arrTime.forEach((val, k)=> {
+                                                // console.log(val.split('-')); //["06:00 ", " 07:30"]
+                                                let firstH = val.split('-')[0].split(':')[0];// 06
+                                                let firstM = val.split('-')[0].split(':')[1];// 00
+                                                let secondH = val.split('-')[1].split(':')[0]; // 07
+                                                let secondM = val.split('-')[1].split(':')[1]; // 30
+                                                let a = +firstH + delta; // 02
+                                                let b = +secondH + delta; //05
+
+                                                if (String(a).length < 2) {
+                                                    a = '0' + a;
+                                                }
+                                                if (String(b).length < 2) {
+                                                    b = '0' + b;
+                                                }
+
+                                                let newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                                                // console.log(newTimeInterval);
+                                                newArrTime.push(newTimeInterval);
+                                                str = newArrTime.join('</span><span>');
+                                            })
+                                        }
+                                        dayTime.innerHTML = '<span>' + str + '</span>';
+                                    }
+                                });
                             });
-                        });
+                        }
                         // this.preloader = false;
                     });
             },

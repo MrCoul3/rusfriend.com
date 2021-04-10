@@ -77,7 +77,7 @@
                     <p switch-lang="<?=switchLang()?>" switchable-text="Сертифицированный преподаватель <br> русского языка как иностранного" class="about-items__item a">Certified teacher of Russian as a foreign language</p>
                     <p switch-lang="<?=switchLang()?>" switchable-text="Более 3-х лет обучаю иностранцев со всего мира" class="about-items__item b">I have been teaching foreigners from all over the world for more than 3 years</p>
                     <p switch-lang="<?=switchLang()?>" switchable-text="Веду блог о русском языке, России и своей культуре в Instagram и Tik-Tok" class="about-items__item c">I have blogs on Instagram and Tik-Tok about the Russian language, Russia, and my culture</p>
-                    <p switch-lang="<?=switchLang()?>" switchable-text="Основатель онлайн-школы и автор образовательных курсов по русскому языку" class="about-items__item d">Founder of the Taiga online school and author of educational courses in the Russian language</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="Основатель онлайн-школы и автор образовательных курсов по русскому языку" class="about-items__item d">Author of educational courses in the Russian language</p>
                 </div>
                 <h3 switch-lang="<?=switchLang()?>" switchable-text="Светлана" class="slogan about-slogan about-slogan--name">Svetlana</h3>
             </div>
