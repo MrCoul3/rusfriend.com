@@ -32,10 +32,10 @@
                     <div class="trigger" @click="switchMonthAndDay()" style="display: none"></div>
                     <h2 :language="language" switchable-text="Календарь занятий"
                         class="calendar-app-header__element calendar-app-header__element--title">Lesson calendar</h2>
-                    <select  @click="switchTimeZone($event)"
+                    <select @click="switchTimeZone($event)"
                             class="calendar-app-header__element calendar-app-header__element--time-zone">
-<!--                        <option selected :value="timeZone">{{timeZone}}</option>-->
-                        <option  class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{gmt}}</option>
+                        <!--                        <option selected :value="timeZone">{{timeZone}}</option>-->
+                        <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{gmt}}</option>
                     </select>
                 </div>
                 <div class="decor-line"></div>
@@ -230,8 +230,8 @@
             switchTimeZone(event) {
                 // console.log(event.target);
                 let select = event.target;
-                this.timeZone =  event.target.value;
-                select.addEventListener('change', ()=>{
+                this.timeZone = event.target.value;
+                select.addEventListener('change', () => {
                     this.getIntervalsFromDB();
                     this.changeStateOfItem();
                 })
@@ -476,6 +476,7 @@
             ,
 
             getIntervalsFromDB: function () {
+                this.preloader = true;
                 let freeLesson = this.freeLesson;
                 // ----- удаление неоплаченых бронирований
                 axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
@@ -489,7 +490,7 @@
                         // console.log(response.data);
                         let dataFromDB = response.data;
                         // console.log(dataFromDB[0]);
-                        dataFromDB.forEach((dataFromDB, k) =>{
+                        dataFromDB.forEach((dataFromDB, k) => {
                             let gmtFromDb = dataFromDB.gmt;
                             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
                             let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
@@ -498,44 +499,50 @@
                             $('.time-intrevals-elem ').each((k, val) => {
                                 // console.log(val.getAttribute('date'));
                                 let dateNumber = val;
+
                                 if (dataFromDB.day === dateNumber.getAttribute('date')) {
                                     // console.log(dateNumber.previousElementSibling)
 
                                     let arr = dataFromDB.time.split(',');
                                     let newArr = [];
+                                    // для бесплатного занятия
                                     if (freeLesson) {
                                         // console.log(arr); // ["06:00 - 06:30",...
-                                            arr.forEach((val, k) => {
-                                                if (this.timeZone === gmtFromDb) {
-                                                    newArr.push(val.split('-')[0]);
-                                                } else {
-                                                    let firstH = val.split('-')[0].split(':')[0];// 06
-                                                    let firstM = val.split('-')[0].split(':')[1];// 00
-                                                    let a = +firstH + delta; // 02
-                                                    if (String(a).length < 2) {
-                                                        a = '0' + a;
-                                                    }
-                                                    let newTimeInterval = a + ':' + firstM;
-                                                    newArr.push(newTimeInterval);
+                                        arr.forEach((val, k) => {
+                                            if (this.timeZone === gmtFromDb) {
+                                                newArr.push(val.split('-')[0]);
+                                            } else {
+                                                let firstH = val.split('-')[0].split(':')[0];// 06
+                                                let firstM = val.split('-')[0].split(':')[1];// 00
+                                                let a = +firstH + delta; // 02
+                                                if (String(a).length < 2) {
+                                                    a = '0' + a;
                                                 }
-                                                // console.log(val.split('-')[0]);
-                                            })
+                                                let newTimeInterval = a + ':' + firstM;
+                                                newArr.push(newTimeInterval);
+                                            }
+                                            // console.log(val.split('-')[0]);
+                                        })
                                         // console.log(newArr);
                                         let str = newArr.join('</div><div>');
                                         // console.log(str);
                                         // console.log(dateNumber.innerHTML);
                                         dateNumber.innerHTML = '<div>' + str + '</div>';
 
+                                        // для платного занятия
                                     } else {
                                         // console.log(dataFromDB.time);
                                         // console.log(arr);
                                         let str;
+                                        // если gmt совпадают
                                         if (this.timeZone === gmtFromDb) {
                                             str = arr.join('</div><div>');
                                             dateNumber.innerHTML = '<div>' + str + '</div>';
 
+
                                         } else {
-                                            arr.forEach((val, k)=> {
+                                            let prevDate = dateNumber.previousElementSibling;
+                                            arr.forEach((val, k) => {
                                                 let firstH = val.split('-')[0].split(':')[0];// 06
                                                 let firstM = val.split('-')[0].split(':')[1];// 00
                                                 let secondH = val.split('-')[1].split(':')[0]; // 07
@@ -543,18 +550,60 @@
                                                 let a = +firstH + delta; // 02
                                                 let b = +secondH + delta; //05
 
-                                                if (String(a).length < 2) {
-                                                    a = '0' + a;
-                                                }
-                                                if (String(b).length < 2) {
-                                                    b = '0' + b;
-                                                }
-                                                let newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                                                // console.log(newTimeInterval);
-                                                newArr.push(newTimeInterval);
-                                                str = newArr.join('</div><div>');
-                                                dateNumber.innerHTML = '<div>' + str + '</div>';
 
+                                                if (Math.sign(a) === -1) {
+                                                    a = 24 + a;
+                                                    if (Math.sign(b) === -1) {
+                                                        b = 24 + b;
+                                                    }
+                                                    gmt();
+                                                    if (prevDate) {
+                                                        dateNumber.previousElementSibling.innerHTML = '<div>' + str + '</div>';
+                                                    } else {
+                                                        // axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
+                                                    }
+
+
+                                                    // else {
+                                                    //     let prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
+                                                    //     let prevMonth = +dateNumber.getAttribute('date').split('.')[1];
+                                                    //     if (String(prevMonth).length < 2) {
+                                                    //         prevMonth = '0' + prevMonth;
+                                                    //     }
+                                                    //     let prevYear = +dateNumber.getAttribute('date').split('.')[2];
+                                                    //     console.log(prevNum+'.'+prevMonth+'.'+prevYear)
+                                                    //     console.log()
+                                                    //
+                                                    //     $('.time-intrevals-elem').each(function (k, val) {
+                                                    //         if ($(this).attr('date') === prevNum+'.'+prevMonth+'.'+prevYear) {
+                                                    //             console.log($(this))
+                                                    //             $(this).html('<div>' + str + '</div>');
+                                                    //         }
+                                                    //     })
+                                                    //
+                                                    // }
+
+                                                }
+                                                else {
+                                                    gmt();
+                                                    dateNumber.innerHTML = '<div>' + str + '</div>';
+                                                    if (prevDate !== null) {
+                                                        $(dateNumber).children().slice(0, prevDate.childElementCount).remove();
+                                                    }
+
+                                                }
+
+                                                function gmt() {
+                                                    if (String(a).length < 2) {
+                                                        a = '0' + a;
+                                                    }
+                                                    if (String(b).length < 2) {
+                                                        b = '0' + b;
+                                                    }
+                                                    let newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                                                    newArr.push(newTimeInterval);
+                                                    str = newArr.join('</div><div>');
+                                                }
                                             });
                                         }
                                         // console.log(str);
@@ -564,7 +613,10 @@
                             });
 
                         })
-                        this.preloader = false;
+                        setTimeout( () => {
+                            this.preloader = false;
+
+                        },50);
                     });
             }
             ,
@@ -655,7 +707,7 @@
                                                 // --- для платного - страница оплаты
                                                 window.location.href = "/payment.php";
                                             }
-                                        // если не выбраны интервалы вслпывающая подсказка
+                                            // если не выбраны интервалы вслпывающая подсказка
                                         } else {
                                             // $(event.target).prev(".prompt").fadeTo("slow", 1);
                                             $(event.target).prev(".prompt").css('visibility', 'visible');

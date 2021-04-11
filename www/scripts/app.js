@@ -2864,6 +2864,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     getIntervalsFromDB: function getIntervalsFromDB() {
       var _this2 = this;
 
+      this.preloader = true;
       var freeLesson = this.freeLesson; // ----- удаление неоплаченых бронирований
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
@@ -2893,7 +2894,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             if (dataFromDB.day === dateNumber.getAttribute('date')) {
               // console.log(dateNumber.previousElementSibling)
               var arr = dataFromDB.time.split(',');
-              var newArr = [];
+              var newArr = []; // для бесплатного занятия
 
               if (freeLesson) {
                 // console.log(arr); // ["06:00 - 06:30",...
@@ -2920,16 +2921,18 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                 var str = newArr.join('</div><div>'); // console.log(str);
                 // console.log(dateNumber.innerHTML);
 
-                dateNumber.innerHTML = '<div>' + str + '</div>';
+                dateNumber.innerHTML = '<div>' + str + '</div>'; // для платного занятия
               } else {
                 // console.log(dataFromDB.time);
                 // console.log(arr);
-                var _str;
+                var _str; // если gmt совпадают
+
 
                 if (_this2.timeZone === gmtFromDb) {
                   _str = arr.join('</div><div>');
                   dateNumber.innerHTML = '<div>' + _str + '</div>';
                 } else {
+                  var prevDate = dateNumber.previousElementSibling;
                   arr.forEach(function (val, k) {
                     var firstH = val.split('-')[0].split(':')[0]; // 06
 
@@ -2943,19 +2946,59 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
 
                     var b = +secondH + delta; //05
 
-                    if (String(a).length < 2) {
-                      a = '0' + a;
+                    if (Math.sign(a) === -1) {
+                      a = 24 + a;
+
+                      if (Math.sign(b) === -1) {
+                        b = 24 + b;
+                      }
+
+                      gmt();
+
+                      if (prevDate) {
+                        dateNumber.previousElementSibling.innerHTML = '<div>' + _str + '</div>';
+                      } else {// axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
+                      } // else {
+                      //     let prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
+                      //     let prevMonth = +dateNumber.getAttribute('date').split('.')[1];
+                      //     if (String(prevMonth).length < 2) {
+                      //         prevMonth = '0' + prevMonth;
+                      //     }
+                      //     let prevYear = +dateNumber.getAttribute('date').split('.')[2];
+                      //     console.log(prevNum+'.'+prevMonth+'.'+prevYear)
+                      //     console.log()
+                      //
+                      //     $('.time-intrevals-elem').each(function (k, val) {
+                      //         if ($(this).attr('date') === prevNum+'.'+prevMonth+'.'+prevYear) {
+                      //             console.log($(this))
+                      //             $(this).html('<div>' + str + '</div>');
+                      //         }
+                      //     })
+                      //
+                      // }
+
+                    } else {
+                      gmt();
+                      dateNumber.innerHTML = '<div>' + _str + '</div>';
+
+                      if (prevDate !== null) {
+                        $(dateNumber).children().slice(0, prevDate.childElementCount).remove();
+                      }
                     }
 
-                    if (String(b).length < 2) {
-                      b = '0' + b;
+                    function gmt() {
+                      if (String(a).length < 2) {
+                        a = '0' + a;
+                      }
+
+                      if (String(b).length < 2) {
+                        b = '0' + b;
+                      }
+
+                      var newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                      newArr.push(newTimeInterval);
+                      _str = newArr.join('</div><div>');
                     }
-
-                    var newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM; // console.log(newTimeInterval);
-
-                    newArr.push(newTimeInterval);
-                    _str = newArr.join('</div><div>');
-                    dateNumber.innerHTML = '<div>' + _str + '</div>';
                   });
                 } // console.log(str);
                 // console.log(dateNumber.innerHTML);
@@ -2964,7 +3007,9 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             }
           });
         });
-        _this2.preloader = false;
+        setTimeout(function () {
+          _this2.preloader = false;
+        }, 50);
       });
     },
     chooseTime: function chooseTime(event) {
@@ -8514,11 +8559,9 @@ var render = function() {
                 }
               },
               [
-                _vm._v("\n                Book a"),
+                _vm._v("\n            Book a"),
                 _c("span", [_vm._v(" free ")]),
-                _vm._v(
-                  " half-hour lesson with a teacher right now\n            "
-                )
+                _vm._v(" half-hour lesson with a teacher right now\n        ")
               ]
             )
           : _vm._e(),
@@ -8531,12 +8574,12 @@ var render = function() {
             attrs: {
               language: _vm.language,
               "switchable-text":
-                "Все онлайн - занятия с\n            преподавателем проходят в Skype"
+                "Все онлайн - занятия с\n        преподавателем проходят в Skype"
             }
           },
           [
             _vm._v(
-              "All online classes with\n                the teacher takes place in Skype"
+              "All online classes with\n            the teacher takes place in Skype"
             )
           ]
         ),
@@ -8579,7 +8622,7 @@ var render = function() {
                       "switchable-text": "2. Оплатите урок"
                     }
                   },
-                  [_vm._v("2. Pay for the\n                    lesson")]
+                  [_vm._v("2. Pay for the\n                lesson")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -8600,7 +8643,7 @@ var render = function() {
                       "switchable-text": "3. Готовьтесь к уроку"
                     }
                   },
-                  [_vm._v("3. Prepare\n                    for the lesson")]
+                  [_vm._v("3. Prepare\n                for the lesson")]
                 )
               ]
             )
@@ -8746,9 +8789,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                            " +
+                            "\n                        " +
                               _vm._s(day.index) +
-                              "\n                        "
+                              "\n                    "
                           )
                         ]
                       )
@@ -8795,7 +8838,7 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "you need to\n                        choose the time of the lesson\n                    "
+                    "you need to\n                    choose the time of the lesson\n                "
                   )
                 ]
               ),
@@ -8904,9 +8947,9 @@ var render = function() {
                     }
                   },
                   [
-                    _vm._v("\n                        To continue, enter "),
+                    _vm._v("\n                    To continue, enter "),
                     _c("br"),
-                    _vm._v(" your skype and click send\n                    ")
+                    _vm._v(" your skype and click send\n                ")
                   ]
                 ),
                 _vm._v(" "),
@@ -8936,7 +8979,7 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("send\n                            ")]
+                        [_vm._v("send\n                        ")]
                       )
                     ]
                   ),
@@ -8960,7 +9003,7 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "the field must not be empty\n                        "
+                        "the field must not be empty\n                    "
                       )
                     ]
                   )
@@ -9029,13 +9072,13 @@ var render = function() {
                     attrs: {
                       language: _vm.language,
                       "switchable-text":
-                        "Если остались вопросы напишите <span>сообщение</span>\n                        преподавателю"
+                        "Если остались вопросы напишите <span>сообщение</span>\n                    преподавателю"
                     }
                   },
                   [
                     _vm._v("If you still have questions, write a "),
                     _c("span", [_vm._v("message")]),
-                    _vm._v("\n                        to the teacher")
+                    _vm._v("\n                    to the teacher")
                   ]
                 ),
                 _vm._v(" "),
