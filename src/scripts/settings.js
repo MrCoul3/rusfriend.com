@@ -46,6 +46,7 @@ $(document).ready(function () {
                         // ---------- подгрузка аватара
                         if (dataFromDB.avatar.trim() !== '') {
                             $('.avatar').css('backgroundImage', 'url(' + dataFromDB.avatar + ')');
+                            // $('.avatar img').attr('src', dataFromDB.avatar);
                         }
                     });
 

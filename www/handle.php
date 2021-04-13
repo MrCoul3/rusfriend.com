@@ -2,22 +2,10 @@
 require("vendor/autoload.php");
 $request = json_decode(file_get_contents('php://input'), true);
 //echo "<pre>";
-//print_r($_REQUEST);
+//print_r($request);
 //echo "</pre>";
 //var_dump($_SESSION);
 
-// ------- загрузка аватарки
-//if ($_REQUEST['method'] === 'setAvatar') {
-//    if (isset($_FILES)) {
-////        var_dump($_FILES['img_path']['type']);
-//        $userID = $_REQUEST['user_id'];
-//        $type = explode('/', $_FILES['img_path']['type'])[1];
-//        $destDir = dirname(__FILE__) . '/images/user-avatars/' . $userID . '.' . $type;
-////        var_dump($destDir);
-//        move_uploaded_file($_FILES['img_path']['tmp_name'], $destDir);
-//    }
-//}
-// -----------------------------
 
 
 
@@ -285,11 +273,22 @@ if ($request['method'] === 'changeSettings') {
     $result = $obj->changeSettings($request);
     echo json_encode($result);
 }
-if ($setAvatar) {
-    var_dump('setavat');
 
-    return $obj->setAvatar();
+if ($request['method'] === 'delAvatar') {
+    $result = $obj->delAvatar();
+    $del =  unlink($_SERVER['DOCUMENT_ROOT']. $request['path']);
+    $delMax =  unlink($_SERVER['DOCUMENT_ROOT']. $request['pathMax']);
+    if ($del AND $delMax) {
+        $response = 'success';
+    } else {
+        $response ='error';
+    }
+    echo json_encode($response);
+
 }
+//if ($setAvatar) {
+//    return $obj->setAvatar();
+//}
 
 
 //--------------------------------------------
@@ -297,3 +296,21 @@ if ($setAvatar) {
 if ($request['method'] === 'changeSatusOnActive') {
     $obj->changeSatusOnActive();
 }
+
+// -------- обработчики для изменения часового пояса
+// добавление интервалов, которые необходимо перенести на
+// другой день в БД
+if ($request['method'] === 'getTimeIntervalsFromTempGMT') {
+    $result = $objCalendar->getTimeIntervalsFromTempGMT();
+    echo json_encode($result);
+}
+
+if ($request['method'] === 'setTimeIntervalsToTempGMT') {
+    $result = $objCalendar->setTimeIntervalsToTempGMT($request);
+    echo $result;
+}
+
+//if ($request['method'] === 'delTimeIntervalsFromTempGMT') {
+//    $result = $objCalendar->delTimeIntervalsFromTempGMT();
+////    echo $result;
+//}

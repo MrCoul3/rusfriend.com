@@ -82,13 +82,16 @@
                 <div class="flex">
                     <p switch-lang="<?=switchLang()?>" switchable-text="фото профиля" class="placeholder">profile photo</p>
                     <div class="perscab-photoedit-body">
-                        <a switch-lang="<?=switchLang()?>" switchable-text="изменить" href="#" class="add-photo download-avatar-btn">change</a>
+                        <div class="flex" style="display: flex; flex-direction: column">
+                            <a switch-lang="<?=switchLang()?>" switchable-text="изменить" href="#" class="add-photo download-avatar-btn avatar-btn">change</a>
+                            <a switch-lang="<?=switchLang()?>" switchable-text="удалить" href="#" class="del-photo del-avatar-btn avatar-btn">delete</a>
+                        </div>
                         <input style="display:none;" id="c_input24" name="file" multiple="false" type="file">
                         <input style="display:none;" name="photo_c" multiple="false" type="hidden" value="">
                         <input style="display:none;" name="photo_i" value="" multiple="false" type="hidden">
                     </div>
                 </div>
-                <div class="perscab-photoedit-img">
+                <div class=" perscab-photoedit-img">
                     <img src="#" alt="">
                 </div>
                 <div style="display:none">

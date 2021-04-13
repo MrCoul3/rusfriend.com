@@ -297,7 +297,17 @@ class User
         }
     }
 
-
+    public function addAvatar($request)
+    {
+        $query = "UPDATE `users` SET `avatar` = '{$request}' WHERE `email` = '{$_SESSION['email']}'";
+        $this->dbAccess->query($query);
+    }
+    public function delAvatar()
+    {
+        $query = "UPDATE `users` SET `avatar` = '' WHERE `email` = '{$_SESSION['email']}'";
+        $this->dbAccess->query($query);
+    }
+    // ------------------------------------------------------------------------
 
     // ----- изменить статус new На active при оплате занятия
     public function changeSatusOnActive()
@@ -305,12 +315,8 @@ class User
         $query = "UPDATE `users` SET `status` = 'active' WHERE `email` = '{$_SESSION['email']}'";
         $this->dbAccess->query($query);
     }
-    public function addAvatar($request)
-    {
-//        var_dump($request);
-        $query = "UPDATE `users` SET `avatar` = '{$request}' WHERE `email` = '{$_SESSION['email']}'";
-        $this->dbAccess->query($query);
-    }
+
+
 
 }
 

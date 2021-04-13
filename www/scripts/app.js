@@ -2601,17 +2601,9 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       });
     },
     // изменение интервалов при переключении часового пояса
-    switchTimeZone: function switchTimeZone(event) {
-      var _this = this;
-
-      // console.log(event.target);
-      var select = event.target;
-      this.timeZone = event.target.value;
-      select.addEventListener('change', function () {
-        _this.getIntervalsFromDB();
-
-        _this.changeStateOfItem();
-      });
+    switchTimeZone: function switchTimeZone() {
+      this.getIntervalsFromDB();
+      this.changeStateOfItem();
     },
     // ---- для смены языка
     switchMonthAndDay: function switchMonthAndDay() {
@@ -2862,10 +2854,12 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       });
     },
     getIntervalsFromDB: function getIntervalsFromDB() {
-      var _this2 = this;
+      var _this = this;
 
       this.preloader = true;
-      var freeLesson = this.freeLesson; // ----- удаление неоплаченых бронирований
+      var freeLesson = this.freeLesson;
+      var obj = {};
+      var objArr = []; // ----- удаление неоплаченых бронирований
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'delUnpayedBooks'
@@ -2880,140 +2874,151 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         var dataFromDB = response.data; // console.log(dataFromDB[0]);
 
         dataFromDB.forEach(function (dataFromDB, k) {
+          console.log(dataFromDB);
           var gmtFromDb = dataFromDB.gmt;
 
-          var timeZoneNum = _this2.timeZone.split(' ')[1].substring(0, 3);
+          var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
 
           var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
           var delta = timeZoneNum - gmtFromDbNum; // console.log(dataFromDB.day); // ...7.03.2021...
 
-          $('.time-intrevals-elem ').each(function (k, val) {
+          $('.time-intrevals-elem').each(function (k, val) {
             // console.log(val.getAttribute('date'));
             var dateNumber = val;
+            var prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
+            var prevMonth = +dateNumber.getAttribute('date').split('.')[1];
+
+            if (String(prevMonth).length < 2) {
+              prevMonth = '0' + prevMonth;
+            }
+
+            var prevYear = +dateNumber.getAttribute('date').split('.')[2]; // console.log(prevNum + '.' + prevMonth + '.' + prevYear)
+
+            var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
 
             if (dataFromDB.day === dateNumber.getAttribute('date')) {
               // console.log(dateNumber.previousElementSibling)
               var arr = dataFromDB.time.split(',');
-              var newArr = []; // для бесплатного занятия
+
+              if (_this.timeZone !== gmtFromDb) {
+                var newArr = [];
+                arr.forEach(function (val, k) {
+                  // console.log(val);
+                  var firstH = val.split('-')[0].split(':')[0]; // 06
+
+                  var firstM = val.split('-')[0].split(':')[1]; // 00
+
+                  var secondH = val.split('-')[1].split(':')[0]; // 07
+
+                  var secondM = val.split('-')[1].split(':')[1]; // 30
+
+                  var a = +firstH + delta; // 02
+
+                  var b = +secondH + delta; //05
+
+                  if (String(a).length < 2) {
+                    a = '0' + a;
+                  }
+
+                  if (String(b).length < 2) {
+                    b = '0' + b;
+                  }
+
+                  var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                  newArr.push(time);
+                });
+                arr = [];
+                newArr.forEach(function (val, k) {
+                  // console.log(val)
+                  arr.push(val);
+                });
+              } // для бесплатного занятия
+
 
               if (freeLesson) {
-                // console.log(arr); // ["06:00 - 06:30",...
+                var _newArr = [];
+                var negArr = []; // console.log(arr); // ["06:00 - 06:30",...
+
                 arr.forEach(function (val, k) {
-                  if (_this2.timeZone === gmtFromDb) {
-                    newArr.push(val.split('-')[0]);
+                  var firstH = val.split(' ')[0].split(':')[0]; // 06
+
+                  if (+firstH < 0) {
+                    // console.log(dateNumber);
+                    // newArr.push(val.split(' ')[0]);
+                    negArr.push(val.split(' ')[0]); // перенос отрицательных интервалов в базу данных temp с датой на день раньше
                   } else {
-                    var firstH = val.split('-')[0].split(':')[0]; // 06
+                    _newArr.push(val.split('-')[0]);
+                  }
+                });
+                obj = {
+                  day: prevDateNumber,
+                  time: negArr.join(',')
+                };
+                objArr.push(obj);
 
-                    var firstM = val.split('-')[0].split(':')[1]; // 00
-
-                    var a = +firstH + delta; // 02
-
-                    if (String(a).length < 2) {
-                      a = '0' + a;
-                    }
-
-                    var newTimeInterval = a + ':' + firstM;
-                    newArr.push(newTimeInterval);
-                  } // console.log(val.split('-')[0]);
-
-                }); // console.log(newArr);
-
-                var str = newArr.join('</div><div>'); // console.log(str);
+                var str = _newArr.join('</div><div>'); // console.log(str);
                 // console.log(dateNumber.innerHTML);
+
 
                 dateNumber.innerHTML = '<div>' + str + '</div>'; // для платного занятия
               } else {
                 // console.log(dataFromDB.time);
                 // console.log(arr);
-                var _str; // если gmt совпадают
+                var _str = arr.join('</div><div>');
 
-
-                if (_this2.timeZone === gmtFromDb) {
-                  _str = arr.join('</div><div>');
-                  dateNumber.innerHTML = '<div>' + _str + '</div>';
-                } else {
-                  var prevDate = dateNumber.previousElementSibling;
-                  arr.forEach(function (val, k) {
-                    var firstH = val.split('-')[0].split(':')[0]; // 06
-
-                    var firstM = val.split('-')[0].split(':')[1]; // 00
-
-                    var secondH = val.split('-')[1].split(':')[0]; // 07
-
-                    var secondM = val.split('-')[1].split(':')[1]; // 30
-
-                    var a = +firstH + delta; // 02
-
-                    var b = +secondH + delta; //05
-
-                    if (Math.sign(a) === -1) {
-                      a = 24 + a;
-
-                      if (Math.sign(b) === -1) {
-                        b = 24 + b;
-                      }
-
-                      gmt();
-
-                      if (prevDate) {
-                        dateNumber.previousElementSibling.innerHTML = '<div>' + _str + '</div>';
-                      } else {// axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
-                      } // else {
-                      //     let prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
-                      //     let prevMonth = +dateNumber.getAttribute('date').split('.')[1];
-                      //     if (String(prevMonth).length < 2) {
-                      //         prevMonth = '0' + prevMonth;
-                      //     }
-                      //     let prevYear = +dateNumber.getAttribute('date').split('.')[2];
-                      //     console.log(prevNum+'.'+prevMonth+'.'+prevYear)
-                      //     console.log()
-                      //
-                      //     $('.time-intrevals-elem').each(function (k, val) {
-                      //         if ($(this).attr('date') === prevNum+'.'+prevMonth+'.'+prevYear) {
-                      //             console.log($(this))
-                      //             $(this).html('<div>' + str + '</div>');
-                      //         }
-                      //     })
-                      //
-                      // }
-
-                    } else {
-                      gmt();
-                      dateNumber.innerHTML = '<div>' + _str + '</div>';
-
-                      if (prevDate !== null) {
-                        $(dateNumber).children().slice(0, prevDate.childElementCount).remove();
-                      }
-                    }
-
-                    function gmt() {
-                      if (String(a).length < 2) {
-                        a = '0' + a;
-                      }
-
-                      if (String(b).length < 2) {
-                        b = '0' + b;
-                      }
-
-                      var newTimeInterval = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                      newArr.push(newTimeInterval);
-                      _str = newArr.join('</div><div>');
-                    }
-                  });
-                } // console.log(str);
-                // console.log(dateNumber.innerHTML);
-
+                dateNumber.innerHTML = '<div>' + _str + '</div>'; // ------ здесь был код из блокноа
               }
             }
           });
         });
+        var resObj = {
+          arr: objArr,
+          'method': 'setTimeIntervalsToTempGMT'
+        }; // console.log(resObj);
+        // ---- Добавление временных интервалов
+
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(resObj)); // ---- получение временных интервалов
+
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+          'method': 'getTimeIntervalsFromTempGMT'
+        })).then(function (response) {
+          var dataFromDB = response.data;
+          var newArr = []; // console.log(dataFromDB);
+
+          var timeInterval = $('.time-intrevals-from-db__item');
+          dataFromDB.forEach(function (val, k) {
+            var dayFromDB = val[0];
+            var timeFromDB = val[1]; // console.log(dayFromDB); // ..13.04.2021
+            // console.log(timeFromDB); // ..-2:00
+
+            timeInterval.each(function (k, val) {
+              var dateNumber = val;
+
+              if (dateNumber.getAttribute('date') === dayFromDB) {
+                // console.log(dateNumber);
+                var arr = timeFromDB.split(','); // console.log(arr)
+
+                arr.forEach(function (val, k) {
+                  var firstH = 24 + +val.split(':')[0]; // 06
+
+                  var firstM = val.split(':')[1]; // 00
+
+                  newArr.push(firstH + ':' + firstM);
+                });
+                console.log(newArr);
+                var str = newArr.join('</div><div>');
+                dateNumber.innerHTML = '<div>' + str + '</div>';
+              }
+            });
+          });
+        });
         setTimeout(function () {
-          _this2.preloader = false;
+          _this.preloader = false;
         }, 50);
       });
     },
     chooseTime: function chooseTime(event) {
-      var _this3 = this;
+      var _this2 = this;
 
       // ---- Для free-lesson возможность выбрать только одно занятие
       if (this.freeLesson) {
@@ -3057,18 +3062,18 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           day: day,
           time: time,
           payment: payment,
-          gmt: _this3.timeZone,
+          gmt: _this2.timeZone,
           'method': 'bookEvent'
         }; // console.log(obj)
 
         if (day !== null && time !== '') {
-          _this3.selectedTimeArray.push(obj);
+          _this2.selectedTimeArray.push(obj);
         }
       });
       console.log(this.selectedTimeArray); // this.selectedTimeArray = array.slice(0);
     },
     bookEvent: function bookEvent(event) {
-      var _this4 = this;
+      var _this3 = this;
 
       // console.log(selectedTimeArray);
       // нужно сделать проверку на логин, если не залогинен то открыть форму
@@ -3092,16 +3097,16 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
-              _this4.enterSkype = true; // $("#mysite").addClass("body-fixed");
+              _this3.enterSkype = true; // $("#mysite").addClass("body-fixed");
             } else {
-              if (_this4.selectedTimeArray.length !== 0) {
-                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this4.selectedTimeArray)); // ---- для бесплатного занятия
+              if (_this3.selectedTimeArray.length !== 0) {
+                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this3.selectedTimeArray)); // ---- для бесплатного занятия
 
-                if (_this4.freeLesson) {
+                if (_this3.freeLesson) {
                   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
                     'method': 'changeSatusOnActive'
                   }));
-                  _this4.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                  _this3.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
                 } else {
                   // --- для платного - страница оплаты
                   window.location.href = "/payment.php";
@@ -8561,7 +8566,7 @@ var render = function() {
               [
                 _vm._v("\n            Book a"),
                 _c("span", [_vm._v(" free ")]),
-                _vm._v(" half-hour lesson with a teacher right now\n        ")
+                _vm._v(" 30-min lesson with a teacher right now\n        ")
               ]
             )
           : _vm._e(),
@@ -8720,12 +8725,35 @@ var render = function() {
               _c(
                 "select",
                 {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.timeZone,
+                      expression: "timeZone"
+                    }
+                  ],
                   staticClass:
                     "calendar-app-header__element calendar-app-header__element--time-zone",
                   on: {
-                    click: function($event) {
-                      return _vm.switchTimeZone($event)
-                    }
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.timeZone = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        return _vm.switchTimeZone()
+                      }
+                    ]
                   }
                 },
                 _vm._l(_vm.timeZones, function(gmt) {
@@ -23966,7 +23994,7 @@ $(document).ready(function () {
         $('.main-text--skype').html(dataFromDB.skype); // ---------- подгрузка аватара
 
         if (dataFromDB.avatar.trim() !== '') {
-          $('.avatar').css('backgroundImage', 'url(' + dataFromDB.avatar + ')');
+          $('.avatar').css('backgroundImage', 'url(' + dataFromDB.avatar + ')'); // $('.avatar img').attr('src', dataFromDB.avatar);
         }
       });
     });

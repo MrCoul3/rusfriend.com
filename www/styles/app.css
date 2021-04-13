@@ -2057,6 +2057,8 @@
   background-image: none;
   width: 461px;
   box-shadow: none;
+  position: relative;
+  top: 77px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .about-page .about__element--left {
@@ -2163,7 +2165,7 @@
 }
 @media screen and (max-width: 767px) {
   #mysite .about-page .offers {
-    margin: 110px auto;
+    margin: 180px auto 110px;
   }
 }
 @media screen and (max-width: 500px) {
@@ -4096,13 +4098,13 @@
 #mysite .settings .settings-main-frame__elem--content .setting-content-elem .change-btn:hover {
   text-decoration: underline;
 }
-#mysite .settings .settings-main-frame__elem--content .setting-content-elem .download-avatar-btn {
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .avatar-btn {
   color: #0052B4;
   cursor: pointer;
   font-weight: 300;
   text-decoration: none;
 }
-#mysite .settings .settings-main-frame__elem--content .setting-content-elem .download-avatar-btn:hover {
+#mysite .settings .settings-main-frame__elem--content .setting-content-elem .avatar-btn:hover {
   text-decoration: underline;
 }
 #mysite .settings .settings-main-frame__elem--content .setting-content-elem .main-text {
