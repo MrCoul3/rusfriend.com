@@ -2859,7 +2859,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       this.preloader = true;
       var freeLesson = this.freeLesson;
       var obj = {};
-      var objArr = []; // ----- удаление неоплаченых бронирований
+      var obj2 = {};
+      var array = []; // ----- удаление неоплаченых бронирований
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'delUnpayedBooks'
@@ -2871,146 +2872,171 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         'method': 'getTimeIntervals'
       })).then(function (response) {
         // console.log(response.data);
-        var dataFromDB = response.data; // console.log(dataFromDB[0]);
+        var data = response.data; // console.log(dataFromDB[0]);
 
-        dataFromDB.forEach(function (dataFromDB, k) {
-          console.log(dataFromDB);
-          var gmtFromDb = dataFromDB.gmt;
+        data.forEach(function (val, k) {
+          // console.log(val);
+          var dayFromDb = val.day;
+          var timeFromDb = val.time;
+          var gmtFromDb = val.gmt;
 
-          var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
+          if (_this.timeZone !== gmtFromDb) {
+            // ----- func changeIntevals
+            var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
 
-          var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
-          var delta = timeZoneNum - gmtFromDbNum; // console.log(dataFromDB.day); // ...7.03.2021...
+            var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+            var delta = timeZoneNum - gmtFromDbNum; // console.log(timeFromDb)
 
-          $('.time-intrevals-elem').each(function (k, val) {
-            // console.log(val.getAttribute('date'));
-            var dateNumber = val;
-            var prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
-            var prevMonth = +dateNumber.getAttribute('date').split('.')[1];
+            var arr = timeFromDb.split(',');
+            var newArr = [];
+            var newArr2 = [];
+            arr.forEach(function (val, k) {
+              var prevNum = +dayFromDb.split('.')[0] - 1;
+              var prevMonth = +dayFromDb.split('.')[1];
 
-            if (String(prevMonth).length < 2) {
-              prevMonth = '0' + prevMonth;
+              if (String(prevMonth).length < 2) {
+                prevMonth = '0' + prevMonth;
+              }
+
+              var prevYear = +dayFromDb.split('.')[2];
+              var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+              var firstH = val.split('-')[0].split(':')[0]; // 06
+
+              var firstM = val.split('-')[0].split(':')[1]; // 00
+
+              var secondH = val.split('-')[1].split(':')[0]; // 07
+
+              var secondM = val.split('-')[1].split(':')[1]; // 30
+
+              var a = +firstH + delta; // 02
+
+              var b = +secondH + delta; //05
+
+              var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+
+              if (a < 0) {
+                // console.log(dayFromDb)
+                // console.log(time)
+                newArr.push(time);
+                obj = {
+                  day: prevDateNumber,
+                  time: newArr.join(', '),
+                  gmt: _this.timeZone
+                };
+              }
+
+              if (a >= 0) {
+                // console.log(dayFromDb)
+                // console.log(time)
+                newArr2.push(time);
+                obj2 = {
+                  day: dayFromDb,
+                  time: newArr2.join(', '),
+                  gmt: _this.timeZone
+                };
+              }
+            });
+
+            if (Object.keys(obj).length !== 0) {
+              array.push(obj);
             }
 
-            var prevYear = +dateNumber.getAttribute('date').split('.')[2]; // console.log(prevNum + '.' + prevMonth + '.' + prevYear)
+            if (Object.keys(obj2).length !== 0) {
+              array.push(obj2);
+            } // console.log(array)
+            // console.log(obj)
+            // console.log(obj2)
 
-            var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
 
-            if (dataFromDB.day === dateNumber.getAttribute('date')) {
-              // console.log(dateNumber.previousElementSibling)
-              var arr = dataFromDB.time.split(',');
+            var object = {
+              intervals: array,
+              'method': 'setToTempGMT'
+            };
+            axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(object));
+            axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+              'method': 'getFromTempGMT'
+            })).then(function (response) {
+              var data = response.data; // console.log(data);
 
-              if (_this.timeZone !== gmtFromDb) {
+              data.forEach(function (val, k) {
+                // console.log(val);
+                var dayFromDb = val[0];
+                var timeFromDb = val[1];
+                var arr = timeFromDb.split(',');
                 var newArr = [];
+                console.log(arr);
                 arr.forEach(function (val, k) {
-                  // console.log(val);
-                  var firstH = val.split('-')[0].split(':')[0]; // 06
+                  // console.log(val.split(' - '));
+                  var firstH = val.split(' - ')[0].split(':')[0]; // 06
 
-                  var firstM = val.split('-')[0].split(':')[1]; // 00
+                  var firstM = val.split(' - ')[0].split(':')[1]; // 00
 
-                  var secondH = val.split('-')[1].split(':')[0]; // 07
+                  var secondH = val.split(' - ')[1].split(':')[0]; // 07
 
-                  var secondM = val.split('-')[1].split(':')[1]; // 30
+                  var secondM = val.split(' - ')[1].split(':')[1]; // 30
 
-                  var a = +firstH + delta; // 02
-
-                  var b = +secondH + delta; //05
-
-                  if (String(a).length < 2) {
-                    a = '0' + a;
+                  if (+firstH < 0) {
+                    firstH = 24 + +firstH;
                   }
 
-                  if (String(b).length < 2) {
-                    b = '0' + b;
+                  if (+secondH < 0) {
+                    secondH = 24 + +secondH;
                   }
 
-                  var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                  newArr.push(time);
+                  var time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
+                  newArr.push(time); // console.log(time);
                 });
                 arr = [];
                 newArr.forEach(function (val, k) {
-                  // console.log(val)
                   arr.push(val);
                 });
-              } // для бесплатного занятия
+                $('.time-intrevals-elem').each(function (k, val) {
+                  var dateNumber = val;
 
+                  if (dayFromDb === dateNumber.getAttribute('date')) {
+                    if (freeLesson) {
+                      var _newArr = [];
+                      arr.forEach(function (val, k) {
+                        _newArr.push(val.split('-')[0]);
+                      });
 
-              if (freeLesson) {
-                var _newArr = [];
-                var negArr = []; // console.log(arr); // ["06:00 - 06:30",...
+                      var str = _newArr.join('</div><div>');
 
-                arr.forEach(function (val, k) {
-                  var firstH = val.split(' ')[0].split(':')[0]; // 06
+                      dateNumber.innerHTML = '<div>' + str + '</div>';
+                    } else {
+                      var _str = arr.join('</div><div>');
 
-                  if (+firstH < 0) {
-                    // console.log(dateNumber);
-                    // newArr.push(val.split(' ')[0]);
-                    negArr.push(val.split(' ')[0]); // перенос отрицательных интервалов в базу данных temp с датой на день раньше
-                  } else {
-                    _newArr.push(val.split('-')[0]);
+                      dateNumber.innerHTML = '<div>' + _str + '</div>';
+                    }
                   }
                 });
-                obj = {
-                  day: prevDateNumber,
-                  time: negArr.join(',')
-                };
-                objArr.push(obj);
-
-                var str = _newArr.join('</div><div>'); // console.log(str);
-                // console.log(dateNumber.innerHTML);
-
-
-                dateNumber.innerHTML = '<div>' + str + '</div>'; // для платного занятия
-              } else {
-                // console.log(dataFromDB.time);
-                // console.log(arr);
-                var _str = arr.join('</div><div>');
-
-                dateNumber.innerHTML = '<div>' + _str + '</div>'; // ------ здесь был код из блокноа
-              }
-            }
-          });
-        });
-        var resObj = {
-          arr: objArr,
-          'method': 'setTimeIntervalsToTempGMT'
-        }; // console.log(resObj);
-        // ---- Добавление временных интервалов
-
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(resObj)); // ---- получение временных интервалов
-
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
-          'method': 'getTimeIntervalsFromTempGMT'
-        })).then(function (response) {
-          var dataFromDB = response.data;
-          var newArr = []; // console.log(dataFromDB);
-
-          var timeInterval = $('.time-intrevals-from-db__item');
-          dataFromDB.forEach(function (val, k) {
-            var dayFromDB = val[0];
-            var timeFromDB = val[1]; // console.log(dayFromDB); // ..13.04.2021
-            // console.log(timeFromDB); // ..-2:00
-
-            timeInterval.each(function (k, val) {
+              });
+            });
+          } else {
+            $('.time-intrevals-elem').each(function (k, val) {
               var dateNumber = val;
 
-              if (dateNumber.getAttribute('date') === dayFromDB) {
-                // console.log(dateNumber);
-                var arr = timeFromDB.split(','); // console.log(arr)
+              if (dayFromDb === dateNumber.getAttribute('date')) {
+                var _arr = timeFromDb.split(',');
 
-                arr.forEach(function (val, k) {
-                  var firstH = 24 + +val.split(':')[0]; // 06
+                if (freeLesson) {
+                  var _newArr2 = [];
 
-                  var firstM = val.split(':')[1]; // 00
+                  _arr.forEach(function (val, k) {
+                    _newArr2.push(val.split('-')[0]);
+                  });
 
-                  newArr.push(firstH + ':' + firstM);
-                });
-                console.log(newArr);
-                var str = newArr.join('</div><div>');
-                dateNumber.innerHTML = '<div>' + str + '</div>';
+                  var str = _newArr2.join('</div><div>');
+
+                  dateNumber.innerHTML = '<div>' + str + '</div>';
+                } else {
+                  var _str2 = _arr.join('</div><div>');
+
+                  dateNumber.innerHTML = '<div>' + _str2 + '</div>';
+                }
               }
             });
-          });
+          }
         });
         setTimeout(function () {
           _this.preloader = false;
@@ -3175,11 +3201,10 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                   if (val.innerHTML.split('-')[0] === timeFromDB) {
                     val.classList.add('booked-free');
                   } // если время интервала меньше текущего - недоступно
+                  // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                  //     val.classList.add('booked-for-other-users');
+                  // }
 
-
-                  if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                    val.classList.add('booked-for-other-users');
-                  }
                 });
               }
             });
@@ -3202,11 +3227,10 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                   if (val.innerHTML.split('-')[0] === timeFromDB) {
                     val.classList.add('booked-free');
                   } // если время интервала меньше текущего - недоступно
+                  // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                  //     val.classList.add('booked-for-other-users');
+                  // }
 
-
-                  if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                    val.classList.add('booked-for-other-users');
-                  }
                 });
               }
             }); //--------- функция деактивации интервалов раньше текущего дня

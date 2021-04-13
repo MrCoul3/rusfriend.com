@@ -300,14 +300,14 @@ if ($request['method'] === 'changeSatusOnActive') {
 // -------- обработчики для изменения часового пояса
 // добавление интервалов, которые необходимо перенести на
 // другой день в БД
-if ($request['method'] === 'getTimeIntervalsFromTempGMT') {
-    $result = $objCalendar->getTimeIntervalsFromTempGMT();
-    echo json_encode($result);
+if ($request['method'] === 'setToTempGMT') {
+    $result = $objCalendar->setToTempGMT($request);
+    echo $result;
 }
 
-if ($request['method'] === 'setTimeIntervalsToTempGMT') {
-    $result = $objCalendar->setTimeIntervalsToTempGMT($request);
-    echo $result;
+if ($request['method'] === 'getFromTempGMT') {
+    $result = $objCalendar->getFromTempGMT();
+    echo json_encode($result);
 }
 
 //if ($request['method'] === 'delTimeIntervalsFromTempGMT') {

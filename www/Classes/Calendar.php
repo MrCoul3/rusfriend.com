@@ -141,7 +141,7 @@ class Calendar
         $this->dbAccess->query($query);
     }
 
-    public function getTimeIntervalsFromTempGMT()
+    public function getFromTempGMT()
     {
         $query = "SELECT `day`, `time` FROM `temp-gmt` WHERE 1=1";
         $result = $this->dbAccess->query($query);
@@ -149,50 +149,41 @@ class Calendar
         return $getTempIntervals;
     }
 
-    public function setTimeIntervalsToTempGMT($request)
+    public function setToTempGMT($request)
     {
+        echo "<pre>";
+        print_r($request['intervals']);
+        echo "</pre>";
         $err = [];
-//        $incr = "ALTER TABLE `temp-gmt` AUTO_INCREMENT=0;";
-//        $query = "DELETE FROM `temp-gmt`;";
-//        $del = $this->dbAccess->query($query);
-//        $reset = $this->dbAccess->query($incr);
-//        if ($del || $reset) {
-//            $err = [];
-//        } else {
-//            $err[] = 'не произведено удаление предыдущих записей';
-//        }
-//        echo "<pre>";
-//        print_r($request['arr']);
-//        echo "</pre>";
         $incr = "ALTER TABLE `temp-gmt` AUTO_INCREMENT=0;";
+        $query1 = "DELETE FROM `temp-gmt`;";
+        $del = $this->dbAccess->query($query1);
         $reset = $this->dbAccess->query($incr);
-        if (count($err) == 0) {
-            foreach ($request['arr'] as $k => $arr) {
-                $query = "DELETE FROM `temp-gmt` WHERE `day` = '{$arr['day']}';";
+        if ($del || $reset) {
+            $err = [];
+        } else {
+            $err[] = 'не произведено удаление предыдущих записей';
+        }
 
-                $del = $this->dbAccess->query($query);
+        if (count($err) == 0) {
+            foreach ($request['intervals'] as $k => &$arr) {
                 foreach ($arr as $k => &$val) {
                     if (!in_array($k, $this->requireFields)) {
-                        unset($arr[$k]);
+                        unset($request[$k]);
                     }
                     if ($val != '') {
                         $val = "'" . $val . "'";
                     }
                 }
-                $requestKeys = implode(',', array_keys($arr));
-                $requestVals = implode(',', $arr);
+                $requestKeys = implode(', ', array_keys($arr));
+                $requestVals = implode(', ', $arr);
                 $query = "INSERT INTO `temp-gmt` ({$requestKeys}) VALUES ({$requestVals});";
                 $result = $this->dbAccess->query($query);
-
             }
-
+        } else {
+            echo $err;
         }
-
-
-//        $query = "INSERT INTO `temp-gmt` ({$requestKeys}) VALUES ({$requestVals});";
-
     }
 
-//
 
 }

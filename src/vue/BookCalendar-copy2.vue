@@ -473,9 +473,7 @@
             getIntervalsFromDB: function () {
                 this.preloader = true;
                 let freeLesson = this.freeLesson;
-                let obj = {};
-                let obj2 = {};
-                let array = [];
+
                 // ----- удаление неоплаченых бронирований
                 axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
 
@@ -486,159 +484,40 @@
                 axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
                     .then((response) => {
                         // console.log(response.data);
-                        let data = response.data;
+                        let dataFromDB = response.data;
                         // console.log(dataFromDB[0]);
-                        data.forEach((val, k) => {
-                            // console.log(val);
-                            let dayFromDb = val.day;
-                            let timeFromDb = val.time;
-                            let gmtFromDb = val.gmt;
+                        dataFromDB.forEach((dataFromDB, k) => {
 
+                            let gmtFromDb = dataFromDB.gmt;
+                            let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                            let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+                            let delta = timeZoneNum - gmtFromDbNum;
+                            // console.log(dataFromDB.day); // ...7.03.2021...
 
-                            if (this.timeZone !== gmtFromDb) {
+                            $('.time-intrevals-elem').each((k, val) => {
+                                    let dateNumber = val;
 
-
-                                // ----- func changeIntevals
-                                let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
-                                let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
-                                let delta = timeZoneNum - gmtFromDbNum;
-                                // console.log(timeFromDb)
-
-                                let arr = timeFromDb.split(',');
-
-                                let newArr = [];
-                                let newArr2 = [];
-
-                                arr.forEach((val, k) => {
-
-                                    let prevNum = +dayFromDb.split('.')[0] - 1;
-                                    let prevMonth = +dayFromDb.split('.')[1];
+                                    let prevNum = +dateNumber.getAttribute('date').split('.')[0] - 1;
+                                    let prevMonth = +dateNumber.getAttribute('date').split('.')[1];
                                     if (String(prevMonth).length < 2) {
                                         prevMonth = '0' + prevMonth;
                                     }
-                                    let prevYear = +dayFromDb.split('.')[2];
-
+                                    let prevYear = +dateNumber.getAttribute('date').split('.')[2];
+                                    // console.log(prevNum + '.' + prevMonth + '.' + prevYear)
                                     let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
 
-                                    let firstH = val.split('-')[0].split(':')[0];// 06
-                                    let firstM = val.split('-')[0].split(':')[1];// 00
-                                    let secondH = val.split('-')[1].split(':')[0]; // 07
-                                    let secondM = val.split('-')[1].split(':')[1]; // 30
-                                    let a = +firstH + delta; // 02
-                                    let b = +secondH + delta; //05
+                                    if (dataFromDB.day === dateNumber.getAttribute('date')) {
+                                        // console.log(dateNumber.previousElementSibling)
+                                        let arr = dataFromDB.time.split(',');
 
-                                    let time = a + ':' + firstM + ' - ' + b + ':' + secondM;
 
-                                    if (a < 0) {
-                                        // console.log(dayFromDb)
-                                        // console.log(time)
-                                        newArr.push(time);
-                                        obj = {
-                                            day: prevDateNumber,
-                                            time: newArr.join(', '),
-                                            gmt: this.timeZone,
+                                        if (this.timeZone !== gmtFromDb) {
+
                                         }
-                                    }
-
-                                    if (a >= 0) {
-                                        // console.log(dayFromDb)
-                                        // console.log(time)
-                                        newArr2.push(time);
-                                        obj2 = {
-                                            day: dayFromDb,
-                                            time: newArr2.join(', '),
-                                            gmt: this.timeZone,
-                                        }
-                                    }
-
-                                });
-
-                                if (Object.keys(obj).length !== 0) {
-                                    array.push(obj);
-                                }
-                                if (Object.keys(obj2).length !== 0) {
-                                    array.push(obj2);
-                                }
-                                // console.log(array)
-                                // console.log(obj)
-                                // console.log(obj2)
-                                let object = {
-                                    intervals: array,
-                                    'method': 'setToTempGMT'
-                                }
-                                axios.post('/handle.php', JSON.stringify(object))
-
-                                axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
-                                    .then((response) => {
-
-                                        let data = response.data;
-                                        // console.log(data);
-                                        data.forEach((val, k) => {
-                                            // console.log(val);
-                                            let dayFromDb = val[0];
-                                            let timeFromDb = val[1];
-
-                                            let arr = timeFromDb.split(',');
-                                            let newArr = [];
-                                            console.log(arr);
-
-                                            arr.forEach((val, k) => {
-                                                // console.log(val.split(' - '));
-
-                                                let firstH = val.split(' - ')[0].split(':')[0];// 06
-                                                let firstM = val.split(' - ')[0].split(':')[1];// 00
-                                                let secondH = val.split(' - ')[1].split(':')[0]; // 07
-                                                let secondM = val.split(' - ')[1].split(':')[1]; // 30
-                                                if (+firstH < 0) {
-                                                    firstH = 24 + +firstH;
-                                                }
-                                                if (+secondH < 0) {
-                                                    secondH = 24 + +secondH;
-                                                }
-                                                let time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
-                                                newArr.push(time);
-                                                // console.log(time);
-
-                                            });
-
-                                            arr = [];
-                                            newArr.forEach((val, k) => {
-                                                arr.push(val);
-                                            })
-
-                                            $('.time-intrevals-elem').each((k, val) => {
-                                                let dateNumber = val;
-                                                if (dayFromDb === dateNumber.getAttribute('date')) {
-
-                                                    if (freeLesson) {
-                                                        let newArr = [];
-                                                        arr.forEach((val, k) => {
-                                                            newArr.push(val.split('-')[0]);
-                                                        })
-                                                        let str = newArr.join('</div><div>');
-                                                        dateNumber.innerHTML = '<div>' + str + '</div>';
-
-                                                    } else {
-                                                        let str = arr.join('</div><div>');
-                                                        dateNumber.innerHTML = '<div>' + str + '</div>';
-
-                                                    }
-                                                }
-                                            });
-                                        });
-
-                                    });
 
 
-                            } else {
-
-                                $('.time-intrevals-elem').each((k, val) => {
-                                    let dateNumber = val;
-                                    if (dayFromDb === dateNumber.getAttribute('date')) {
-                                        let arr = timeFromDb.split(',');
-
+                                        // для бесплатного занятия
                                         if (freeLesson) {
-
                                             let newArr = [];
                                             arr.forEach((val, k) => {
                                                 newArr.push(val.split('-')[0]);
@@ -646,16 +525,16 @@
                                             let str = newArr.join('</div><div>');
                                             dateNumber.innerHTML = '<div>' + str + '</div>';
 
+                                            // для платного занятия
                                         } else {
-
+                                            // console.log(dataFromDB.time);
+                                            // console.log(arr);
                                             let str = arr.join('</div><div>');
                                             dateNumber.innerHTML = '<div>' + str + '</div>';
-
                                         }
                                     }
-                                });
-                            }
-
+                                }
+                            );
                         })
 
                         setTimeout(() => {
@@ -663,6 +542,7 @@
                         }, 50);
 
                     });
+
             },
             chooseTime: function (event) {
                 // ---- Для free-lesson возможность выбрать только одно занятие
@@ -792,18 +672,17 @@
                     .then((response) => {
                         // console.log(response.data);
                         // получаем всю информацию о забронированных уроках по данному пользователю
+
                         let dataFromDB = response.data;
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
 
                         dataFromDB.forEach(function (val, k) {
                             // console.log(val[5]);
-
                             let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
                             let paymentFromDB = val[5];
-
                             if (userNameFromDB === getCookie('name') && (paymentFromDB === 'payed' || paymentFromDB === 'free')) {
                                 timeInterval.each(function (k, val) {
                                     if ($(this).attr('date') === dayFromDB) {
@@ -820,9 +699,9 @@
                                                 val.classList.add('booked-free');
                                             }
                                             // если время интервала меньше текущего - недоступно
-                                            // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                                            //     val.classList.add('booked-for-other-users');
-                                            // }
+                                            if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                                                val.classList.add('booked-for-other-users');
+                                            }
                                         })
                                     }
                                 })
@@ -848,9 +727,9 @@
                                                 val.classList.add('booked-free');
                                             }
                                             // если время интервала меньше текущего - недоступно
-                                            // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                                            //     val.classList.add('booked-for-other-users');
-                                            // }
+                                            if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                                                val.classList.add('booked-for-other-users');
+                                            }
                                         })
                                     }
                                 })
