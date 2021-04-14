@@ -16,11 +16,34 @@ $(document).ready(function () {
 
     }
 
+    // ----- закрытие на escape
+    $(this).keydown(function (eventObject) {
+        if (eventObject.which == 27) {
+            if ($('.login-form').hasClass('login-form-active') || $('.register-form').hasClass('register-form-active')) {
+                closeFormAnimation()
+            }
+        }
+    });
+    // ----------------------------------------
+
 
     function openLoginForm() {
         $(".btn-login").click(function () {
             if (!$(".login-form").hasClass('login-form-active')) {
-                $(".login-form").addClass('login-form-active');
+
+                $('.header').css('right', '8px');
+                $('.header__overhead').css('padding', '0 30px');
+
+                $(".login-form").addClass('login-form-active').animate({
+                    'opacity': '1'
+                }, 100);
+
+                $(".form-frame").animate({
+                    'left': '0px',
+                }, 200);
+                $(".register-form").animate({
+                    'opacity': '1'
+                },100);
                 $("#mysite").addClass("body-fixed");
                 // $('.header__overhead').addClass('header-fixed');
                 // $('.login-form .form-frame').animate({
@@ -30,30 +53,50 @@ $(document).ready(function () {
             }
         });
     }
+    function closeFormAnimation() {
+        $(".login-form").animate({
+            'opacity': '0'
+        },100);
+
+        $(".register-form").animate({
+            'opacity': '0'
+        },100);
+
+        setTimeout(function () {
+            $(".login-form").removeClass('login-form-active');
+            $(".register-form").removeClass('register-form-active')
+        },400);
+
+        $(".form-frame").animate({
+            'left': '-2000px',
+        }, 200);
+        $('.header').css('right', '0');
+        $('.header__overhead').css('padding', '0 20px');
+        $("#mysite").removeClass("body-fixed");
+        $(".login-invalid").addClass("login-invalid--disable");
+    }
 
     function closeLoginForm() {
         $(".form-close-btn").click(function () {
             delete localStorage.status;
-            if ($(".login-form").hasClass('login-form-active')) {
-                $(".login-form").removeClass('login-form-active');
-            }
-            if ($(".register-form").hasClass('register-form-active')) {
-                $(".register-form").removeClass('register-form-active');
-            }
-            $("#mysite").removeClass("body-fixed");
-            // $('.header__overhead').removeClass('header-fixed');
-            $(".login-invalid").addClass("login-invalid--disable");
+            closeFormAnimation();
         });
     }
 
     function changeForms() {
         $(".reg-log-changer").click(function () {
             if ($(".login-form").hasClass('login-form-active')) {
-                $(".login-form").removeClass('login-form-active');
-                $(".register-form").addClass("register-form-active");
+                $(".login-form").removeClass('login-form-active').animate({
+                    'opacity': '0'
+                },100);
+                $(".register-form").addClass("register-form-active").css(
+                    'opacity', '1');
             } else {
-                $(".login-form").addClass('login-form-active');
-                $(".register-form").removeClass("register-form-active");
+                $(".login-form").addClass('login-form-active').css(
+                    'opacity', '1');
+                $(".register-form").removeClass("register-form-active").animate({
+                    'opacity': '0'
+                },100);
             }
         });
     }
@@ -65,23 +108,24 @@ $(document).ready(function () {
             });
         });
     }
+
     function registerUser() {
         // закрытие формы
-        $(".register-form").removeClass("register-form-active");
+        // $(".register-form").removeClass("register-form-active");
+        closeFormAnimation()
         // открытие сообщение об успешной регистрации
         $(".register-success").addClass("register-success-active");
     }
 
     function authorizedUser() {
-        $(".login-form").removeClass("login-form-active");
-        $("#mysite").removeClass("body-fixed");
+        // $(".login-form").removeClass("login-form-active");
+        closeFormAnimation()
     }
 
     function changeLoginBtnToUserName() {
         $(".btn-login").addClass("disable");
         $(".user-login").removeClass("disable").addClass("active-flex");
     }
-
 
 
     function registration() {
@@ -175,13 +219,18 @@ $(document).ready(function () {
                     $(this).next("div").addClass("reg-check--disable");
                 });
             });
-            function getFormatDate(join){
+
+            function getFormatDate(join) {
                 join = join || ' '; // разделитель по дефолту
 
                 var d = new Date();
                 return addZero(d.getFullYear() + join + addZero(d.getMonth() + 1) + join + d.getDate());
             }
-            function addZero(num){ return +num < 10 ? '0' + num : num }
+
+            function addZero(num) {
+                return +num < 10 ? '0' + num : num
+            }
+
             // console.log(getFormatDate('.'));
             let registerDate = getFormatDate('.');
             // FETCH
@@ -243,7 +292,6 @@ $(document).ready(function () {
 
         });
     }
-
 
 
     function login() {
@@ -320,7 +368,7 @@ $(document).ready(function () {
                             // ---------- подгрузка аватара в header
                             if (data.avatar.trim() !== '') {
                                 // $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
-                                $('.user-login__elem--avatar').attr('src', '..' + data.avatar +'');
+                                $('.user-login__elem--avatar').attr('src', '..' + data.avatar + '');
                             }
                         }
                     } else {
@@ -437,6 +485,7 @@ $(document).ready(function () {
             'max-age': -1
         })
     }
+
     // ----------- COOKIE
     // ----------- setCookie
     function setCookie(name, value, options = {}) {
@@ -463,6 +512,7 @@ $(document).ready(function () {
 
         document.cookie = updatedCookie;
     }
+
     // ----------- getCookie
     function getCookie(name) {
         let matches = document.cookie.match(new RegExp(

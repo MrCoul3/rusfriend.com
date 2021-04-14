@@ -66,7 +66,6 @@ $(document).ready(function () {
         animateToOrigin($(".top-index-first-title"));
 
 
-
         function scrollAnimation() {
             document.addEventListener("scroll", function (e) {
                 // console.log(window.pageYOffset );
@@ -118,10 +117,11 @@ $(document).ready(function () {
                 }
             });
         }
+
         //end animation----------------------------------
 
 
-        function paralaksForMainPhoto(){
+        function paralaksForMainPhoto() {
             $(".top-index-photo__elem").each(function (key, val) {
                 val.addEventListener("mousemove", function (e) {
                     let positionX = e.clientX / window.innerWidth;
@@ -150,13 +150,23 @@ $(document).ready(function () {
                     if (response.data['success'] === false) {
                         // открытие формы логина
                         if (!$(".register-form").hasClass('register-form-active')) {
-                            $(".register-form").addClass('register-form-active');
+                            $(".register-form").addClass('register-form-active').animate({
+                                'opacity': '1'
+                            }, 100);
+                            $(".form-frame").animate({
+                                'left': '0px',
+                            }, 200);
                             $("#mysite").addClass("body-fixed");
                         }
                     } else {
                         if (response.data['status_2'] === 'new') {
                             $(location).attr('href', '/free-lesson.php');
                         } else {
+                            $('.check').addClass('check-active');
+                            setTimeout(function () {
+                                $('.check').removeClass('check-active');
+                            }, 1000);
+
                             console.log('пользователь уже бронировал бесплатный урок');
                         }
                     }

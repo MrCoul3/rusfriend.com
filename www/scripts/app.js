@@ -3176,15 +3176,16 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       })).then(function (response) {
         // console.log(response.data);
         // получаем всю информацию о забронированных уроках по данному пользователю
-        var dataFromDB = response.data; // console.log($(this).attr('date'));
+        var data = response.data; // console.log($(this).attr('date'));
 
         var timeInterval = $('.time-intrevals-from-db__item');
-        dataFromDB.forEach(function (val, k) {
+        data.forEach(function (val, k) {
           // console.log(val[5]);
           var userNameFromDB = val[1];
           var dayFromDB = val[2];
           var timeFromDB = val[3];
           var paymentFromDB = val[5];
+          var gmtFromDB = val[6];
 
           if (userNameFromDB === getCookie('name') && (paymentFromDB === 'payed' || paymentFromDB === 'free')) {
             timeInterval.each(function (k, val) {
@@ -3235,7 +3236,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
               }
             }); //--------- функция деактивации интервалов раньше текущего дня
 
-            var data = new Date();
+            var _data = new Date();
+
             timeInterval.each(function (k, val) {
               var date = $(this).attr('date');
               var day = date.split('.')[0];
@@ -3243,7 +3245,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
               // console.log(data.getMonth())
               // console.log(month <= data.getMonth() +1 )
 
-              if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+              if (day < _data.getDate() && month <= _data.getMonth() + 1 || month < _data.getMonth() + 1) {
                 // console.log($(this).children());
                 $(this).children().each(function (k, val) {
                   val.classList.add('booked-for-other-users');
@@ -22587,10 +22589,11 @@ $(document).ready(function () {
         } // console.log(e.target);
 
       });
-    }; // -----------------------------------------
+    }; // ----------- сброс активных состояний на escape
+
+
+    // -----------------------------------------
     // ----------- функционал смены языка
-
-
     var changeLanguage = function changeLanguage() {
       $(".btn-change-lang").click(function () {
         // console.log($(".lang-changer").hasClass('lang-changer-active'));
@@ -22825,7 +22828,7 @@ $(document).ready(function () {
         $('.header-menu--guide').addClass('menu-item-active');
       }
 
-      if ($('main').hasClass("courses")) {
+      if ($('main').hasClass("courses-page")) {
         $('.header-menu--courses').addClass('menu-item-active');
       }
 
@@ -22867,6 +22870,15 @@ $(document).ready(function () {
     coloredNavMenuElems();
     openUserMenu();
     langStateOnReload();
+    $(this).keydown(function (eventObject) {
+      if (eventObject.which == 27) {
+        if ($(".lang-changer").hasClass('active')) {
+          $(".lang-changer").removeClass('active');
+        }
+
+        $(".user-login-menu").slideUp(10);
+      }
+    });
     $('.social-net-btns__elem--tiktok').click(function (e) {
       e.preventDefault();
     });
@@ -23279,13 +23291,22 @@ $(document).ready(function () {
         if (response.data['success'] === false) {
           // открытие формы логина
           if (!$(".register-form").hasClass('register-form-active')) {
-            $(".register-form").addClass('register-form-active');
+            $(".register-form").addClass('register-form-active').animate({
+              'opacity': '1'
+            }, 100);
+            $(".form-frame").animate({
+              'left': '0px'
+            }, 200);
             $("#mysite").addClass("body-fixed");
           }
         } else {
           if (response.data['status_2'] === 'new') {
             $(location).attr('href', '/free-lesson.php');
           } else {
+            $('.check').addClass('check-active');
+            setTimeout(function () {
+              $('.check').removeClass('check-active');
+            }, 1000);
             console.log('пользователь уже бронировал бесплатный урок');
           }
         }
@@ -23327,12 +23348,31 @@ $(document).ready(function () {
     logout();
     passwordWhitespaceDisable($("input[type='password']"));
     resetOnFocus();
-  }
+  } // ----- закрытие на escape
+
+
+  $(this).keydown(function (eventObject) {
+    if (eventObject.which == 27) {
+      if ($('.login-form').hasClass('login-form-active') || $('.register-form').hasClass('register-form-active')) {
+        closeFormAnimation();
+      }
+    }
+  }); // ----------------------------------------
 
   function openLoginForm() {
     $(".btn-login").click(function () {
       if (!$(".login-form").hasClass('login-form-active')) {
-        $(".login-form").addClass('login-form-active');
+        $('.header').css('right', '8px');
+        $('.header__overhead').css('padding', '0 30px');
+        $(".login-form").addClass('login-form-active').animate({
+          'opacity': '1'
+        }, 100);
+        $(".form-frame").animate({
+          'left': '0px'
+        }, 200);
+        $(".register-form").animate({
+          'opacity': '1'
+        }, 100);
         $("#mysite").addClass("body-fixed"); // $('.header__overhead').addClass('header-fixed');
         // $('.login-form .form-frame').animate({
         //     'width': '364px',
@@ -23342,32 +23382,45 @@ $(document).ready(function () {
     });
   }
 
+  function closeFormAnimation() {
+    $(".login-form").animate({
+      'opacity': '0'
+    }, 100);
+    $(".register-form").animate({
+      'opacity': '0'
+    }, 100);
+    setTimeout(function () {
+      $(".login-form").removeClass('login-form-active');
+      $(".register-form").removeClass('register-form-active');
+    }, 400);
+    $(".form-frame").animate({
+      'left': '-2000px'
+    }, 200);
+    $('.header').css('right', '0');
+    $('.header__overhead').css('padding', '0 20px');
+    $("#mysite").removeClass("body-fixed");
+    $(".login-invalid").addClass("login-invalid--disable");
+  }
+
   function closeLoginForm() {
     $(".form-close-btn").click(function () {
       delete localStorage.status;
-
-      if ($(".login-form").hasClass('login-form-active')) {
-        $(".login-form").removeClass('login-form-active');
-      }
-
-      if ($(".register-form").hasClass('register-form-active')) {
-        $(".register-form").removeClass('register-form-active');
-      }
-
-      $("#mysite").removeClass("body-fixed"); // $('.header__overhead').removeClass('header-fixed');
-
-      $(".login-invalid").addClass("login-invalid--disable");
+      closeFormAnimation();
     });
   }
 
   function changeForms() {
     $(".reg-log-changer").click(function () {
       if ($(".login-form").hasClass('login-form-active')) {
-        $(".login-form").removeClass('login-form-active');
-        $(".register-form").addClass("register-form-active");
+        $(".login-form").removeClass('login-form-active').animate({
+          'opacity': '0'
+        }, 100);
+        $(".register-form").addClass("register-form-active").css('opacity', '1');
       } else {
-        $(".login-form").addClass('login-form-active');
-        $(".register-form").removeClass("register-form-active");
+        $(".login-form").addClass('login-form-active').css('opacity', '1');
+        $(".register-form").removeClass("register-form-active").animate({
+          'opacity': '0'
+        }, 100);
       }
     });
   }
@@ -23384,14 +23437,15 @@ $(document).ready(function () {
 
   function registerUser() {
     // закрытие формы
-    $(".register-form").removeClass("register-form-active"); // открытие сообщение об успешной регистрации
+    // $(".register-form").removeClass("register-form-active");
+    closeFormAnimation(); // открытие сообщение об успешной регистрации
 
     $(".register-success").addClass("register-success-active");
   }
 
   function authorizedUser() {
-    $(".login-form").removeClass("login-form-active");
-    $("#mysite").removeClass("body-fixed");
+    // $(".login-form").removeClass("login-form-active");
+    closeFormAnimation();
   }
 
   function changeLoginBtnToUserName() {
@@ -23975,7 +24029,15 @@ __webpack_require__.r(__webpack_exports__);
 
 $(document).ready(function () {
   console.log('settings init');
-  var user_id = null; // -------------------------
+  var user_id = null; // ----- закрытие на escape
+
+  $(this).keydown(function (eventObject) {
+    if (eventObject.which == 27) {
+      if ($('.settings').hasClass('settings-active')) {
+        closingfunctionality();
+      }
+    }
+  }); // -------------------------
   // moveSettingWindow();
 
   openSettings();
@@ -24005,7 +24067,8 @@ $(document).ready(function () {
       // console.log(localStorage.getItem('user_id'));
       $("#mysite").addClass("body-fixed");
       $('.settings-main-frame').addClass('settings-active');
-      $('.settings').addClass('settings-active'); // получение данных при открытии
+      $('.settings').addClass('settings-active');
+      $('.header').css('right', '8px'); // получение данных при открытии
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getUserInfo'
@@ -24026,11 +24089,16 @@ $(document).ready(function () {
   // ------------ close settings
 
 
+  function closingfunctionality() {
+    $("#mysite").removeClass("body-fixed");
+    $('.header').css('right', '0px');
+    $('.settings-main-frame').removeClass('settings-active');
+    $('.settings').removeClass('settings-active');
+  }
+
   function closeSettings() {
     $('.close-btn--settings').click(function () {
-      $("#mysite").removeClass("body-fixed");
-      $('.settings-main-frame').removeClass('settings-active');
-      $('.settings').removeClass('settings-active');
+      closingfunctionality();
     });
   } // -----------------------------------------
   // ------------ change settings

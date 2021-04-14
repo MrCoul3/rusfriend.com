@@ -54,7 +54,10 @@
                 <div switch-lang="<?=switchLang()?>" switchable-text="Для тех, кому нужен русский для работы" class="carousel-img-description">For those who need Russian for work</div>
             </div>
         </div>
-        <div switch-lang="<?=switchLang()?>" switchable-text="получить <br> бесплатное занятие" class="get-free-lesson-btn button red-btn">get a free <br>  lesson</div>
+        <div class="flex">
+            <div switch-lang="<?=switchLang()?>" switchable-text="пользователь уже использовал бесплатный урок" class="check">the user has already used the free lesson</div>
+            <div switch-lang="<?=switchLang()?>" switchable-text="получить <br> бесплатное занятие" class="get-free-lesson-btn button red-btn">get a free <br>  lesson</div>
+        </div>
     </section>
 
     <?php require 'pages/requires/offers.php' ?>  <!-- section offers -->

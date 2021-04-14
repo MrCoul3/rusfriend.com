@@ -46,6 +46,7 @@
       outline: none !important;
     }
   }
+
   .owl-carousel-2 {
     .owl-nav {
       display: flex;
@@ -55,19 +56,21 @@
       position: relative;
       bottom: 40px;
       font-size: 50px;
-      @include mediaWidth(1024){
+      @include mediaWidth(1024) {
       }
       @include mediaWidth(767) {
       }
-      .owl-prev, .owl-next  {
+
+      .owl-prev, .owl-next {
         color: $colorLightBlack;
         opacity: 0.3;
         transition: all ease-in .2s;
-        @include mediaWidth(1024){
+        @include mediaWidth(1024) {
         }
         @include mediaWidth(767) {
         }
-        &:hover{
+
+        &:hover {
           transition: all ease-in .2s;
           opacity: 1;
           background: white;
@@ -75,6 +78,7 @@
         }
       }
     }
+
     .owl-dots {
       display: none;
     }
@@ -88,6 +92,7 @@
     position: fixed;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.25);
+
     .video-container {
       //display: none;
       position: fixed;
@@ -98,15 +103,24 @@
       max-width: 600px;
       width: 100%;
       z-index: 9999;
+      @include mediaWidth(767) {
+        top: 30px;
+        max-width: 100%;
+      }
+
       &:hover .close-line {
         //display: block;
         //top: -30px;
         transform: translateY(-30px);
         transition: all ease-in .2s;
-        @include mediaWidth(1024){
+        @include mediaWidth(1024) {
+          transform: none;
+        }
+        @include mediaWidth(767) {
           transform: none;
         }
       }
+
       .close-line {
         transition: all ease-out .2s;
         position: absolute;
@@ -117,9 +131,10 @@
         color: #FFFFFF;
         text-align: center;
         line-height: 30px;
-        @include mediaWidth(1024){
+        @include mediaWidth(1024) {
           top: -30px;
         }
+
         .close-button {
           cursor: pointer;
           position: absolute;
@@ -130,12 +145,14 @@
           height: 20px;
           opacity: .7;
           transition: all ease-out .2s;
+
           &:hover {
             transition: all ease-in .2s;
             opacity: 1;
           }
         }
       }
+
       .detailed-about-school {
         position: absolute;
         width: 100%;
@@ -144,10 +161,10 @@
     }
 
   }
+
   .detailed-about-school-active {
     display: block;
   }
-
 
 
   // ------------------------------------------------
@@ -264,6 +281,7 @@
           @include mediaWidth(767) {
             margin: 23px auto;
           }
+
           span {
             line-height: 54px;
 
@@ -505,20 +523,56 @@
       }
     }
 
-    .get-free-lesson-btn {
-      text-decoration: none;
-      display: block;
-      margin: 0 auto;
-      margin-top: 50px;
+    .flex {
+      display: flex;
+      flex-direction: column;
+      margin-top: 60px;
+      position: relative;
       @include mediaWidth(1024) {
-        margin-top: 20px;
-        width: 300px;
-        height: 75px;
-        font-weight: 600;
-        font-size: 20px;
-        padding-top: 10px;
+        margin-top: 47px;
+      }
+      .check {
+        //display: none;
+        transition: all ease .5s;
+        opacity: 0!important;
+        width: 235px;
+        text-align: center;
+        font-style: italic;
+        color: $colorRed;
+        margin: 0 auto 10px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -46px;
+        @include mediaWidth(767) {
+          top: -38px;
+          font-size: 14px;
+          width: 205px;
+        }
+      }
+      .check-active {
+        transition: all ease .5s;
+        opacity: 1!important;
+      }
+      .get-free-lesson-btn {
+        text-decoration: none;
+        display: block;
+        margin: 0 auto;
+        //margin-top: 50px;
+        @include mediaWidth(1024) {
+          //margin-top: 20px;
+          width: 300px;
+          height: 75px;
+          font-weight: 600;
+          font-size: 20px;
+          padding-top: 10px;
+        }
       }
     }
+
+
+
+
   }
 
 
@@ -563,6 +617,7 @@
           transition: all ease-in .1s;
           transform: scale3d(1.05, 1.05, 1.05);
         }
+
         @include mediaWidth(1024) {
           //margin-left: 0;
           opacity: 1;
@@ -664,7 +719,8 @@
           }
 
         }
-        .about-slogan{
+
+        .about-slogan {
           &--name {
             top: 40px;
             visibility: hidden;

@@ -4,6 +4,7 @@
         width: 100vw;
         height: 100vh;
         position: fixed;
+        backdrop-filter: blur(4px);
         //overflow: scroll;
         @include mediaWidth(767) {
             background: #fff;
@@ -16,6 +17,8 @@
             background: #FFFFFF;
             border-radius: 18px;
             margin: 80px auto 0;
+            position: relative;
+
             @include mediaWidth(1024) {
                 margin-top: 0;
             }
@@ -213,17 +216,21 @@
     .login-form {
         display: none;
         z-index: 1100;
+        opacity: 0;
+        //transition: all ease .5s;
 
         .form-frame {
             width: 364px;
             height: 364px;
+            //transition: all ease .2s;
             //width: 0;
             //height: 0;
-            transition: all ease-in .05s;
+            //transition: all ease-in .05s;
             //@include mediaWidth(1024) {
             //    width: 270px;
             //    height: 270px;
             //}
+            left: -2000px;
             .form {
                 position: relative;
             }
@@ -316,6 +323,10 @@
                 }
             }
         }
+        //.form-frame-active {
+        //    left: 0;
+        //    transition: all ease 2s;
+        //}
     }
 
     .login-form-active {
@@ -325,6 +336,7 @@
     .register-form {
         z-index: 1100;
         display: none;
+        opacity: 1;
 
         .form-frame {
             height: 485px;

@@ -28,6 +28,16 @@ $(document).ready(function () {
             });
         }
 
+        // ----------- сброс активных состояний на escape
+        $(this).keydown(function (eventObject) {
+            if (eventObject.which == 27) {
+               if  ($(".lang-changer").hasClass('active')) {
+                   $(".lang-changer").removeClass('active');
+               }
+                $(".user-login-menu").slideUp(10);
+            }
+        });
+
         // -----------------------------------------
 
         // ----------- функционал смены языка
@@ -260,7 +270,7 @@ $(document).ready(function () {
             if ($('main').hasClass("guide")) {
                 $('.header-menu--guide').addClass('menu-item-active');
             }
-            if ($('main').hasClass("courses")) {
+            if ($('main').hasClass("courses-page")) {
                 $('.header-menu--courses').addClass('menu-item-active');
             }
             if ($('main').hasClass("about-page")) {

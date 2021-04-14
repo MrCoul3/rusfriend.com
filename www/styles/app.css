@@ -99,11 +99,22 @@
   width: 100%;
   z-index: 9999;
 }
+@media screen and (max-width: 767px) {
+  #mysite .about-school-video .video-container {
+    top: 30px;
+    max-width: 100%;
+  }
+}
 #mysite .about-school-video .video-container:hover .close-line {
   transform: translateY(-30px);
   transition: all ease-in 0.2s;
 }
 @media screen and (max-width: 1024px) {
+  #mysite .about-school-video .video-container:hover .close-line {
+    transform: none;
+  }
+}
+@media screen and (max-width: 767px) {
   #mysite .about-school-video .video-container:hover .close-line {
     transform: none;
   }
@@ -473,15 +484,48 @@
   background-image: url(../images/index/for-whom-work.png);
   margin-right: 0;
 }
-#mysite .for-whom .get-free-lesson-btn {
+#mysite .for-whom .flex {
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  position: relative;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .for-whom .flex {
+    margin-top: 47px;
+  }
+}
+#mysite .for-whom .flex .check {
+  transition: all ease 0.5s;
+  opacity: 0 !important;
+  width: 235px;
+  text-align: center;
+  font-style: italic;
+  color: #FF3E28;
+  margin: 0 auto 10px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -46px;
+}
+@media screen and (max-width: 767px) {
+  #mysite .for-whom .flex .check {
+    top: -38px;
+    font-size: 14px;
+    width: 205px;
+  }
+}
+#mysite .for-whom .flex .check-active {
+  transition: all ease 0.5s;
+  opacity: 1 !important;
+}
+#mysite .for-whom .flex .get-free-lesson-btn {
   text-decoration: none;
   display: block;
   margin: 0 auto;
-  margin-top: 50px;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .for-whom .get-free-lesson-btn {
-    margin-top: 20px;
+  #mysite .for-whom .flex .get-free-lesson-btn {
     width: 300px;
     height: 75px;
     font-weight: 600;
@@ -1270,6 +1314,7 @@
   font-weight: 600;
   text-decoration: none;
   color: #455A64;
+  transition: all ease 0.2s;
 }
 @media screen and (max-width: 1024px) {
   #mysite .header__lower .header-menu a {
@@ -1284,6 +1329,7 @@
   }
 }
 #mysite .header__lower .header-menu a:hover {
+  transition: all ease 0.2s;
   color: #FF3E28;
 }
 @media screen and (max-width: 767px) {
@@ -1468,6 +1514,8 @@
   width: 100vw;
   height: 100vh;
   position: fixed;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
 }
 @media screen and (max-width: 767px) {
   #mysite .authorization-forms {
@@ -1481,6 +1529,7 @@
   background: #FFFFFF;
   border-radius: 18px;
   margin: 80px auto 0;
+  position: relative;
 }
 @media screen and (max-width: 1024px) {
   #mysite .authorization-forms .form-frame {
@@ -1659,11 +1708,12 @@
 #mysite .login-form {
   display: none;
   z-index: 1100;
+  opacity: 0;
 }
 #mysite .login-form .form-frame {
   width: 364px;
   height: 364px;
-  transition: all ease-in 0.05s;
+  left: -2000px;
 }
 #mysite .login-form .form-frame .form {
   position: relative;
@@ -1755,6 +1805,7 @@
 #mysite .register-form {
   z-index: 1100;
   display: none;
+  opacity: 1;
 }
 #mysite .register-form .form-frame {
   height: 485px;
@@ -2170,7 +2221,7 @@
 }
 @media screen and (max-width: 500px) {
   #mysite .about-page .offers {
-    margin: 70px auto;
+    margin: 115px auto 70px;
   }
 }
 
@@ -3993,6 +4044,8 @@
 
 #mysite .settings {
   visibility: hidden;
+  transition: all ease 0.2s;
+  opacity: 0;
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -4174,9 +4227,12 @@
   display: block;
 }
 #mysite .settings-active {
+  opacity: 1;
   visibility: visible;
   left: 0 !important;
   transition: all ease 0.2s;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
 }
 #mysite .arcticmodal-overlay, #mysite .arcticmodal-container {
   z-index: 1500;

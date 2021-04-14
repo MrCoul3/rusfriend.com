@@ -1,7 +1,16 @@
 import axios from 'axios';
+
 $(document).ready(function () {
         console.log('settings init');
         let user_id = null;
+        // ----- закрытие на escape
+        $(this).keydown(function (eventObject) {
+            if (eventObject.which == 27) {
+                if ($('.settings').hasClass('settings-active')) {
+                    closingfunctionality()
+                }
+            }
+        })
         // -------------------------
         // moveSettingWindow();
         openSettings();
@@ -34,6 +43,7 @@ $(document).ready(function () {
                 $("#mysite").addClass("body-fixed");
                 $('.settings-main-frame').addClass('settings-active');
                 $('.settings').addClass('settings-active');
+                $('.header').css('right', '8px');
                 // получение данных при открытии
                 axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
                     .then((response) => {
@@ -52,16 +62,24 @@ $(document).ready(function () {
 
             })
         }
+
         // -----------------------------
 
         // ------------ close settings
+        function closingfunctionality() {
+            $("#mysite").removeClass("body-fixed");
+            $('.header').css('right', '0px');
+            $('.settings-main-frame').removeClass('settings-active');
+            $('.settings').removeClass('settings-active');
+        }
+
         function closeSettings() {
             $('.close-btn--settings').click(function () {
-                $("#mysite").removeClass("body-fixed");
-                $('.settings-main-frame').removeClass('settings-active');
-                $('.settings').removeClass('settings-active');
+                closingfunctionality();
             });
+
         }
+
         // -----------------------------------------
 
         // ------------ change settings
@@ -256,14 +274,14 @@ $(document).ready(function () {
                                         confirmationCodeText = 'введите код подтверждения';
                                         sendCodeText = 'вам на почту отправлен код подтверждения';
                                         btnConfText = 'подтвердить';
-                                        enterEmailText ='введите email';
+                                        enterEmailText = 'введите email';
                                         change = 'изменить';
-                                        incorCode ='неверный код подтверждения';
+                                        incorCode = 'неверный код подтверждения';
                                     } else {
                                         confirmationCodeText = 'enter the confirmation code';
                                         sendCodeText = 'a confirmation code has been sent to your email address';
                                         btnConfText = 'confirm';
-                                        enterEmailText ='enter email';
+                                        enterEmailText = 'enter email';
                                         change = 'change';
                                         incorCode = 'invalid confirmation code';
                                     }
@@ -341,14 +359,16 @@ $(document).ready(function () {
             // -----------------------------------------
 
         }
+
         // -----------------------------------------
-    // ----------- getCookie
-    function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-    //----------------------------------------------
+        // ----------- getCookie
+        function getCookie(name) {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        //----------------------------------------------
     }
 );

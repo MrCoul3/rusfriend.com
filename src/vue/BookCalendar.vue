@@ -792,17 +792,17 @@
                     .then((response) => {
                         // console.log(response.data);
                         // получаем всю информацию о забронированных уроках по данному пользователю
-                        let dataFromDB = response.data;
+                        let data = response.data;
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
 
-                        dataFromDB.forEach(function (val, k) {
+                        data.forEach(function (val, k) {
                             // console.log(val[5]);
-
                             let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
                             let paymentFromDB = val[5];
+                            let gmtFromDB = val[6];
 
                             if (userNameFromDB === getCookie('name') && (paymentFromDB === 'payed' || paymentFromDB === 'free')) {
                                 timeInterval.each(function (k, val) {
