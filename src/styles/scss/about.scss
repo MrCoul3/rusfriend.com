@@ -7,6 +7,7 @@
 
     .about {
       padding-top: 300px;
+      font-family: Montserrat, "Arial Black", sans-serif;
       @include mediaWidth(767) {
         padding-top: 100px;
         padding-bottom: 100px;
@@ -60,7 +61,7 @@
             transform: none;
           }
           .owl-dots {
-            margin-top: 5px;
+            margin-top: 60px;
           }
         }
 

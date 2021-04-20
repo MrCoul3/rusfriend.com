@@ -10,7 +10,7 @@ require("vendor/autoload.php");
             <div class="owl-carousel owl-carousel-3 owl-theme about__element about__element--left">
                 <img
                         class="owl-carousel__element owl-carousel__element--photo"
-                        src="images/index/top-index-main-photo.png">
+                        about-social-net__elem about-social-net__elem--insta   src="images/index/top-index-main-photo.png">
                 <img
                         class="owl-carousel__element owl-carousel__element--diplom" src="images/about/diplom.png">
                 <img
@@ -20,7 +20,7 @@ require("vendor/autoload.php");
             <div class="about__element about__element--right">
                 <h1 switch-lang="<?= switchLang() ?>" switchable-text="Привет!" class="title about-title">Hello!</h1>
                 <div class="about-social-net">
-                    <a class="about-social-net__elem about-social-net__elem--insta" href="../..">
+                    <a class="about-social-net__elem about-social-net__elem--insta" href="https://www.instagram.com/svetlana_totrova/" target="_blank">
                         <!--img(src="../images/icons/about-insta-icon.svg")--></a>
                     <a class="about-social-net__elem about-social-net__elem--tiktok" href="../..">
                         <!--img(src="../images/icons/about-tiktok.svg")--></a>

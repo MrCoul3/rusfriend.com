@@ -12,11 +12,13 @@
     @include mediaWidth(767) {
       //padding-top: 85px;
     }
+
     .description {
       span {
         color: $colorRed;
       }
     }
+
     &__element {
       &--main-title {
         margin: 0 auto;
@@ -30,9 +32,11 @@
           font-size: 10px;
         }
       }
+
       &--instruction {
 
       }
+
       &--calendar-app {
 
       }
@@ -44,22 +48,27 @@
       @include mediaWidth(767) {
         display: none;
       }
+
       &__element {
         font-size: 16px;
         color: rgba(0, 0, 0, 0.35);
+
         &--separator {
           margin: auto 5px;
         }
       }
     }
+
     .calendar-app {
       position: relative;
       background: #EFF4F9;
       box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.25);
       margin: 0 auto;
+
       .decor-line {
         margin-bottom: 30px;
       }
+
       .calendar-app-header {
         display: flex;
         align-items: center;
@@ -79,6 +88,7 @@
             @include mediaWidth(767) {
               width: auto;
             }
+
             .month {
               margin-left: 10px;
               color: $colorLightBlack;
@@ -107,6 +117,7 @@
               @include mediaWidth(767) {
                 width: 24px;
               }
+
               &--left-btn {
                 background-image: url("../images/icons/month-left-btn.svg");
               }
@@ -116,6 +127,7 @@
               }
             }
           }
+
           &--title {
             color: $colorLightBlack;
             font-weight: 600;
@@ -123,6 +135,7 @@
               display: none;
             }
           }
+
           &--time-zone {
             font-family: 'Montserrat', sans-serif;
             //right: 20px;
@@ -151,13 +164,16 @@
           }
         }
       }
+
       .calendar-app-content {
         display: flex;
         flex-direction: column;
         width: 100%;
+
         .decor-dates {
           display: flex;
           justify-content: space-evenly;
+
           &__elem {
             max-width: 130px;
             width: 100%;
@@ -167,26 +183,32 @@
             margin-bottom: 12px;
           }
         }
+
         .calendar-app-content-col {
           display: flex;
           justify-content: space-evenly;
+
           .calendar-app-content-day, .calendar-app-content-number {
             max-width: 130px;
             width: 100%;
             text-align: center;
           }
+
           .calendar-app-content-day {
             line-height: 35px;
             height: 30px;
           }
+
           .calendar-app-content-number {
             border-radius: 0 0 10px 10px;
             height: 35px;
           }
         }
+
         .time-intrevals-from-db {
           display: flex;
           justify-content: space-evenly;
+
           &__item {
             max-width: 130px;
             width: 100%;
@@ -203,17 +225,20 @@
             @include mediaWidth(320) {
               font-size: 10px;
             }
+
             div {
               margin: 20px 0;
               color: #006660;
               cursor: pointer;
               transition: all ease-out .1s;
+
               &:hover {
                 transition: all ease-in .1s;
                 background: $colorRed;
                 border-radius: 5px;
                 color: white;
               }
+
               @include mediaWidth(1024) {
                 &:hover {
                   background: transparent;
@@ -226,16 +251,31 @@
               }
             }
             .selected-time {
-              background: $colorRed!important;
+              background: $colorRed !important;
               border-radius: 5px;
-              color: white!important;
+              color: white !important;
             }
+
+            .unpayed-book {
+              background: #F6D200!important;
+              border-radius: 5px;
+              color: white !important;
+              &:hover {
+                transition: none;
+                background: #F6D200;
+                color: inherit;
+              }
+            }
+
+
+
           }
         }
 
         td, th {
           width: 2%;
         }
+
         th {
           border-top: 5px solid green;
           border-radius: 5px 5px 0 0;
@@ -247,13 +287,15 @@
           color: white;
           font-weight: bold;
         }
-        .decor-element-active  {
+
+        .decor-element-active {
           height: 15px;
           border-radius: 10px 10px 0 0;
           margin: 0;
         }
 
       }
+
       .book-btn {
         font-size: 16px;
         background-color: $colorRed;
@@ -262,6 +304,7 @@
         line-height: 43px;
         margin: 0px auto;
       }
+
       .tegs {
         display: flex;
         justify-content: center;
@@ -274,6 +317,7 @@
           font-size: 12px;
           padding: 0 10px 20px;
         }
+
         &__element {
           display: flex;
           align-items: center;
@@ -281,6 +325,7 @@
           @include mediaWidth(767) {
             margin-right: 5px;
           }
+
           .circle {
             width: 14px;
             height: 14px;
@@ -293,12 +338,15 @@
               height: 10px;
               border-radius: 10px;
             }
+
             &--booked {
               background: #34CFBE;
             }
+
             &--available {
               background: #006660;
             }
+
             &--unavailable {
               background: #DBDEE1;
             }
@@ -306,6 +354,7 @@
         }
       }
     }
+
     //.enter-your-skype-wrap {
     //  top: 0;
     //  position: absolute;
@@ -341,9 +390,11 @@
       @include mediaWidth(360) {
         height: 230px;
       }
+
       &__element {
         text-align: center;
       }
+
       .flex {
         display: flex;
         align-items: center;
@@ -352,6 +403,7 @@
           flex-direction: column;
         }
       }
+
       .skype-icon-for-input {
         background-image: url("../images/icons/skype-ico.svg");
         width: 21px;
@@ -364,6 +416,7 @@
         }
 
       }
+
       .input-skype {
         text-align: left;
         width: 212px;
@@ -380,6 +433,7 @@
           margin: 6px auto;
         }
       }
+
       .send-skype {
         width: 72px;
         height: 36px;
@@ -388,6 +442,7 @@
         font-size: 18px;
         line-height: 32px;
       }
+
       .validation-skype {
         position: absolute;
         color: $colorRed;
@@ -401,6 +456,7 @@
         color: white;
         font-weight: normal;
       }
+
       h2 {
         font-weight: 600;
         margin-bottom: 20px;
@@ -410,17 +466,19 @@
     .booked-for-this-user {
       background: $colorTurquoise;
       border-radius: 5px;
-      color: white!important;
-      pointer-events: none;
-
+      color: white !important;
     }
+
     .booked-for-other-users {
       color: $colorDisable !important;
       pointer-events: none;
     }
+
     .booked-free {
       display: none;
     }
+
+
 
   }
 

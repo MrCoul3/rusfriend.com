@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+    block sharedVars
+    head
+        title Страница оплаты
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        meta(charset='utf-8')
+    body#mysite(class='payment-page')
+        header.header
+            div.logo
+            div.instruction
+                p.instruction__item 1. Choose a convenient time for you
+                p.instruction__item.separator >
+                p.instruction__item 2. Pay for the lesson
+                p.instruction__item.separator >
+                p.instruction__item 3. Prepare for the lesson
+        main.payment
+            section.payment-gateway.inner
+                div.payment-gateway__elem.payment-gateway__elem--event
+                    div.payment-gateway-head
+                        p.payment-gateway-head__title Make a payment to book a lesson
+                    div.decor-line
+                    div.payment-gateway-main
+                        p.payment-gateway-main__descr To pay for the lesson, you need to transfer it to a PayPal account
+                        p.payment-gateway-main__price $25
+                        div.payment-gateway-main__container.flex
+                            a(href='https://www.paypal.com/paypalme/svetlanatotr?locale.x=ru_RU').payment-gateway-main__quick-link Link for quick payment
+                            div.payment-gateway-main__faq
+                        p.payment-gateway-main__adress-descr Address of the payee
+                        p.payment-gateway-main__adress-email svetlanatotr@gmail.com
+                        div.button.payment-gateway-main__confirm-btn confirm payment
+                div.payment-gateway__elem.payment-gateway__elem--info
+            section.faq
+        footer.footer
+            div.decor-line.decor-line--footer
+            div.footer-content
+                a(href="/index.php").footer-content__element.footer-content__element--logo
+                    //img(src="../images/icons/logo.svg", alt="logo").footer-content__element.footer-content__element--logo
+                div.footer-content__element.footer-content__element--text
+                    h2.footer-questions Если возникли вопросы:
+                    //a(href="../")
+                    h2.footer-email svetlana.totr@gmail.com
+                    //a(href="../")
+                    //    h2.footer-skype @svetlana.totr
+                div.footer-content__element.social-net-btns
+                    a(href="https://www.instagram.com/svetlana_totrova/" target="_blank").social-net-btns__elem.social-net-btns__elem--instagram
+                        //img(src="../images/icons/insta-icon.svg")
+                    a(href="/").social-net-btns__elem.social-net-btns__elem--tiktok
+                        //img(src="../images/icons/tiktok.svg")

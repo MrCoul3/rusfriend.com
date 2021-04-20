@@ -13,10 +13,11 @@
 
         <div class="decor-line"></div>
         <div class="my-students-content">
-            <div v-for="arr in array" class="student">
+            <div v-for="arr in array" :data-name="arr.name" class="student">
                 <div class="wrap">
                     <div class="student__elem student__elem--name">
-                        <div class="student-name-icon"></div>
+                        <img v-if="arr.avatar" :src="arr.avatar" class="student-name-icon">
+                        <img v-else src="../images/icons/user-ico.svg" class="student-name-icon">
                         <div class="student-name-name">{{arr.name}}</div>
                     </div>
 
@@ -28,7 +29,7 @@
                         {{arr.status}}
                     </div>
                     <div class="student__elem student__elem--actions">
-                        <div class="student-actions-invite">отправить приглашение на урок</div>
+<!--                        <div class="student-actions-invite">отправить приглашение на урок</div>-->
                         <div class="student-actions-message">написать сообщение</div>
                         <div :status="arr.status" :email="arr.email" @click="blockUser($event)"
                              class="student-actions-ban">{{arr.text}}

@@ -28,8 +28,8 @@ if ($request['method'] == 'requireAdminComponents') {
     <div class="admin-menu__element admin-menu__element--mycalendar" type="my-calendar">Мой календарь</div>
     <div class="admin-menu__element admin-menu__element--myschedule" type="my-schedule">Мое расписание</div>
     <div class="admin-menu__element admin-menu__element--mystudents" type="my-students">Мои ученики</div>
-    <div class="admin-menu__element admin-menu__element--messages" type="my-messages">Сообщения</div>
-    <div class="admin-menu__element admin-menu__element--reviews" type="my-reviews">Отзывы</div>
+<!--    <div class="admin-menu__element admin-menu__element--messages" type="my-messages">Сообщения</div>-->
+<!--    <div class="admin-menu__element admin-menu__element--reviews" type="my-reviews">Отзывы</div>-->
 </nav>
 
 <div class="decor-line decor-line--nav-menu admin-inner"></div>

@@ -390,7 +390,7 @@
                 });
                 axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
                     .then((response) => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         let data = response.data;
                         if (data !== null) {
                             $('.calendar-table-day').each((k, val) => {
@@ -413,6 +413,7 @@
                                         if (this.timeZone === gmtFromDb) {
                                             str = arrTime.join('</span><span>'); // ..06:00 - 06:30</span><span> 06:30 - 07:00..
                                             // let dayTime = day.find('.day-time')[0];
+
                                         } else {
                                             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
                                             let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
@@ -421,6 +422,7 @@
                                             // console.log(gmtFromDbNum);
                                             // console.log(delta);
                                             let newArrTime = [];
+
                                             arrTime.forEach((val, k)=> {
                                                 // console.log(val.split('-')); //["06:00 ", " 07:30"]
                                                 let firstH = val.split('-')[0].split(':')[0];// 06

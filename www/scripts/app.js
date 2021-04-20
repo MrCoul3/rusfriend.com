@@ -2034,9 +2034,8 @@ __webpack_require__.r(__webpack_exports__);
 function getCookie(name) {
   var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
   return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+} // let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 
-var selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2056,7 +2055,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       currentMonth: null,
       enterSkype: false,
       validationSkype: false,
-      showPreLoader: true
+      showPreLoader: true,
+      selectedTimeArray: []
     };
   },
   props: {
@@ -2066,6 +2066,10 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     typeOfLesson: {
       required: true,
       "default": 'private'
+    },
+    timeZone: {
+      required: true,
+      "default": 'GMT +03:00'
     }
   },
   beforeMount: function beforeMount() {
@@ -2095,6 +2099,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
     this.setCurrentMonth();
   },
   methods: {
+    // ---- ФУНКЦИОНАЛ ЛОГИКИ КАЛЕНДАРЯ ---- \\
+    // установка тек месяца
     setCurrentMonth: function setCurrentMonth() {
       if (String(this.numberMonthOfFirstDayOfWeek + 1).length === 1) {
         this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
@@ -2160,6 +2166,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         });
       }
     },
+    // дата понедельника
     DateOfMondayInWeek: function DateOfMondayInWeek(year, weekNumber) {
       for (var a = 1;; a++) {
         if (new Date(year, 0, a).getDay() == 1) break;
@@ -2169,6 +2176,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
       this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth();
       return new Date(year, 0, a);
     },
+    // логика календаря
     weekCalendar: function weekCalendar() {
       var numOfDayInMonth = new Date(this.year, this.numberMonthOfFirstDayOfWeek + 1, 0).getDate(); // число дней в текущем мес
 
@@ -2230,6 +2238,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
 
       this.getIntervalsFromDB();
     },
+    // подсветка текущего дня
     lightingOfToday: function lightingOfToday() {
       var dayNum = document.querySelectorAll('.calendar-app-content-number');
       var dayName = $('.calendar-app-content-day');
@@ -2244,6 +2253,9 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         }
       });
     },
+    // ----------------------------------------
+    // ---- ФУНКЦИИ ДЛЯ РАБОТЫ С ИНТЕРВАЛАМИ ---- \\
+    // получить и отобразить все интервалы
     getIntervalsFromDB: function getIntervalsFromDB() {
       $('.time-intrevals-elem ').each(function (k, val) {
         val.innerHTML = '';
@@ -2275,7 +2287,10 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         }
       });
     },
+    // выбор свободного интервала для замены
     chooseTime: function chooseTime(event) {
+      var _this = this;
+
       console.log('chooseTime'); // console.log(event.target);
 
       $('.time-intrevals-elem div').removeClass('selected-time');
@@ -2287,7 +2302,8 @@ var selectedTimeArray = []; // пришлось ввести, так как из
         selectedTime.classList.add('selected-time');
       }
 
-      selectedTimeArray = [];
+      this.selectedTimeArray = []; // selectedTimeArray = [];
+
       var userName = this.userName;
       var typeOfLesson = this.typeOfLesson;
       $('.selected-time').each(function (k, val) {
@@ -2300,22 +2316,25 @@ var selectedTimeArray = []; // пришлось ввести, так как из
           day: day,
           time: time,
           payment: 'payed',
+          gmt: _this.timeZone,
           'method': 'bookEvent'
         };
         console.log(obj);
 
         if (day !== null && time !== '') {
-          selectedTimeArray.push(obj);
+          _this.selectedTimeArray.push(obj); // selectedTimeArray.push(obj);
+
         }
       });
-      console.log(selectedTimeArray); // this.selectedTimeArray = array.slice(0);
+      console.log(this.selectedTimeArray); // console.log(selectedTimeArray);
+      // this.selectedTimeArray = array.slice(0);
     },
     // "изменить время урока"
     bookEvent: function bookEvent(event) {
-      if (selectedTimeArray.length !== 0) {
+      if (this.selectedTimeArray.length !== 0) {
         this.$emit('update');
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(selectedTimeArray));
-        this.reload += 1;
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(this.selectedTimeArray));
+        this.reload += 1; // всплывающая подсказка "нужно выбрать время урока"
       } else {
         // console.log($(event.target));
         $(event.target).prev(".prompt").fadeTo("slow", 1);
@@ -2378,6 +2397,7 @@ var selectedTimeArray = []; // пришлось ввести, так как из
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
 //
 //
 //
@@ -2861,10 +2881,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       var obj = {};
       var obj2 = {};
       var array = []; // ----- удаление неоплаченых бронирований
+      // axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
-        'method': 'delUnpayedBooks'
-      }));
       $('.time-intrevals-elem ').each(function (k, val) {
         val.innerHTML = '';
       });
@@ -2963,8 +2981,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                 var dayFromDb = val[0];
                 var timeFromDb = val[1];
                 var arr = timeFromDb.split(',');
-                var newArr = [];
-                console.log(arr);
+                var newArr = []; // console.log(arr);
+
                 arr.forEach(function (val, k) {
                   // console.log(val.split(' - '));
                   var firstH = val.split(' - ')[0].split(':')[0]; // 06
@@ -3046,14 +3064,18 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     chooseTime: function chooseTime(event) {
       var _this2 = this;
 
-      // ---- Для free-lesson возможность выбрать только одно занятие
+      console.log('choose'); // ---- Для free-lesson возможность выбрать только одно занятие
+
       if (this.freeLesson) {
         $('.selected-time').removeClass('selected-time');
       }
 
-      var selectedTime = event.target;
+      if ($('.selected-time').hasClass('unpayed-book')) {}
 
-      if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
+      var selectedTime = event.target;
+      console.log();
+
+      if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book')) {
         // console.log(event.target);
         if (selectedTime.className.includes('selected-time')) {
           selectedTime.classList.remove('selected-time');
@@ -3111,7 +3133,15 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         if (response.data['success'] === false) {
           // открытие формы логина
           if (!$(".login-form").hasClass('login-form-active')) {
-            $(".login-form").addClass('login-form-active');
+            $(".login-form").addClass('login-form-active').animate({
+              'opacity': '1'
+            }, 100);
+            $(".form-frame").animate({
+              'left': '0px'
+            }, 200);
+            $(".register-form").animate({
+              'opacity': '1'
+            }, 100);
             $("#mysite").addClass("body-fixed");
           }
         } else {
@@ -3171,6 +3201,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     // функция изменения состояния интервала в календаре при
     // забронированных интервалах для данного пользователя
     changeStateOfItem: function changeStateOfItem() {
+      var _this4 = this;
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getLessons'
       })).then(function (response) {
@@ -3180,35 +3212,97 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
 
         var timeInterval = $('.time-intrevals-from-db__item');
         data.forEach(function (val, k) {
-          // console.log(val[5]);
           var userNameFromDB = val[1];
           var dayFromDB = val[2];
           var timeFromDB = val[3];
           var paymentFromDB = val[5];
           var gmtFromDB = val[6];
 
-          if (userNameFromDB === getCookie('name') && (paymentFromDB === 'payed' || paymentFromDB === 'free')) {
-            timeInterval.each(function (k, val) {
-              if ($(this).attr('date') === dayFromDB) {
-                // console.log(timeFromDB);
-                // console.log($(this).children())
-                $(this).children().each(function (k, val) {
-                  // console.log(val);
-                  if (val.innerHTML === timeFromDB) {
-                    val.classList.add('booked-for-this-user'); // console.log(val);
-                  } // для бесплатного занятия интервалы не отображаются
+          if (userNameFromDB === getCookie('name')) {
+            if (paymentFromDB === 'payed' || paymentFromDB === 'free') {
+              timeInterval.each(function (k, val) {
+                if ($(val).attr('date') === dayFromDB) {
+                  // console.log(timeFromDB);
+                  // console.log($(this).children())
+                  $(val).children().each(function (k, val) {
+                    if (_this4.timeZone !== gmtFromDB) {
+                      var timeZoneNum = _this4.timeZone.split(' ')[1].substring(0, 3);
+
+                      var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                      var delta = timeZoneNum - gmtFromDbNum;
+                      var arr = timeFromDB.split(','); // console.log(timeFromDB)
+
+                      var newArr = [];
+                      arr.forEach(function (val, k) {
+                        var firstH = val.split('-')[0].split(':')[0]; // 06
+
+                        var firstM = val.split('-')[0].split(':')[1]; // 00
+
+                        var secondH = val.split('-')[1].split(':')[0]; // 07
+
+                        var secondM = val.split('-')[1].split(':')[1]; // 30
+
+                        var a = +firstH + delta; // 02
+
+                        var b = +secondH + delta; //05
+
+                        if (a < 0) {
+                          a = 24 + a;
+                        }
+
+                        if (b < 0) {
+                          b = 24 + b;
+                        }
+
+                        var time = a + ':' + firstM.trim() + '  - ' + b + ':' + secondM;
+                        newArr.push(time);
+                      });
+                      var time = newArr.join(', ').split('-')[0].trim();
+                      console.log(time);
+                      var timeOnCalendar = val.innerHTML.split('-')[0].trim(); // console.log(dayFromDB)
+
+                      console.log(timeOnCalendar);
+
+                      if (timeOnCalendar.trim() === time.trim()) {
+                        val.classList.add('booked-for-this-user');
+                      } // для бесплатного занятия интервалы не отображаются
 
 
-                  if (val.innerHTML.split('-')[0] === timeFromDB) {
-                    val.classList.add('booked-free');
-                  } // если время интервала меньше текущего - недоступно
-                  // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                  //     val.classList.add('booked-for-other-users');
-                  // }
+                      if (val.innerHTML.split('-')[0] === timeFromDB) {
+                        val.classList.add('booked-free');
+                      }
+                    } else {
+                      if (val.innerHTML === timeFromDB) {
+                        val.classList.add('booked-for-this-user'); // console.log(val);
+                      } // для бесплатного занятия интервалы не отображаются
 
-                });
-              }
-            });
+
+                      if (val.innerHTML.split('-')[0] === timeFromDB) {
+                        val.classList.add('booked-free');
+                      }
+                    } // если время интервала меньше текущего - недоступно
+                    // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                    //     val.classList.add('booked-for-other-users');
+                    // }
+
+                  });
+                }
+              });
+            }
+
+            if (paymentFromDB === 'unpayed') {
+              timeInterval.each(function (k, val) {
+                if ($(val).attr('date') === dayFromDB) {
+                  // console.log(timeFromDB);
+                  // console.log($(this).children())
+                  $(val).children().each(function (k, val) {
+                    if (val.innerHTML === timeFromDB) {
+                      val.classList.add('unpayed-book'); // console.log(val);
+                    }
+                  });
+                }
+              });
+            }
           }
 
           if (userNameFromDB !== getCookie('name')) {
@@ -3380,6 +3474,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3401,6 +3508,7 @@ __webpack_require__.r(__webpack_exports__);
       currentMonth: null,
       dayOfWeek: null,
       detailShow: false,
+      // окно детализации бронирования
       detailDate: null,
       detailTime: null,
       detailType: null,
@@ -3410,14 +3518,17 @@ __webpack_require__.r(__webpack_exports__);
       preloader: true,
       cancelLessShow: false,
       showBookCalendar: false,
-      freeLesson: false
+      freeLesson: false,
+      gmtArray: [],
+      payment: true,
+      target: null,
+      errors: []
     };
   },
   mounted: function mounted() {
     this.getBooksTimeFromDB();
     this.setTimeZone();
   },
-  beforeUpdate: function beforeUpdate() {},
   updated: function updated() {
     // console.log('updated');
     this.setCurrentMonth(); // this.getBooksTimeFromDB();
@@ -3427,7 +3538,8 @@ __webpack_require__.r(__webpack_exports__);
     this.setCurrentMonth();
   },
   methods: {
-    // установка текущего часового пояса
+    // ---- ФУНКЦИОНАЛ СМЕНЫ ЧАСОВЫХ ПОЯСОВ ---- \\
+    // установка текущего часового пояса //
     setTimeZone: function setTimeZone() {
       var zone = new Date().toString().split(' ')[5];
       var gmt = 'GMT ' + zone.substring(3, 6) + ':00';
@@ -3439,6 +3551,11 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
+    switchTimeZone: function switchTimeZone() {
+      this.getBooksTimeFromDB();
+    },
+    // -------------------------------------------
+    // ---- ФУНКЦИОНАЛ ЛОГИКИ КАЛЕНДАРЯ ---- \\
     calendar: function calendar() {
       var days = [];
       var week = 0;
@@ -3507,12 +3624,16 @@ __webpack_require__.r(__webpack_exports__);
         this.currentMonth = this.month + 1;
       }
     },
+    // -------------------------------------------
+    // ---- ФУНКЦИИ ДЛЯ РАБОТЫ С ИНТЕРВАЛАМИ ---- \\
     getBooksTimeFromDB: function getBooksTimeFromDB() {
       var _this = this;
 
       // this.preloader = true;
-      // console.log('getintervals')
+      var array = [];
+      var newArray; // console.log('getintervals')
       // очищает ячейки при обновлении компонента
+
       $('.calendar-table-days .book').remove();
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
         'method': 'getBooksTime'
@@ -3526,52 +3647,168 @@ __webpack_require__.r(__webpack_exports__);
           data.forEach(function (val, k) {
             var typeFromDb = val.type;
             var nameFromDb = val.name;
-            var dateFromDb = val.day;
+            var dayFromDb = val.day;
             var timeFromDb = val.time;
+            var gmtFromDb = val.gmt;
             var paymentFromDb = val.payment;
 
             if (typeFromDb === 'free') {
               freeLesson = true;
-            }
+            } // --------------------------------------------------
+
 
             $('.calendar-table-days').each(function (k, val) {
-              var day = $(this);
-              var dateOfcell = $(this).attr('date');
+              var day = $(val);
+              var dateOfcell = val.getAttribute('date'); // timeFromDb = newArray.join
 
-              if (dateOfcell === dateFromDb) {
-                // не добавлять интервалы если уже существуют
-                if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                  $(this).children().each(function (k, val) {
-                    // console.log(val);
-                    var valName = val.getAttribute('name');
-                    var valType = val.getAttribute('type');
-                    var valTime = val.getAttribute('time');
-                    var valDate = val.getAttribute('data');
+              if (_this.timeZone !== gmtFromDb) {
+                var obj = {};
+                var obj2 = {};
+                var obj3 = {};
 
-                    if (typeFromDb !== valType && nameFromDb !== valName && dateFromDb !== valDate && timeFromDb !== valTime) {
-                      day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
-                    }
-                  });
+                var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
+
+                var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+                var delta = timeZoneNum - gmtFromDbNum;
+                var arr = timeFromDb.split(',');
+                var newArr = [];
+                var newArr2 = [];
+                var newArr3 = [];
+                arr.forEach(function (val, k) {
+                  var prevNum = +dayFromDb.split('.')[0] - 1;
+                  var prevMonth = +dayFromDb.split('.')[1];
+
+                  if (String(prevMonth).length < 2) {
+                    prevMonth = '0' + prevMonth;
+                  }
+
+                  var prevYear = +dayFromDb.split('.')[2];
+                  var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+                  var nextNum = +dayFromDb.split('.')[0] + 1;
+                  var nextMonth = +dayFromDb.split('.')[1];
+
+                  if (String(nextMonth).length < 2) {
+                    nextMonth = '0' + nextMonth;
+                  }
+
+                  var nextYear = +dayFromDb.split('.')[2];
+                  var nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+                  var firstH = val.split('-')[0].split(':')[0]; // 06
+
+                  var firstM = val.split('-')[0].split(':')[1]; // 00
+
+                  var secondH = val.split('-')[1].split(':')[0]; // 07
+
+                  var secondM = val.split('-')[1].split(':')[1]; // 30
+
+                  var a = +firstH + delta; // 02
+
+                  var b = +secondH + delta; //05
+
+                  var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+
+                  if (a < 0) {
+                    // console.log(dayFromDb)
+                    // console.log(time)
+                    newArr.push(time);
+                    obj = {
+                      day: prevDateNumber,
+                      time: newArr.join(', '),
+                      gmt: _this.timeZone
+                    };
+                  }
+
+                  if (a >= 0 && a < 24) {
+                    // console.log(dayFromDb)
+                    // console.log(time)
+                    newArr2.push(time);
+                    obj2 = {
+                      day: dayFromDb,
+                      time: newArr2.join(', '),
+                      gmt: _this.timeZone
+                    };
+                  }
+
+                  if (a > 23) {
+                    // console.log(dayFromDb)
+                    // console.log(time)
+                    newArr3.push(time);
+                    obj3 = {
+                      day: nextDateNumber,
+                      time: newArr3.join(', '),
+                      gmt: _this.timeZone
+                    };
+                  }
+                });
+
+                if (Object.keys(obj).length !== 0) {
+                  array.push(obj);
+                }
+
+                if (Object.keys(obj2).length !== 0) {
+                  array.push(obj2);
+                }
+
+                if (Object.keys(obj3).length !== 0) {
+                  array.push(obj3);
+                } // console.log(array)
+                // console.log(obj)
+                // console.log(obj2)
+                // console.log(obj3)
+
+
+                var object = {
+                  intervals: array,
+                  'method': 'setToTempGMT'
+                }; // axios.post('/handle.php', JSON.stringify(object));
+                // axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
+                // получить данные и вставить в календарь
+              } else {
+                if (dateOfcell === dayFromDb) {
+                  if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
+                    day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>"); // day.children().each((k, val) => {
+                    //     // console.log(val);
+                    //     let valName = val.getAttribute('name');
+                    //     let valType = val.getAttribute('type');
+                    //     let valTime = val.getAttribute('time');
+                    //     let valDate = val.getAttribute('data');
+                    //     if (typeFromDb !== valType && nameFromDb !== valName && dayFromDb !== valDate && timeFromDb !== valTime) {
+                    //     }
+                    // });
+                  }
+
+                  if (paymentFromDb === 'unpayed') {
+                    day.append("<span payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
+                  }
                 }
               }
             });
           });
-        } // console.log(freeLesson)
-
+        }
 
         _this.freeLesson = freeLesson;
-        _this.preloader = false;
+        setTimeout(function () {
+          _this.preloader = false;
+        }, 50);
       });
     },
+    // действие при нажатии на занятие
     bookingEvent: function bookingEvent(event) {
       var _this2 = this;
 
-      // console.log(event.target);
+      var target = event.target;
+      this.target = event.target; // console.log($(target));
+
       if (event.target.className.includes('book')) {
-        // console.log('work')
-        //open detail
-        this.detailShow = true;
-        var target = event.target;
+        // смена статуса оплачено на подтвердить оплату
+        if ($(target).attr('payment') === 'unpayed') {
+          this.payment = false;
+        } else {
+          this.payment = true;
+        }
+
+        this.detailShow = true; // открытие окна детализации бронирования
+
         this.detailDate = target.getAttribute('data');
         this.detailTime = target.getAttribute('time');
         this.typeOfLesson = target.getAttribute('type');
@@ -3599,11 +3836,39 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
+    // подтвердить оплату
+    confirmPayment: function confirmPayment() {
+      var _this3 = this;
+
+      var obj = {
+        name: this.detailUserName,
+        time: this.detailTime,
+        date: this.detailDate,
+        'method': 'successPay'
+      };
+      console.log(this.target);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
+        obj: obj
+      })).then(function (response) {
+        var data = response.data;
+        console.log(data);
+
+        if (data.payment === 'success') {
+          _this3.payment = true;
+          $(_this3.target).attr('payment', 'payed').removeClass('unpayed');
+        } else {
+          _this3.errors.push(data.payment);
+
+          console.log(_this3.errors);
+        }
+      });
+    },
     // отмена занятия
     cancelLessonFrame: function cancelLessonFrame() {
       this.detailShow = false;
       this.cancelLessShow = true;
     },
+    // закрыть всплыв. окно "Вы уверены, что хотите отменить урок?"
     closeCancelLessonFrame: function closeCancelLessonFrame() {
       this.detailShow = true;
       this.cancelLessShow = false;
@@ -3630,12 +3895,12 @@ __webpack_require__.r(__webpack_exports__);
       this.showBookCalendar = true;
       this.detailShow = false; // удалить текущий интервал методом deleteBook()
     },
-    // "отмена" Закрыть календарь изменения урока
+    // "отмена" Закрыть календарь изменения урока (закрыть AdminBookCalendar.vue)
     closeAdminCalendar: function closeAdminCalendar(data) {
       this.showBookCalendar = false;
       this.detailShow = true;
     },
-    // 'при клике по "изменить время урока" удалить изменяемый интервал '
+    // 'при клике по "изменить время урока" удалить изменяемый интервал
     updateBook: function updateBook(data) {
       this.deleteBook();
       window.location.reload();
@@ -4068,7 +4333,7 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getTimeIntervals'
       })).then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         var data = response.data;
 
         if (data !== null) {
@@ -4164,6 +4429,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
 //
 //
 //
@@ -8349,10 +8615,8 @@ var render = function() {
                   staticClass:
                     "calendar-app-header__element calendar-app-header__element--title"
                 },
-                [_vm._v("Изменить время\n                    урока")]
-              ),
-              _vm._v(" "),
-              _vm._m(0)
+                [_vm._v("Изменить время\n                        урока")]
+              )
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "decor-line" }),
@@ -8361,7 +8625,7 @@ var render = function() {
               "div",
               { staticClass: "calendar-app-content" },
               [
-                _vm._m(1),
+                _vm._m(0),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -8402,9 +8666,9 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        " +
+                            "\n                            " +
                               _vm._s(day.index) +
-                              "\n                    "
+                              "\n                        "
                           )
                         ]
                       )
@@ -8448,7 +8712,6 @@ var render = function() {
                 "div",
                 {
                   staticClass: "button book-btn",
-                  attrs: { data: "test" },
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -8473,7 +8736,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(1)
           ]
         )
       ]
@@ -8481,19 +8744,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "select",
-      {
-        staticClass:
-          "calendar-app-header__element calendar-app-header__element--time-zone"
-      },
-      [_c("option", [_vm._v("Europe/Moscow GMT +3:00")])]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -8627,6 +8877,7 @@ var render = function() {
                   "p",
                   {
                     staticClass: "instruction__element",
+                    staticStyle: { color: "#455A64" },
                     attrs: {
                       language: _vm.language,
                       "switchable-text": "1. Выберите удобное для вас время"
@@ -9255,6 +9506,8 @@ var render = function() {
                   _vm._v(" "),
                   _vm._m(1),
                   _vm._v(" "),
+                  _vm._m(2),
+                  _vm._v(" "),
                   _c(
                     "div",
                     {
@@ -9300,7 +9553,37 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "select",
-                  { staticClass: "time-zone header-content__element" },
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.timeZone,
+                        expression: "timeZone"
+                      }
+                    ],
+                    staticClass: "time-zone header-content__element",
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.timeZone = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          return _vm.switchTimeZone()
+                        }
+                      ]
+                    }
+                  },
                   _vm._l(_vm.timeZones, function(gmt) {
                     return _c(
                       "option",
@@ -9409,18 +9692,54 @@ var render = function() {
                     _c("div", { staticClass: "user-name" }, [
                       _vm._v(_vm._s(_vm.detailUserName))
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(2)
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "wrap skype" }, [
-                  _c("div", { staticClass: "skype-icon" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "skype-name" }, [
-                    _vm._v(_vm._s(_vm.detailSkype))
                   ])
                 ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "flex",
+                    staticStyle: {
+                      display: "flex",
+                      "justify-content": "space-between"
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "wrap skype" }, [
+                      _c("div", { staticClass: "skype-icon" }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "skype-name" }, [
+                        _vm._v(_vm._s(_vm.detailSkype))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.payment
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "payment-status payment-status--payed"
+                          },
+                          [_vm._v("оплачено")]
+                        )
+                      : _c(
+                          "div",
+                          {
+                            staticClass:
+                              "payment-status payment-status--unpayed",
+                            on: {
+                              click: function($event) {
+                                return _vm.confirmPayment()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "подтвердить\n                        оплату\n                    "
+                            )
+                          ]
+                        )
+                  ]
+                ),
                 _vm._v(" "),
                 _c("div", { staticClass: "decor-line" }),
                 _vm._v(" "),
@@ -9520,7 +9839,8 @@ var render = function() {
               ],
               attrs: {
                 "user-name": _vm.detailUserName,
-                "type-of-lesson": _vm.typeOfLesson
+                "type-of-lesson": _vm.typeOfLesson,
+                "time-zone": _vm.timeZone
               },
               on: {
                 "delete-book": _vm.deleteBook,
@@ -9560,10 +9880,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "wrap message" }, [
-      _c("div", { staticClass: "message-title" }, [_vm._v("сообщение")]),
+    return _c("div", { staticClass: "tegs__element" }, [
+      _c("div", { staticClass: "circle circle--unpayed" }),
       _vm._v(" "),
-      _c("div", { staticClass: "message-icon" })
+      _c("span", [_vm._v("Неоплаченное занятие")])
     ])
   }
 ]
@@ -9930,79 +10250,93 @@ var render = function() {
         "div",
         { staticClass: "my-students-content" },
         _vm._l(_vm.array, function(arr) {
-          return _c("div", { staticClass: "student" }, [
-            _c("div", { staticClass: "wrap" }, [
-              _c("div", { staticClass: "student__elem student__elem--name" }, [
-                _c("div", { staticClass: "student-name-icon" }),
+          return _c(
+            "div",
+            { staticClass: "student", attrs: { "data-name": arr.name } },
+            [
+              _c("div", { staticClass: "wrap" }, [
+                _c(
+                  "div",
+                  { staticClass: "student__elem student__elem--name" },
+                  [
+                    arr.avatar
+                      ? _c("img", {
+                          staticClass: "student-name-icon",
+                          attrs: { src: arr.avatar }
+                        })
+                      : _c("img", {
+                          staticClass: "student-name-icon",
+                          attrs: {
+                            src: __webpack_require__(/*! ../images/icons/user-ico.svg */ "./images/icons/user-ico.svg")
+                          }
+                        }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "student-name-name" }, [
+                      _vm._v(_vm._s(arr.name))
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "student-name-name" }, [
-                  _vm._v(_vm._s(arr.name))
-                ])
+                _c(
+                  "div",
+                  { staticClass: "student__elem student__elem--contacts" },
+                  [
+                    _c("div", { staticClass: "student-contacts-email" }, [
+                      _c("span", [_vm._v("email: ")]),
+                      _vm._v(_vm._s(arr.email))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "student-contacts-skype" }, [
+                      _c("span", [_vm._v("skype: ")]),
+                      _vm._v(_vm._s(arr.skype))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "student__elem student__elem--status",
+                    class: arr.status,
+                    attrs: { status: arr.status }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(arr.status) +
+                        "\n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "student__elem student__elem--actions" },
+                  [
+                    _c("div", { staticClass: "student-actions-message" }, [
+                      _vm._v("написать сообщение")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "student-actions-ban",
+                        attrs: { status: arr.status, email: arr.email },
+                        on: {
+                          click: function($event) {
+                            return _vm.blockUser($event)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(arr.text) + "\n                        ")]
+                    )
+                  ]
+                )
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "student__elem student__elem--contacts" },
-                [
-                  _c("div", { staticClass: "student-contacts-email" }, [
-                    _c("span", [_vm._v("email: ")]),
-                    _vm._v(_vm._s(arr.email))
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "student-contacts-skype" }, [
-                    _c("span", [_vm._v("skype: ")]),
-                    _vm._v(_vm._s(arr.skype))
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "student__elem student__elem--status",
-                  class: arr.status,
-                  attrs: { status: arr.status }
-                },
-                [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(arr.status) +
-                      "\n                "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "student__elem student__elem--actions" },
-                [
-                  _c("div", { staticClass: "student-actions-invite" }, [
-                    _vm._v("отправить приглашение на урок")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "student-actions-message" }, [
-                    _vm._v("написать сообщение")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "student-actions-ban",
-                      attrs: { status: arr.status, email: arr.email },
-                      on: {
-                        click: function($event) {
-                          return _vm.blockUser($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(arr.text) + "\n                    ")]
-                  )
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "decor-line" })
-          ])
+              _c("div", { staticClass: "decor-line" })
+            ]
+          )
         }),
         0
       )
@@ -22169,6 +22503,17 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ "./images/icons/user-ico.svg":
+/*!***********************************!*\
+  !*** ./images/icons/user-ico.svg ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "images/icons/user-ico.svg";
 
 /***/ }),
 

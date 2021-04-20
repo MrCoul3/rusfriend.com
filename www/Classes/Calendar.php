@@ -75,7 +75,7 @@ class Calendar
 
     public function returnBooksTime()
     {
-        $query = "SELECT `name`, `day`, `time`, `type`, `payment` FROM `bookstime` WHERE 1";
+        $query = "SELECT `name`, `day`, `time`, `type`, `payment`, `gmt`  FROM `bookstime` WHERE 1";
         $result = mysqli_fetch_all($this->dbAccess->query($query));
         return $result;
     }
@@ -118,9 +118,12 @@ class Calendar
         return $getUnpayLessons;
     }
 
-    public function successPay()
+    public function successPay($request)
     {
-        $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `name` = '{$_SESSION['name']}'";
+        $name = $request['obj']['name'];
+        $time = $request['obj']['time'];
+        $date = $request['obj']['date'];
+        $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `name` = '{$name}' AND `time` = '{$time}' AND `day` = '{$date}'";
         $result = $this->dbAccess->query($query);
         return $result;
     }
@@ -151,9 +154,9 @@ class Calendar
 
     public function setToTempGMT($request)
     {
-        echo "<pre>";
-        print_r($request['intervals']);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($request['intervals']);
+//        echo "</pre>";
         $err = [];
         $incr = "ALTER TABLE `temp-gmt` AUTO_INCREMENT=0;";
         $query1 = "DELETE FROM `temp-gmt`;";

@@ -2060,6 +2060,7 @@
 
 #mysite .about-page .about {
   padding-top: 300px;
+  font-family: Montserrat, "Arial Black", sans-serif;
 }
 @media screen and (max-width: 767px) {
   #mysite .about-page .about {
@@ -2121,7 +2122,7 @@
   transform: none;
 }
 #mysite .about-page .about__element--left .owl-dots {
-  margin-top: 5px;
+  margin-top: 60px;
 }
 #mysite .about-page .about__element--right {
   display: flex;
@@ -2791,7 +2792,7 @@
   display: flex;
   margin-top: 20px;
   margin-bottom: 20px;
-  justify-content: center;
+  justify-content: start;
 }
 #mysite .admin-menu__element {
   margin: 0 20px;
@@ -2969,6 +2970,9 @@
 #mysite .my-calendar .tegs .circle--free {
   background: #FF3E28;
 }
+#mysite .my-calendar .tegs .circle--unpayed {
+  background: #F6D200;
+}
 #mysite .my-calendar .calendar-table .calendar-table-days .book {
   font-size: 12px;
   display: block;
@@ -2993,6 +2997,9 @@
 }
 #mysite .my-calendar .calendar-table .calendar-table-days .free {
   background: #FF3E28;
+}
+#mysite .my-calendar .calendar-table .calendar-table-days .unpayed {
+  background: #F6D200 !important;
 }
 #mysite .my-calendar .calendar-detail {
   padding: 12px 24px 20px;
@@ -3082,6 +3089,24 @@
 #mysite .my-calendar .calendar-detail .skype .skype-name {
   font-size: 14px;
   color: #455A64;
+}
+#mysite .my-calendar .calendar-detail .payment-status {
+  font-weight: 500;
+  font-size: 12px;
+}
+#mysite .my-calendar .calendar-detail .payment-status--payed {
+  pointer-events: none;
+  color: #006660;
+}
+#mysite .my-calendar .calendar-detail .payment-status--unpayed {
+  cursor: pointer;
+  transition: all ease 0.2s;
+  text-decoration: underline;
+  color: rgba(255, 62, 40, 0.65);
+}
+#mysite .my-calendar .calendar-detail .payment-status--unpayed:hover {
+  color: #FF3E28;
+  transition: all ease 0.2s;
 }
 #mysite .my-calendar .calendar-detail .button {
   width: 110px;
@@ -3647,6 +3672,16 @@
   border-radius: 5px;
   color: white !important;
 }
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unpayed-book {
+  background: #F6D200 !important;
+  border-radius: 5px;
+  color: white !important;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unpayed-book:hover {
+  transition: none;
+  background: #F6D200;
+  color: inherit;
+}
 #mysite .your-calendar .calendar-app .calendar-app-content td, #mysite .your-calendar .calendar-app .calendar-app-content th {
   width: 2%;
 }
@@ -3828,7 +3863,6 @@
   background: #34CFBE;
   border-radius: 5px;
   color: white !important;
-  pointer-events: none;
 }
 #mysite .your-calendar .booked-for-other-users {
   color: #C4C4C4 !important;
@@ -4374,6 +4408,117 @@
     margin-bottom: 10px;
   }
 }
+.payment-page .flex {
+  display: flex;
+}
+.payment-page .header {
+  position: relative !important;
+  display: flex;
+  align-items: center;
+  height: 120px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px !important;
+}
+.payment-page .header .logo {
+  background-image: url(../images/payment/logo2.svg);
+  width: 156px;
+  height: 54.65px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+.payment-page .header .instruction {
+  display: flex;
+  max-width: 630px;
+  margin: 0 auto;
+}
+.payment-page .header .instruction p {
+  margin-right: 5px;
+}
+.payment-page .payment {
+  background-color: #EFF4F9;
+  height: 500px;
+  padding-top: 48px;
+}
+.payment-page .payment .payment-gateway {
+  display: flex;
+  justify-content: space-between;
+  max-width: 924px;
+}
+.payment-page .payment .payment-gateway__elem {
+  background: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: 0px 4px 30px 5px rgba(0, 0, 0, 0.25);
+}
+.payment-page .payment .payment-gateway__elem--event {
+  width: 500px;
+  height: 442px;
+  padding: 24px 18px 18px;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-head {
+  text-align: center;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-head__title {
+  margin: 0 0 21px;
+  font-size: 22px;
+  color: #4C59D9;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main {
+  text-align: center;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__descr {
+  margin: 36px 0 16px;
+  font-size: 20px;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__price {
+  font-family: Montserrat, sans-serif, Arial;
+  font-weight: 800;
+  font-size: 32px;
+  margin: 0;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__container {
+  justify-content: center;
+  align-items: center;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__quick-link {
+  color: #4C59D9;
+  font-weight: 600;
+  margin: 31px 0 36px;
+  font-size: 20px;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__faq {
+  background-image: url(../images/icons/faq-icon.svg);
+  width: 17px;
+  height: 17px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__adress-descr {
+  margin: 0;
+  font-size: 20px;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__adress-email {
+  font-weight: bold;
+  margin: 0;
+  font-size: 20px;
+}
+.payment-page .payment .payment-gateway__elem--event .payment-gateway-main__confirm-btn {
+  width: 270px;
+  height: 50px;
+  background: #34CFBF;
+  border-radius: 9px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  color: #fff;
+  line-height: 46px;
+  margin: 58px auto 0;
+}
+.payment-page .payment .payment-gateway__elem--info {
+  width: 360px;
+  height: 326px;
+}
 /*@import '../styles/scss/admin-panel';*/
 .prompt[data-v-c00eaaa2] {
   position: absolute;
@@ -4409,6 +4554,12 @@
   height: 100%;
   overflow: visible;
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+}
+.calendar-app-header[data-v-c00eaaa2] {
+  justify-content: unset !important;
+}
+.calendar-app-header__element--month-module[data-v-c00eaaa2] {
+  margin-left: 82px;
 }
 #preloader[data-v-1a0260e1] {
   /*visibility: hidden;*/

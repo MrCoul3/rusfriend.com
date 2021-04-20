@@ -41,9 +41,11 @@ $(document).ready(function () {
                 $(".form-frame").animate({
                     'left': '0px',
                 }, 200);
+
                 $(".register-form").animate({
                     'opacity': '1'
                 },100);
+
                 $("#mysite").addClass("body-fixed");
                 // $('.header__overhead').addClass('header-fixed');
                 // $('.login-form .form-frame').animate({

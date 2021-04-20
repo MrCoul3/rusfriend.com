@@ -12,6 +12,7 @@ $request = json_decode(file_get_contents('php://input'), true);
 $obj = new \Classes\User();
 $objCalendar = new \Classes\Calendar();
 // --------------------- регистрация
+
 if ($request['method'] == 'register') {
     $response = [];
     $register = $obj->addUser($request);
@@ -163,7 +164,8 @@ if ($request['method'] == 'getBooksTime') {
             'day' => $time[1],
             'time' => $time[2],
             'type' => $time[3],
-            'payment' => $time[4]
+            'payment' => $time[4],
+            'gmt' => $time[5],
         ];
     }
     echo json_encode($response);
@@ -212,8 +214,18 @@ if ($request['method'] === 'getLessons') {
     echo json_encode(($result));
 }
 
-if ($request['method'] === 'successPay') {
-    $result = $objCalendar->successPay();
+if ($request['obj']['method'] === 'successPay') {
+    $result = $objCalendar->successPay($request);
+    if ($result) {
+        $response = [
+            'payment'=>'success'
+        ];
+    } else {
+        $response = [
+            'payment'=>'failed status change'
+        ];
+    }
+    echo json_encode(($response));
 }
 
 if ($request['method'] === 'delUnpayedBooks') {
@@ -310,7 +322,9 @@ if ($request['method'] === 'getFromTempGMT') {
     echo json_encode($result);
 }
 
-//if ($request['method'] === 'delTimeIntervalsFromTempGMT') {
-//    $result = $objCalendar->delTimeIntervalsFromTempGMT();
-////    echo $result;
-//}
+// ----- отправка писем
+
+if ($request['method'] === 'sendEmail') {
+
+
+}

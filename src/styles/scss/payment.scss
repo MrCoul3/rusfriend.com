@@ -1,0 +1,140 @@
+// ---- СТРАНИЦА ОПЛАТЫ ---- \\
+
+.payment-page {
+  .flex {
+    display: flex;
+  }
+
+  // ---- header
+  .header {
+
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    height: 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px !important;
+
+    .logo {
+      background-image: url("../images/payment/logo2.svg");
+      width: 156px;
+      height: 54.65px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      position: absolute;
+    }
+
+    .instruction {
+      display: flex;
+      max-width: 630px;
+      margin: 0 auto;
+
+      p {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  // ---- main
+  .payment {
+    background-color: #EFF4F9;
+    height: 500px;
+    padding-top: 48px;
+
+    .payment-gateway {
+      display: flex;
+      justify-content: space-between;
+      max-width: 924px;
+
+      &__elem {
+        background: #FFFFFF;
+        border-radius: 5px;
+        box-shadow: 0px 4px 30px 5px rgba(0, 0, 0, 0.25);
+
+        &--event {
+          width: 500px;
+          height: 442px;
+          padding: 24px 18px 18px;
+
+          .payment-gateway-head {
+            text-align: center;
+
+            &__title {
+              margin: 0 0 21px;
+              font-size: 22px;
+              color: $colorBlue;
+            }
+          }
+
+          .payment-gateway-main {
+            text-align: center;
+
+            &__descr {
+              margin: 36px 0 16px;
+              font-size: 20px;
+            }
+
+            &__price {
+              font-family: Montserrat, sans-serif, Arial;
+              font-weight: 800;
+              font-size: 32px;
+              margin: 0;
+            }
+
+            &__container {
+              justify-content: center;
+              align-items: center;
+            }
+
+            &__quick-link {
+              color: $colorBlue;
+              font-weight: 600;
+              margin: 31px 0 36px;
+              font-size: 20px;
+            }
+
+            &__faq {
+              background-image: url("../images/icons/faq-icon.svg");
+              width: 17px;
+              height: 17px;
+              margin-left: 10px;
+              cursor: pointer;
+            }
+
+            &__adress-descr {
+              margin: 0;
+              font-size: 20px;
+
+            }
+
+            &__adress-email {
+              font-weight: bold;
+              margin: 0;
+              font-size: 20px;
+
+            }
+
+            &__confirm-btn {
+              width: 270px;
+              height: 50px;
+              background: #34CFBF;
+              border-radius: 9px;
+              font-weight: bold;
+              font-size: 16px;
+              text-align: center;
+              color: #fff;
+              line-height: 46px;
+              margin: 58px auto 0;
+            }
+          }
+        }
+
+        &--info {
+          width: 360px;
+          height: 326px;
+        }
+      }
+    }
+  }
+}

@@ -11,9 +11,9 @@
                     </div>
                     <h2 class="calendar-app-header__element calendar-app-header__element--title">Изменить время
                         урока</h2>
-                    <select class="calendar-app-header__element calendar-app-header__element--time-zone">
-                        <option>Europe/Moscow GMT +3:00</option>
-                    </select>
+<!--                    <select class="calendar-app-header__element calendar-app-header__element&#45;&#45;time-zone">-->
+<!--                        <option>Europe/Moscow GMT +3:00</option>-->
+<!--                    </select>-->
                 </div>
                 <div class="decor-line"></div>
                 <div class="calendar-app-content">
@@ -48,7 +48,7 @@
                 </div>
                 <div class="wrap">
                     <div class="prompt">нужно выбрать время урока</div>
-                    <div data="test" @click.prevent="bookEvent($event)" class="button book-btn">изменить время урока</div>
+                    <div @click.prevent="bookEvent($event)" class="button book-btn">изменить время урока</div>
                     <div @click="closeAdminBookCalendar()" class="button cancel-btn">отмена</div>
                 </div>
                 <div class="tegs">
@@ -80,7 +80,7 @@
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
+    // let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
     export default {
         data() {
             return {
@@ -100,6 +100,7 @@
                 enterSkype: false,
                 validationSkype: false,
                 showPreLoader: true,
+                selectedTimeArray: [],
             }
         },
         props: {
@@ -110,6 +111,11 @@
                 required: true,
                 default: 'private',
             },
+            timeZone: {
+                required: true,
+                default: 'GMT +03:00',
+            }
+
         },
         beforeMount: function () {
             Date.prototype.getWeek = function () {
@@ -139,6 +145,8 @@
 
         },
         methods: {
+            // ---- ФУНКЦИОНАЛ ЛОГИКИ КАЛЕНДАРЯ ---- \\
+            // установка тек месяца
             setCurrentMonth() {
                 if ((String(this.numberMonthOfFirstDayOfWeek + 1).length) === 1) {
                     this.currentMonth = 0 + String(this.numberMonthOfFirstDayOfWeek + 1);
@@ -198,12 +206,14 @@
                     })
                 }
             },
+            // дата понедельника
             DateOfMondayInWeek(year, weekNumber) {
                 for (var a = 1; ; a++) if ((new Date(year, 0, a)).getDay() == 1) break;
                 a += (weekNumber - 1) * 7;
                 this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth()
                 return (new Date(year, 0, a))
             },
+            // логика календаря
             weekCalendar: function () {
                 let numOfDayInMonth = new Date(this.year, this.numberMonthOfFirstDayOfWeek + 1, 0).getDate(); // число дней в текущем мес
                 let week = [];
@@ -255,6 +265,7 @@
                 this.getIntervalsFromDB();
 
             },
+            // подсветка текущего дня
             lightingOfToday: function () {
                 let dayNum = document.querySelectorAll('.calendar-app-content-number');
                 let dayName = $('.calendar-app-content-day');
@@ -269,6 +280,10 @@
                     }
                 })
             },
+            // ----------------------------------------
+
+            // ---- ФУНКЦИИ ДЛЯ РАБОТЫ С ИНТЕРВАЛАМИ ---- \\
+            // получить и отобразить все интервалы
             getIntervalsFromDB: function () {
                 $('.time-intrevals-elem ').each((k, val) => {
                     val.innerHTML = '';
@@ -302,6 +317,7 @@
                     });
             },
 
+            // выбор свободного интервала для замены
             chooseTime: function (event) {
                 console.log('chooseTime');
                 // console.log(event.target);
@@ -313,11 +329,12 @@
                     selectedTime.classList.add('selected-time');
                 }
 
-                selectedTimeArray = [];
+                this.selectedTimeArray = [];
+                // selectedTimeArray = [];
                 let userName = this.userName;
                 let typeOfLesson = this.typeOfLesson;
 
-                $('.selected-time').each(function (k, val) {
+                $('.selected-time').each((k, val) => {
                     let day = val.parentNode.getAttribute('date');
                     let time = val.innerHTML;
                     // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
@@ -327,24 +344,27 @@
                         day: day,
                         time: time,
                         payment: 'payed',
+                        gmt: this.timeZone,
                         'method': 'bookEvent'
-
                     };
                     console.log(obj)
                     if (day !== null && time !== '') {
-                        selectedTimeArray.push(obj);
+                        this.selectedTimeArray.push(obj);
+                        // selectedTimeArray.push(obj);
                     }
                 });
-                console.log(selectedTimeArray);
+                console.log(this.selectedTimeArray);
+                // console.log(selectedTimeArray);
                 // this.selectedTimeArray = array.slice(0);
             },
-
             // "изменить время урока"
             bookEvent: function (event) {
-                if (selectedTimeArray.length !== 0) {
+                if (this.selectedTimeArray.length !== 0) {
                     this.$emit('update');
-                    axios.post('/handle.php', JSON.stringify(selectedTimeArray))
+                    axios.post('/handle.php', JSON.stringify(this.selectedTimeArray))
                     this.reload += 1;
+
+               // всплывающая подсказка "нужно выбрать время урока"
                 } else {
                     // console.log($(event.target));
                     $(event.target).prev(".prompt").fadeTo("slow", 1);
@@ -353,7 +373,6 @@
                     },1000)
                 }
             },
-
             // функция изменения состояния интервала в календаре при
             // забронированных интервалах для данного пользователя
             changeStateOfItem: function () {
@@ -435,6 +454,12 @@
         height: 100%;
         overflow: visible;
         background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
+    }
+    .calendar-app-header {
+        justify-content: unset!important;
+    }
+    .calendar-app-header__element--month-module {
+        margin-left: 82px;
     }
 
 </style>

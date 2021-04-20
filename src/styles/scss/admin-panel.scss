@@ -8,9 +8,11 @@
   align-items: center;
   padding: 0 20px;
 }
+
 .admin {
   min-width: 1024px;
 }
+
 #mysite {
   // header + nav-menu + footer
 
@@ -64,7 +66,7 @@
     .header-title {
       flex-grow: 1;
       color: $colorLightBlack;
-      @include mediaWidth(1024){
+      @include mediaWidth(1024) {
         font-size: 48px;
       }
       @include mediaWidth(767) {
@@ -103,6 +105,7 @@
       //  width: 70px;
       //}
     }
+
     .admin-burger-btn {
       display: none;
       //@include mediaWidth(767) {
@@ -116,7 +119,7 @@
     display: flex;
     margin-top: 20px;
     margin-bottom: 20px;
-    justify-content: center;
+    justify-content: start;
     //@include mediaWidth(767) {
     //  position: absolute;
     //  padding: 0;
@@ -155,10 +158,12 @@
       color: $colorRed;
     }
   }
+
   .admin-menu-active {
     right: 0;
     transition: all ease-in .2s;
   }
+
   .decor-line {
     &--nav-menu {
       //@include mediaWidth(767) {
@@ -375,8 +380,13 @@
         &--private {
           background: #4C9CD8;
         }
+
         &--free {
           background: $colorRed;
+        }
+
+        &--unpayed {
+          background: #F6D200;
         }
       }
     }
@@ -411,6 +421,10 @@
 
         .free {
           background: $colorRed;
+        }
+
+        .unpayed {
+          background: #F6D200 !important;
         }
       }
     }
@@ -523,6 +537,28 @@
         }
       }
 
+      .payment-status {
+        font-weight: 500;
+        font-size: 12px;
+
+        &--payed {
+          pointer-events: none;
+          color: #006660;
+        }
+
+        &--unpayed {
+          cursor: pointer;
+          transition: all ease .2s;
+          text-decoration: underline;
+          color: rgba(255, 62, 40, 0.65);
+
+          &:hover {
+            color: $colorRed;
+            transition: all ease .2s;
+          }
+        }
+      }
+
       .button {
         width: 110px;
         height: 27px;
@@ -627,9 +663,11 @@
         line-height: 43px;
         font-size: 14px;
       }
+
       .tegs {
         display: none;
       }
+
       .calendar-app {
         padding-bottom: 20px;
       }
@@ -840,6 +878,7 @@
         p {
           position: relative;
         }
+
         .name {
           right: 50px;
         }

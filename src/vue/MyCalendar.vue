@@ -18,6 +18,10 @@
                                 <div class="circle circle--private"></div>
                                 <span>Занятие с преподавателем</span>
                             </div>
+                            <div class="tegs__element">
+                                <div class="circle circle--unpayed"></div>
+                                <span>Неоплаченное занятие</span>
+                            </div>
                             <div v-show="freeLesson" class="tegs__element">
                                 <div class="circle circle--free"></div>
                                 <span>Пробный урок</span>
@@ -28,7 +32,7 @@
                             <div v-on:click="decrease" class="month-btn month-btn--left-btn"></div>
                             <div v-on:click="increase" class="month-btn month-btn--right-btn"></div>
                         </div>
-                        <select class="time-zone header-content__element">
+                        <select v-model="timeZone" @change="switchTimeZone()" class="time-zone header-content__element">
                             <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{gmt}}</option>
                         </select>
                     </div>
@@ -62,15 +66,23 @@
                             <div class="user-icon"></div>
                             <div class="user-name">{{detailUserName}}</div>
                         </div>
-                        <div class="wrap message">
-                            <div class="message-title">сообщение</div>
-                            <div class="message-icon"></div>
+                        <!--                        <div class="wrap message">-->
+                        <!--                            <div class="message-title">сообщение</div>-->
+                        <!--                            <div class="message-icon"></div>-->
+                        <!--                        </div>-->
+                    </div>
+                    <div class="flex" style="display: flex; justify-content: space-between">
+                        <div class="wrap skype">
+                            <div class="skype-icon"></div>
+                            <div class="skype-name">{{detailSkype}}</div>
+                        </div>
+                        <div v-if="payment" class="payment-status payment-status--payed">оплачено</div>
+                        <div @click="confirmPayment()" v-else class="payment-status payment-status--unpayed">подтвердить
+                            оплату
                         </div>
                     </div>
-                    <div class="wrap skype">
-                        <div class="skype-icon"></div>
-                        <div class="skype-name">{{detailSkype}}</div>
-                    </div>
+
+
                     <div class="decor-line"></div>
                     <div class="wrap">
                         <div @click="openBook()" class="button change-btn">изменить урок</div>
@@ -96,6 +108,7 @@
                         :type-of-lesson="typeOfLesson"
                         @close="closeAdminCalendar"
                         @update="updateBook"
+                        :time-zone="timeZone"
                 />
 
             </div>
@@ -110,7 +123,7 @@
 
     export default {
         components: {
-           AdminBookCalendar
+            AdminBookCalendar
         },
 
         data() {
@@ -127,7 +140,7 @@
                 timeChangeSatus: 'calendar-disable',
                 currentMonth: null,
                 dayOfWeek: null,
-                detailShow: false,
+                detailShow: false, // окно детализации бронирования
                 detailDate: null,
                 detailTime: null,
                 detailType: null,
@@ -138,14 +151,16 @@
                 cancelLessShow: false,
                 showBookCalendar: false,
                 freeLesson: false,
+                gmtArray: [],
+                payment: true,
+                target: null,
+                errors: [],
+
             }
         },
         mounted: function () {
             this.getBooksTimeFromDB();
             this.setTimeZone();
-
-        },
-        beforeUpdate() {
         },
         updated() {
             // console.log('updated');
@@ -157,7 +172,8 @@
             this.setCurrentMonth();
         },
         methods: {
-            // установка текущего часового пояса
+            // ---- ФУНКЦИОНАЛ СМЕНЫ ЧАСОВЫХ ПОЯСОВ ---- \\
+            // установка текущего часового пояса //
             setTimeZone() {
                 let zone = new Date().toString().split(' ')[5];
                 let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
@@ -169,7 +185,12 @@
                     }
                 });
             },
+            switchTimeZone() {
+                this.getBooksTimeFromDB();
+            },
+            // -------------------------------------------
 
+            // ---- ФУНКЦИОНАЛ ЛОГИКИ КАЛЕНДАРЯ ---- \\
             calendar: function () {
                 var days = [];
                 var week = 0;
@@ -225,64 +246,195 @@
                     this.currentMonth = this.month + 1;
                 }
             },
+            // -------------------------------------------
 
+
+            // ---- ФУНКЦИИ ДЛЯ РАБОТЫ С ИНТЕРВАЛАМИ ---- \\
             getBooksTimeFromDB() {
                 // this.preloader = true;
+                let array = [];
+                let newArray;
                 // console.log('getintervals')
+
                 // очищает ячейки при обновлении компонента
                 $('.calendar-table-days .book').remove();
+
                 axios.post('/handle.php', JSON.stringify({'method': 'getBooksTime'}))
                     .then((response) => {
                         // console.log(response.data);
                         let data = response.data;
+
                         // console.log(data)
                         let freeLesson = null;
                         if (data !== null) {
-                            data.forEach(function (val, k) {
+                            data.forEach((val, k) => {
+
                                 let typeFromDb = val.type;
                                 let nameFromDb = val.name;
-                                let dateFromDb = val.day;
+                                let dayFromDb = val.day;
                                 let timeFromDb = val.time;
+                                let gmtFromDb = val.gmt;
                                 let paymentFromDb = val.payment;
                                 if (typeFromDb === 'free') {
                                     freeLesson = true;
                                 }
-                                $('.calendar-table-days').each(function (k, val) {
-                                    let day = $(this);
-                                    let dateOfcell = $(this).attr('date');
 
-                                    if (dateOfcell === dateFromDb) {
-                                        // не добавлять интервалы если уже существуют
-                                        if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                                            $(this).children().each(function (k, val) {
-                                                // console.log(val);
-                                                let valName = val.getAttribute('name');
-                                                let valType = val.getAttribute('type');
-                                                let valTime = val.getAttribute('time');
-                                                let valDate = val.getAttribute('data');
-                                                if (typeFromDb !== valType && nameFromDb !== valName && dateFromDb !== valDate && timeFromDb !== valTime) {
-                                                    day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                // --------------------------------------------------
+
+
+                                $('.calendar-table-days').each((k, val) => {
+                                    let day = $(val);
+                                    let dateOfcell = val.getAttribute('date');
+                                    // timeFromDb = newArray.join
+
+                                    if (this.timeZone !== gmtFromDb) {
+
+                                        let obj = {};
+                                        let obj2 = {};
+                                        let obj3 = {};
+
+                                        let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                                        let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+                                        let delta = timeZoneNum - gmtFromDbNum;
+
+                                        let arr = timeFromDb.split(',');
+
+                                        let newArr = [];
+                                        let newArr2 = [];
+                                        let newArr3 = [];
+
+
+                                        arr.forEach((val, k) => {
+                                            let prevNum = +dayFromDb.split('.')[0] - 1;
+                                            let prevMonth = +dayFromDb.split('.')[1];
+                                            if (String(prevMonth).length < 2) {
+                                                prevMonth = '0' + prevMonth;
+                                            }
+                                            let prevYear = +dayFromDb.split('.')[2];
+
+                                            let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+
+                                            let nextNum = +dayFromDb.split('.')[0] + 1;
+                                            let nextMonth = +dayFromDb.split('.')[1];
+                                            if (String(nextMonth).length < 2) {
+                                                nextMonth = '0' + nextMonth;
+                                            }
+                                            let nextYear = +dayFromDb.split('.')[2];
+
+                                            let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+
+                                            let firstH = val.split('-')[0].split(':')[0];// 06
+                                            let firstM = val.split('-')[0].split(':')[1];// 00
+                                            let secondH = val.split('-')[1].split(':')[0]; // 07
+                                            let secondM = val.split('-')[1].split(':')[1]; // 30
+                                            let a = +firstH + delta; // 02
+                                            let b = +secondH + delta; //05
+
+                                            let time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+
+                                            if (a < 0) {
+                                                // console.log(dayFromDb)
+                                                // console.log(time)
+                                                newArr.push(time);
+                                                obj = {
+                                                    day: prevDateNumber,
+                                                    time: newArr.join(', '),
+                                                    gmt: this.timeZone,
                                                 }
-                                            });
+                                            }
+
+                                            if (a >= 0 && a < 24) {
+                                                // console.log(dayFromDb)
+                                                // console.log(time)
+                                                newArr2.push(time);
+                                                obj2 = {
+                                                    day: dayFromDb,
+                                                    time: newArr2.join(', '),
+                                                    gmt: this.timeZone,
+                                                }
+                                            }
+
+                                            if (a > 23) {
+                                                // console.log(dayFromDb)
+                                                // console.log(time)
+
+                                                newArr3.push(time);
+                                                obj3 = {
+                                                    day: nextDateNumber,
+                                                    time: newArr3.join(', '),
+                                                    gmt: this.timeZone,
+                                                }
+                                            }
+
+                                        });
+
+                                        if (Object.keys(obj).length !== 0) {
+                                            array.push(obj);
+                                        }
+                                        if (Object.keys(obj2).length !== 0) {
+                                            array.push(obj2);
+                                        }
+                                        if (Object.keys(obj3).length !== 0) {
+                                            array.push(obj3);
+                                        }
+                                        // console.log(array)
+                                        // console.log(obj)
+                                        // console.log(obj2)
+                                        // console.log(obj3)
+                                        let object = {
+                                            intervals: array,
+                                            'method': 'setToTempGMT'
+                                        }
+                                        // axios.post('/handle.php', JSON.stringify(object));
+
+
+                                        // axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
+                                        // получить данные и вставить в календарь
+
+                                    } else {
+                                        if (dateOfcell === dayFromDb) {
+                                            if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
+                                                day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                                // day.children().each((k, val) => {
+                                                //     // console.log(val);
+                                                //     let valName = val.getAttribute('name');
+                                                //     let valType = val.getAttribute('type');
+                                                //     let valTime = val.getAttribute('time');
+                                                //     let valDate = val.getAttribute('data');
+                                                //     if (typeFromDb !== valType && nameFromDb !== valName && dayFromDb !== valDate && timeFromDb !== valTime) {
+                                                //     }
+                                                // });
+                                            }
+                                            if (paymentFromDb === 'unpayed') {
+                                                day.append("<span payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                            }
                                         }
                                     }
                                 })
-
                             });
                         }
-                        // console.log(freeLesson)
+
                         this.freeLesson = freeLesson;
-                        this.preloader = false;
+                        setTimeout(() => {
+                            this.preloader = false;
+                        }, 50);
                     });
             },
+            // действие при нажатии на занятие
             bookingEvent(event) {
-                // console.log(event.target);
-
+                let target = event.target;
+                this.target = event.target;
+                // console.log($(target));
                 if (event.target.className.includes('book')) {
-                    // console.log('work')
-                    //open detail
-                    this.detailShow = true;
-                    let target = event.target;
+
+                    // смена статуса оплачено на подтвердить оплату
+                    if ($(target).attr('payment') === 'unpayed') {
+                        this.payment = false;
+                    } else {
+                        this.payment = true;
+                    }
+
+                    this.detailShow = true; // открытие окна детализации бронирования
                     this.detailDate = target.getAttribute('data');
                     this.detailTime = target.getAttribute('time');
                     this.typeOfLesson = target.getAttribute('type');
@@ -305,16 +457,41 @@
                         });
                 }
             },
+            // подтвердить оплату
+            confirmPayment() {
+
+                let obj = {
+                    name: this.detailUserName,
+                    time: this.detailTime,
+                    date: this.detailDate,
+                    'method': 'successPay',
+                }
+
+                console.log(this.target);
+
+                axios.post('/handle.php', JSON.stringify({obj}))
+                    .then((response) => {
+                        let data = response.data;
+                        console.log(data)
+                        if (data.payment === 'success') {
+                            this.payment = true;
+                            $(this.target).attr('payment', 'payed').removeClass('unpayed');
+                        } else {
+                            this.errors.push(data.payment);
+                            console.log(this.errors);
+                        }
+                    });
+            },
             // отмена занятия
             cancelLessonFrame() {
                 this.detailShow = false;
                 this.cancelLessShow = true;
             },
+            // закрыть всплыв. окно "Вы уверены, что хотите отменить урок?"
             closeCancelLessonFrame() {
                 this.detailShow = true;
                 this.cancelLessShow = false;
             },
-
             // удалить занятие из БД
             deleteBook() {
                 // console.log(this.detailUserName);
@@ -338,14 +515,12 @@
                 this.detailShow = false;
                 // удалить текущий интервал методом deleteBook()
             },
-
-            // "отмена" Закрыть календарь изменения урока
+            // "отмена" Закрыть календарь изменения урока (закрыть AdminBookCalendar.vue)
             closeAdminCalendar(data) {
                 this.showBookCalendar = false;
                 this.detailShow = true;
             },
-
-            // 'при клике по "изменить время урока" удалить изменяемый интервал '
+            // 'при клике по "изменить время урока" удалить изменяемый интервал
             updateBook(data) {
                 this.deleteBook()
                 window.location.reload();

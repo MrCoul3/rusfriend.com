@@ -9,7 +9,6 @@
             <iframe id="about-video" class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </section>
-
     <section class="top-index">
         <div class="inner">
 
@@ -34,6 +33,7 @@
             </div>
         </div>
     </section>
+
 
     <section class="for-whom section">
         <h1 switch-lang="<?=switchLang()?>" switchable-text="ДЛЯ КОГО НАША ШКОЛА?" class="title for-whom-title">WHO IS OUR SCHOOL FOR?</h1>

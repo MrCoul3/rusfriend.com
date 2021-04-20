@@ -14,7 +14,7 @@
                 the teacher takes place in Skype</h3>
             <div v-if="instruction" class="your-calendar__element your-calendar__element--instruction instruction">
                 <p :language="language" switchable-text="1. Выберите удобное для вас время"
-                   class="instruction__element">1. Choose a convenient time for you</p>
+                   class="instruction__element" style="color: #455A64">1. Choose a convenient time for you</p>
                 <p class="instruction__element instruction__element--separator">></p>
                 <p :language="language" switchable-text="2. Оплатите урок" class="instruction__element">2. Pay for the
                     lesson</p>
@@ -91,6 +91,7 @@
                         <span :language="language" switchable-text="Недоступное время">Unavailable time</span>
                     </div>
                 </div>
+
                 <div v-show="enterSkype" class="enter-your-skype">
                     <h2 :language="language" switchable-text="Все занятия проходят в skype"
                         class="enter-your-skype__element">All lessons are held on skype</h2>
@@ -477,7 +478,7 @@
                 let obj2 = {};
                 let array = [];
                 // ----- удаление неоплаченых бронирований
-                axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
+                // axios.post('/handle.php', JSON.stringify({'method': 'delUnpayedBooks'}))
 
                 $('.time-intrevals-elem ').each((k, val) => {
                     val.innerHTML = '';
@@ -550,7 +551,6 @@
                                             gmt: this.timeZone,
                                         }
                                     }
-
                                 });
 
                                 if (Object.keys(obj).length !== 0) {
@@ -580,7 +580,7 @@
 
                                             let arr = timeFromDb.split(',');
                                             let newArr = [];
-                                            console.log(arr);
+                                            // console.log(arr);
 
                                             arr.forEach((val, k) => {
                                                 // console.log(val.split(' - '));
@@ -665,13 +665,17 @@
                     });
             },
             chooseTime: function (event) {
+                console.log('choose')
                 // ---- Для free-lesson возможность выбрать только одно занятие
                 if (this.freeLesson) {
                     $('.selected-time').removeClass('selected-time');
                 }
+                if ($('.selected-time').hasClass('unpayed-book')) {
 
+                }
                 let selectedTime = event.target;
-                if (!selectedTime.className.includes('time-intrevals-from-db__item')) {
+                console.log()
+                if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book') ) {
                     // console.log(event.target);
                     if (selectedTime.className.includes('selected-time')) {
                         selectedTime.classList.remove('selected-time');
@@ -727,7 +731,19 @@
                         if (response.data['success'] === false) {
                             // открытие формы логина
                             if (!$(".login-form").hasClass('login-form-active')) {
-                                $(".login-form").addClass('login-form-active');
+
+                                $(".login-form").addClass('login-form-active').animate({
+                                    'opacity': '1'
+                                }, 100);
+
+                                $(".form-frame").animate({
+                                    'left': '0px',
+                                }, 200);
+
+                                $(".register-form").animate({
+                                    'opacity': '1'
+                                }, 100);
+
                                 $("#mysite").addClass("body-fixed");
                             }
                         } else {
@@ -796,36 +812,106 @@
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
 
-                        data.forEach(function (val, k) {
-                            // console.log(val[5]);
+                        data.forEach((val, k) => {
                             let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
                             let paymentFromDB = val[5];
                             let gmtFromDB = val[6];
 
-                            if (userNameFromDB === getCookie('name') && (paymentFromDB === 'payed' || paymentFromDB === 'free')) {
-                                timeInterval.each(function (k, val) {
-                                    if ($(this).attr('date') === dayFromDB) {
-                                        // console.log(timeFromDB);
-                                        // console.log($(this).children())
-                                        $(this).children().each(function (k, val) {
-                                            // console.log(val);
-                                            if (val.innerHTML === timeFromDB) {
-                                                val.classList.add('booked-for-this-user');
-                                                // console.log(val);
-                                            }
-                                            // для бесплатного занятия интервалы не отображаются
-                                            if (val.innerHTML.split('-')[0] === timeFromDB) {
-                                                val.classList.add('booked-free');
-                                            }
-                                            // если время интервала меньше текущего - недоступно
-                                            // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                                            //     val.classList.add('booked-for-other-users');
-                                            // }
-                                        })
-                                    }
-                                })
+
+                            if (userNameFromDB === getCookie('name')) {
+                                if ((paymentFromDB === 'payed' || paymentFromDB === 'free')) {
+                                    timeInterval.each((k, val) => {
+                                        if ($(val).attr('date') === dayFromDB) {
+                                            // console.log(timeFromDB);
+                                            // console.log($(this).children())
+                                            $(val).children().each((k, val) => {
+
+                                                if (this.timeZone !== gmtFromDB) {
+
+                                                    let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                                                    let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                                                    let delta = timeZoneNum - gmtFromDbNum;
+                                                    let arr = timeFromDB.split(',');
+                                                    // console.log(timeFromDB)
+
+                                                    let newArr = [];
+
+                                                    arr.forEach((val, k) => {
+                                                        let firstH = val.split('-')[0].split(':')[0];// 06
+                                                        let firstM = val.split('-')[0].split(':')[1];// 00
+                                                        let secondH = val.split('-')[1].split(':')[0]; // 07
+                                                        let secondM = val.split('-')[1].split(':')[1]; // 30
+                                                        let a = +firstH + delta; // 02
+                                                        let b = +secondH + delta; //05
+
+                                                        if (a < 0) {
+                                                            a = 24 + a;
+                                                        }
+                                                        if (b < 0) {
+                                                            b = 24 + b;
+                                                        }
+                                                        let time = a + ':' + firstM.trim() + '  - ' + b + ':' + secondM;
+
+                                                        newArr.push(time);
+                                                    });
+
+                                                    let time = newArr.join(', ').split('-')[0].trim();
+
+                                                    console.log(time);
+                                                    let timeOnCalendar = val.innerHTML.split('-')[0].trim();
+
+                                                    // console.log(dayFromDB)
+                                                    console.log(timeOnCalendar);
+
+                                                    if (timeOnCalendar.trim() === time.trim()) {
+                                                        val.classList.add('booked-for-this-user');
+                                                    }
+
+                                                    // для бесплатного занятия интервалы не отображаются
+                                                    if (val.innerHTML.split('-')[0] === timeFromDB) {
+                                                        val.classList.add('booked-free');
+                                                    }
+
+                                                } else {
+
+                                                    if (val.innerHTML === timeFromDB) {
+                                                        val.classList.add('booked-for-this-user');
+                                                        // console.log(val);
+                                                    }
+                                                    // для бесплатного занятия интервалы не отображаются
+                                                    if (val.innerHTML.split('-')[0] === timeFromDB) {
+                                                        val.classList.add('booked-free');
+                                                    }
+                                                }
+
+                                                // если время интервала меньше текущего - недоступно
+                                                // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
+                                                //     val.classList.add('booked-for-other-users');
+                                                // }
+                                            })
+                                        }
+                                    })
+
+                                }
+                                if (paymentFromDB === 'unpayed') {
+                                    timeInterval.each((k, val) => {
+                                        if ($(val).attr('date') === dayFromDB) {
+                                            // console.log(timeFromDB);
+                                            // console.log($(this).children())
+                                            $(val).children().each((k, val) => {
+
+                                                if (val.innerHTML === timeFromDB) {
+                                                    val.classList.add('unpayed-book');
+                                                    // console.log(val);
+                                                }
+
+                                            })
+                                        }
+                                    })
+
+                                }
                             }
 
 
@@ -881,6 +967,8 @@
 </script>
 
 <style scoped>
+
+
     .prompt {
         position: absolute;
         /*opacity: 0;*/
