@@ -346,6 +346,9 @@
             &--available {
               background: #006660;
             }
+            &--unconfirmed {
+              background: #F6D200;
+            }
 
             &--unavailable {
               background: #DBDEE1;
@@ -467,6 +470,7 @@
       background: $colorTurquoise;
       border-radius: 5px;
       color: white !important;
+      pointer-events: none;
     }
 
     .booked-for-other-users {

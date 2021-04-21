@@ -202,12 +202,6 @@ if ($request[0]['method'] === 'bookEvent') {
     $objCalendar->addBooksTime($request);
 }
 
-// получение данных для сстраницы payment.php
-//if ($request['method'] === 'getLessons') {
-//   $result = $objCalendar->getLessonsForThisUser();
-////   print_r($result);
-//    echo json_encode(($result) );
-//}
 
 if ($request['method'] === 'getLessons') {
     $result = $objCalendar->getLessons();
@@ -327,4 +321,15 @@ if ($request['method'] === 'getFromTempGMT') {
 if ($request['method'] === 'sendEmail') {
 
 
+}
+
+// ------ получение цены
+if ($request['method'] === 'getPrice') {
+    $result = $objCalendar->getPrice();
+    echo json_encode($result);
+}
+// ------ изменение  цены
+if ($request['method'] === 'setPrice') {
+    $result = $objCalendar->setPrice($request);
+    echo json_encode($result);
 }

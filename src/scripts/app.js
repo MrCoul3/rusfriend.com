@@ -16,6 +16,7 @@ import 'owl.carousel';
 import './easing-plugin';
 import './service';
 import './free-lesson';
+import './payment';
 import Vue from 'vue';
 import MySchedule from "../vue/MySchedule.vue";
 import MyCalendar from "../vue/MyCalendar.vue";

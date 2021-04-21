@@ -1,4 +1,5 @@
 import axios from "axios";
+
 $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
         console.log('admin-panel init');
@@ -8,6 +9,7 @@ $(document).ready(function () {
         switchMenuComponents();
         logout();
         adminMenuMobile();
+        changePrice();
         // loginOnReload();
 
         // $('.header').css('display', 'none');// убираем header главной страницы
@@ -45,7 +47,48 @@ $(document).ready(function () {
 
             });
         }
+
         // ------------------------------
+
+        //------- изменить цену
+        function changePrice() {
+            // ---- Открытие окна изменения цены
+            $('.admin-menu-price').click(() => {
+                $('.price-changer').addClass('price-changer-active');
+            });
+            // ---- закрыть
+            $('.price-changer--close').click(() => {
+                $('.price-changer').removeClass('price-changer-active');
+            });
+            // ----- Отправить цену в БД
+            $('.change-bnt').click((e) => {
+                let type;
+                let price;
+                if ($(e.target).hasClass('change-btn--private')) {
+                    type = 'private';
+                    price = $('.input-private').val();
+                }
+                if ($(e.target).hasClass('change-btn--sclub')) {
+                    type = 'sclub';
+                    price = $('.input-sclub').val();
+                }
+                $('.input').val('');
+                let obj = {
+                    type: type,
+                    price: price,
+                    'method': 'setPrice'
+                };
+                axios.post('/handle.php', JSON.stringify(obj))
+                    .then((response) => {
+                        console.log(response.data);
+                        $('.price-private').html('$' + response.data.private);
+                        $('.price-sclub').html('$' + response.data.sclub);
+                    });
+            })
+
+
+        }
+
 
         // ------------------ logout
         function logout() {
@@ -68,6 +111,7 @@ $(document).ready(function () {
                 });
             });
         }
+
         // ------------------------------
 
         // ------------- открытие меню навигации на мобильной версии
@@ -81,6 +125,7 @@ $(document).ready(function () {
                 }
             })
         }
+
         // ------------------------------
 
         // function loginOnReload() {

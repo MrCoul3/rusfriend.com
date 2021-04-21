@@ -87,6 +87,10 @@
                         <span :language="language" switchable-text="Доступное время">Available time</span>
                     </div>
                     <div class="tegs__element">
+                        <div class="circle circle--unconfirmed"></div>
+                        <span :language="language" switchable-text="Неподтвержденное занятие">Unconfirmed lesson</span>
+                    </div>
+                    <div class="tegs__element">
                         <div class="circle circle--unavailable"></div>
                         <span :language="language" switchable-text="Недоступное время">Unavailable time</span>
                     </div>
@@ -174,6 +178,8 @@
                 freeLessBookSuccess: false,
                 preloader: true,
                 language: 'eng-lang',
+                pricePrivate: null,
+                priceSclub: null,
             }
         },
 
@@ -202,7 +208,7 @@
             this.switchLangOnReload();
             this.switchLang();
             this.setTimeZone();
-
+            this.getPrice();
         },
         updated() {
             this.adjustmentDateOfDay();
@@ -664,6 +670,14 @@
 
                     });
             },
+            getPrice() {
+                axios.post('/handle.php', JSON.stringify({'method': 'getPrice'}))
+                    .then((response) => {
+                        console.log(response.data);
+                        this.pricePrivate = response.data.private;
+                        this.priceSclub = response.data.sclub;
+                    });
+            },
             chooseTime: function (event) {
                 console.log('choose')
                 // ---- Для free-lesson возможность выбрать только одно занятие
@@ -689,13 +703,15 @@
                 // let userName = $('.user-login__elem--user-name').html();
                 let userName = getCookie('name');
                 let typeOfLesson;
-
+                let price;
                 if ($('.header-menu--private').hasClass('menu-item-active')) {
                     typeOfLesson = 'private';
+                    price = this.pricePrivate;
                 } else if (this.freeLesson) {
                     typeOfLesson = 'free';
                 } else {
                     typeOfLesson = 's-club';
+                    price = this.priceSclub;
                 }
                 document.cookie = "type=" + typeOfLesson;
                 let payment = this.payment;
@@ -709,6 +725,8 @@
                         day: day,
                         time: time,
                         payment: payment,
+                        confirmation: 0,
+                        price: price,
                         gmt: this.timeZone,
                         'method': 'bookEvent'
                     };
@@ -769,11 +787,7 @@
                                             }
                                             // если не выбраны интервалы вслпывающая подсказка
                                         } else {
-                                            // $(event.target).prev(".prompt").fadeTo("slow", 1);
                                             $(event.target).prev(".prompt").css('visibility', 'visible');
-                                            // setTimeout(function () {
-                                            //     $(event.target).prev(".prompt").fadeOut();
-                                            // },1000)
                                             setTimeout(function () {
                                                 $(event.target).prev(".prompt").css('visibility', 'hidden');
                                             }, 1000)

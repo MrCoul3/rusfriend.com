@@ -19,6 +19,8 @@ class Calendar
         'day',
         'time',
         'type',
+        'confirmation',
+        'price',
         'gmt',
         'payment'
     ];
@@ -112,7 +114,7 @@ class Calendar
 
     public function getLessons()
     {
-        $query = "SELECT * FROM `bookstime` WHERE 1=1";
+        $query = "SELECT * FROM `bookstime` WHERE `name`= '{$_COOKIE['name']}' AND `confirmation` = '0'";
         $result = $this->dbAccess->query($query);
         $getUnpayLessons = mysqli_fetch_all($result);
         return $getUnpayLessons;
@@ -186,6 +188,19 @@ class Calendar
         } else {
             echo $err;
         }
+    }
+    public function setPrice($request)
+    {
+        $query = "UPDATE `prices` SET `{$request['type']}` = '{$request['price']}' WHERE 1";
+        $this->dbAccess->query($query);
+        $result = $this->getPrice();
+        return $result;
+    }
+    public function getPrice()
+    {
+        $query = "SELECT `private`, `sclub` FROM `prices` WHERE 1";
+        $result = $this->dbAccess->query($query);
+        return mysqli_fetch_assoc($result);
     }
 
 

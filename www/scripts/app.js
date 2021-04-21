@@ -2531,6 +2531,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2569,7 +2573,9 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       payment: 'unpayed',
       freeLessBookSuccess: false,
       preloader: true,
-      language: 'eng-lang'
+      language: 'eng-lang',
+      pricePrivate: null,
+      priceSclub: null
     };
   },
   beforeMount: function beforeMount() {
@@ -2597,6 +2603,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     this.switchLangOnReload();
     this.switchLang();
     this.setTimeZone();
+    this.getPrice();
   },
   updated: function updated() {
     this.adjustmentDateOfDay();
@@ -3061,8 +3068,19 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         }, 50);
       });
     },
-    chooseTime: function chooseTime(event) {
+    getPrice: function getPrice() {
       var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getPrice'
+      })).then(function (response) {
+        console.log(response.data);
+        _this2.pricePrivate = response.data["private"];
+        _this2.priceSclub = response.data.sclub;
+      });
+    },
+    chooseTime: function chooseTime(event) {
+      var _this3 = this;
 
       console.log('choose'); // ---- Для free-lesson возможность выбрать только одно занятие
 
@@ -3089,13 +3107,16 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
 
       var userName = getCookie('name');
       var typeOfLesson;
+      var price;
 
       if ($('.header-menu--private').hasClass('menu-item-active')) {
         typeOfLesson = 'private';
+        price = this.pricePrivate;
       } else if (this.freeLesson) {
         typeOfLesson = 'free';
       } else {
         typeOfLesson = 's-club';
+        price = this.priceSclub;
       }
 
       document.cookie = "type=" + typeOfLesson;
@@ -3110,18 +3131,20 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           day: day,
           time: time,
           payment: payment,
-          gmt: _this2.timeZone,
+          confirmation: 0,
+          price: price,
+          gmt: _this3.timeZone,
           'method': 'bookEvent'
         }; // console.log(obj)
 
         if (day !== null && time !== '') {
-          _this2.selectedTimeArray.push(obj);
+          _this3.selectedTimeArray.push(obj);
         }
       });
       console.log(this.selectedTimeArray); // this.selectedTimeArray = array.slice(0);
     },
     bookEvent: function bookEvent(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       // console.log(selectedTimeArray);
       // нужно сделать проверку на логин, если не залогинен то открыть форму
@@ -3153,27 +3176,23 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
-              _this3.enterSkype = true; // $("#mysite").addClass("body-fixed");
+              _this4.enterSkype = true; // $("#mysite").addClass("body-fixed");
             } else {
-              if (_this3.selectedTimeArray.length !== 0) {
-                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this3.selectedTimeArray)); // ---- для бесплатного занятия
+              if (_this4.selectedTimeArray.length !== 0) {
+                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this4.selectedTimeArray)); // ---- для бесплатного занятия
 
-                if (_this3.freeLesson) {
+                if (_this4.freeLesson) {
                   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
                     'method': 'changeSatusOnActive'
                   }));
-                  _this3.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                  _this4.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
                 } else {
                   // --- для платного - страница оплаты
                   window.location.href = "/payment.php";
                 } // если не выбраны интервалы вслпывающая подсказка
 
               } else {
-                // $(event.target).prev(".prompt").fadeTo("slow", 1);
-                $(event.target).prev(".prompt").css('visibility', 'visible'); // setTimeout(function () {
-                //     $(event.target).prev(".prompt").fadeOut();
-                // },1000)
-
+                $(event.target).prev(".prompt").css('visibility', 'visible');
                 setTimeout(function () {
                   $(event.target).prev(".prompt").css('visibility', 'hidden');
                 }, 1000);
@@ -3201,7 +3220,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     // функция изменения состояния интервала в календаре при
     // забронированных интервалах для данного пользователя
     changeStateOfItem: function changeStateOfItem() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getLessons'
@@ -3225,8 +3244,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                   // console.log(timeFromDB);
                   // console.log($(this).children())
                   $(val).children().each(function (k, val) {
-                    if (_this4.timeZone !== gmtFromDB) {
-                      var timeZoneNum = _this4.timeZone.split(' ')[1].substring(0, 3);
+                    if (_this5.timeZone !== gmtFromDB) {
+                      var timeZoneNum = _this5.timeZone.split(' ')[1].substring(0, 3);
 
                       var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
                       var delta = timeZoneNum - gmtFromDbNum;
@@ -9196,6 +9215,21 @@ var render = function() {
                     }
                   },
                   [_vm._v("Available time")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tegs__element" }, [
+                _c("div", { staticClass: "circle circle--unconfirmed" }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Неподтвержденное занятие"
+                    }
+                  },
+                  [_vm._v("Unconfirmed lesson")]
                 )
               ]),
               _vm._v(" "),
@@ -22663,7 +22697,46 @@ $(document).ready(function () {
         }
       });
     }; // ------------------------------
-    // ------------------ logout
+    //------- изменить цену
+
+
+    var changePrice = function changePrice() {
+      // ---- Открытие окна изменения цены
+      $('.admin-menu-price').click(function () {
+        $('.price-changer').addClass('price-changer-active');
+      }); // ---- закрыть
+
+      $('.price-changer--close').click(function () {
+        $('.price-changer').removeClass('price-changer-active');
+      }); // ----- Отправить цену в БД
+
+      $('.change-bnt').click(function (e) {
+        var type;
+        var price;
+
+        if ($(e.target).hasClass('change-btn--private')) {
+          type = 'private';
+          price = $('.input-private').val();
+        }
+
+        if ($(e.target).hasClass('change-btn--sclub')) {
+          type = 'sclub';
+          price = $('.input-sclub').val();
+        }
+
+        $('.input').val('');
+        var obj = {
+          type: type,
+          price: price,
+          'method': 'setPrice'
+        };
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(obj)).then(function (response) {
+          console.log(response.data);
+          $('.price-private').html('$' + response.data["private"]);
+          $('.price-sclub').html('$' + response.data.sclub);
+        });
+      });
+    }; // ------------------ logout
 
 
     var logout = function logout() {
@@ -22735,7 +22808,8 @@ $(document).ready(function () {
     var mediaQueryMobile = window.matchMedia('(max-width: 767px)');
     switchMenuComponents();
     logout();
-    adminMenuMobile(); // loginOnReload();
+    adminMenuMobile();
+    changePrice(); // loginOnReload();
     // $('.header').css('display', 'none');// убираем header главной страницы
 
     $('.header').remove(); // убираем header главной страницы
@@ -22790,12 +22864,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service */ "./scripts/service.js");
 /* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_service__WEBPACK_IMPORTED_MODULE_16__);
 /* harmony import */ var _free_lesson__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./free-lesson */ "./scripts/free-lesson.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
-/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
-/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
-/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
-/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
+/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./payment */ "./scripts/payment.js");
+/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_payment__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
+/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
+/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
+/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
+/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
+
 
 
 
@@ -22821,7 +22898,7 @@ __webpack_require__.r(__webpack_exports__);
 
  // -----------------------------------------------------------
 
-vue__WEBPACK_IMPORTED_MODULE_18__["default"].config.productionTip = false;
+vue__WEBPACK_IMPORTED_MODULE_19__["default"].config.productionTip = false;
 $(document).ready(function () {
   console.log('app.js init'); // -----------------------------------------
   // ----------------- ПОДКЛЮЧЕНИЯ VUE КОМПОНЕНТОВ ---------------- \\
@@ -22829,11 +22906,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-calendar')) {
     console.log('init vue-my-calendar');
-    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
+    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
       el: '#vue-my-calendar',
       template: "<MyCalendar/>",
       components: {
-        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
+        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
       }
     });
   } // ----------- мое расписание (админ-панель)
@@ -22841,11 +22918,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-schedule')) {
     console.log('init vue-my-schedule');
-    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
+    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
       el: '#vue-my-schedule',
       template: "<MySchedule/>",
       components: {
-        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
       }
     });
   } // ----------- мои ученики (админ-панель)
@@ -22853,11 +22930,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-students')) {
     console.log('init vue-my-students');
-    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
+    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
       el: "#vue-my-students",
       template: "<MyStudents/>",
       components: {
-        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
+        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
       }
     });
   } // ----------- компонент для редактирования времени урока (админ-панель)
@@ -22866,11 +22943,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-admin-book-calendar')) {
     console.log('init vue-admin-book-calendar');
 
-    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
+    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
       el: '#vue-admin-book-calendar',
       template: "<AdminBookCalendar/>",
       components: {
-        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
+        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_24__["default"]
       }
     });
   } // ----------- календарь бронирования (в private-lesson и s-club)
@@ -22879,11 +22956,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-book-calendar')) {
     console.log('init vue-book-calendar');
 
-    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
+    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
       el: "#vue-book-calendar",
       template: "<BookCalendar/>",
       components: {
-        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
+        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
       }
     });
   } // -----------------------------------------
@@ -23682,7 +23759,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 $(document).ready(function () {
-  if (!$('body').hasClass('admin')) {
+  if (!$('body').hasClass('admin') && !$('main').hasClass('payment')) {
     console.log('login and register init');
     openLoginForm();
     closeLoginForm();
@@ -24323,6 +24400,37 @@ $(document).ready(function () {
           $(location).attr('href', '/speaking-club.php');
         }
       }
+    });
+  }
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
+
+/***/ }),
+
+/***/ "./scripts/payment.js":
+/*!****************************!*\
+  !*** ./scripts/payment.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
+  if ($("main").hasClass('payment')) {
+    console.log('payment init'); // ---- закрытие окна FAQ
+
+    $('.payment-gateway-main__faq').click(function () {
+      $('.faq').addClass('faq-active');
+    });
+    $('.close-btn').click(function () {
+      $('.faq').removeClass('faq-active');
+    }); //------------------------------------
+    // --- confirm btn click
+
+    $('.payment-gateway-main__confirm-btn').click(function () {
+      $('.success-frame').addClass('success-frame-active');
+      $('.payment-gateway').addClass('payment-gateway-hidden');
+      $('.instruction__item--two').removeClass('instuction-active');
+      $('.instruction__item--three').addClass('instuction-active'); // confirmation становится 1
     });
   }
 });

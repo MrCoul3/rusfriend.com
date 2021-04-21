@@ -1,7 +1,8 @@
 import axios from "axios";
 
 $(document).ready(function () {
-    if (!$('body').hasClass('admin')) {
+
+    if (!$('body').hasClass('admin') && !$('main').hasClass('payment')) {
         console.log('login and register init')
 
         openLoginForm();

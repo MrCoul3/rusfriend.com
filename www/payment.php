@@ -1,90 +1,136 @@
 <?php
 require("vendor/autoload.php");
+require('service.html');
+$objCalendar = new \Classes\Calendar();
+sleep(1);
+$result = $objCalendar->getLessons();
+//echo "<pre>";
+//print_r($result);
+//echo "</pre>";
+foreach ($result as $k=>$val) {
+  $price += $val[7];
+}
+
 ?>
-<?php session_start();?>
-<p class="user-login__elem user-login__elem--user-name">
-    <?=$_SESSION['username']?>
-    <?=$_SESSION['email']?>
-</p>
-<span class="info"></span>
-<div class="pay-btn">оплатить</div>
-<style>
-    .pay-btn {
-        width: 200px;
-        height: 45px;
-        background: red;
-        color: white;
-        border-radius: 10px;
-        font-family: "Exo 2", sans-serif;
-        text-align: center;
-        line-height: 43px;
-        transition: ease 0.3s;
-    }
-    .pay-btn:active {
-         transition: transform ease-in-out .05s;
-         transform: scale3d(0.95, 0.95, 0.95);
-     }
-</style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-    let successPayment = false;
-    let userNameFromDB;
-    // получить данные из базы данных, сформировать цену,
-    // оплатить, изменить payment с unpayed на payed
-    axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
-        .then((response) => {
-            // console.log(response.data);
-            // получаем всю информацию о забронированных уроках по данному пользователю
-            let dataFromDB = response.data;
-            dataFromDB.forEach(function (val, k) {
-                userNameFromDB = val[1];
-                let unPayedLessons = val[5];
-                // console.log(val);
-                if (userNameFromDB === getCookie('name')) {
-                    if (unPayedLessons === 'unpayed') {
-                        let info = document.createElement('span');
-                        info.innerHTML = val[2] + ' ' + val[3] + "<br>";
-                        document.body.prepend(info);
-                    }
-                }
-            })
-            // при клике на кнопку оплатить происходит оплата, если она успешна
-            // То меняется successPayment На true
-
-        });
-
-    $('.pay-btn').click(function () {
-        successPayment = true;
-        // если все успешно, то статус 'payment' менятся на 'payed'
-        // и редирект в
-        if (successPayment === true) {
-            axios.post('/handle.php', JSON.stringify({'method': 'successPay'}));
-            // console.log(getCookie('type'));
-            // if (getCookie('type') === 'private') {
-            //     window.location.href = 'private-lesson.php';
-            // }
-            // if (getCookie('type') === 's-club') {
-            //     window.location.href = 'speaking-club.php';
-            // }
-
-            // ----- изменить статус new На active при оплате занятия
-            axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
-            window.location.href = '/student-lessons.php';
-        } else {
-            console.log("оплата не произведена");
-        }
-    });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Страница оплаты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+<body class="payment-page" id="mysite">
+<header class="header">
+    <div class="header-inner">
+        <a href="/index.php" class="logo"></a>
+        <div class="instruction">
+            <p class="instruction__item">1. Choose a convenient time for you</p>
+            <p class="instruction__item separator">></p>
+            <p class="instruction__item instruction__item--two instuction-active">2. Pay for the lesson</p>
+            <p class="instruction__item separator">></p>
+            <p class="instruction__item instruction__item--three">3. Prepare for the lesson</p>
+        </div>
+    </div>
+</header>
 
 
-    function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
-</script>
+<main class="payment">
 
+    <section class="payment-gateway">
+        <div class="payment-gateway__elem payment-gateway__elem--event">
+            <div class="payment-gateway-head">
+                <p class="payment-gateway-head__title">Make a payment to book a lesson</p>
+            </div>
+            <div class="decor-line"></div>
+            <div class="payment-gateway-main">
+                <p class="payment-gateway-main__descr">To pay for the lesson, you need to transfer it to a PayPal
+                    account</p>
+                <p class="payment-gateway-main__price">$<?=$price?>.00</p>
+                <div class="payment-gateway-main__container flex"><a class="payment-gateway-main__quick-link"
+                                                                     href="https://www.paypal.com/paypalme/svetlanatotr?locale.x=ru_RU"
+                                                                     target="_blank">Link for quick payment</a>
+                    <div class="payment-gateway-main__faq"></div>
+                </div>
+                <p class="payment-gateway-main__adress-descr">Address of the payee</p>
+                <p class="payment-gateway-main__adress-email">svetlanatotr@gmail.com</p>
+                <div class="button payment-gateway-main__confirm-btn">confirm payment</div>
+            </div>
+        </div>
+        <div class="info-container">
+            <?php foreach ($result as $k=>$val):?>
+            <div class="payment-gateway__elem payment-gateway__elem--info">
+                <p class="info-descr info-descr--date">Дата и время</p>
+                <p class="info-date"><?=$val[2] . ', ' . $val[3]?></p>
+                <p class="info-descr info-descr--gmt"><?=$val[8]?></p>
+                <div class="decor-line"></div>
+                <p class="info-descr info-descr--details">Подробности заказа</p>
+                <div class="flex">
+                    <p>Время занятия</p>
+                    <p>1 час</p>
+                </div>
+                <div class="flex">
+                    <p>Цена</p>
+                    <p>$<?=$val[7]?>.00</p>
+                </div>
+                <div class="flex">
+                    <p>Возможность отмены</p>
+                    <p>за 24 часа</p>
+                </div>
+                <div class="decor-line"></div>
+                <div class="flex flex-total">
+                    <p class="total">Итого</p>
+                    <p class="total">$<?=$val[7]?>.00</p>
+                </div>
+            </div>
+            <?php endforeach;?>
+        </div>
+    </section>
 
-<!--<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <section class="faq">
+        <div class="faq-frame">
+            <div class="close-btn"></div>
+            <h2 class="faq-frame-title">How to make a payment</h2>
+            <div class="screen screen--one"></div>
+            <p class="faq-frame-item"><span>1</span>. Click on the button “Send”</p>
+            <div class="screen screen--two"></div>
+            <p class="faq-frame-item"><span>2</span>. Enter the required amount</p>
+            <p class="faq-frame-item"><span>3</span>. Necessarily enter your name as indicated on the website</p>
+            <p class="faq-frame-item"><span>4</span>. Click on the button “Continue”</p>
+            <p class="faq-frame-item"><span>5</span>. Go back to the previous page</p>
+            <div class="screen screen--three"></div>
+            <p class="faq-frame-item"><span>6</span>. And confirm the payment</p>
+        </div>
+    </section>
+
+    <section class="success-frame">
+        <div class="success-frame-content">
+            <h2 class="success-title">Вы успешно оплатили урок</h2>
+            <p>В ближайшее время преподавателсь подтвердит оплату</p>
+            <p>После подтверждения оплаты вам на почту будет выслано <br> письмо с информацией о бронировании</p>
+            <div class="flex success-flex"><a href="/private-lesson.php">
+                    <div class="arrow"></div>
+                </a><a class="return-link" href="/private-lesson.php">Вернуться в календарь занятий</a></div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="decor-line decor-line--footer"></div>
+    <div class="footer-content"><a class="footer-content__element footer-content__element--logo" href="/index.php">
+            <!--img(src="../images/icons/logo.svg", alt="logo").footer-content__element.footer-content__element--logo--></a>
+        <div class="footer-content__element footer-content__element--text">
+            <h2 class="footer-questions">Если возникли вопросы:</h2>
+            <!--a(href="../")-->
+            <h2 class="footer-email">svetlana.totr@gmail.com</h2>
+            <!--a(href="../")-->
+            <!--    h2.footer-skype @svetlana.totr-->
+        </div>
+        <div class="footer-content__element social-net-btns"><a
+                    class="social-net-btns__elem social-net-btns__elem--instagram"
+                    href="https://www.instagram.com/svetlana_totrova/" target="_blank">
+                <!--img(src="../images/icons/insta-icon.svg")--></a><a
+                    class="social-net-btns__elem social-net-btns__elem--tiktok" href="/">
+                <!--img(src="../images/icons/tiktok.svg")--></a></div>
+    </div>
+</footer>
+</html>

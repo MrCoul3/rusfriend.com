@@ -5,6 +5,8 @@ $request = json_decode(file_get_contents('php://input'), true);
 if ($request['method'] == 'requireAdminComponents') {
     $result = $request['type'];
 }
+$objCalendar = new \Classes\Calendar();
+$result = $objCalendar->getPrice();
 ?>
 <title>Страница преподавателя</title>
 <body class="admin" id="mysite">
@@ -28,11 +30,35 @@ if ($request['method'] == 'requireAdminComponents') {
     <div class="admin-menu__element admin-menu__element--mycalendar" type="my-calendar">Мой календарь</div>
     <div class="admin-menu__element admin-menu__element--myschedule" type="my-schedule">Мое расписание</div>
     <div class="admin-menu__element admin-menu__element--mystudents" type="my-students">Мои ученики</div>
+    <div class="admin-menu-price" type="">Изменить цену</div>
 <!--    <div class="admin-menu__element admin-menu__element--messages" type="my-messages">Сообщения</div>-->
 <!--    <div class="admin-menu__element admin-menu__element--reviews" type="my-reviews">Отзывы</div>-->
 </nav>
 
 <div class="decor-line decor-line--nav-menu admin-inner"></div>
+
+<section class="price-changer">
+    <div class="price-changer-content">
+        <div class="close-btn price-changer--close"></div>
+        <div class="flex price-flex">
+            <p class="title">Занятие с преподавателем</p>
+            <p class="price price-private">$<?=$result['private']?></p>
+        </div>
+        <div class="flex" style="display: flex; align-items: center">
+            <input class="input-private input" type="number" placeholder="Введите цену">
+            <div class="change-bnt change-btn--private">изменить</div>
+        </div>
+        <div class="flex price-flex">
+            <p class="title">Speaking - Club</p>
+            <p class="price price-sclub">$<?=$result['sclub']?></p>
+        </div>
+        <div class="flex" style="display: flex; align-items: center">
+            <input class="input-sclub input" type="number" placeholder="Введите цену">
+            <div class="change-bnt change-btn--sclub">изменить</div>
+        </div>
+    </div>
+</section>
+
 <main class="admin-main">
     <div id="vue-my-calendar"></div>
     <div id="vue-my-schedule"></div>

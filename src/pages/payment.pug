@@ -7,15 +7,16 @@ html(lang="en")
         meta(charset='utf-8')
     body#mysite(class='payment-page')
         header.header
-            div.logo
-            div.instruction
-                p.instruction__item 1. Choose a convenient time for you
-                p.instruction__item.separator >
-                p.instruction__item 2. Pay for the lesson
-                p.instruction__item.separator >
-                p.instruction__item 3. Prepare for the lesson
+            div.header-inner
+                div.logo
+                div.instruction
+                    p.instruction__item 1. Choose a convenient time for you
+                    p.instruction__item.separator >
+                    p.instruction__item.instruction__item--two.instuction-active 2. Pay for the lesson
+                    p.instruction__item.separator >
+                    p.instruction__item.instruction__item--three 3. Prepare for the lesson
         main.payment
-            section.payment-gateway.inner
+            section.payment-gateway
                 div.payment-gateway__elem.payment-gateway__elem--event
                     div.payment-gateway-head
                         p.payment-gateway-head__title Make a payment to book a lesson
@@ -24,13 +25,58 @@ html(lang="en")
                         p.payment-gateway-main__descr To pay for the lesson, you need to transfer it to a PayPal account
                         p.payment-gateway-main__price $25
                         div.payment-gateway-main__container.flex
-                            a(href='https://www.paypal.com/paypalme/svetlanatotr?locale.x=ru_RU').payment-gateway-main__quick-link Link for quick payment
+                            a(href='https://www.paypal.com/paypalme/svetlanatotr?locale.x=ru_RU' target="_blank").payment-gateway-main__quick-link Link for quick payment
                             div.payment-gateway-main__faq
                         p.payment-gateway-main__adress-descr Address of the payee
                         p.payment-gateway-main__adress-email svetlanatotr@gmail.com
                         div.button.payment-gateway-main__confirm-btn confirm payment
-                div.payment-gateway__elem.payment-gateway__elem--info
+                div.info-container
+                    div.payment-gateway__elem.payment-gateway__elem--info
+                        p.info-descr.info-descr--date Дата и время
+                        p.info-date Понедельник, 27 Января, 08:30 - 09:30
+                        p.info-descr.info-descr--gmt GTM +03:00
+                        div.decor-line
+                        p.info-descr.info-descr--details Подробности заказа
+                        div.flex
+                            p Время занятия
+                            p 1 час
+                        div.flex
+                            p Цена
+                            p $25.00
+                        div.flex
+                            p Возможность отмены
+                            p за 24 часа
+                        div.decor-line
+                        div.flex.flex-total
+                            p.total Итого
+                            p.total $25.00
+
+
+
             section.faq
+                div.faq-frame
+                    div.close-btn
+                    h2.faq-frame-title How to make a payment
+                    div.screen.screen--one
+                    p.faq-frame-item <span>1</span>. Click on the button “Send”
+                    div.screen.screen--two
+                    p.faq-frame-item <span>2</span>. Enter the required amount
+                    p.faq-frame-item <span>3</span>. Necessarily enter your name as indicated on the website
+                    p.faq-frame-item <span>4</span>. Click on the button “Continue”
+                    p.faq-frame-item <span>5</span>. Go back to the previous page
+                    div.screen.screen--three
+                    p.faq-frame-item <span>6</span>. And confirm the payment
+
+
+            section.success-frame
+                div.success-frame-content
+                    h2.success-title Вы успешно оплатили урок
+                    p В ближайшее время преподавателсь подтвердит оплату
+                    p После подтверждения оплаты вам на почту будет выслано #[br] письмо с информацией о бронировании
+                    div.flex.success-flex
+                        a(href="private-lesson.html")
+                            div.arrow
+                        a(href="private-lesson.html").return-link Вернуться  в календарь занятий
         footer.footer
             div.decor-line.decor-line--footer
             div.footer-content
