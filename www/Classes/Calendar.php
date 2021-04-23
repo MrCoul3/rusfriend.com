@@ -77,7 +77,7 @@ class Calendar
 
     public function returnBooksTime()
     {
-        $query = "SELECT `name`, `day`, `time`, `type`, `payment`, `gmt`  FROM `bookstime` WHERE 1";
+        $query = "SELECT `name`, `day`, `time`, `type`, `payment`, `gmt`, `confirmation`  FROM `bookstime` WHERE 1";
         $result = mysqli_fetch_all($this->dbAccess->query($query));
         return $result;
     }
@@ -104,20 +104,35 @@ class Calendar
         }
     }
 
-//    public function getLessonsForThisUser()
-//    {
-//        $query = "SELECT * FROM `bookstime` WHERE `name` = '{$_SESSION['name']}'";
-//        $result = $this->dbAccess->query($query);
-//        $getUnpayLessons = mysqli_fetch_all($result);
-//        return $getUnpayLessons;
-//    }
-
     public function getLessons()
     {
-        $query = "SELECT * FROM `bookstime` WHERE `name`= '{$_COOKIE['name']}' AND `confirmation` = '0'";
+        $query = "SELECT * FROM `bookstime` WHERE 1";;
         $result = $this->dbAccess->query($query);
         $getUnpayLessons = mysqli_fetch_all($result);
         return $getUnpayLessons;
+    }
+
+    public function confirmLessons($request)
+    {
+//        echo "<pre>";
+//        print_r($request);
+//        echo "</pre>";
+        $errors = [];
+        foreach ($request as $k => $arr) {
+
+            $name = $arr['name'];
+            $time = $arr['time'];
+            $date = $arr['date'];
+            $query = "UPDATE `bookstime` SET `confirmation` = '1' WHERE `name` = '{$name}' AND `time` = '{$time}' AND `day` = '{$date}'";
+            $result = $this->dbAccess->query($query);
+            $errors[] = $result;
+        }
+        if (!in_array(false, $errors)) {
+            $response = 'success';
+        } else {
+            $response = 'unSuccess';
+        }
+        return $response;
     }
 
     public function successPay($request)
@@ -130,13 +145,21 @@ class Calendar
         return $result;
     }
 
-    public function delUnpayedBooks()
+
+    // ----- удалить неоплаченые уроки
+    public function delUnconfirmedBooks($request)
     {
-        $query = "DELETE FROM `bookstime` WHERE `payment` = 'unpayed'";
-        $this->dbAccess->query($query);
+        foreach ($request as $k => &$val) {
+            $name = $val['name'];
+            $time = $val['time'];
+            $date = $val['day'];
+        }
+        $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$date}' AND `time` = '{$time}'";
+        $result = $this->dbAccess->query($query);
+        return $result;
     }
 
-    // удалить урок
+    // --------- удалить урок из БД
     public function delBooksTime($request)
     {
         $name = $request['name'];
@@ -146,6 +169,8 @@ class Calendar
         $this->dbAccess->query($query);
     }
 
+
+    // ------------- получаем данные из БД с временными интервалами
     public function getFromTempGMT()
     {
         $query = "SELECT `day`, `time` FROM `temp-gmt` WHERE 1=1";
@@ -154,6 +179,7 @@ class Calendar
         return $getTempIntervals;
     }
 
+    // -------------- сохраняем данные в БД с временными интервалами
     public function setToTempGMT($request)
     {
 //        echo "<pre>";
@@ -189,6 +215,10 @@ class Calendar
             echo $err;
         }
     }
+    // --------------------------------------------------------------------
+
+
+    // ------------ ФУНКЦИИ ДЛЯ УСТАНОВКИ И ПОЛУЧЕНИЯ ЦЕНЫ НА УРОКИ
     public function setPrice($request)
     {
         $query = "UPDATE `prices` SET `{$request['type']}` = '{$request['price']}' WHERE 1";
@@ -196,12 +226,13 @@ class Calendar
         $result = $this->getPrice();
         return $result;
     }
+
     public function getPrice()
     {
         $query = "SELECT `private`, `sclub` FROM `prices` WHERE 1";
         $result = $this->dbAccess->query($query);
         return mysqli_fetch_assoc($result);
     }
-
+    // --------------------------------------------------------------------
 
 }

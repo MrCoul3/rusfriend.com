@@ -250,16 +250,20 @@
                 padding: 3px 0px;
               }
             }
+
             .selected-time {
               background: $colorRed !important;
               border-radius: 5px;
               color: white !important;
             }
 
-            .unpayed-book {
-              background: #F6D200!important;
+            //unconfirmed-book в классе  интервала означает что пользователь не подтвердил
+            //оплату на странице payment.php, нажав на кнопку [confirm payment]
+            .unconfirmed-book {
+              background: $colorRed !important;
               border-radius: 5px;
               color: white !important;
+
               &:hover {
                 transition: none;
                 background: #F6D200;
@@ -267,6 +271,18 @@
               }
             }
 
+            //  payed/unpayed - подтверждает преподаватель. в тегах отображается как
+            //  "Unconfirmed lesson"
+            .unpayed-book {
+              background: #F6D200;
+              border-radius: 5px;
+              color: white !important;
+              cursor: auto;
+              &:hover {
+                transition: none;
+                background: #F6D200;
+              }
+            }
 
 
           }
@@ -346,8 +362,13 @@
             &--available {
               background: #006660;
             }
+
             &--unconfirmed {
               background: #F6D200;
+            }
+
+            &--unpayed {
+              background: $colorRed;
             }
 
             &--unavailable {
@@ -358,13 +379,6 @@
       }
     }
 
-    //.enter-your-skype-wrap {
-    //  top: 0;
-    //  position: absolute;
-    //  width: 100%;
-    //  height: 100vh;
-    //  background: rgba(0, 0, 0, 0.25);
-    //}
     .enter-your-skype {
       position: absolute;
       width: 553px;
@@ -482,8 +496,86 @@
       display: none;
     }
 
+    // открытие меню при нажатии на неоплаченный урок
 
 
+  }
+
+  .unconfirmed-menu-wrap {
+    transition: all ease .2s;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    top: 0;
+    @include mediaWidth(767) {
+      height: 0;
+      background: transparent;
+    }
+
+    .unconfirmed-menu-frame {
+      position: fixed;
+      top: 200px;
+      right: 0;
+      left: -2000px;
+      opacity: 0;
+      margin: auto;
+      width: 438px;
+      height: 200px;
+      background: #EFF4F9;
+      box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      text-align: center;
+      @include mediaWidth(767) {
+        width: 100%;
+      }
+      .close-btn {
+        margin: 15px 15px 0 0;
+      }
+
+      .title {
+        font-weight: normal;
+        font-size: 18px;
+        color: $colorRed;
+      }
+
+      .description {
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: normal;
+        font-size: 16px;
+      }
+      .decor-line {
+        margin: 0 20px;
+      }
+
+      .flex {
+        margin: 17px auto;
+        display: flex;
+        justify-content: space-between;
+        max-width: 320px;
+        width: 100%;
+
+        .button {
+          width: 154px;
+          height: 35px;
+          //box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: normal;
+          line-height: 35px;
+
+          &--pay-btn {
+            background: #34CFBF;
+          }
+
+          &--cancel-btn {
+            background: #B3B3B3;
+          }
+        }
+      }
+    }
   }
 
   //#booking-calendar {

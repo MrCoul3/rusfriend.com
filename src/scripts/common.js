@@ -11,6 +11,7 @@ $(document).ready(function () {
         coloredNavMenuElems();
         openUserMenu();
         langStateOnReload();
+        cookieWarnClose();
         // -------------------------
 
         // ----------- сброс активных состояний
@@ -52,6 +53,7 @@ $(document).ready(function () {
             });
 
             $('.lang-changer').click(function (e) {
+
                 let langsObj = {
                     'method': 'language'
                 };
@@ -82,6 +84,11 @@ $(document).ready(function () {
                     switchLang(data);
                     elemStyleOnSwitchLang();
                 });
+                if ($('main').hasClass('student-lessons')) {
+                    setTimeout(()=>{
+                        window.location.reload();
+                    },10)
+                }
             });
         }
 
@@ -312,6 +319,19 @@ $(document).ready(function () {
         }
 
         //----------------------------------------------
+
+        // ---- предупредление о куки
+        function cookieWarnClose() {
+            $('.cookie-warn-frame .close').click(()=>{
+                $('.cookie-warn').css('display', 'none');
+                localStorage.setItem('cookie-warn', 'closed');
+            });
+            if (localStorage.getItem('cookie-warn') === 'closed') {
+                $('.cookie-warn').css('display', 'none');
+            } else {
+                $('.cookie-warn').css('display', 'block');
+            }
+        }
 
     }
 });

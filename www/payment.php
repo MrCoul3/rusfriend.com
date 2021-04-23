@@ -1,14 +1,17 @@
-<?php
+<?php session_start();
+
 require("vendor/autoload.php");
 require('service.html');
 $objCalendar = new \Classes\Calendar();
-sleep(1);
 $result = $objCalendar->getLessons();
-//echo "<pre>";
-//print_r($result);
-//echo "</pre>";
+
 foreach ($result as $k=>$val) {
-  $price += $val[7];
+    $userName = $val[1];
+    $conf = $val[6];
+    if ($userName === $_SESSION['name'] && $conf === '0') {
+        $price += $val[7];
+        $time = $val[3];
+    }
 }
 
 ?>
@@ -57,7 +60,8 @@ foreach ($result as $k=>$val) {
         </div>
         <div class="info-container">
             <?php foreach ($result as $k=>$val):?>
-            <div class="payment-gateway__elem payment-gateway__elem--info">
+            <?php $date = $val[2]; $time = $val[3]; $userName = $val[1]; $conf = $val[6]; if ($userName === $_SESSION['name'] && $conf === '0'):?>
+            <div name="<?=$userName?>" time="<?=$time?>" date="<?=$date?>" class="payment-gateway__elem payment-gateway__elem--info">
                 <p class="info-descr info-descr--date">Дата и время</p>
                 <p class="info-date"><?=$val[2] . ', ' . $val[3]?></p>
                 <p class="info-descr info-descr--gmt"><?=$val[8]?></p>
@@ -81,6 +85,7 @@ foreach ($result as $k=>$val) {
                     <p class="total">$<?=$val[7]?>.00</p>
                 </div>
             </div>
+            <?php endif;?>
             <?php endforeach;?>
         </div>
     </section>

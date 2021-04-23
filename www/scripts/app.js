@@ -2535,6 +2535,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 function getCookie(name) {
@@ -2563,6 +2592,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       weekNumber: null,
       currentWeek: null,
       selectedTimeArray: [],
+      unconfirmTimeArray: [],
+      // вспомогательный массив для удаления неподтвержденных интервалов
       dateInterval: null,
       responseData: [],
       currentMonth: null,
@@ -2575,7 +2606,12 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       preloader: true,
       language: 'eng-lang',
       pricePrivate: null,
-      priceSclub: null
+      priceSclub: null,
+      price: null,
+      typeOfLesson: 'private',
+      isUnconfirmed: false,
+      // есть ли неподтвержденные бронирования
+      unconfirmMenuShow: false
     };
   },
   beforeMount: function beforeMount() {
@@ -2608,8 +2644,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
   updated: function updated() {
     this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
-    this.lightingOfToday();
-    this.changeStateOfItem();
+    this.lightingOfToday(); // this.changeStateOfItem();
+
     this.setCurrentMonth();
   },
   computed: {},
@@ -2853,6 +2889,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       }
 
       this.getIntervalsFromDB();
+      this.changeStateOfItem();
     },
     increase: function increase() {
       this.weekNumber++;
@@ -2865,6 +2902,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
       }
 
       this.getIntervalsFromDB();
+      this.changeStateOfItem();
     },
     lightingOfToday: function lightingOfToday() {
       var dayNum = document.querySelectorAll('.calendar-app-content-number');
@@ -2880,8 +2918,26 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         }
       });
     },
-    getIntervalsFromDB: function getIntervalsFromDB() {
+    // ---- получение цены на занятия из БД
+    getPrice: function getPrice() {
       var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+        'method': 'getPrice'
+      })).then(function (response) {
+        // console.log(response.data);
+        _this.pricePrivate = response.data["private"];
+        _this.priceSclub = response.data.sclub;
+
+        if ($('.header-menu--private').hasClass('menu-item-active')) {
+          _this.price = response.data["private"];
+        } else {
+          _this.price = response.data.sclub;
+        }
+      });
+    },
+    getIntervalsFromDB: function getIntervalsFromDB() {
+      var _this2 = this;
 
       this.preloader = true;
       var freeLesson = this.freeLesson;
@@ -2905,9 +2961,9 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           var timeFromDb = val.time;
           var gmtFromDb = val.gmt;
 
-          if (_this.timeZone !== gmtFromDb) {
+          if (_this2.timeZone !== gmtFromDb) {
             // ----- func changeIntevals
-            var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
+            var timeZoneNum = _this2.timeZone.split(' ')[1].substring(0, 3);
 
             var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
             var delta = timeZoneNum - gmtFromDbNum; // console.log(timeFromDb)
@@ -2946,7 +3002,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                 obj = {
                   day: prevDateNumber,
                   time: newArr.join(', '),
-                  gmt: _this.timeZone
+                  gmt: _this2.timeZone
                 };
               }
 
@@ -2957,7 +3013,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                 obj2 = {
                   day: dayFromDb,
                   time: newArr2.join(', '),
-                  gmt: _this.timeZone
+                  gmt: _this2.timeZone
                 };
               }
             });
@@ -3064,21 +3120,11 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           }
         });
         setTimeout(function () {
-          _this.preloader = false;
+          _this2.preloader = false;
         }, 50);
       });
     },
-    getPrice: function getPrice() {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
-        'method': 'getPrice'
-      })).then(function (response) {
-        console.log(response.data);
-        _this2.pricePrivate = response.data["private"];
-        _this2.priceSclub = response.data.sclub;
-      });
-    },
+    // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
     chooseTime: function chooseTime(event) {
       var _this3 = this;
 
@@ -3088,10 +3134,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         $('.selected-time').removeClass('selected-time');
       }
 
-      if ($('.selected-time').hasClass('unpayed-book')) {}
-
       var selectedTime = event.target;
-      console.log();
+      console.log($(selectedTime));
 
       if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book')) {
         // console.log(event.target);
@@ -3102,53 +3146,105 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         }
       }
 
+      this.unconfirmTimeArray = [];
       this.selectedTimeArray = []; // console.log(selectedTimeArray)
       // let userName = $('.user-login__elem--user-name').html();
 
       var userName = getCookie('name');
-      var typeOfLesson;
-      var price;
 
       if ($('.header-menu--private').hasClass('menu-item-active')) {
-        typeOfLesson = 'private';
-        price = this.pricePrivate;
+        this.typeOfLesson = 'private';
       } else if (this.freeLesson) {
-        typeOfLesson = 'free';
+        this.typeOfLesson = 'free';
       } else {
-        typeOfLesson = 's-club';
-        price = this.priceSclub;
+        this.typeOfLesson = 's-club';
       }
 
-      document.cookie = "type=" + typeOfLesson;
-      var payment = this.payment;
+      document.cookie = "type=" + this.typeOfLesson;
       $('.selected-time').each(function (k, val) {
         var day = val.parentNode.getAttribute('date');
         var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
 
         var obj = {
           name: userName,
-          type: typeOfLesson,
+          type: _this3.typeOfLesson,
           day: day,
           time: time,
-          payment: payment,
+          payment: _this3.payment,
           confirmation: 0,
-          price: price,
+          price: _this3.price,
           gmt: _this3.timeZone,
           'method': 'bookEvent'
-        }; // console.log(obj)
+        };
 
-        if (day !== null && time !== '') {
-          _this3.selectedTimeArray.push(obj);
-        }
+        _this3.selectedTimeArray.push(obj);
       });
-      console.log(this.selectedTimeArray); // this.selectedTimeArray = array.slice(0);
+      var day = event.target.parentNode.getAttribute('date');
+      var time = event.target.innerHTML;
+      var obj = {
+        name: userName,
+        type: this.typeOfLesson,
+        day: day,
+        time: time,
+        payment: this.payment,
+        confirmation: 0,
+        price: this.price,
+        gmt: this.timeZone,
+        'method': 'delUnconfirmedBooks'
+      };
+      this.unconfirmTimeArray.push(obj); // console.log(this.unconfirmTimeArray);
+      // ----- функция открытия unconfirmed-menu-frame при нажатии на красное бронирование
+      // unconfirmed-book (неподтвержденное пользователем на странице payment.php)
+
+      if ($(selectedTime).hasClass('unconfirmed-book')) {
+        this.unconfirmMenuShow = true;
+        $('.unconfirmed-menu-frame').animate({
+          'opacity': '1',
+          'left': '0'
+        }, 100);
+        $("#mysite").addClass("body-fixed");
+      }
     },
-    bookEvent: function bookEvent(event) {
+    // ---- МЕНЮ НЕОПЛАЧЕННОГО ЗАНЯТИЯ
+    // ----  закрыть меню неоплаченного занятия
+    closeUnconfirmedMenuFrame: function closeUnconfirmedMenuFrame() {
       var _this4 = this;
 
-      // console.log(selectedTimeArray);
-      // нужно сделать проверку на логин, если не залогинен то открыть форму
-      // Регистрации
+      $("#mysite").removeClass("body-fixed");
+      $('.unconfirmed-menu-frame').animate({
+        'opacity': '0',
+        'left': '-2000px'
+      }, 100);
+      setTimeout(function () {
+        _this4.unconfirmMenuShow = false;
+      }, 100);
+    },
+    payForALessonBtnClick: function payForALessonBtnClick() {
+      window.location.href = '/payment.php';
+    },
+    // ----- удаление неоплаченого бронирования
+    deleteUnconfirmedLesson: function deleteUnconfirmedLesson() {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(this.unconfirmTimeArray)).then(function (response) {
+        console.log(response.data);
+
+        if (response.data) {
+          console.log('success delete unconfirm lesson');
+
+          _this5.getIntervalsFromDB();
+
+          _this5.changeStateOfItem();
+
+          _this5.closeUnconfirmedMenuFrame();
+        }
+      });
+    },
+    // ------------- click on button class="button book-btn" (забронировать -> страница оплаты)
+    bookEvent: function bookEvent(event) {
+      var _this6 = this;
+
+      // ------ проверка на логин, если не залогинен то открыть форму Регистрации
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'checkLoginOnBookedLesson'
       })).then(function (response) {
@@ -3168,7 +3264,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             $("#mysite").addClass("body-fixed");
           }
         } else {
-          //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
+          // ------ если залогинен, то проверка наличия скайпа
           axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
             'method': 'checkSkype'
           })).then(function (response) {
@@ -3176,26 +3272,36 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
-              _this4.enterSkype = true; // $("#mysite").addClass("body-fixed");
+              _this6.enterSkype = true; // включение формы отправки скайпа в БД
+              // $("#mysite").addClass("body-fixed");
             } else {
-              if (_this4.selectedTimeArray.length !== 0) {
-                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this4.selectedTimeArray)); // ---- для бесплатного занятия
+              console.log(_this6.selectedTimeArray);
 
-                if (_this4.freeLesson) {
+              if (_this6.selectedTimeArray.length !== 0) {
+                axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this6.selectedTimeArray)); // ---- для бесплатного занятия
+
+                if (_this6.freeLesson) {
                   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
                     'method': 'changeSatusOnActive'
                   }));
-                  _this4.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
+                  _this6.freeLessBookSuccess = true; // $("#mysite").addClass("body-fixed");
                 } else {
                   // --- для платного - страница оплаты
-                  window.location.href = "/payment.php";
+                  setTimeout(function () {
+                    window.location.href = "/payment.php";
+                  }, 1000);
                 } // если не выбраны интервалы вслпывающая подсказка
 
               } else {
-                $(event.target).prev(".prompt").css('visibility', 'visible');
-                setTimeout(function () {
-                  $(event.target).prev(".prompt").css('visibility', 'hidden');
-                }, 1000);
+                // если есть неоплаченные бронирования, выбранные ранее - переход на payment.php
+                if (_this6.isUnconfirmed) {
+                  window.location.href = "/payment.php";
+                } else {
+                  $(event.target).prev(".prompt").css('visibility', 'visible');
+                  setTimeout(function () {
+                    $(event.target).prev(".prompt").css('visibility', 'hidden');
+                  }, 1000);
+                }
               }
             }
           });
@@ -3217,10 +3323,11 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         this.enterSkype = false; // $("#mysite").removeClass("body-fixed");
       }
     },
-    // функция изменения состояния интервала в календаре при
-    // забронированных интервалах для данного пользователя
+
+    /*  функция изменения состояния интервала в календаре при
+     забронированных интервалах для данного пользователя*/
     changeStateOfItem: function changeStateOfItem() {
-      var _this5 = this;
+      var _this7 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getLessons'
@@ -3229,13 +3336,16 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         // получаем всю информацию о забронированных уроках по данному пользователю
         var data = response.data; // console.log($(this).attr('date'));
 
-        var timeInterval = $('.time-intrevals-from-db__item');
+        var timeInterval = $('.time-intrevals-from-db__item'); // console.log(this.selectedTimeArray)
+
         data.forEach(function (val, k) {
           var userNameFromDB = val[1];
           var dayFromDB = val[2];
           var timeFromDB = val[3];
           var paymentFromDB = val[5];
-          var gmtFromDB = val[6];
+          var confirmationFromDB = val[6];
+          var priceFromDB = val[7];
+          var gmtFromDB = val[8];
 
           if (userNameFromDB === getCookie('name')) {
             if (paymentFromDB === 'payed' || paymentFromDB === 'free') {
@@ -3244,8 +3354,8 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                   // console.log(timeFromDB);
                   // console.log($(this).children())
                   $(val).children().each(function (k, val) {
-                    if (_this5.timeZone !== gmtFromDB) {
-                      var timeZoneNum = _this5.timeZone.split(' ')[1].substring(0, 3);
+                    if (_this7.timeZone !== gmtFromDB) {
+                      var timeZoneNum = _this7.timeZone.split(' ')[1].substring(0, 3);
 
                       var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
                       var delta = timeZoneNum - gmtFromDbNum;
@@ -3317,6 +3427,21 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
                   $(val).children().each(function (k, val) {
                     if (val.innerHTML === timeFromDB) {
                       val.classList.add('unpayed-book'); // console.log(val);
+                    }
+                  });
+                }
+              });
+            }
+
+            if (confirmationFromDB === '0') {
+              _this7.isUnconfirmed = true;
+              timeInterval.each(function (k, val) {
+                if ($(val).attr('date') === dayFromDB) {
+                  // console.log(timeFromDB);
+                  // console.log($(this).children())
+                  $(val).children().each(function (k, val) {
+                    if (val.innerHTML === timeFromDB) {
+                      val.classList.add('unconfirmed-book'); // console.log(val);
                     }
                   });
                 }
@@ -3506,6 +3631,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3541,7 +3669,8 @@ __webpack_require__.r(__webpack_exports__);
       gmtArray: [],
       payment: true,
       target: null,
-      errors: []
+      errors: [],
+      confirmation: 0
     };
   },
   mounted: function mounted() {
@@ -3658,8 +3787,8 @@ __webpack_require__.r(__webpack_exports__);
         'method': 'getBooksTime'
       })).then(function (response) {
         // console.log(response.data);
-        var data = response.data; // console.log(data)
-
+        var data = response.data;
+        console.log(data);
         var freeLesson = null;
 
         if (data !== null) {
@@ -3670,6 +3799,7 @@ __webpack_require__.r(__webpack_exports__);
             var timeFromDb = val.time;
             var gmtFromDb = val.gmt;
             var paymentFromDb = val.payment;
+            var confirmationFromDb = val.confirmation;
 
             if (typeFromDb === 'free') {
               freeLesson = true;
@@ -3785,7 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
               } else {
                 if (dateOfcell === dayFromDb) {
                   if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                    day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>"); // day.children().each((k, val) => {
+                    day.append("<span confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>"); // day.children().each((k, val) => {
                     //     // console.log(val);
                     //     let valName = val.getAttribute('name');
                     //     let valType = val.getAttribute('type');
@@ -3797,7 +3927,7 @@ __webpack_require__.r(__webpack_exports__);
                   }
 
                   if (paymentFromDb === 'unpayed') {
-                    day.append("<span payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
+                    day.append("<span confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
                   }
                 }
               }
@@ -3824,6 +3954,12 @@ __webpack_require__.r(__webpack_exports__);
           this.payment = false;
         } else {
           this.payment = true;
+        }
+
+        if ($(target).attr('confirmation') == 0) {
+          this.confirmation = true;
+        } else {
+          this.confirmation = false;
         }
 
         this.detailShow = true; // открытие окна детализации бронирования
@@ -9199,7 +9335,7 @@ var render = function() {
                       "switchable-text": "Забронированное занятие"
                     }
                   },
-                  [_vm._v("Booked lesson")]
+                  [_vm._v("Booked")]
                 )
               ]),
               _vm._v(" "),
@@ -9229,7 +9365,22 @@ var render = function() {
                       "switchable-text": "Неподтвержденное занятие"
                     }
                   },
-                  [_vm._v("Unconfirmed lesson")]
+                  [_vm._v("Unconfirmed by tutor")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tegs__element" }, [
+                _c("div", { staticClass: "circle circle--unpayed" }),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    attrs: {
+                      language: _vm.language,
+                      "switchable-text": "Неоплаченное занятие"
+                    }
+                  },
+                  [_vm._v("Unpaid")]
                 )
               ]),
               _vm._v(" "),
@@ -9453,6 +9604,108 @@ var render = function() {
             )
           ]
         )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "section",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.unconfirmMenuShow,
+            expression: "unconfirmMenuShow"
+          }
+        ],
+        staticClass: "unconfirmed-menu-wrap"
+      },
+      [
+        _c("div", { staticClass: "unconfirmed-menu-frame" }, [
+          _c("div", {
+            staticClass: "close-btn",
+            on: {
+              click: function($event) {
+                return _vm.closeUnconfirmedMenuFrame()
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              staticClass: "title",
+              attrs: {
+                language: _vm.language,
+                "switchable-text": "Вы выбрали неоплаченный урок"
+              }
+            },
+            [_vm._v("You chose an unpaid\n                lesson")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "decor-line" }),
+          _vm._v(" "),
+          _c(
+            "p",
+            {
+              staticClass: "description",
+              attrs: {
+                language: _vm.language,
+                "switchable-text":
+                  "Что бы завершить бронирование, Вам <br>\n                необходимо оплатить урок в течение 15 минут"
+              }
+            },
+            [
+              _vm._v("To complete the booking, you will\n                "),
+              _c("br"),
+              _vm._v(
+                "\n                need to pay for the lesson within 15 minutes"
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "decor-line" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex" }, [
+            _c(
+              "div",
+              {
+                staticClass: "button button--pay-btn",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text": "оплатить урок"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.payForALessonBtnClick()
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "pay for a\n                    lesson\n                "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "button button--cancel-btn",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text": "отменить урок"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.deleteUnconfirmedLesson()
+                  }
+                }
+              },
+              [_vm._v("cancel a\n                    lesson\n                ")]
+            )
+          ])
+        ])
       ]
     )
   ])
@@ -9726,7 +9979,15 @@ var render = function() {
                     _c("div", { staticClass: "user-name" }, [
                       _vm._v(_vm._s(_vm.detailUserName))
                     ])
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.confirmation
+                    ? _c("div", { staticClass: "confirmation" }, [
+                        _vm._v(
+                          "\n                        не оплачено студентом\n                    "
+                        )
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c(
@@ -22704,10 +22965,12 @@ $(document).ready(function () {
       // ---- Открытие окна изменения цены
       $('.admin-menu-price').click(function () {
         $('.price-changer').addClass('price-changer-active');
+        $("#mysite").addClass("body-fixed");
       }); // ---- закрыть
 
       $('.price-changer--close').click(function () {
         $('.price-changer').removeClass('price-changer-active');
+        $("#mysite").removeClass("body-fixed");
       }); // ----- Отправить цену в БД
 
       $('.change-bnt').click(function (e) {
@@ -22865,7 +23128,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_service__WEBPACK_IMPORTED_MODULE_16__);
 /* harmony import */ var _free_lesson__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./free-lesson */ "./scripts/free-lesson.js");
 /* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./payment */ "./scripts/payment.js");
-/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_payment__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
 /* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
@@ -23056,6 +23318,12 @@ $(document).ready(function () {
           switchLang(data);
           elemStyleOnSwitchLang();
         });
+
+        if ($('main').hasClass('student-lessons')) {
+          setTimeout(function () {
+            window.location.reload();
+          }, 10);
+        }
       });
     };
 
@@ -23278,7 +23546,21 @@ $(document).ready(function () {
       var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
       return matches ? decodeURIComponent(matches[1]) : undefined;
     }; //----------------------------------------------
+    // ---- предупредление о куки
 
+
+    var cookieWarnClose = function cookieWarnClose() {
+      $('.cookie-warn-frame .close').click(function () {
+        $('.cookie-warn').css('display', 'none');
+        localStorage.setItem('cookie-warn', 'closed');
+      });
+
+      if (localStorage.getItem('cookie-warn') === 'closed') {
+        $('.cookie-warn').css('display', 'none');
+      } else {
+        $('.cookie-warn').css('display', 'block');
+      }
+    };
 
     console.log('common.js init');
     var mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
@@ -23292,6 +23574,7 @@ $(document).ready(function () {
     coloredNavMenuElems();
     openUserMenu();
     langStateOnReload();
+    cookieWarnClose();
     $(this).keydown(function (eventObject) {
       if (eventObject.which == 27) {
         if ($(".lang-changer").hasClass('active')) {
@@ -24411,11 +24694,23 @@ $(document).ready(function () {
 /*!****************************!*\
   !*** ./scripts/payment.js ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+$(document).ready(function () {
   if ($("main").hasClass('payment')) {
+    // ----------- getCookie
+    var getCookie = function getCookie(name) {
+      var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }; //----------------------------------------------
+
+
     console.log('payment init'); // ---- закрытие окна FAQ
 
     $('.payment-gateway-main__faq').click(function () {
@@ -24427,10 +24722,33 @@ $(document).ready(function () {
     // --- confirm btn click
 
     $('.payment-gateway-main__confirm-btn').click(function () {
-      $('.success-frame').addClass('success-frame-active');
-      $('.payment-gateway').addClass('payment-gateway-hidden');
-      $('.instruction__item--two').removeClass('instuction-active');
-      $('.instruction__item--three').addClass('instuction-active'); // confirmation становится 1
+      var array = [];
+      var elem = $('.payment-gateway__elem--info');
+
+      if (elem) {
+        elem.each(function (k, val) {
+          var name = $(val).attr('name');
+          var time = $(val).attr('time');
+          var date = $(val).attr('date');
+          var obj = {
+            name: name,
+            time: time,
+            date: date,
+            'method': 'confirmLessons'
+          };
+          array.push(obj);
+        });
+      }
+
+      console.log(array);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(array)).then(function (response) {
+        if (response.data === 'success') {
+          $('.success-frame').addClass('success-frame-active');
+          $('.payment-gateway').addClass('payment-gateway-hidden');
+          $('.instruction__item--two').removeClass('instuction-active');
+          $('.instruction__item--three').addClass('instuction-active');
+        }
+      });
     });
   }
 });
@@ -24856,6 +25174,23 @@ $(document).ready(function () {
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($('main').hasClass('student-lessons')) {
     console.log('student-lessons.js init');
+    $('.content-elem').each(function (k, val) {
+      if ($(val).attr('confirmation') == 0 && $(val).attr('payment') === 'unpayed') {
+        console.log($(val).siblings('a'));
+        $(val).addClass('unconfirmed');
+        $(val).siblings('a').addClass('pay-btn-active');
+      }
+
+      if ($(val).attr('confirmation') == 1 && $(val).attr('payment') === 'unpayed') {
+        $(val).addClass('unpaid');
+        $(val).siblings('p').addClass('unpaid-lesson-active');
+      }
+
+      if ($(val).attr('confirmation') == 1 && $(val).attr('payment') === 'payed') {
+        $(val).addClass('payed');
+        $(val).siblings('span').addClass('payed-lesson-active');
+      }
+    });
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))

@@ -1,6 +1,15 @@
 <title>Главная</title>
 <main class="main-page">
 
+    <section class="cookie-warn">
+        <div class="cookie-warn-frame">
+            <p>Этот сайт использует cookie для хранения
+                данных. Продолжая использовать сайт,
+                вы даете  согласие на работу с этими файлами</p>
+            <div class="close">принять и закрыть</div>
+        </div>
+    </section>
+
     <section class="about-school-video">
         <div class="video-container">
             <div switch-lang="<?=switchLang()?>" switchable-text="Подробнее про нашу школу" class="close-line">Learn more about our school

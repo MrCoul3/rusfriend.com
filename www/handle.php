@@ -2,7 +2,7 @@
 require("vendor/autoload.php");
 $request = json_decode(file_get_contents('php://input'), true);
 //echo "<pre>";
-//print_r($request);
+//print_r($request[0]['method']);
 //echo "</pre>";
 //var_dump($_SESSION);
 
@@ -166,6 +166,7 @@ if ($request['method'] == 'getBooksTime') {
             'type' => $time[3],
             'payment' => $time[4],
             'gmt' => $time[5],
+            'confirmation' => $time[6],
         ];
     }
     echo json_encode($response);
@@ -208,6 +209,20 @@ if ($request['method'] === 'getLessons') {
     echo json_encode(($result));
 }
 
+
+// ------ изменить статус confirmation на 1: click on btn [confirm payment]
+if ($request[0]['method'] === 'confirmLessons') {
+    $result = $objCalendar->confirmLessons($request);
+    echo json_encode(($result));
+}
+
+// ------ удаление неоплаченного бронирования нажатие на
+// кнопку [cancel a lesson] в меню unconfirmed-menu-frame
+if ($request[0]['method'] === 'delUnconfirmedBooks') {
+    $result = $objCalendar->delUnconfirmedBooks($request);
+    echo json_encode(($result));
+}
+
 if ($request['obj']['method'] === 'successPay') {
     $result = $objCalendar->successPay($request);
     if ($result) {
@@ -222,9 +237,7 @@ if ($request['obj']['method'] === 'successPay') {
     echo json_encode(($response));
 }
 
-if ($request['method'] === 'delUnpayedBooks') {
-    $objCalendar->delUnpayedBooks();
-}
+
 
 if ($request['method'] === 'getAllUsersInfo') {
 
@@ -273,6 +286,7 @@ if ($request['method'] === 'unBlockUser') {
     echo $result;
 }
 
+
 // ------------- SETTINGS --------------- \\
 
 if ($request['method'] === 'changeSettings') {
@@ -292,16 +306,16 @@ if ($request['method'] === 'delAvatar') {
     echo json_encode($response);
 
 }
-//if ($setAvatar) {
-//    return $obj->setAvatar();
-//}
+//--------------------------------------------  end settings
 
 
-//--------------------------------------------
 // ----- изменить статус new На active при оплате занятия
 if ($request['method'] === 'changeSatusOnActive') {
     $obj->changeSatusOnActive();
 }
+
+
+
 
 // -------- обработчики для изменения часового пояса
 // добавление интервалов, которые необходимо перенести на

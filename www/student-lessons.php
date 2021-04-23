@@ -1,9 +1,24 @@
 <?php
 require 'pages/requires/header.php';
 require("vendor/autoload.php");
-$monthes = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"];
+$monthes = [];
+$monthesRus = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "October", "November", "December"];
+$monthesEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+if ($_COOKIE['btnLang'] === 'eng-lang') {
+    foreach ($monthesEng as $item) {
+        $monthes[] = $item;
+    }
+}
+if ($_COOKIE['btnLang'] === 'rus-lang') {
+    foreach ($monthesRus as $item) {
+        $monthes[] = $item;
+    }
+}
 $objCalendar = new \Classes\Calendar();
 $result = $objCalendar->getLessons();
+//        echo "<pre>";
+//        print_r($result);
+//        echo "</pre>";
 // для бесплатного занятия
 $activity = 'empty-lesson-block-active';
 $decorLine = 'decor-disable';
@@ -94,7 +109,12 @@ foreach ($result as $item) {
                         if (($item[1] === $_SESSION['name']) and $item[4] === 'private'):
                             $arr = explode('.', $item[2]);
                             $arr[1] = $monthes[+$arr[1] - 1]; ?>
-                            <div class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
+                        <div class="flex" style="display: flex">
+                            <div payment="<?=$item[5]?>" confirmation="<?=$item[6]?>" class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
+                            <a class="pay-btn" href="/payment.php">click to pay</a>
+                            <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed</p>
+                            <span class="payed-lesson">payed</span>
+                        </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
@@ -110,7 +130,12 @@ foreach ($result as $item) {
                         if (($item[1] === $_SESSION['name']) and $item[4] === 's-club'):
                             $arr = explode('.', $item[2]);
                             $arr[1] = $monthes[+$arr[1] - 1]; ?>
-                            <div class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
+                            <div class="flex" style="display: flex">
+                                <div payment="<?=$item[5]?>" confirmation="<?=$item[6]?>" class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
+                                <a class="pay-btn" href="/payment.php">click to pay</a>
+                                <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed</p>
+                                <span class="payed-lesson">payed</span>
+                            </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>

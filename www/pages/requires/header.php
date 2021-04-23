@@ -42,6 +42,8 @@ function switchLang()
 
 <?php require 'pages/requires/register-form.php' ?>
 
+
+
 <section class="register-success">
     <div class="register-success__frame"><img class="success-img" src="../images/icons/succes.svg" alt="success">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Поздравляем, <br> Ты успешно зарегистрировался!">Congratulations, <br> You have successfully registered!</h2>

@@ -864,11 +864,16 @@
 }
 
 .close-btn {
+  box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
   opacity: 0.3;
   transition: all ease-in 0.2s;
   cursor: pointer;
   width: 16px;
   height: 16px;
+  right: 0;
+  top: 0;
   position: absolute;
   background-image: url(../images/icons/close-btn.svg);
 }
@@ -1507,6 +1512,47 @@
 
 .header-menu-white-on-mobile {
   background: #fff;
+}
+
+.cookie-warn {
+  display: none;
+}
+.cookie-warn .cookie-warn-frame {
+  position: fixed;
+  width: 320px;
+  height: 104px;
+  background: #455A64;
+  border-radius: 10px;
+  right: 0;
+  left: 0;
+  margin: auto;
+  bottom: 0px;
+  z-index: 99999;
+  padding: 5px;
+}
+.cookie-warn .cookie-warn-frame p {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 111%;
+  text-align: center;
+  color: #FFFFFF;
+}
+.cookie-warn .cookie-warn-frame .close {
+  margin: 0 auto;
+  width: 152px;
+  height: 27px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 27px;
+  text-align: center;
+  color: #000000;
+  cursor: pointer;
 }
 
 #mysite .authorization-forms {
@@ -2834,6 +2880,7 @@
   top: -20px;
 }
 #mysite .price-changer .price-changer-content {
+  top: 190px;
   position: relative;
   margin: 0 auto;
   padding: 20px 100px 30px;
@@ -3141,6 +3188,11 @@
 #mysite .my-calendar .calendar-detail .user .user-name {
   font-size: 20px;
   color: #455A64;
+}
+#mysite .my-calendar .calendar-detail .confirmation {
+  text-align: right;
+  font-size: 14px;
+  color: #FF3E28;
 }
 #mysite .my-calendar .calendar-detail .message .message-title {
   font-weight: normal;
@@ -3751,15 +3803,25 @@
   border-radius: 5px;
   color: white !important;
 }
-#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unpayed-book {
-  background: #F6D200 !important;
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unconfirmed-book {
+  background: #FF3E28 !important;
   border-radius: 5px;
   color: white !important;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unconfirmed-book:hover {
+  transition: none;
+  background: #F6D200;
+  color: inherit;
+}
+#mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unpayed-book {
+  background: #F6D200;
+  border-radius: 5px;
+  color: white !important;
+  cursor: auto;
 }
 #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unpayed-book:hover {
   transition: none;
   background: #F6D200;
-  color: inherit;
 }
 #mysite .your-calendar .calendar-app .calendar-app-content td, #mysite .your-calendar .calendar-app .calendar-app-content th {
   width: 2%;
@@ -3836,6 +3898,9 @@
 }
 #mysite .your-calendar .calendar-app .tegs__element .circle--unconfirmed {
   background: #F6D200;
+}
+#mysite .your-calendar .calendar-app .tegs__element .circle--unpayed {
+  background: #FF3E28;
 }
 #mysite .your-calendar .calendar-app .tegs__element .circle--unavailable {
   background: #DBDEE1;
@@ -3953,6 +4018,78 @@
 }
 #mysite .your-calendar .booked-free {
   display: none;
+}
+#mysite .unconfirmed-menu-wrap {
+  transition: all ease 0.2s;
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  top: 0;
+}
+@media screen and (max-width: 767px) {
+  #mysite .unconfirmed-menu-wrap {
+    height: 0;
+    background: transparent;
+  }
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame {
+  position: fixed;
+  top: 200px;
+  right: 0;
+  left: -2000px;
+  opacity: 0;
+  margin: auto;
+  width: 438px;
+  height: 200px;
+  background: #EFF4F9;
+  box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  text-align: center;
+}
+@media screen and (max-width: 767px) {
+  #mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame {
+    width: 100%;
+  }
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .close-btn {
+  margin: 15px 15px 0 0;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .title {
+  font-weight: normal;
+  font-size: 18px;
+  color: #FF3E28;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .description {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: normal;
+  font-size: 16px;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .decor-line {
+  margin: 0 20px;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .flex {
+  margin: 17px auto;
+  display: flex;
+  justify-content: space-between;
+  max-width: 320px;
+  width: 100%;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .flex .button {
+  width: 154px;
+  height: 35px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 35px;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .flex .button--pay-btn {
+  background: #34CFBF;
+}
+#mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .flex .button--cancel-btn {
+  background: #B3B3B3;
 }
 
 #mysite .student-lessons {
@@ -4081,7 +4218,7 @@
 }
 #mysite .student-lessons .block {
   display: none;
-  max-height: 150px;
+  min-height: 150px;
   justify-content: space-evenly;
   align-items: center;
   box-sizing: border-box;
@@ -4094,7 +4231,7 @@
   }
 }
 #mysite .student-lessons .block__elem--title {
-  width: 210px;
+  width: 320px;
   font-weight: 500;
   color: #455A64;
 }
@@ -4127,8 +4264,7 @@
   max-height: 140px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  max-width: 225px;
+  max-width: 320px;
   width: 100%;
   line-height: 25px;
   position: relative;
@@ -4154,6 +4290,41 @@
     margin-right: 0;
     font-size: 12px;
   }
+}
+#mysite .student-lessons .block .unconfirmed {
+  color: #FF3E28;
+}
+#mysite .student-lessons .block .pay-btn {
+  font-family: Montserrat, sans-serif;
+  font-size: 14px;
+  display: none;
+  color: #FF3E28;
+}
+#mysite .student-lessons .block .pay-btn-active {
+  display: block;
+}
+#mysite .student-lessons .block .unconfirmed-lesson {
+  display: none;
+  color: #F6A800;
+}
+#mysite .student-lessons .block .unpaid {
+  color: #F6A800;
+}
+#mysite .student-lessons .block .unpaid-lesson {
+  display: none;
+}
+#mysite .student-lessons .block .unpaid-lesson-active {
+  display: block;
+}
+#mysite .student-lessons .block .payed {
+  color: #006660;
+}
+#mysite .student-lessons .block .payed-lesson {
+  display: none;
+  color: #006660;
+}
+#mysite .student-lessons .block .payed-lesson-active {
+  display: block;
 }
 #mysite .student-lessons .block-active {
   display: flex;
@@ -4749,7 +4920,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.25);
-  z-index: 1001;
+  z-index: 9999999;
   top: 0;
 }
 @media screen and (max-width: 767px) {

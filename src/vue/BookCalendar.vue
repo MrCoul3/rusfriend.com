@@ -80,7 +80,7 @@
                 <div class="tegs">
                     <div class="tegs__element">
                         <div class="circle circle--booked"></div>
-                        <span :language="language" switchable-text="Забронированное занятие">Booked lesson</span>
+                        <span :language="language" switchable-text="Забронированное занятие">Booked</span>
                     </div>
                     <div class="tegs__element">
                         <div class="circle circle--available"></div>
@@ -88,7 +88,12 @@
                     </div>
                     <div class="tegs__element">
                         <div class="circle circle--unconfirmed"></div>
-                        <span :language="language" switchable-text="Неподтвержденное занятие">Unconfirmed lesson</span>
+                        <span :language="language"
+                              switchable-text="Неподтвержденное занятие">Unconfirmed by tutor</span>
+                    </div>
+                    <div class="tegs__element">
+                        <div class="circle circle--unpayed"></div>
+                        <span :language="language" switchable-text="Неоплаченное занятие">Unpaid</span>
                     </div>
                     <div class="tegs__element">
                         <div class="circle circle--unavailable"></div>
@@ -133,6 +138,30 @@
                 </div>
             </div>
         </section>
+
+        <section v-show="unconfirmMenuShow" class="unconfirmed-menu-wrap">
+            <div class="unconfirmed-menu-frame">
+                <div @click="closeUnconfirmedMenuFrame()" class="close-btn"></div>
+                <p :language="language" switchable-text="Вы выбрали неоплаченный урок" class="title">You chose an unpaid
+                    lesson</p>
+                <div class="decor-line"></div>
+                <p :language="language" switchable-text="Что бы завершить бронирование, Вам <br>
+                    необходимо оплатить урок в течение 15 минут" class="description">To complete the booking, you will
+                    <br>
+                    need to pay for the lesson within 15 minutes</p>
+                <div class="decor-line"></div>
+                <div class="flex">
+                    <div @click="payForALessonBtnClick()" :language="language" switchable-text="оплатить урок"
+                         class="button button--pay-btn">pay for a
+                        lesson
+                    </div>
+                    <div @click="deleteUnconfirmedLesson()" :language="language" switchable-text="отменить урок"
+                         class="button button--cancel-btn">cancel a
+                        lesson
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -167,6 +196,7 @@
                 weekNumber: null,
                 currentWeek: null,
                 selectedTimeArray: [],
+                unconfirmTimeArray: [], // вспомогательный массив для удаления неподтвержденных интервалов
                 dateInterval: null,
                 responseData: [],
                 currentMonth: null,
@@ -180,6 +210,10 @@
                 language: 'eng-lang',
                 pricePrivate: null,
                 priceSclub: null,
+                price: null,
+                typeOfLesson: 'private',
+                isUnconfirmed: false, // есть ли неподтвержденные бронирования
+                unconfirmMenuShow: false,
             }
         },
 
@@ -214,8 +248,10 @@
             this.adjustmentDateOfDay();
             this.adjustmentDateOfWeek();
             this.lightingOfToday();
-            this.changeStateOfItem();
+            // this.changeStateOfItem();
             this.setCurrentMonth();
+
+
         },
         computed: {},
         methods: {
@@ -445,6 +481,7 @@
                 }
 
                 this.getIntervalsFromDB();
+                this.changeStateOfItem();
             }
             ,
             increase: function () {
@@ -457,7 +494,7 @@
                     this.year++;
                 }
                 this.getIntervalsFromDB();
-
+                this.changeStateOfItem();
             }
             ,
 
@@ -476,6 +513,21 @@
                 })
             }
             ,
+            // ---- получение цены на занятия из БД
+            getPrice() {
+                axios.post('/handle.php', JSON.stringify({'method': 'getPrice'}))
+                    .then((response) => {
+                        // console.log(response.data);
+                        this.pricePrivate = response.data.private;
+                        this.priceSclub = response.data.sclub;
+                        if ($('.header-menu--private').hasClass('menu-item-active')) {
+                            this.price = response.data.private;
+                        } else {
+                            this.price = response.data.sclub;
+                        }
+
+                    });
+            },
 
             getIntervalsFromDB: function () {
                 this.preloader = true;
@@ -670,26 +722,18 @@
 
                     });
             },
-            getPrice() {
-                axios.post('/handle.php', JSON.stringify({'method': 'getPrice'}))
-                    .then((response) => {
-                        console.log(response.data);
-                        this.pricePrivate = response.data.private;
-                        this.priceSclub = response.data.sclub;
-                    });
-            },
+
+            // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
             chooseTime: function (event) {
                 console.log('choose')
                 // ---- Для free-lesson возможность выбрать только одно занятие
                 if (this.freeLesson) {
                     $('.selected-time').removeClass('selected-time');
                 }
-                if ($('.selected-time').hasClass('unpayed-book')) {
 
-                }
                 let selectedTime = event.target;
-                console.log()
-                if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book') ) {
+                console.log($(selectedTime));
+                if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book')) {
                     // console.log(event.target);
                     if (selectedTime.className.includes('selected-time')) {
                         selectedTime.classList.remove('selected-time');
@@ -697,52 +741,104 @@
                         selectedTime.classList.add('selected-time');
                     }
                 }
-
+                this.unconfirmTimeArray = [];
                 this.selectedTimeArray = [];
                 // console.log(selectedTimeArray)
                 // let userName = $('.user-login__elem--user-name').html();
                 let userName = getCookie('name');
-                let typeOfLesson;
-                let price;
+
                 if ($('.header-menu--private').hasClass('menu-item-active')) {
-                    typeOfLesson = 'private';
-                    price = this.pricePrivate;
+                    this.typeOfLesson = 'private';
                 } else if (this.freeLesson) {
-                    typeOfLesson = 'free';
+                    this.typeOfLesson = 'free';
                 } else {
-                    typeOfLesson = 's-club';
-                    price = this.priceSclub;
+                    this.typeOfLesson = 's-club';
                 }
-                document.cookie = "type=" + typeOfLesson;
-                let payment = this.payment;
+                document.cookie = "type=" + this.typeOfLesson;
+
                 $('.selected-time').each((k, val) => {
                     let day = val.parentNode.getAttribute('date');
                     let time = val.innerHTML;
                     // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
                     let obj = {
                         name: userName,
-                        type: typeOfLesson,
+                        type: this.typeOfLesson,
                         day: day,
                         time: time,
-                        payment: payment,
+                        payment: this.payment,
                         confirmation: 0,
-                        price: price,
+                        price: this.price,
                         gmt: this.timeZone,
                         'method': 'bookEvent'
                     };
-                    // console.log(obj)
-                    if (day !== null && time !== '') {
-                        this.selectedTimeArray.push(obj);
-                    }
+
+                    this.selectedTimeArray.push(obj);
                 });
-                console.log(this.selectedTimeArray);
-                // this.selectedTimeArray = array.slice(0);
-            }
-            ,
+
+                let day = event.target.parentNode.getAttribute('date');
+                let time = event.target.innerHTML;
+                let obj = {
+                    name: userName,
+                    type: this.typeOfLesson,
+                    day: day,
+                    time: time,
+                    payment: this.payment,
+                    confirmation: 0,
+                    price: this.price,
+                    gmt: this.timeZone,
+                    'method': 'delUnconfirmedBooks'
+                };
+                this.unconfirmTimeArray.push(obj);
+
+                // console.log(this.unconfirmTimeArray);
+
+                // ----- функция открытия unconfirmed-menu-frame при нажатии на красное бронирование
+                // unconfirmed-book (неподтвержденное пользователем на странице payment.php)
+                if ($(selectedTime).hasClass('unconfirmed-book')) {
+                    this.unconfirmMenuShow = true;
+                    $('.unconfirmed-menu-frame').animate({
+                        'opacity': '1',
+                        'left': '0'
+                    }, 100)
+                    $("#mysite").addClass("body-fixed");
+                }
+
+            },
+
+            // ---- МЕНЮ НЕОПЛАЧЕННОГО ЗАНЯТИЯ
+            // ----  закрыть меню неоплаченного занятия
+            closeUnconfirmedMenuFrame() {
+                $("#mysite").removeClass("body-fixed");
+                $('.unconfirmed-menu-frame').animate({
+                    'opacity': '0',
+                    'left': '-2000px'
+                }, 100)
+                setTimeout(() => {
+                    this.unconfirmMenuShow = false;
+                }, 100);
+            },
+            payForALessonBtnClick() {
+                window.location.href = '/payment.php'
+            },
+
+            // ----- удаление неоплаченого бронирования
+            deleteUnconfirmedLesson() {
+                axios.post('/handle.php', JSON.stringify(this.unconfirmTimeArray))
+                    .then((response) => {
+                        console.log(response.data)
+                        if (response.data) {
+                            console.log('success delete unconfirm lesson')
+                            this.getIntervalsFromDB();
+                            this.changeStateOfItem();
+                            this.closeUnconfirmedMenuFrame();
+                        }
+                    });
+            },
+
+
+            // ------------- click on button class="button book-btn" (забронировать -> страница оплаты)
             bookEvent: function (event) {
-                // console.log(selectedTimeArray);
-                // нужно сделать проверку на логин, если не залогинен то открыть форму
-                // Регистрации
+                // ------ проверка на логин, если не залогинен то открыть форму Регистрации
                 axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
                     .then((response) => {
                         // console.log(response.data['success']);
@@ -765,15 +861,17 @@
                                 $("#mysite").addClass("body-fixed");
                             }
                         } else {
-                            //если ЛОГин то проверка наличия скайпа + отпарвка интервалов в бд
+                            // ------ если залогинен, то проверка наличия скайпа
                             axios.post('/handle.php', JSON.stringify({'method': 'checkSkype'}))
                                 .then((response) => {
                                     // console.log(response.data);
                                     let dataFromDB = response.data;
                                     if (dataFromDB.status === 'empty') {
-                                        this.enterSkype = true;
+                                        this.enterSkype = true; // включение формы отправки скайпа в БД
                                         // $("#mysite").addClass("body-fixed");
                                     } else {
+
+                                        console.log(this.selectedTimeArray)
                                         if (this.selectedTimeArray.length !== 0) {
                                             axios.post('/handle.php', JSON.stringify(this.selectedTimeArray))
                                             // ---- для бесплатного занятия
@@ -783,14 +881,22 @@
                                                 // $("#mysite").addClass("body-fixed");
                                             } else {
                                                 // --- для платного - страница оплаты
-                                                window.location.href = "/payment.php";
+                                                setTimeout(()=>{
+                                                    window.location.href = "/payment.php";
+                                                },1000);
                                             }
                                             // если не выбраны интервалы вслпывающая подсказка
                                         } else {
-                                            $(event.target).prev(".prompt").css('visibility', 'visible');
-                                            setTimeout(function () {
-                                                $(event.target).prev(".prompt").css('visibility', 'hidden');
-                                            }, 1000)
+                                            // если есть неоплаченные бронирования, выбранные ранее - переход на payment.php
+                                            if (this.isUnconfirmed) {
+                                                window.location.href = "/payment.php";
+                                            } else {
+                                                $(event.target).prev(".prompt").css('visibility', 'visible');
+                                                setTimeout(function () {
+                                                    $(event.target).prev(".prompt").css('visibility', 'hidden');
+                                                }, 1000)
+                                            }
+
                                         }
 
                                     }
@@ -814,8 +920,8 @@
                 }
             }
             ,
-            // функция изменения состояния интервала в календаре при
-            // забронированных интервалах для данного пользователя
+            /*  функция изменения состояния интервала в календаре при
+             забронированных интервалах для данного пользователя*/
             changeStateOfItem: function () {
 
                 axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
@@ -825,14 +931,16 @@
                         let data = response.data;
                         // console.log($(this).attr('date'));
                         let timeInterval = $('.time-intrevals-from-db__item');
+                        // console.log(this.selectedTimeArray)
 
                         data.forEach((val, k) => {
                             let userNameFromDB = val[1];
                             let dayFromDB = val[2];
                             let timeFromDB = val[3];
                             let paymentFromDB = val[5];
-                            let gmtFromDB = val[6];
-
+                            let confirmationFromDB = val[6];
+                            let priceFromDB = val[7];
+                            let gmtFromDB = val[8];
 
                             if (userNameFromDB === getCookie('name')) {
                                 if ((paymentFromDB === 'payed' || paymentFromDB === 'free')) {
@@ -918,6 +1026,24 @@
 
                                                 if (val.innerHTML === timeFromDB) {
                                                     val.classList.add('unpayed-book');
+                                                    // console.log(val);
+                                                }
+
+                                            })
+                                        }
+                                    })
+
+                                }
+                                if (confirmationFromDB === '0') {
+                                    this.isUnconfirmed = true;
+                                    timeInterval.each((k, val) => {
+                                        if ($(val).attr('date') === dayFromDB) {
+                                            // console.log(timeFromDB);
+                                            // console.log($(this).children())
+                                            $(val).children().each((k, val) => {
+
+                                                if (val.innerHTML === timeFromDB) {
+                                                    val.classList.add('unconfirmed-book');
                                                     // console.log(val);
                                                 }
 

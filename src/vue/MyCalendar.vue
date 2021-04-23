@@ -70,6 +70,9 @@
                         <!--                            <div class="message-title">сообщение</div>-->
                         <!--                            <div class="message-icon"></div>-->
                         <!--                        </div>-->
+                        <div v-if="confirmation" class="confirmation">
+                            не оплачено студентом
+                        </div>
                     </div>
                     <div class="flex" style="display: flex; justify-content: space-between">
                         <div class="wrap skype">
@@ -155,6 +158,7 @@
                 payment: true,
                 target: null,
                 errors: [],
+                confirmation: 0,
 
             }
         },
@@ -264,7 +268,7 @@
                         // console.log(response.data);
                         let data = response.data;
 
-                        // console.log(data)
+                        console.log(data)
                         let freeLesson = null;
                         if (data !== null) {
                             data.forEach((val, k) => {
@@ -275,6 +279,7 @@
                                 let timeFromDb = val.time;
                                 let gmtFromDb = val.gmt;
                                 let paymentFromDb = val.payment;
+                                let confirmationFromDb = val.confirmation;
                                 if (typeFromDb === 'free') {
                                     freeLesson = true;
                                 }
@@ -394,7 +399,7 @@
                                     } else {
                                         if (dateOfcell === dayFromDb) {
                                             if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                                                day.append("<span type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                                day.append("<span confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
                                                 // day.children().each((k, val) => {
                                                 //     // console.log(val);
                                                 //     let valName = val.getAttribute('name');
@@ -406,7 +411,7 @@
                                                 // });
                                             }
                                             if (paymentFromDb === 'unpayed') {
-                                                day.append("<span payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                                                day.append("<span confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
                                             }
                                         }
                                     }
@@ -432,6 +437,12 @@
                         this.payment = false;
                     } else {
                         this.payment = true;
+                    }
+                    if($(target).attr('confirmation') == 0) {
+                        this.confirmation = true;
+                    } else {
+                        this.confirmation = false;
+
                     }
 
                     this.detailShow = true; // открытие окна детализации бронирования

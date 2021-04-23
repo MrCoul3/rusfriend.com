@@ -523,7 +523,6 @@ $(document).ready(function () {
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
-
     //----------------------------------------------
 
 

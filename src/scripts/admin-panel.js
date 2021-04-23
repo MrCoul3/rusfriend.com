@@ -55,11 +55,14 @@ $(document).ready(function () {
             // ---- Открытие окна изменения цены
             $('.admin-menu-price').click(() => {
                 $('.price-changer').addClass('price-changer-active');
+                $("#mysite").addClass("body-fixed");
             });
             // ---- закрыть
             $('.price-changer--close').click(() => {
                 $('.price-changer').removeClass('price-changer-active');
+                $("#mysite").removeClass("body-fixed");
             });
+
             // ----- Отправить цену в БД
             $('.change-bnt').click((e) => {
                 let type;

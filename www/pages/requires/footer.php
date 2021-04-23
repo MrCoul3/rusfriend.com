@@ -1,6 +1,7 @@
 <?php
 require("vendor/autoload.php");
 ?>
+
 <footer class="footer">
     <div class="decor-line decor-line--footer"></div>
     <div class="footer-content">

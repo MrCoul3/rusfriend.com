@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 .body-fixed {
     overflow: hidden;
@@ -9,12 +8,6 @@
         padding-right: 0;
     }
 }
-
-//// при открытии login-form сдвиг вправо из-за отсутствия скролбара
-//.header-fixed {
-//    position: relative;
-//    right: 15px;
-//}
 
 .inner {
     max-width: 1024px;
@@ -27,11 +20,16 @@
 }
 
 .close-btn {
+    box-sizing: border-box;
+    background-size: cover;
+    background-repeat: no-repeat;
     opacity: 0.3;
     transition: all ease-in .2s;
     cursor: pointer;
     width: 16px;
     height: 16px;
+    right: 0;
+    top: 0;
     position: absolute;
     background-image: url("../images/icons/close-btn.svg");
     &:hover {
@@ -658,5 +656,47 @@
 }
 .header-menu-white-on-mobile {
     background: #fff;
+}
+
+// cookie - предупреждение
+.cookie-warn {
+    display: none;
+    .cookie-warn-frame {
+        position: fixed;
+        width: 320px;
+        height: 104px;
+        background: #455A64;
+        border-radius: 10px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        bottom: 0px;
+        z-index: 99999;
+        padding: 5px;
+        p {
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 111%;
+            text-align: center;
+            color: #FFFFFF;
+        }
+        .close {
+            margin: 0 auto;
+            width: 152px;
+            height: 27px;
+            background: #FFFFFF;
+            border-radius: 5px;
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 27px;
+            text-align: center;
+            color: #000000;
+            cursor: pointer;
+        }
+    }
 }
 
