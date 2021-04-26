@@ -71,8 +71,10 @@ if ($request['method'] == 'reload' or $request['method'] == 'checkLoginOnBookedL
     $response = [];
     $check = $obj->checkLogin();
     $userInfo = $obj->getUserInfo();
-    if ($userInfo['status'] === 'blocked') {
-        $obj->logout();
+    if ($userInfo !== null) {
+        if ($userInfo['status'] === 'blocked') {
+            $obj->logout();
+        }
     }
 //    $_SESSION['isActive'] = $userInfo['status'];
     if ($check === 'admin') {

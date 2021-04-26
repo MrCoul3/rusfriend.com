@@ -418,7 +418,6 @@ $(document).ready(function () {
             }).then(function (data) {
                 console.log(data)
                 if (data.success) {
-
                     if (data.status === 'user') {
                         // authorizedUser();
                         // changeLoginBtnToUserName();

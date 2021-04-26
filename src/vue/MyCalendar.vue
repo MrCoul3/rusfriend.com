@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="preloader" id="preloader"></div>
-        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section calendar-active">
+        <section id="my-calendar" class="my-calendar admin-inner admin-panel-section ">
             <h2 class="main-title">Календарь занятий</h2>
             <h3 class="main-title main-title__description">Здесь ты можешь посмотреть информацию о забронированных
                 занятиях,

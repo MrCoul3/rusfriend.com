@@ -27,10 +27,10 @@ class User
     {
         $this->dbAccess = new DbAccess();
     }
-    function getCode()
-    {
-        return $code = rand(1000, 9999);
-    }
+//    function getCode()
+//    {
+//        return $code = rand(1000, 9999);
+//    }
 
     function getPassHash($userPassword)
     {
@@ -121,7 +121,6 @@ class User
 
     public function checkLogin()
     {
-
             if (isset($_SESSION['email'])) {
                 if (in_array($_SESSION['email'], $this->adminEmails)) {
                     $_SESSION['status'] = 'admin';
@@ -143,9 +142,14 @@ class User
 
     public function checkSkype()
     {
-        $query = "SELECT `skype` FROM `users` WHERE email = '{$_SESSION['email']}'";
-        $result = $this->dbAccess->query($query);
-        $getSkype = mysqli_fetch_assoc($result);
+        if (isset($_SESSION['email'])) {
+            $query = "SELECT `skype` FROM `users` WHERE email = '{$_SESSION['email']}'";
+            $result = $this->dbAccess->query($query);
+            $getSkype = mysqli_fetch_assoc($result);
+        } else {
+            $getSkype = null;
+        }
+
         return $getSkype;
     }
 
@@ -165,10 +169,15 @@ class User
 
     public function getUserInfo()
     {
-        $query = "SELECT * FROM `users` WHERE email = '{$_SESSION['email']}'";
-        $result = $this->dbAccess->query($query);
-        $getUserInfo = mysqli_fetch_assoc($result);
-        $_SESSION['name'] = $getUserInfo['name'];
+        if (isset($_SESSION['email'])) {
+            $query = "SELECT * FROM `users` WHERE email = '{$_SESSION['email']}'";
+            $result = $this->dbAccess->query($query);
+            $getUserInfo = mysqli_fetch_assoc($result);
+            $_SESSION['name'] = $getUserInfo['name'];
+        } else {
+            $getUserInfo = null;
+        }
+
         return $getUserInfo;
     }
 

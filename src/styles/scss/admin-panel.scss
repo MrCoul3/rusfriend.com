@@ -22,7 +22,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
-    background-image: url("../images/common/lang-School.png");
+    background-image: url("../images/common/Lang-School.png");
     background-repeat: no-repeat;
     background-position: 131px 5px;
     align-items: center;
@@ -835,6 +835,7 @@
             width: 300px;
             margin: 0 auto;
             margin-left: 97px;
+            position: relative;
 
             &__item {
               margin-right: 7px;
@@ -895,6 +896,7 @@
               width: 230px;
               height: 27px;
               background: #768E99;
+              display: none; // --- temp
             }
 
             &--clear-schedule {

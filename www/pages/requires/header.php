@@ -1,6 +1,6 @@
 <?php session_start();
 require('service.html'); // подключение styles/app.css и scripts/app.js
-//var_dump($_SESSION);
+//var_dump($_SESSION['email']);
 if (isset($_SESSION['email'])) {
     $status = [
         'logout' => ['disable', 'disable'],
