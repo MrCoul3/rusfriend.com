@@ -31,12 +31,13 @@ $(document).ready(function () {
         // карусели
         $(".owl-carousel-1").owlCarousel({
             margin: 100,
+            items: 1,
             autoWidth: true,
             dotsEach: true,
             navSpeed: 500,
             loop: true,
             center: true,
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 500,
             autoplayHoverPause: true,
             autoplayTimeout: 3000,

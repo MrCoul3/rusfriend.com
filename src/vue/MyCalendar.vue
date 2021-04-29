@@ -267,7 +267,6 @@
                     .then((response) => {
                         // console.log(response.data);
                         let data = response.data;
-
                         console.log(data)
                         let freeLesson = null;
                         if (data !== null) {

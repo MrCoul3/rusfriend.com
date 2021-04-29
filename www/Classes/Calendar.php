@@ -173,7 +173,7 @@ class Calendar
     // ------------- получаем данные из БД с временными интервалами
     public function getFromTempGMT()
     {
-        $query = "SELECT `day`, `time` FROM `temp-gmt` WHERE 1=1";
+        $query = "SELECT `day`, `time`, `gmt` FROM `temp-gmt` WHERE 1=1";
         $result = $this->dbAccess->query($query);
         $getTempIntervals = mysqli_fetch_all($result);
         return $getTempIntervals;

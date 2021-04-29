@@ -230,12 +230,12 @@
           }
 
           .card-content {
-            padding-top: 22px;
+            padding-top: 27px;
           }
 
           .card-title {
             @include mediaWidth(1024) {
-              margin-bottom: 10px !important;
+              //margin-bottom: 10px !important;
             }
           }
 

@@ -80,7 +80,8 @@
                 <h1 switch-lang="<?=switchLang()?>" switchable-text="ОБО МНЕ" class="title about-title">ABOUT ME</h1>
                 <div class="about-social-net">
                     <a class="about-social-net__elem about-social-net__elem--insta" href="https://www.instagram.com/svetlana_totrova/" target="_blank">
-                        <!--img(src="../images/icons/about-insta-icon.svg")--></a>
+<!--                        <img src="../images/icons/about-insta-icon.png">-->
+                    </a>
                     <a class="about-social-net__elem about-social-net__elem--tiktok" href="../">
                         <!--img(src="../images/icons/about-tiktok.svg")--></a>
                 </div>
@@ -91,7 +92,7 @@
                     <p switch-lang="<?=switchLang()?>" switchable-text="Веду блог о русском языке, России и своей культуре в Instagram и Tik-Tok" class="about-items__item c">I have blogs on Instagram and Tik-Tok about the Russian language, Russia, and my culture</p>
                     <p switch-lang="<?=switchLang()?>" switchable-text="Основатель онлайн-школы и автор образовательных курсов по русскому языку" class="about-items__item d">Author of educational courses in the Russian language</p>
                 </div>
-                <h3 switch-lang="<?=switchLang()?>" switchable-text="Светлана" class="slogan about-slogan about-slogan--name">Svetlana</h3>
+<!--                <h3 switch-lang="--><?//=switchLang()?><!--" switchable-text="Светлана" class="slogan about-slogan about-slogan--name">Svetlana</h3>-->
             </div>
         </div>
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Буду очень рада видеть тебя <br> на моих online-занятиях" class="detail-slogan">I'll be very happy to see you in my online classes</h2>

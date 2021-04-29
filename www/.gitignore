@@ -1,8 +1,11 @@
 .idea
 node_modules
 *.rar
+*.html
+!service.html
 _
 vendor
 .idea
 composer.json
 composer.lock
+Classes/DbAccess.php

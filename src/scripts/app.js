@@ -18,7 +18,6 @@ import './service';
 import './free-lesson';
 import './payment';
 import Vue from 'vue';
-import  VTooltip from 'v-tooltip';
 import MySchedule from "../vue/MySchedule.vue";
 import MyCalendar from "../vue/MyCalendar.vue";
 import BookCalendar from "../vue/BookCalendar.vue";
@@ -29,7 +28,6 @@ Vue.config.productionTip = false;
 $(document).ready(function () {
     console.log('app.js init')
 // -----------------------------------------
-    Vue.use(VTooltip);
 
 // ----------------- ПОДКЛЮЧЕНИЯ VUE КОМПОНЕНТОВ ---------------- \\
 

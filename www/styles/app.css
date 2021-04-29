@@ -594,11 +594,13 @@
 }
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right {
+    margin-top: 0;
     margin-left: 20px;
   }
 }
 @media screen and (max-width: 767px) {
   #mysite .about__element--right {
+    margin-top: 0;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -634,6 +636,7 @@
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right .about-social-net {
     visibility: visible;
+    opacity: 1;
     margin-left: 0;
     width: 60px;
   }
@@ -2268,7 +2271,7 @@
 }
 @media screen and (max-width: 500px) {
   #mysite .about-page .offers {
-    margin: 115px auto 70px;
+    margin: 170px auto 70px;
   }
 }
 
@@ -2509,12 +2512,7 @@
   background-image: url(../images/index/card-logo-balalayka.svg);
 }
 #mysite .offers .offers-cards__card--private .card-content {
-  padding-top: 22px;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .offers .offers-cards__card--private .card-title {
-    margin-bottom: 10px !important;
-  }
+  padding-top: 27px;
 }
 #mysite .offers .offers-cards__card--s-club {
   background: #34CFBE;
@@ -5149,7 +5147,7 @@
 .center {
   position: absolute;
   top: calc(50% - 10px);
-  left: calc(50% - 20px);
+  left: -55px;
 }
 .prompt[data-v-c00eaaa2] {
   position: absolute;
@@ -5203,6 +5201,9 @@
   height: 100%;
   overflow: visible;
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+}
+#booking-calendar[data-v-678606de] {
+  opacity: 0;
 }
 .prompt[data-v-678606de] {
   position: absolute;

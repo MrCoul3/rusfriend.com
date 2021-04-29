@@ -417,6 +417,11 @@ $(document).ready(function () {
                 return data.json()
             }).then(function (data) {
                 console.log(data)
+
+                $('.form-input').each((k,val)=>{
+                    $(val).val('');
+                });
+
                 if (data.success) {
                     if (data.status === 'user') {
                         // authorizedUser();

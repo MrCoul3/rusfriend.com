@@ -501,6 +501,7 @@ export default {
         this.timeRightSelectorVariablesFull.forEach((val, k) => {
           this.timeRightSelectorVariables.push(val);
         });
+
       } else {
         this.switcherIntervals = true;
 
@@ -512,6 +513,7 @@ export default {
           this.timeRightSelectorVariables.push(val);
         });
       }
+
       console.log(this.switcherIntervals);
 
     },
@@ -595,7 +597,7 @@ export default {
 .center {
   position: absolute;
   top: calc(50% - 10px);
-  left: calc(50% - 20px);
+  left: -55px;
 }
 
 </style>

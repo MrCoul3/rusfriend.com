@@ -634,10 +634,13 @@
       }
 
       &--right {
+        //margin-top: 44px;
         @include mediaWidth(1024) {
+          margin-top: 0;
           margin-left: 20px;
         }
         @include mediaWidth(767) {
+          margin-top: 0;
           text-align: center;
           display: flex;
           flex-direction: column;
@@ -669,7 +672,7 @@
           margin-left: 400px;
           @include mediaWidth(1024) {
             visibility: visible;
-            //opacity: 1;
+            opacity: 1;
             margin-left: 0;
             width: 60px;
           }
