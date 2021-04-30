@@ -8,9 +8,9 @@ $(document).ready(function () {
 
         switchMenuComponents();
         logout();
-        adminMenuMobile();
+        // adminMenuMobile();
         changePrice();
-        // loginOnReload();
+        loginOnReload();
 
         // $('.header').css('display', 'none');// убираем header главной страницы
         $('.header').remove();// убираем header главной страницы
@@ -118,45 +118,36 @@ $(document).ready(function () {
         // ------------------------------
 
         // ------------- открытие меню навигации на мобильной версии
-
-        function adminMenuMobile() {
-            $('.burger-menu-label').click(function () {
-                if (!$('.admin-menu').hasClass('admin-menu-active')) {
-                    $('.admin-menu').addClass('admin-menu-active');
-                } else {
-                    $('.admin-menu').removeClass('admin-menu-active');
-                }
-            })
-        }
+        // function adminMenuMobile() {
+        //     $('.burger-menu-label').click(function () {
+        //         if (!$('.admin-menu').hasClass('admin-menu-active')) {
+        //             $('.admin-menu').addClass('admin-menu-active');
+        //         } else {
+        //             $('.admin-menu').removeClass('admin-menu-active');
+        //         }
+        //     })
+        // }
 
         // ------------------------------
 
-        // function loginOnReload() {
-        //     window.addEventListener("load", function (e) {
-        //         let data = {
-        //             'method': 'reload'
-        //         };
-        //         let response = fetch('/handle.php', {
-        //             method: 'Post',
-        //             headers: {
-        //                 'Content-Type': 'application/json;charset=utf-8'
-        //             },
-        //             body: JSON.stringify(data)
-        //         });
-        //
-        //         response.then(function (data) {
-        //             return data.json()
-        //         }).then(function (data) {
-        //             console.log(data)
-        //             if (data.success) {
-        //                 if (data.status === 'user') {
-        //                     // document.location.href = '/index.php'
-        //                 }
-        //             } else {
-        //                 window.location.reload();
-        //             }
-        //         });
-        //     });
-        // }
+        // ---- занесение в БД admin-data часового пояса при перезагрузке страницы
+        function loginOnReload() {
+            window.addEventListener("load", function (e) {
+                console.log('load')
+                let zone = new Date().toString().split(' ')[5];
+                let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
+                let data = {
+                    gmt: gmt,
+                    'method': 'adminPanelReload'
+                };
+                let response = fetch('/handle.php', {
+                    method: 'Post',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(data)
+                });
+            });
+        }
     }
 });

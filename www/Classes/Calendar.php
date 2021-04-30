@@ -221,7 +221,7 @@ class Calendar
     // ------------ ФУНКЦИИ ДЛЯ УСТАНОВКИ И ПОЛУЧЕНИЯ ЦЕНЫ НА УРОКИ
     public function setPrice($request)
     {
-        $query = "UPDATE `prices` SET `{$request['type']}` = '{$request['price']}' WHERE 1";
+        $query = "UPDATE `admin-data` SET `{$request['type']}` = '{$request['price']}' WHERE 1";
         $this->dbAccess->query($query);
         $result = $this->getPrice();
         return $result;
@@ -229,10 +229,16 @@ class Calendar
 
     public function getPrice()
     {
-        $query = "SELECT `private`, `sclub` FROM `prices` WHERE 1";
+        $query = "SELECT `private`, `sclub` FROM `admin-data` WHERE 1";
         $result = $this->dbAccess->query($query);
         return mysqli_fetch_assoc($result);
     }
     // --------------------------------------------------------------------
+    // ---- занесение в БД admin-data часового пояса
+    public function setAdminGMT($request)
+    {
+        $query = "UPDATE `admin-data` SET `gmt` = '{$request['gmt']}' WHERE 1";
+        $this->dbAccess->query($query);
+    }
 
 }

@@ -118,10 +118,10 @@
 
         &--event {
           width: 500px;
-          height: 442px;
+          height: 420px;
           padding: 24px 18px 18px;
           position: fixed;
-          z-index: 9999999;
+          z-index: 99999;
           @include mediaWidth(1024) {
             width: 380px;
             right: 20px;
@@ -139,7 +139,7 @@
 
             &__title {
               margin: 0 0 21px;
-              font-size: 22px;
+              font-size: 20px;
               color: $colorBlue;
             }
           }
@@ -202,7 +202,7 @@
               text-align: center;
               color: #fff;
               line-height: 46px;
-              margin: 58px auto 0;
+              margin: 30px auto 0;
               @include mediaWidth(370) {
                 margin-top: 20px;
 
@@ -282,7 +282,7 @@
       z-index: 9999999;
       top: 0;
       @include mediaWidth(767) {
-        z-index: 900;
+        z-index: 9999999;
         height: 0;
         background: transparent;
       }

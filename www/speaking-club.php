@@ -1,6 +1,8 @@
 <?php
 require 'pages/requires/header.php';
 require("vendor/autoload.php");
+$objCalendar = new \Classes\Calendar();
+$result = $objCalendar->getPrice();
 ?>
 <title switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" >speaking-club</title>
 <main class="book-lesson speaking-club">
@@ -12,7 +14,7 @@ require("vendor/autoload.php");
         <div class="params">
             <div class="clock-ico clock-ico--s-club"></div>
             <p switch-lang="<?=switchLang()?>" switchable-text="60 <span> мин </span>" class="lesson-time">60 <span> min </span></p>
-            <p class="price">$25</p>
+            <p class="price">$<?=$result['sclub']?></p>
         </div>
     </div>
     <div id="vue-book-calendar"></div>

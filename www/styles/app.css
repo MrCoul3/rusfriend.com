@@ -3617,6 +3617,22 @@
   justify-content: space-evenly;
   padding: 10px 0;
 }
+#mysite .your-calendar .calendar-app .calendar-app-header .flex-column {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: flex-end;
+  width: 246px;
+}
+#mysite .your-calendar .calendar-app .calendar-app-header .flex-column .descr {
+  width: 139px;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 27px;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 14px;
+}
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
   display: flex;
   align-items: center;
@@ -3689,12 +3705,14 @@
   font-family: "Montserrat", sans-serif;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  width: 239px;
+  width: 139px;
+  background: white;
+  text-align: center;
   height: 27px;
   border: none;
   outline: none;
   font-size: 16px;
-  line-height: 19px;
+  line-height: 28px;
   color: rgba(0, 0, 0, 0.5);
 }
 @media screen and (max-width: 1024px) {
@@ -3807,6 +3825,7 @@
   background: #FF3E28 !important;
   border-radius: 5px;
   color: white !important;
+  cursor: pointer !important;
 }
 #mysite .your-calendar .calendar-app .calendar-app-content .time-intrevals-from-db__item .unconfirmed-book:hover {
   transition: none;
@@ -4778,10 +4797,10 @@
 }
 .payment-page .payment .payment-gateway__elem--event {
   width: 500px;
-  height: 442px;
+  height: 420px;
   padding: 24px 18px 18px;
   position: fixed;
-  z-index: 9999999;
+  z-index: 99999;
 }
 @media screen and (max-width: 1024px) {
   .payment-page .payment .payment-gateway__elem--event {
@@ -4803,7 +4822,7 @@
 }
 .payment-page .payment .payment-gateway__elem--event .payment-gateway-head__title {
   margin: 0 0 21px;
-  font-size: 22px;
+  font-size: 20px;
   color: #4C59D9;
 }
 .payment-page .payment .payment-gateway__elem--event .payment-gateway-main {
@@ -4855,7 +4874,7 @@
   text-align: center;
   color: #fff;
   line-height: 46px;
-  margin: 58px auto 0;
+  margin: 30px auto 0;
 }
 @media screen and (max-width: 370px) {
   .payment-page .payment .payment-gateway__elem--event .payment-gateway-main__confirm-btn {
@@ -4925,7 +4944,7 @@
 }
 @media screen and (max-width: 767px) {
   .payment-page .payment .faq {
-    z-index: 900;
+    z-index: 9999999;
     height: 0;
     background: transparent;
   }

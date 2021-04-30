@@ -24,6 +24,7 @@
       </div>
       <div class="your-calendar__element your-calendar__element--calendar-app calendar-app">
         <div class="calendar-app-header">
+
           <div class="calendar-app-header__element calendar-app-header__element--month-module">
             <div @click="decrease()" class="month-btn month-btn--left-btn"></div>
             <div @click="increase()" class="month-btn month-btn--right-btn"></div>
@@ -32,11 +33,22 @@
           <div class="trigger" @click="switchMonthAndDay()" style="display: none"></div>
           <h2 :language="language" switchable-text="Календарь занятий"
               class="calendar-app-header__element calendar-app-header__element--title">Lesson calendar</h2>
-          <select v-model="timeZone" @change="switchTimeZone()"
-                  class="calendar-app-header__element calendar-app-header__element--time-zone">
-            <!--                        <option selected :value="timeZone">{{timeZone}}</option>-->
-            <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{ gmt }}</option>
-          </select>
+
+
+          <!--          <select  v-model="timeZone" @change="switchTimeZone()"-->
+          <!--                  class="calendar-app-header__element calendar-app-header__element&#45;&#45;time-zone">-->
+          <!--                                    <option selected :value="timeZone">{{timeZone}}</option>-->
+          <!--            <option class="time-zone-option" v-for="gmt in timeZones" :value="gmt">{{ gmt }}</option>-->
+
+          <!--          </select>-->
+          <div class="flex-column">
+            <div v-model="timeZone" @change="switchTimeZone()"
+                 class="calendar-app-header__element calendar-app-header__element--time-zone">
+              {{ timeZone }}
+            </div>
+            <p :language="language" switchable-text="твой часовой пояс" class="descr">your time zone</p>
+          </div>
+
         </div>
         <div class="decor-line"></div>
         <div class="calendar-app-content">
@@ -214,6 +226,8 @@ export default {
       typeOfLesson: 'private',
       isUnconfirmed: false, // есть ли неподтвержденные бронирования
       unconfirmMenuShow: false,
+      lengthOfData: undefined,
+      bookedGmtArray: [],
     }
   },
 
@@ -239,7 +253,7 @@ export default {
     this.isFreeLesson()
     this.getIntervalsFromDB();
     this.lightingOfToday();
-    this.changeStateOfItem();
+    // this.changeStateOfItem();
     this.switchLangOnReload();
     this.switchLang();
     this.setTimeZone();
@@ -278,7 +292,6 @@ export default {
     switchTimeZone() {
       this.getIntervalsFromDB();
       // this.getFromTempGMT();
-      this.changeStateOfItem();
     },
 
     // ---- для смены языка
@@ -489,7 +502,6 @@ export default {
 
       this.getIntervalsFromDB();
       // this.getFromTempGMT();
-      this.changeStateOfItem();
 
     }
     ,
@@ -504,7 +516,6 @@ export default {
       }
       this.getIntervalsFromDB();
       // this.getFromTempGMT();
-      this.changeStateOfItem();
 
     }
     ,
@@ -539,12 +550,10 @@ export default {
 
           });
     },
-
+    // получение интервалов, обработка  в зависимости от часового пояса и занесение во временную базу данных tempGMT
     getIntervalsFromDB: function () {
-
       $('#booking-calendar').css('opacity', '0');
       this.preloader = true;
-      let lengthOfData;
       let freeLesson = this.freeLesson;
       let obj = {};
       let obj2 = {};
@@ -559,18 +568,27 @@ export default {
           .then((response) => {
             // console.log(response.data);
             let data = response.data;
+
+            // количество полученных интервалов
+            let count = 0;
             if (data !== null) {
-              lengthOfData = data.length;
+              data.forEach((val, k) => {
+                let arr = val.time.split(',')
+                count += arr.length;
+              });
             }
-            console.log(lengthOfData)
+            this.lengthOfData = count;
+            console.log(this.lengthOfData)
+
+
             let timeZone = this.timeZone;
             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
 
             addToTempDB();
 
-            getOfTempDB();
+            this.getOfTempDB();
 
-            deactivatePastIntervals();
+            // deactivatePastIntervals();
 
             setTimeout(() => {
               this.preloader = false;
@@ -606,18 +624,29 @@ export default {
 
                     let prevNum = +dayFromDb.split('.')[0] - 1;
                     let prevMonth = +dayFromDb.split('.')[1];
+
+                    let prevYear = +dayFromDb.split('.')[2];
+                    if (prevNum == 0) {
+                      prevMonth = prevMonth - 1;
+                      prevNum = new Date(prevYear, prevMonth, 0).getDate();
+                    }
                     if (String(prevMonth).length < 2) {
                       prevMonth = '0' + prevMonth;
                     }
-                    let prevYear = +dayFromDb.split('.')[2];
                     let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
 
                     let nextNum = +dayFromDb.split('.')[0] + 1;
                     let nextMonth = +dayFromDb.split('.')[1];
+                    let nextYear = +dayFromDb.split('.')[2];
+                    let lastNum = new Date(nextYear, nextMonth, 0).getDate();
+                    // console.log(lastNum)
+                    if (nextNum == lastNum + 1) {
+                      nextNum = '1';
+                      nextMonth = nextMonth + 1;
+                    }
                     if (String(nextMonth).length < 2) {
                       nextMonth = '0' + nextMonth;
                     }
-                    let nextYear = +dayFromDb.split('.')[2];
                     let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
 
                     let firstH = val.split('-')[0].split(':')[0];// 06
@@ -685,127 +714,277 @@ export default {
                 })
               }
             }
-
-            // при переключении таймзоны получаем из temp-gmt БД интервалы, меняем отрицательные значения на
-            // правильные ( -1:00 на 23:00)  и вставляем в календарь
-            function getOfTempDB() {
-              setTimeout(() => {
-                axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
-                    .then((response) => {
-                      let data = response.data;
-                      if (lengthOfData !== undefined) {
-                        if (lengthOfData === data.length) {
-
-                          data.forEach((val, k) => {
-                            // console.log(val);
-                            let dayFromDb = val[0];
-                            let timeFromDb = val[1];
-                            let gmtFromDb = val[2];
-                            let newArr = [];
-
-                            let arr = timeFromDb.split(',');
-                            // console.log(timeFromDb);
-                            arr.forEach((val, k) => {
-                              let firstH = val.split(' - ')[0].split(':')[0];// 06
-                              let firstM = val.split(' - ')[0].split(':')[1];// 00
-                              let secondH = val.split(' - ')[1].split(':')[0]; // 07
-                              let secondM = val.split(' - ')[1].split(':')[1]; // 30
-                              if (+firstH < 0) {
-                                firstH = 24 + +firstH;
-                              }
-                              if (+secondH < 0) {
-                                secondH = 24 + +secondH;
-                              }
-                              if (+firstH > 23) {
-                                firstH = +firstH - 24;
-                              }
-                              if (+secondH > 23) {
-                                secondH = +secondH - 24;
-                              }
-                              let time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
-                              newArr.push(time);
-
-                            });
-
-                            $('.time-intrevals-elem').each((k, val) => {
-                              let dateNumber = val;
-
-                              let data = new Date();
-                              let date = $(val).attr('date');
-                              let day = date.split('.')[0];
-                              let month = date.split('.')[1];
-
-                              if (dayFromDb === dateNumber.getAttribute('date')) {
-
-                                if (freeLesson) {
-                                  let newArr = [];
-                                  arr.forEach((val, k) => {
-                                    newArr.push(val.split('-')[0]);
-                                  })
-                                  let str = newArr.join('</div><div>');
-                                  dateNumber.innerHTML = '<div>' + str + '</div>';
-
-                                } else {
-                                  let str = newArr.join('</div><div>');
-                                  // console.log(str);
-                                  // console.log(dateNumber);
-                                  $(dateNumber).append('<div>' + str + '</div>')
-                                  // dateNumber.innerHTML = '<div>' + str + '</div>';
-                                  if (day <= data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                                    $(val).children().each((k, val) => {
-                                      let valHour = val.innerHTML.split('-')[0].split(':')[0];
-                                      // console.log(valHour)
-                                      // console.log(data.getHours())
-                                      if (+valHour < data.getHours()) {
-                                        val.classList.add('booked-for-other-users');
-                                      }
-                                    })
-                                  }
-                                }
-                              }
-                            });
-
-
-                          });
-
-                        } else {
-                          console.log('false')
-                        }
-                      }
-
-                    });
-              }, 500)
-
-            }
-
-            //--------- функция деактивации интервалов раньше текущего дня
-            function deactivatePastIntervals() {
-              $('.time-intrevals-from-db__item').each((k, val) => {
-
-                let data = new Date();
-                let date = $(val).attr('date');
-                let day = date.split('.')[0];
-                let month = date.split('.')[1];
-                // console.log(data.getMonth())
-                // console.log(month <= data.getMonth() +1 )
-                if (day <= data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                  $(val).children().each((k, val) => {
-                    let valHour = val.innerHTML.split('-')[0].split(':')[0];
-                    // console.log(valHour)
-                    // console.log(data.getHours())
-                    if (+valHour < data.getHours()) {
-                      val.classList.add('booked-for-other-users');
-                    }
-                  })
-                }
-              });
-            }
-
-
           });
 
     },
+    // при переключении таймзоны получаем из temp-gmt БД интервалы, меняем отрицательные значения на
+    // правильные ( -1:00 на 23:00)  и вставляем в календарь
+    getOfTempDB() {
+      setTimeout(() => {
+        axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
+            .then((response) => {
+              let data = response.data;
+              // console.log(data)
 
+              let dataLength = 0;
+              if (data !== null) {
+                data.forEach((val, k) => {
+                  let arr = val[1].split(',')
+                  dataLength += arr.length;
+                });
+              }
+
+              if (this.lengthOfData !== undefined) {
+                if (this.lengthOfData === dataLength) {
+
+                  data.forEach((val, k) => {
+                    // console.log(val);
+                    let dayFromDb = val[0];
+                    let timeFromDb = val[1];
+                    let gmtFromDb = val[2];
+                    let newArr = [];
+
+                    let arr = timeFromDb.split(',');
+                    // console.log(timeFromDb);
+                    arr.forEach((val, k) => {
+                      let firstH = val.split(' - ')[0].split(':')[0];// 06
+                      let firstM = val.split(' - ')[0].split(':')[1];// 00
+                      let secondH = val.split(' - ')[1].split(':')[0]; // 07
+                      let secondM = val.split(' - ')[1].split(':')[1]; // 30
+                      if (+firstH < 0) {
+                        firstH = 24 + +firstH;
+                      }
+                      if (+secondH < 0) {
+                        secondH = 24 + +secondH;
+                      }
+                      if (+firstH > 23) {
+                        firstH = +firstH - 24;
+                      }
+                      if (+secondH > 23) {
+                        secondH = +secondH - 24;
+                      }
+                      let time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
+                      newArr.push(time);
+
+                    });
+
+                    $('.time-intrevals-elem').each((k, val) => {
+                      let dateNumber = val;
+                      let data = new Date();
+                      let date = $(val).attr('date');
+                      let day = date.split('.')[0];
+                      let month = date.split('.')[1];
+                      let str = '';
+                      let valHour = '';
+
+                      if (dayFromDb === dateNumber.getAttribute('date')) {
+
+                        if (this.freeLesson) {
+                          let arr = [];
+                          newArr.forEach((val, k) => {
+                            arr.push(val.split('-')[0]);
+                          })
+                          str = arr.join('</div><div>');
+                        } else {
+                          str = newArr.join('</div><div>');
+                        }
+
+                        $(dateNumber).append('<div>' + str + '</div>');
+
+                        //--------- функция деактивации интервалов ранее текущего времени
+                        $(val).children().each((k, val) => {
+                          if (this.freeLesson) {
+                            valHour = val.innerHTML.split(':')[0];
+                          } else {
+                            valHour = val.innerHTML.split('-')[0].split(':')[0];
+                          }
+
+                          if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                            val.classList.add('booked-for-other-users');
+                          }
+                          if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                            val.classList.add('booked-for-other-users');
+                          }
+                        })
+                      }
+                    });
+                  });
+                } else {
+                  // если не совпадает выполняется getIntervalsFromDB заново
+                  console.log('false')
+                  this.getIntervalsFromDB();
+                }
+              }
+
+              axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
+                  .then((response) => {
+                    // получаем всю информацию о забронированных уроках по данному пользователю
+                    let data = response.data;
+                    // console.log(data)
+                    let days = $('.time-intrevals-from-db__item');
+
+                    this.bookedGmtArray = [];
+
+                    data.forEach((val, k) => {
+                      let userNameFromDB = val[1];
+                      let dayFromDB = val[2];
+                      let timeFromDB = val[3];
+                      let type = val[4];
+                      let paymentFromDB = val[5];
+                      let confirmationFromDB = val[6];
+                      let priceFromDB = val[7];
+                      let gmtFromDB = val[8];
+
+                      // добавляем в БД bookstime-gmt
+                      let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                      let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                      let delta = timeZoneNum - gmtFromDbNum;
+                      let arr = timeFromDB.split(',');
+
+                      arr.forEach((val, k) => {
+                        // console.log(val)
+                        let prevNum = +dayFromDB.split('.')[0] - 1;
+                        let prevMonth = +dayFromDB.split('.')[1];
+
+                        let prevYear = +dayFromDB.split('.')[2];
+                        if (prevNum == 0) {
+                          prevMonth = prevMonth - 1;
+                          prevNum = new Date(prevYear, prevMonth, 0).getDate();
+                        }
+                        if (String(prevMonth).length < 2) {
+                          prevMonth = '0' + prevMonth;
+                        }
+                        let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+
+
+
+                        let nextNum = +dayFromDB.split('.')[0] + 1;
+                        let nextMonth = +dayFromDB.split('.')[1];
+
+                        let nextYear = +dayFromDB.split('.')[2];
+                        let lastNum = new Date(nextYear, nextMonth, 0).getDate();
+                        // console.log(lastNum)
+                        if (nextNum == lastNum + 1) {
+                          nextNum = '1';
+                          nextMonth = nextMonth + 1;
+                        }
+                        if (String(nextMonth).length < 2) {
+                          nextMonth = '0' + nextMonth;
+                        }
+                        let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+
+                        let firstH;
+                        let firstM;
+                        let secondH;
+                        let secondM;
+                        let time;
+                        let a;
+                        let b;
+                        let day = dayFromDB;
+                        if (paymentFromDB !== 'free') {
+                          firstH = val.split('-')[0].split(':')[0];// 06
+                          firstM = val.split('-')[0].split(':')[1];// 00
+                          secondH = val.split('-')[1].split(':')[0]; // 07
+                          secondM = val.split('-')[1].split(':')[1]; // 30
+                          a = +firstH + delta; // 02
+                          b = +secondH + delta; //05
+                          if (a < 0) {
+                            a = 24 + a;
+                            if (b < 0) {
+                              b = 24 + b;
+                            }
+                            day = prevDateNumber;
+                          }
+
+                          if (a > 23) {
+                            a = a - 24;
+                            if (b > 23) {
+                              b = b - 24;
+                            }
+                            day = nextDateNumber;
+                          }
+                          time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                        } else {
+                          firstH = val.split(':')[0];// 06
+                          firstM = val.split(':')[1];// 00
+                          a = +firstH + delta; // 02
+                          time = a + ':' + firstM;
+                        }
+
+                        // console.log(time)
+
+                        let obj = {
+                          name: userNameFromDB,
+                          type: type,
+                          day: day,
+                          time: time,
+                          payment: paymentFromDB,
+                          confirmation: confirmationFromDB,
+                          price: priceFromDB,
+                          gmt: this.timeZone,
+                          'method': 'setToBooksTimeGMT'
+                        };
+
+                        // console.log(obj)
+                        this.bookedGmtArray.push(obj);
+
+                      });
+                      // console.log(this.bookedGmtArray)
+                     let bookedGmtArray = this.bookedGmtArray;
+                      $(bookedGmtArray).each((i, obj)=>{
+                        let dayFromBookedGmtArray = obj.day;
+                        let confirmation = obj.confirmation;
+                        let gmt = obj.gmt;
+                        let name = obj.name;
+                        let payment = obj.payment;
+                        let price = obj.price;
+                        let timeFromBookedGmtArray = obj.time;
+                        let type = obj.type;
+
+                        // стили
+                        days.each((i, day) => {
+                          if ($(day).attr('date') === dayFromBookedGmtArray) {
+                            for (let time of day.children) {
+
+                              if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
+
+                                if (name === getCookie('name')) {
+
+                                  if (payment === "unpayed") {
+                                    time.classList.add('unpayed-book');
+                                  }
+                                  if (confirmation === "0") {
+                                    time.classList.add('unconfirmed-book');
+                                  }
+                                  if (confirmation === "1" && payment === 'payed') {
+                                    time.classList.add('booked-for-this-user');
+                                  }
+
+                                } else {
+
+                                  if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
+                                    time.classList.add('booked-for-other-users');
+                                  }
+
+                                }
+                              }
+
+                              if (time.innerHTML.split('-')[0] === time) {
+                                time.classList.add('booked-free');
+                              }
+
+                            }
+                          }
+                        })
+                      })
+                    });
+                  });
+
+
+            });
+      }, 500)
+
+    },
     // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
     chooseTime: function (event) {
       // console.log('choose')
@@ -829,11 +1008,12 @@ export default {
       // console.log(selectedTimeArray)
       // let userName = $('.user-login__elem--user-name').html();
       let userName = getCookie('name');
-
+      let confirmation = 0;
       if ($('.header-menu--private').hasClass('menu-item-active')) {
         this.typeOfLesson = 'private';
       } else if (this.freeLesson) {
         this.typeOfLesson = 'free';
+        confirmation = 1;
       } else {
         this.typeOfLesson = 's-club';
       }
@@ -849,7 +1029,7 @@ export default {
           day: day,
           time: time,
           payment: this.payment,
-          confirmation: 0,
+          confirmation: confirmation,
           price: this.price,
           gmt: this.timeZone,
           'method': 'bookEvent'
@@ -887,6 +1067,7 @@ export default {
       }
 
     },
+
 
     // ---- МЕНЮ НЕОПЛАЧЕННОГО ЗАНЯТИЯ
     // ----  закрыть меню неоплаченного занятия
@@ -1000,176 +1181,7 @@ export default {
       }
     }
     ,
-    /*  функция изменения состояния интервала в календаре при
-     забронированных интервалах для данного пользователя*/
-    changeStateOfItem: function () {
 
-      axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
-          .then((response) => {
-            // console.log(response.data);
-            // получаем всю информацию о забронированных уроках по данному пользователю
-            let data = response.data;
-            // console.log($(this).attr('date'));
-            let timeInterval = $('.time-intrevals-from-db__item');
-            // console.log(this.selectedTimeArray)
-
-            data.forEach((val, k) => {
-              let userNameFromDB = val[1];
-              let dayFromDB = val[2];
-              let timeFromDB = val[3];
-              let paymentFromDB = val[5];
-              let confirmationFromDB = val[6];
-              let priceFromDB = val[7];
-              let gmtFromDB = val[8];
-
-
-              if (userNameFromDB === getCookie('name')) {
-
-                if ((paymentFromDB === 'payed' || paymentFromDB === 'free')) {
-                  timeInterval.each((k, val) => {
-                    if ($(val).attr('date') === dayFromDB) {
-                      // console.log(timeFromDB);
-                      // console.log($(this).children())
-                      $(val).children().each((k, val) => {
-
-                        if (this.timeZone !== gmtFromDB) {
-
-                          let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
-                          let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
-                          let delta = timeZoneNum - gmtFromDbNum;
-                          let arr = timeFromDB.split(',');
-                          // console.log(timeFromDB)
-
-                          let newArr = [];
-
-                          arr.forEach((val, k) => {
-                            let firstH = val.split('-')[0].split(':')[0];// 06
-                            let firstM = val.split('-')[0].split(':')[1];// 00
-                            let secondH = val.split('-')[1].split(':')[0]; // 07
-                            let secondM = val.split('-')[1].split(':')[1]; // 30
-                            let a = +firstH + delta; // 02
-                            let b = +secondH + delta; //05
-
-                            if (a < 0) {
-                              a = 24 + a;
-                            }
-                            if (b < 0) {
-                              b = 24 + b;
-                            }
-                            let time = a + ':' + firstM.trim() + '  - ' + b + ':' + secondM;
-
-                            newArr.push(time);
-                          });
-
-                          let time = newArr.join(', ').split('-')[0].trim();
-
-                          console.log(time);
-                          let timeOnCalendar = val.innerHTML.split('-')[0].trim();
-
-                          // console.log(dayFromDB)
-                          console.log(timeOnCalendar);
-
-                          if (timeOnCalendar.trim() === time.trim()) {
-                            val.classList.add('booked-for-this-user');
-                          }
-
-                          // для бесплатного занятия интервалы не отображаются
-                          if (val.innerHTML.split('-')[0] === timeFromDB) {
-                            val.classList.add('booked-free');
-                          }
-
-                        } else {
-
-                          if (val.innerHTML === timeFromDB) {
-                            val.classList.add('booked-for-this-user');
-                            // console.log(val);
-                          }
-                          // для бесплатного занятия интервалы не отображаются
-                          if (val.innerHTML.split('-')[0] === timeFromDB) {
-                            val.classList.add('booked-free');
-                          }
-                        }
-
-                        // если время интервала меньше текущего - недоступно
-                        // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                        //     val.classList.add('booked-for-other-users');
-                        // }
-                      })
-                    }
-                  })
-
-                }
-
-                if (paymentFromDB === 'unpayed') {
-                  timeInterval.each((k, val) => {
-                    if ($(val).attr('date') === dayFromDB) {
-                      // console.log(timeFromDB);
-                      // console.log($(this).children())
-                      $(val).children().each((k, val) => {
-
-                        if (val.innerHTML === timeFromDB) {
-                          val.classList.add('unpayed-book');
-                          // console.log(val);
-                        }
-
-                      })
-                    }
-                  })
-                }
-
-                if (confirmationFromDB === '0') {
-                  this.isUnconfirmed = true;
-                  timeInterval.each((k, val) => {
-                    if ($(val).attr('date') === dayFromDB) {
-                      // console.log(timeFromDB);
-                      // console.log($(this).children())
-                      $(val).children().each((k, val) => {
-
-                        if (val.innerHTML === timeFromDB) {
-                          val.classList.add('unconfirmed-book');
-                          // console.log(val);
-                        }
-
-                      })
-                    }
-                  })
-
-                }
-
-              }
-
-              if (userNameFromDB !== getCookie('name')) {
-                // console.log(userNameFromDB);
-                timeInterval.each(function (k, val) {
-                  // console.log($(this).attr('date'))
-                  if ($(this).attr('date') === dayFromDB) {
-                    // console.log(timeFromDB);
-                    // console.log($(this).children())
-                    $(this).children().each(function (k, val) {
-                      // console.log(val);
-                      if ((val.innerHTML === timeFromDB)) {
-                        val.classList.add('booked-for-other-users');
-                        // console.log(val);
-                      }
-                      // для бесплатного занятия интервалы не отображаются
-                      if (val.innerHTML.split('-')[0] === timeFromDB) {
-                        val.classList.add('booked-free');
-                      }
-                      // если время интервала меньше текущего - недоступно
-                      // if (+val.innerHTML.split('-')[0].split(':')[0] <= new Date().getHours()) {
-                      //     val.classList.add('booked-for-other-users');
-                      // }
-                    })
-                  }
-                })
-              }
-            })
-
-            //---
-
-
-          });
-    },
 
   },
 

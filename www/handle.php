@@ -349,3 +349,7 @@ if ($request['method'] === 'setPrice') {
     $result = $objCalendar->setPrice($request);
     echo json_encode($result);
 }
+// ---- занесение в БД admin-data часового пояса
+if ($request['method'] === 'adminPanelReload') {
+    $result = $objCalendar->setAdminGMT($request);
+}
