@@ -14,7 +14,6 @@ import './admin-panel';
 import './login-and-registration';
 import 'owl.carousel';
 import './easing-plugin';
-import './service';
 import './free-lesson';
 import './payment';
 import Vue from 'vue';

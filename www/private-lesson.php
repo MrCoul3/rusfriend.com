@@ -5,6 +5,7 @@ $result = $objCalendar->getPrice();
 ?>
 <?php require 'pages/requires/header.php'?>
 <title switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем">Individual lesson</title>
+<body style="max-height: 801px;">
 <main class="book-lesson private-lesson">
     <div class="description-block">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем" class="title">Individual lesson</h2>
@@ -19,5 +20,6 @@ $result = $objCalendar->getPrice();
     </div>
     <div id="vue-book-calendar"></div>
 </main>
+</body>
 <?php require 'pages/requires/footer.php' ?>
 

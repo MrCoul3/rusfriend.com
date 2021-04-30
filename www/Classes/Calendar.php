@@ -22,7 +22,8 @@ class Calendar
         'confirmation',
         'price',
         'gmt',
-        'payment'
+        'payment',
+        'bookingTime'
     ];
 
     public function __construct()
@@ -99,6 +100,7 @@ class Calendar
                 $requestKeys = implode(',', array_keys($arr));
                 $requestVals = implode(',', $arr);
                 $query = "INSERT INTO `bookstime` ({$requestKeys}) VALUES ({$requestVals});";
+                var_dump($query);
                 $result = $this->dbAccess->query($query);
             }
         }

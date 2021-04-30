@@ -1,7 +1,6 @@
 <?php session_start();
 
 require("vendor/autoload.php");
-require('service.html');
 $objCalendar = new \Classes\Calendar();
 $result = $objCalendar->getLessons();
 
@@ -29,6 +28,8 @@ function switchLang()
     <title switch-lang="<?=switchLang()?>" switchable-text="Страница оплаты">Payment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
+    <link href="styles/app.css" rel="stylesheet">
+
 <body class="payment-page" id="mysite">
 <header class="header">
     <div class="header-inner">
@@ -145,3 +146,4 @@ function switchLang()
     </div>
 </footer>
 </html>
+<script type="text/javascript" src="scripts/app.js"></script>

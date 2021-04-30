@@ -10,6 +10,7 @@ $result = $objCalendar->getPrice();
 ?>
 <title>Страница преподавателя</title>
 <body class="admin" id="mysite">
+<link href="styles/app.css" rel="stylesheet">
 
 <header class="admin-header admin-inner"><a class="header-logo" href="index.php"></a>
     <h1 class="header-title">Светик, приветик!</h1>
@@ -64,6 +65,8 @@ $result = $objCalendar->getPrice();
     <div id="vue-my-schedule"></div>
     <div id="vue-my-students"></div>
 </main>
+
 <footer class="admin-footer"></footer>
 
 </body>
+<script type="text/javascript" src="scripts/app.js"></script>

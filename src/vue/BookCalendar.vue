@@ -247,20 +247,17 @@ export default {
     this.setCurrentMonth();
   },
   mounted: function () {
-    // this.preloader = true;
+    console.log(this.unconfirmTimeArray)
     this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.isFreeLesson()
     this.getIntervalsFromDB();
     this.lightingOfToday();
-    // this.changeStateOfItem();
     this.switchLangOnReload();
     this.switchLang();
     this.setTimeZone();
     this.getPrice();
-    // setTimeout(()=>{
-    //   this.preloader = false;
-    // },200)
+
   },
   updated() {
 
@@ -499,10 +496,7 @@ export default {
         this.weekNumber = 52
         this.year--;
       }
-
       this.getIntervalsFromDB();
-      // this.getFromTempGMT();
-
     }
     ,
     increase: function () {
@@ -515,10 +509,8 @@ export default {
         this.year++;
       }
       this.getIntervalsFromDB();
-      // this.getFromTempGMT();
+    },
 
-    }
-    ,
 
     lightingOfToday: function () {
       let dayNum = document.querySelectorAll('.calendar-app-content-number');
@@ -540,12 +532,14 @@ export default {
       axios.post('/handle.php', JSON.stringify({'method': 'getPrice'}))
           .then((response) => {
             // console.log(response.data);
-            this.pricePrivate = response.data.private;
-            this.priceSclub = response.data.sclub;
-            if ($('.header-menu--private').hasClass('menu-item-active')) {
-              this.price = response.data.private;
-            } else {
-              this.price = response.data.sclub;
+            if (response.data !== null) {
+              this.pricePrivate = response.data.private;
+              this.priceSclub = response.data.sclub;
+              if ($('.header-menu--private').hasClass('menu-item-active')) {
+                this.price = response.data.private;
+              } else {
+                this.price = response.data.sclub;
+              }
             }
 
           });
@@ -578,8 +572,7 @@ export default {
               });
             }
             this.lengthOfData = count;
-            console.log(this.lengthOfData)
-
+            // console.log(this.lengthOfData)
 
             let timeZone = this.timeZone;
             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
@@ -587,8 +580,6 @@ export default {
             addToTempDB();
 
             this.getOfTempDB();
-
-            // deactivatePastIntervals();
 
             setTimeout(() => {
               this.preloader = false;
@@ -715,7 +706,6 @@ export default {
               }
             }
           });
-
     },
     // при переключении таймзоны получаем из temp-gmt БД интервалы, меняем отрицательные значения на
     // правильные ( -1:00 на 23:00)  и вставляем в календарь
@@ -736,79 +726,80 @@ export default {
 
               if (this.lengthOfData !== undefined) {
                 if (this.lengthOfData === dataLength) {
+                  if (data !== null) {
+                    data.forEach((val, k) => {
+                      // console.log(val);
+                      let dayFromDb = val[0];
+                      let timeFromDb = val[1];
+                      let gmtFromDb = val[2];
+                      let newArr = [];
 
-                  data.forEach((val, k) => {
-                    // console.log(val);
-                    let dayFromDb = val[0];
-                    let timeFromDb = val[1];
-                    let gmtFromDb = val[2];
-                    let newArr = [];
-
-                    let arr = timeFromDb.split(',');
-                    // console.log(timeFromDb);
-                    arr.forEach((val, k) => {
-                      let firstH = val.split(' - ')[0].split(':')[0];// 06
-                      let firstM = val.split(' - ')[0].split(':')[1];// 00
-                      let secondH = val.split(' - ')[1].split(':')[0]; // 07
-                      let secondM = val.split(' - ')[1].split(':')[1]; // 30
-                      if (+firstH < 0) {
-                        firstH = 24 + +firstH;
-                      }
-                      if (+secondH < 0) {
-                        secondH = 24 + +secondH;
-                      }
-                      if (+firstH > 23) {
-                        firstH = +firstH - 24;
-                      }
-                      if (+secondH > 23) {
-                        secondH = +secondH - 24;
-                      }
-                      let time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
-                      newArr.push(time);
-
-                    });
-
-                    $('.time-intrevals-elem').each((k, val) => {
-                      let dateNumber = val;
-                      let data = new Date();
-                      let date = $(val).attr('date');
-                      let day = date.split('.')[0];
-                      let month = date.split('.')[1];
-                      let str = '';
-                      let valHour = '';
-
-                      if (dayFromDb === dateNumber.getAttribute('date')) {
-
-                        if (this.freeLesson) {
-                          let arr = [];
-                          newArr.forEach((val, k) => {
-                            arr.push(val.split('-')[0]);
-                          })
-                          str = arr.join('</div><div>');
-                        } else {
-                          str = newArr.join('</div><div>');
+                      let arr = timeFromDb.split(',');
+                      // console.log(timeFromDb);
+                      arr.forEach((val, k) => {
+                        let firstH = val.split(' - ')[0].split(':')[0];// 06
+                        let firstM = val.split(' - ')[0].split(':')[1];// 00
+                        let secondH = val.split(' - ')[1].split(':')[0]; // 07
+                        let secondM = val.split(' - ')[1].split(':')[1]; // 30
+                        if (+firstH < 0) {
+                          firstH = 24 + +firstH;
                         }
+                        if (+secondH < 0) {
+                          secondH = 24 + +secondH;
+                        }
+                        if (+firstH > 23) {
+                          firstH = +firstH - 24;
+                        }
+                        if (+secondH > 23) {
+                          secondH = +secondH - 24;
+                        }
+                        let time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
+                        newArr.push(time);
 
-                        $(dateNumber).append('<div>' + str + '</div>');
+                      });
 
-                        //--------- функция деактивации интервалов ранее текущего времени
-                        $(val).children().each((k, val) => {
+                      $('.time-intrevals-elem').each((k, val) => {
+                        let dateNumber = val;
+                        let data = new Date();
+                        let date = $(val).attr('date');
+                        let day = date.split('.')[0];
+                        let month = date.split('.')[1];
+                        let str = '';
+                        let valHour = '';
+
+                        if (dayFromDb === dateNumber.getAttribute('date')) {
+
                           if (this.freeLesson) {
-                            valHour = val.innerHTML.split(':')[0];
+                            let arr = [];
+                            newArr.forEach((val, k) => {
+                              arr.push(val.split('-')[0]);
+                            })
+                            str = arr.join('</div><div>');
                           } else {
-                            valHour = val.innerHTML.split('-')[0].split(':')[0];
+                            str = newArr.join('</div><div>');
                           }
 
-                          if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                            val.classList.add('booked-for-other-users');
-                          }
-                          if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                            val.classList.add('booked-for-other-users');
-                          }
-                        })
-                      }
+                          $(dateNumber).append('<div>' + str + '</div>');
+
+                          //--------- функция деактивации интервалов ранее текущего времени
+                          $(val).children().each((k, val) => {
+                            if (this.freeLesson) {
+                              valHour = val.innerHTML.split(':')[0];
+                            } else {
+                              valHour = val.innerHTML.split('-')[0].split(':')[0];
+                            }
+
+                            if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                              val.classList.add('booked-for-other-users');
+                            }
+                            if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                              val.classList.add('booked-for-other-users');
+                            }
+                          })
+                        }
+                      });
                     });
-                  });
+                  }
                 } else {
                   // если не совпадает выполняется getIntervalsFromDB заново
                   console.log('false')
@@ -820,164 +811,174 @@ export default {
                   .then((response) => {
                     // получаем всю информацию о забронированных уроках по данному пользователю
                     let data = response.data;
-                    // console.log(data)
+                    console.log(data)
                     let days = $('.time-intrevals-from-db__item');
 
                     this.bookedGmtArray = [];
+                    if (data !== null) {
+                      data.forEach((val, k) => {
+                        let userNameFromDB = val[1];
+                        let dayFromDB = val[2];
+                        let timeFromDB = val[3];
+                        let type = val[4];
+                        let paymentFromDB = val[5];
+                        let confirmationFromDB = val[6];
+                        let priceFromDB = val[7];
+                        let gmtFromDB = val[8];
+                        let bookingTime = val[9];
 
-                    data.forEach((val, k) => {
-                      let userNameFromDB = val[1];
-                      let dayFromDB = val[2];
-                      let timeFromDB = val[3];
-                      let type = val[4];
-                      let paymentFromDB = val[5];
-                      let confirmationFromDB = val[6];
-                      let priceFromDB = val[7];
-                      let gmtFromDB = val[8];
+                        // добавляем в БД bookstime-gmt
+                        let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+                        let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                        let delta = timeZoneNum - gmtFromDbNum;
+                        let arr = timeFromDB.split(',');
 
-                      // добавляем в БД bookstime-gmt
-                      let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
-                      let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
-                      let delta = timeZoneNum - gmtFromDbNum;
-                      let arr = timeFromDB.split(',');
+                        arr.forEach((val, k) => {
 
-                      arr.forEach((val, k) => {
-                        // console.log(val)
-                        let prevNum = +dayFromDB.split('.')[0] - 1;
-                        let prevMonth = +dayFromDB.split('.')[1];
-
-                        let prevYear = +dayFromDB.split('.')[2];
-                        if (prevNum == 0) {
-                          prevMonth = prevMonth - 1;
-                          prevNum = new Date(prevYear, prevMonth, 0).getDate();
-                        }
-                        if (String(prevMonth).length < 2) {
-                          prevMonth = '0' + prevMonth;
-                        }
-                        let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+                          // удаление неоплаченых интервалов из БД
+                          // if (confirmationFromDB == 0) {
+                          //   if (bookingTime > 45)
+                          //   if (bookingTime > bookingTime + 15)
+                          //   console.log(val)
+                          // }
 
 
+                          let prevNum = +dayFromDB.split('.')[0] - 1;
+                          let prevMonth = +dayFromDB.split('.')[1];
 
-                        let nextNum = +dayFromDB.split('.')[0] + 1;
-                        let nextMonth = +dayFromDB.split('.')[1];
+                          let prevYear = +dayFromDB.split('.')[2];
+                          if (prevNum == 0) {
+                            prevMonth = prevMonth - 1;
+                            prevNum = new Date(prevYear, prevMonth, 0).getDate();
+                          }
+                          if (String(prevMonth).length < 2) {
+                            prevMonth = '0' + prevMonth;
+                          }
+                          let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
 
-                        let nextYear = +dayFromDB.split('.')[2];
-                        let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                        // console.log(lastNum)
-                        if (nextNum == lastNum + 1) {
-                          nextNum = '1';
-                          nextMonth = nextMonth + 1;
-                        }
-                        if (String(nextMonth).length < 2) {
-                          nextMonth = '0' + nextMonth;
-                        }
-                        let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
 
-                        let firstH;
-                        let firstM;
-                        let secondH;
-                        let secondM;
-                        let time;
-                        let a;
-                        let b;
-                        let day = dayFromDB;
-                        if (paymentFromDB !== 'free') {
-                          firstH = val.split('-')[0].split(':')[0];// 06
-                          firstM = val.split('-')[0].split(':')[1];// 00
-                          secondH = val.split('-')[1].split(':')[0]; // 07
-                          secondM = val.split('-')[1].split(':')[1]; // 30
-                          a = +firstH + delta; // 02
-                          b = +secondH + delta; //05
-                          if (a < 0) {
-                            a = 24 + a;
-                            if (b < 0) {
-                              b = 24 + b;
+                          let nextNum = +dayFromDB.split('.')[0] + 1;
+                          let nextMonth = +dayFromDB.split('.')[1];
+
+                          let nextYear = +dayFromDB.split('.')[2];
+                          let lastNum = new Date(nextYear, nextMonth, 0).getDate();
+                          // console.log(lastNum)
+                          if (nextNum == lastNum + 1) {
+                            nextNum = '1';
+                            nextMonth = nextMonth + 1;
+                          }
+                          if (String(nextMonth).length < 2) {
+                            nextMonth = '0' + nextMonth;
+                          }
+                          let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+
+                          let firstH;
+                          let firstM;
+                          let secondH;
+                          let secondM;
+                          let time;
+                          let a;
+                          let b;
+                          let day = dayFromDB;
+                          if (paymentFromDB !== 'free') {
+                            firstH = val.split('-')[0].split(':')[0];// 06
+                            firstM = val.split('-')[0].split(':')[1];// 00
+                            secondH = val.split('-')[1].split(':')[0]; // 07
+                            secondM = val.split('-')[1].split(':')[1]; // 30
+                            a = +firstH + delta; // 02
+                            b = +secondH + delta; //05
+                            if (a < 0) {
+                              a = 24 + a;
+                              if (b < 0) {
+                                b = 24 + b;
+                              }
+                              day = prevDateNumber;
                             }
-                            day = prevDateNumber;
+
+                            if (a > 23) {
+                              a = a - 24;
+                              if (b > 23) {
+                                b = b - 24;
+                              }
+                              day = nextDateNumber;
+                            }
+                            time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                          } else {
+                            firstH = val.split(':')[0];// 06
+                            firstM = val.split(':')[1];// 00
+                            a = +firstH + delta; // 02
+                            time = a + ':' + firstM;
                           }
 
-                          if (a > 23) {
-                            a = a - 24;
-                            if (b > 23) {
-                              b = b - 24;
-                            }
-                            day = nextDateNumber;
-                          }
-                          time = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                        } else {
-                          firstH = val.split(':')[0];// 06
-                          firstM = val.split(':')[1];// 00
-                          a = +firstH + delta; // 02
-                          time = a + ':' + firstM;
-                        }
+                          // console.log(time)
 
-                        // console.log(time)
+                          let obj = {
+                            name: userNameFromDB,
+                            type: type,
+                            day: day,
+                            time: time,
+                            payment: paymentFromDB,
+                            confirmation: confirmationFromDB,
+                            price: priceFromDB,
+                            gmt: this.timeZone,
+                            'method': 'setToBooksTimeGMT'
+                          };
 
-                        let obj = {
-                          name: userNameFromDB,
-                          type: type,
-                          day: day,
-                          time: time,
-                          payment: paymentFromDB,
-                          confirmation: confirmationFromDB,
-                          price: priceFromDB,
-                          gmt: this.timeZone,
-                          'method': 'setToBooksTimeGMT'
-                        };
+                          // console.log(obj)
+                          this.bookedGmtArray.push(obj);
 
-                        // console.log(obj)
-                        this.bookedGmtArray.push(obj);
+                        });
+                        // console.log(this.bookedGmtArray)
+                        let bookedGmtArray = this.bookedGmtArray;
+                        $(bookedGmtArray).each((i, obj) => {
+                          let dayFromBookedGmtArray = obj.day;
+                          let confirmation = obj.confirmation;
+                          let gmt = obj.gmt;
+                          let name = obj.name;
+                          let payment = obj.payment;
+                          let price = obj.price;
+                          let timeFromBookedGmtArray = obj.time;
+                          let type = obj.type;
 
-                      });
-                      // console.log(this.bookedGmtArray)
-                     let bookedGmtArray = this.bookedGmtArray;
-                      $(bookedGmtArray).each((i, obj)=>{
-                        let dayFromBookedGmtArray = obj.day;
-                        let confirmation = obj.confirmation;
-                        let gmt = obj.gmt;
-                        let name = obj.name;
-                        let payment = obj.payment;
-                        let price = obj.price;
-                        let timeFromBookedGmtArray = obj.time;
-                        let type = obj.type;
+                          // стили
+                          days.each((i, day) => {
+                            if ($(day).attr('date') === dayFromBookedGmtArray) {
+                              for (let time of day.children) {
 
-                        // стили
-                        days.each((i, day) => {
-                          if ($(day).attr('date') === dayFromBookedGmtArray) {
-                            for (let time of day.children) {
+                                if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
 
-                              if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
+                                  if (name === getCookie('name')) {
 
-                                if (name === getCookie('name')) {
+                                    if (payment === "unpayed") {
+                                      time.classList.add('unpayed-book');
+                                    }
+                                    if (confirmation === "0") {
+                                      time.classList.add('unconfirmed-book');
+                                    }
+                                    if (confirmation === "1" && payment === 'payed') {
+                                      time.classList.add('booked-for-this-user');
+                                    }
 
-                                  if (payment === "unpayed") {
-                                    time.classList.add('unpayed-book');
+                                  } else {
+
+                                    if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
+                                      time.classList.add('booked-for-other-users');
+                                    }
+
                                   }
-                                  if (confirmation === "0") {
-                                    time.classList.add('unconfirmed-book');
-                                  }
-                                  if (confirmation === "1" && payment === 'payed') {
-                                    time.classList.add('booked-for-this-user');
-                                  }
-
-                                } else {
-
-                                  if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
-                                    time.classList.add('booked-for-other-users');
-                                  }
-
                                 }
-                              }
 
-                              if (time.innerHTML.split('-')[0] === time) {
-                                time.classList.add('booked-free');
-                              }
+                                if (time.innerHTML.split('-')[0] === time) {
+                                  time.classList.add('booked-free');
+                                }
 
+                              }
                             }
-                          }
+                          })
                         })
-                      })
-                    });
+                      });
+                    }
+
                   });
 
 
@@ -1032,11 +1033,13 @@ export default {
           confirmation: confirmation,
           price: this.price,
           gmt: this.timeZone,
+          bookingTime: new Date().getMinutes(),
           'method': 'bookEvent'
         };
 
         this.selectedTimeArray.push(obj);
       });
+      // console.log( this.selectedTimeArray)
 
       let day = event.target.parentNode.getAttribute('date');
       let time = event.target.innerHTML;
@@ -1068,7 +1071,6 @@ export default {
 
     },
 
-
     // ---- МЕНЮ НЕОПЛАЧЕННОГО ЗАНЯТИЯ
     // ----  закрыть меню неоплаченного занятия
     closeUnconfirmedMenuFrame() {
@@ -1093,7 +1095,6 @@ export default {
             if (response.data) {
               console.log('success delete unconfirm lesson')
               this.getIntervalsFromDB();
-              this.changeStateOfItem();
               this.closeUnconfirmedMenuFrame();
             }
           });

@@ -64,7 +64,9 @@
       background: #EFF4F9;
       box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.25);
       margin: 0 auto;
-
+      @include mediaWidth(767) {
+        padding-bottom: 10px;
+      }
       .decor-line {
         margin-bottom: 30px;
       }
@@ -74,13 +76,16 @@
         align-items: center;
         justify-content: space-evenly;
         padding: 10px 0;
-
+        @include mediaWidth(767) {
+          padding: 10px 10px;
+        }
         .flex-column {
           display: flex;
           flex-direction: column;
           position: relative;
           align-items: flex-end;
           width: 246px;
+
           .descr {
             width: 139px;
             text-align: center;
@@ -89,6 +94,10 @@
             top: 27px;
             color: rgba(0, 0, 0, 0.35);
             font-size: 14px;
+            @include mediaWidth(767) {
+              display: none;
+
+            }
           }
         }
 
@@ -103,7 +112,7 @@
 
             }
             @include mediaWidth(767) {
-              width: auto;
+              //width: auto;
             }
 
             .month {
@@ -116,9 +125,9 @@
                 font-size: 12px;
                 margin-left: 0;
               }
-              @include mediaWidth(320) {
-                font-size: 10px;
-              }
+              //@include mediaWidth(320) {
+              //  font-size: 10px;
+              //}
 
             }
 
@@ -196,16 +205,15 @@
             color: rgba(0, 0, 0, 0.5);
             @include mediaWidth(1024) {
               font-size: 12px;
-              width: 215px;
             }
             @include mediaWidth(767) {
-              width: 165px;
-              height: 19px;
+              width: 111px;
+              height: 26px;
             }
-            @include mediaWidth(320) {
-              font-size: 10px;
-              width: 135px;
-            }
+            //@include mediaWidth(320) {
+            //  font-size: 10px;
+            //  width: 135px;
+            //}
           }
         }
       }
@@ -377,7 +385,12 @@
         }
         @include mediaWidth(767) {
           font-size: 12px;
-          padding: 0 10px 20px;
+          padding: 24px 10px 20px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: auto;
+          flex-wrap: wrap;
         }
 
         &__element {

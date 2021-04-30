@@ -1,5 +1,4 @@
 <?php session_start();
-require('service.html'); // подключение styles/app.css и scripts/app.js
 //var_dump($_SESSION['email']);
 if (isset($_SESSION['email'])) {
     $status = [
@@ -31,6 +30,7 @@ function switchLang()
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
+    <link href="styles/app.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles/croppie/croppie.css"/>
     <link rel="stylesheet" href="../../styles/croppie/jquery.arcticmodal.css"/>
     <link rel="stylesheet" href="../../styles/croppie/themes/simple.css">

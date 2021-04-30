@@ -416,8 +416,7 @@ $(document).ready(function () {
             response.then(function (data) {
                 return data.json()
             }).then(function (data) {
-                console.log(data)
-
+                // console.log(data)
                 $('.form-input').each((k,val)=>{
                     $(val).val('');
                 });

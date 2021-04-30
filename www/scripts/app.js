@@ -2658,19 +2658,16 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
     this.setCurrentMonth();
   },
   mounted: function mounted() {
-    // this.preloader = true;
+    console.log(this.unconfirmTimeArray);
     this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.isFreeLesson();
     this.getIntervalsFromDB();
-    this.lightingOfToday(); // this.changeStateOfItem();
-
+    this.lightingOfToday();
     this.switchLangOnReload();
     this.switchLang();
     this.setTimeZone();
-    this.getPrice(); // setTimeout(()=>{
-    //   this.preloader = false;
-    // },200)
+    this.getPrice();
   },
   updated: function updated() {
     this.adjustmentDateOfDay();
@@ -2918,7 +2915,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         this.year--;
       }
 
-      this.getIntervalsFromDB(); // this.getFromTempGMT();
+      this.getIntervalsFromDB();
     },
     increase: function increase() {
       this.weekNumber++;
@@ -2930,7 +2927,7 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         this.year++;
       }
 
-      this.getIntervalsFromDB(); // this.getFromTempGMT();
+      this.getIntervalsFromDB();
     },
     lightingOfToday: function lightingOfToday() {
       var dayNum = document.querySelectorAll('.calendar-app-content-number');
@@ -2954,13 +2951,15 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
         'method': 'getPrice'
       })).then(function (response) {
         // console.log(response.data);
-        _this.pricePrivate = response.data["private"];
-        _this.priceSclub = response.data.sclub;
+        if (response.data !== null) {
+          _this.pricePrivate = response.data["private"];
+          _this.priceSclub = response.data.sclub;
 
-        if ($('.header-menu--private').hasClass('menu-item-active')) {
-          _this.price = response.data["private"];
-        } else {
-          _this.price = response.data.sclub;
+          if ($('.header-menu--private').hasClass('menu-item-active')) {
+            _this.price = response.data["private"];
+          } else {
+            _this.price = response.data.sclub;
+          }
         }
       });
     },
@@ -2993,16 +2992,15 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           });
         }
 
-        _this2.lengthOfData = count;
-        console.log(_this2.lengthOfData);
+        _this2.lengthOfData = count; // console.log(this.lengthOfData)
+
         var timeZone = _this2.timeZone;
 
         var timeZoneNum = _this2.timeZone.split(' ')[1].substring(0, 3);
 
         addToTempDB();
 
-        _this2.getOfTempDB(); // deactivatePastIntervals();
-
+        _this2.getOfTempDB();
 
         setTimeout(function () {
           _this2.preloader = false;
@@ -3151,82 +3149,84 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
 
           if (_this3.lengthOfData !== undefined) {
             if (_this3.lengthOfData === dataLength) {
-              data.forEach(function (val, k) {
-                // console.log(val);
-                var dayFromDb = val[0];
-                var timeFromDb = val[1];
-                var gmtFromDb = val[2];
-                var newArr = [];
-                var arr = timeFromDb.split(','); // console.log(timeFromDb);
+              if (data !== null) {
+                data.forEach(function (val, k) {
+                  // console.log(val);
+                  var dayFromDb = val[0];
+                  var timeFromDb = val[1];
+                  var gmtFromDb = val[2];
+                  var newArr = [];
+                  var arr = timeFromDb.split(','); // console.log(timeFromDb);
 
-                arr.forEach(function (val, k) {
-                  var firstH = val.split(' - ')[0].split(':')[0]; // 06
+                  arr.forEach(function (val, k) {
+                    var firstH = val.split(' - ')[0].split(':')[0]; // 06
 
-                  var firstM = val.split(' - ')[0].split(':')[1]; // 00
+                    var firstM = val.split(' - ')[0].split(':')[1]; // 00
 
-                  var secondH = val.split(' - ')[1].split(':')[0]; // 07
+                    var secondH = val.split(' - ')[1].split(':')[0]; // 07
 
-                  var secondM = val.split(' - ')[1].split(':')[1]; // 30
+                    var secondM = val.split(' - ')[1].split(':')[1]; // 30
 
-                  if (+firstH < 0) {
-                    firstH = 24 + +firstH;
-                  }
-
-                  if (+secondH < 0) {
-                    secondH = 24 + +secondH;
-                  }
-
-                  if (+firstH > 23) {
-                    firstH = +firstH - 24;
-                  }
-
-                  if (+secondH > 23) {
-                    secondH = +secondH - 24;
-                  }
-
-                  var time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
-                  newArr.push(time);
-                });
-                $('.time-intrevals-elem').each(function (k, val) {
-                  var dateNumber = val;
-                  var data = new Date();
-                  var date = $(val).attr('date');
-                  var day = date.split('.')[0];
-                  var month = date.split('.')[1];
-                  var str = '';
-                  var valHour = '';
-
-                  if (dayFromDb === dateNumber.getAttribute('date')) {
-                    if (_this3.freeLesson) {
-                      var _arr = [];
-                      newArr.forEach(function (val, k) {
-                        _arr.push(val.split('-')[0]);
-                      });
-                      str = _arr.join('</div><div>');
-                    } else {
-                      str = newArr.join('</div><div>');
+                    if (+firstH < 0) {
+                      firstH = 24 + +firstH;
                     }
 
-                    $(dateNumber).append('<div>' + str + '</div>'); //--------- функция деактивации интервалов ранее текущего времени
+                    if (+secondH < 0) {
+                      secondH = 24 + +secondH;
+                    }
 
-                    $(val).children().each(function (k, val) {
+                    if (+firstH > 23) {
+                      firstH = +firstH - 24;
+                    }
+
+                    if (+secondH > 23) {
+                      secondH = +secondH - 24;
+                    }
+
+                    var time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
+                    newArr.push(time);
+                  });
+                  $('.time-intrevals-elem').each(function (k, val) {
+                    var dateNumber = val;
+                    var data = new Date();
+                    var date = $(val).attr('date');
+                    var day = date.split('.')[0];
+                    var month = date.split('.')[1];
+                    var str = '';
+                    var valHour = '';
+
+                    if (dayFromDb === dateNumber.getAttribute('date')) {
                       if (_this3.freeLesson) {
-                        valHour = val.innerHTML.split(':')[0];
+                        var _arr = [];
+                        newArr.forEach(function (val, k) {
+                          _arr.push(val.split('-')[0]);
+                        });
+                        str = _arr.join('</div><div>');
                       } else {
-                        valHour = val.innerHTML.split('-')[0].split(':')[0];
+                        str = newArr.join('</div><div>');
                       }
 
-                      if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                        val.classList.add('booked-for-other-users');
-                      }
+                      $(dateNumber).append('<div>' + str + '</div>'); //--------- функция деактивации интервалов ранее текущего времени
 
-                      if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                        val.classList.add('booked-for-other-users');
-                      }
-                    });
-                  }
+                      $(val).children().each(function (k, val) {
+                        if (_this3.freeLesson) {
+                          valHour = val.innerHTML.split(':')[0];
+                        } else {
+                          valHour = val.innerHTML.split('-')[0].split(':')[0];
+                        }
+
+                        if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                          val.classList.add('booked-for-other-users');
+                        }
+
+                        if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                          val.classList.add('booked-for-other-users');
+                        }
+                      });
+                    }
+                  });
                 });
-              });
+              }
             } else {
               // если не совпадает выполняется getIntervalsFromDB заново
               console.log('false');
@@ -3239,178 +3239,187 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
             'method': 'getLessons'
           })).then(function (response) {
             // получаем всю информацию о забронированных уроках по данному пользователю
-            var data = response.data; // console.log(data)
-
+            var data = response.data;
+            console.log(data);
             var days = $('.time-intrevals-from-db__item');
             _this3.bookedGmtArray = [];
-            data.forEach(function (val, k) {
-              var userNameFromDB = val[1];
-              var dayFromDB = val[2];
-              var timeFromDB = val[3];
-              var type = val[4];
-              var paymentFromDB = val[5];
-              var confirmationFromDB = val[6];
-              var priceFromDB = val[7];
-              var gmtFromDB = val[8]; // добавляем в БД bookstime-gmt
 
-              var timeZoneNum = _this3.timeZone.split(' ')[1].substring(0, 3);
+            if (data !== null) {
+              data.forEach(function (val, k) {
+                var userNameFromDB = val[1];
+                var dayFromDB = val[2];
+                var timeFromDB = val[3];
+                var type = val[4];
+                var paymentFromDB = val[5];
+                var confirmationFromDB = val[6];
+                var priceFromDB = val[7];
+                var gmtFromDB = val[8];
+                var bookingTime = val[9]; // добавляем в БД bookstime-gmt
 
-              var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
-              var delta = timeZoneNum - gmtFromDbNum;
-              var arr = timeFromDB.split(',');
-              arr.forEach(function (val, k) {
-                // console.log(val)
-                var prevNum = +dayFromDB.split('.')[0] - 1;
-                var prevMonth = +dayFromDB.split('.')[1];
-                var prevYear = +dayFromDB.split('.')[2];
+                var timeZoneNum = _this3.timeZone.split(' ')[1].substring(0, 3);
 
-                if (prevNum == 0) {
-                  prevMonth = prevMonth - 1;
-                  prevNum = new Date(prevYear, prevMonth, 0).getDate();
-                }
+                var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                var delta = timeZoneNum - gmtFromDbNum;
+                var arr = timeFromDB.split(',');
+                arr.forEach(function (val, k) {
+                  // удаление неоплаченых интервалов из БД
+                  // if (confirmationFromDB == 0) {
+                  //   if (bookingTime > 45)
+                  //   if (bookingTime > bookingTime + 15)
+                  //   console.log(val)
+                  // }
+                  var prevNum = +dayFromDB.split('.')[0] - 1;
+                  var prevMonth = +dayFromDB.split('.')[1];
+                  var prevYear = +dayFromDB.split('.')[2];
 
-                if (String(prevMonth).length < 2) {
-                  prevMonth = '0' + prevMonth;
-                }
-
-                var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
-                var nextNum = +dayFromDB.split('.')[0] + 1;
-                var nextMonth = +dayFromDB.split('.')[1];
-                var nextYear = +dayFromDB.split('.')[2];
-                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
-
-                if (nextNum == lastNum + 1) {
-                  nextNum = '1';
-                  nextMonth = nextMonth + 1;
-                }
-
-                if (String(nextMonth).length < 2) {
-                  nextMonth = '0' + nextMonth;
-                }
-
-                var nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
-                var firstH;
-                var firstM;
-                var secondH;
-                var secondM;
-                var time;
-                var a;
-                var b;
-                var day = dayFromDB;
-
-                if (paymentFromDB !== 'free') {
-                  firstH = val.split('-')[0].split(':')[0]; // 06
-
-                  firstM = val.split('-')[0].split(':')[1]; // 00
-
-                  secondH = val.split('-')[1].split(':')[0]; // 07
-
-                  secondM = val.split('-')[1].split(':')[1]; // 30
-
-                  a = +firstH + delta; // 02
-
-                  b = +secondH + delta; //05
-
-                  if (a < 0) {
-                    a = 24 + a;
-
-                    if (b < 0) {
-                      b = 24 + b;
-                    }
-
-                    day = prevDateNumber;
+                  if (prevNum == 0) {
+                    prevMonth = prevMonth - 1;
+                    prevNum = new Date(prevYear, prevMonth, 0).getDate();
                   }
 
-                  if (a > 23) {
-                    a = a - 24;
-
-                    if (b > 23) {
-                      b = b - 24;
-                    }
-
-                    day = nextDateNumber;
+                  if (String(prevMonth).length < 2) {
+                    prevMonth = '0' + prevMonth;
                   }
 
-                  time = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                } else {
-                  firstH = val.split(':')[0]; // 06
+                  var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+                  var nextNum = +dayFromDB.split('.')[0] + 1;
+                  var nextMonth = +dayFromDB.split('.')[1];
+                  var nextYear = +dayFromDB.split('.')[2];
+                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
 
-                  firstM = val.split(':')[1]; // 00
+                  if (nextNum == lastNum + 1) {
+                    nextNum = '1';
+                    nextMonth = nextMonth + 1;
+                  }
 
-                  a = +firstH + delta; // 02
+                  if (String(nextMonth).length < 2) {
+                    nextMonth = '0' + nextMonth;
+                  }
 
-                  time = a + ':' + firstM;
-                } // console.log(time)
+                  var nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+                  var firstH;
+                  var firstM;
+                  var secondH;
+                  var secondM;
+                  var time;
+                  var a;
+                  var b;
+                  var day = dayFromDB;
+
+                  if (paymentFromDB !== 'free') {
+                    firstH = val.split('-')[0].split(':')[0]; // 06
+
+                    firstM = val.split('-')[0].split(':')[1]; // 00
+
+                    secondH = val.split('-')[1].split(':')[0]; // 07
+
+                    secondM = val.split('-')[1].split(':')[1]; // 30
+
+                    a = +firstH + delta; // 02
+
+                    b = +secondH + delta; //05
+
+                    if (a < 0) {
+                      a = 24 + a;
+
+                      if (b < 0) {
+                        b = 24 + b;
+                      }
+
+                      day = prevDateNumber;
+                    }
+
+                    if (a > 23) {
+                      a = a - 24;
+
+                      if (b > 23) {
+                        b = b - 24;
+                      }
+
+                      day = nextDateNumber;
+                    }
+
+                    time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                  } else {
+                    firstH = val.split(':')[0]; // 06
+
+                    firstM = val.split(':')[1]; // 00
+
+                    a = +firstH + delta; // 02
+
+                    time = a + ':' + firstM;
+                  } // console.log(time)
 
 
-                var obj = {
-                  name: userNameFromDB,
-                  type: type,
-                  day: day,
-                  time: time,
-                  payment: paymentFromDB,
-                  confirmation: confirmationFromDB,
-                  price: priceFromDB,
-                  gmt: _this3.timeZone,
-                  'method': 'setToBooksTimeGMT'
-                }; // console.log(obj)
+                  var obj = {
+                    name: userNameFromDB,
+                    type: type,
+                    day: day,
+                    time: time,
+                    payment: paymentFromDB,
+                    confirmation: confirmationFromDB,
+                    price: priceFromDB,
+                    gmt: _this3.timeZone,
+                    'method': 'setToBooksTimeGMT'
+                  }; // console.log(obj)
 
-                _this3.bookedGmtArray.push(obj);
-              }); // console.log(this.bookedGmtArray)
+                  _this3.bookedGmtArray.push(obj);
+                }); // console.log(this.bookedGmtArray)
 
-              var bookedGmtArray = _this3.bookedGmtArray;
-              $(bookedGmtArray).each(function (i, obj) {
-                var dayFromBookedGmtArray = obj.day;
-                var confirmation = obj.confirmation;
-                var gmt = obj.gmt;
-                var name = obj.name;
-                var payment = obj.payment;
-                var price = obj.price;
-                var timeFromBookedGmtArray = obj.time;
-                var type = obj.type; // стили
+                var bookedGmtArray = _this3.bookedGmtArray;
+                $(bookedGmtArray).each(function (i, obj) {
+                  var dayFromBookedGmtArray = obj.day;
+                  var confirmation = obj.confirmation;
+                  var gmt = obj.gmt;
+                  var name = obj.name;
+                  var payment = obj.payment;
+                  var price = obj.price;
+                  var timeFromBookedGmtArray = obj.time;
+                  var type = obj.type; // стили
 
-                days.each(function (i, day) {
-                  if ($(day).attr('date') === dayFromBookedGmtArray) {
-                    var _iterator = _createForOfIteratorHelper(day.children),
-                        _step;
+                  days.each(function (i, day) {
+                    if ($(day).attr('date') === dayFromBookedGmtArray) {
+                      var _iterator = _createForOfIteratorHelper(day.children),
+                          _step;
 
-                    try {
-                      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                        var time = _step.value;
+                      try {
+                        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                          var time = _step.value;
 
-                        if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
-                          if (name === getCookie('name')) {
-                            if (payment === "unpayed") {
-                              time.classList.add('unpayed-book');
-                            }
+                          if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
+                            if (name === getCookie('name')) {
+                              if (payment === "unpayed") {
+                                time.classList.add('unpayed-book');
+                              }
 
-                            if (confirmation === "0") {
-                              time.classList.add('unconfirmed-book');
-                            }
+                              if (confirmation === "0") {
+                                time.classList.add('unconfirmed-book');
+                              }
 
-                            if (confirmation === "1" && payment === 'payed') {
-                              time.classList.add('booked-for-this-user');
-                            }
-                          } else {
-                            if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
-                              time.classList.add('booked-for-other-users');
+                              if (confirmation === "1" && payment === 'payed') {
+                                time.classList.add('booked-for-this-user');
+                              }
+                            } else {
+                              if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
+                                time.classList.add('booked-for-other-users');
+                              }
                             }
                           }
-                        }
 
-                        if (time.innerHTML.split('-')[0] === time) {
-                          time.classList.add('booked-free');
+                          if (time.innerHTML.split('-')[0] === time) {
+                            time.classList.add('booked-free');
+                          }
                         }
+                      } catch (err) {
+                        _iterator.e(err);
+                      } finally {
+                        _iterator.f();
                       }
-                    } catch (err) {
-                      _iterator.e(err);
-                    } finally {
-                      _iterator.f();
                     }
-                  }
+                  });
                 });
               });
-            });
+            }
           });
         });
       }, 500);
@@ -3466,11 +3475,13 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           confirmation: confirmation,
           price: _this4.price,
           gmt: _this4.timeZone,
+          bookingTime: new Date().getMinutes(),
           'method': 'bookEvent'
         };
 
         _this4.selectedTimeArray.push(obj);
-      });
+      }); // console.log( this.selectedTimeArray)
+
       var day = event.target.parentNode.getAttribute('date');
       var time = event.target.innerHTML;
       var obj = {
@@ -3525,8 +3536,6 @@ var language = null; // let selectedTimeArray = []; // пришлось ввес
           console.log('success delete unconfirm lesson');
 
           _this6.getIntervalsFromDB();
-
-          _this6.changeStateOfItem();
 
           _this6.closeUnconfirmedMenuFrame();
         }
@@ -23289,17 +23298,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var owl_carousel__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(owl_carousel__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var _easing_plugin__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easing-plugin */ "./scripts/easing-plugin.js");
 /* harmony import */ var _easing_plugin__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_easing_plugin__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service */ "./scripts/service.js");
-/* harmony import */ var _service__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_service__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var _free_lesson__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./free-lesson */ "./scripts/free-lesson.js");
-/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./payment */ "./scripts/payment.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
-/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
-/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
-/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
-/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
-
+/* harmony import */ var _free_lesson__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./free-lesson */ "./scripts/free-lesson.js");
+/* harmony import */ var _payment__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./payment */ "./scripts/payment.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! vue */ "../node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../vue/MySchedule.vue */ "./vue/MySchedule.vue");
+/* harmony import */ var _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../vue/MyCalendar.vue */ "./vue/MyCalendar.vue");
+/* harmony import */ var _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../vue/BookCalendar.vue */ "./vue/BookCalendar.vue");
+/* harmony import */ var _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../vue/MyStudents.vue */ "./vue/MyStudents.vue");
+/* harmony import */ var _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../vue/AdminBookCalendar.vue */ "./vue/AdminBookCalendar.vue");
 
 
 
@@ -23325,7 +23331,7 @@ __webpack_require__.r(__webpack_exports__);
 
  // -----------------------------------------------------------
 
-vue__WEBPACK_IMPORTED_MODULE_19__["default"].config.productionTip = false;
+vue__WEBPACK_IMPORTED_MODULE_18__["default"].config.productionTip = false;
 $(document).ready(function () {
   console.log('app.js init'); // -----------------------------------------
   // ----------------- ПОДКЛЮЧЕНИЯ VUE КОМПОНЕНТОВ ---------------- \\
@@ -23333,11 +23339,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-calendar')) {
     console.log('init vue-my-calendar');
-    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
+    var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-calendar',
       template: "<MyCalendar/>",
       components: {
-        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
+        MyCalendar: _vue_MyCalendar_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
       }
     });
   } // ----------- мое расписание (админ-панель)
@@ -23345,11 +23351,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-schedule')) {
     console.log('init vue-my-schedule');
-    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
+    var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-schedule',
       template: "<MySchedule/>",
       components: {
-        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_20__["default"]
+        MySchedule: _vue_MySchedule_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
       }
     });
   } // ----------- мои ученики (админ-панель)
@@ -23357,11 +23363,11 @@ $(document).ready(function () {
 
   if (document.getElementById('vue-my-students')) {
     console.log('init vue-my-students');
-    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
+    var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-my-students",
       template: "<MyStudents/>",
       components: {
-        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
+        MyStudents: _vue_MyStudents_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
       }
     });
   } // ----------- компонент для редактирования времени урока (админ-панель)
@@ -23370,11 +23376,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-admin-book-calendar')) {
     console.log('init vue-admin-book-calendar');
 
-    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
+    var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-admin-book-calendar',
       template: "<AdminBookCalendar/>",
       components: {
-        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_24__["default"]
+        AdminBookCalendar: _vue_AdminBookCalendar_vue__WEBPACK_IMPORTED_MODULE_23__["default"]
       }
     });
   } // ----------- календарь бронирования (в private-lesson и s-club)
@@ -23383,11 +23389,11 @@ $(document).ready(function () {
   if (document.getElementById('vue-book-calendar')) {
     console.log('init vue-book-calendar');
 
-    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_19__["default"]({
+    var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-book-calendar",
       template: "<BookCalendar/>",
       components: {
-        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_22__["default"]
+        BookCalendar: _vue_BookCalendar_vue__WEBPACK_IMPORTED_MODULE_21__["default"]
       }
     });
   } // -----------------------------------------
@@ -24619,7 +24625,7 @@ $(document).ready(function () {
       response.then(function (data) {
         return data.json();
       }).then(function (data) {
-        console.log(data);
+        // console.log(data)
         $('.form-input').each(function (k, val) {
           $(val).val('');
         });
@@ -24941,17 +24947,6 @@ $(document).ready(function () {
   });
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
-
-/***/ }),
-
-/***/ "./scripts/service.js":
-/*!****************************!*\
-  !*** ./scripts/service.js ***!
-  \****************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 

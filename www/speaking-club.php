@@ -4,7 +4,9 @@ require("vendor/autoload.php");
 $objCalendar = new \Classes\Calendar();
 $result = $objCalendar->getPrice();
 ?>
+
 <title switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" >speaking-club</title>
+<body style="max-height: 801px;">
 <main class="book-lesson speaking-club">
     <div class="description-block">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="title">Speaking - Club</h2>
@@ -19,4 +21,5 @@ $result = $objCalendar->getPrice();
     </div>
     <div id="vue-book-calendar"></div>
 </main>
+</body>
 <?php require 'pages/requires/footer.php' ?>

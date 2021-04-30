@@ -3608,6 +3608,11 @@
   box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.25);
   margin: 0 auto;
 }
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app {
+    padding-bottom: 10px;
+  }
+}
 #mysite .your-calendar .calendar-app .decor-line {
   margin-bottom: 30px;
 }
@@ -3616,6 +3621,11 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 10px 0;
+}
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header {
+    padding: 10px 10px;
+  }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header .flex-column {
   display: flex;
@@ -3633,6 +3643,11 @@
   color: rgba(0, 0, 0, 0.35);
   font-size: 14px;
 }
+@media screen and (max-width: 767px) {
+  #mysite .your-calendar .calendar-app .calendar-app-header .flex-column .descr {
+    display: none;
+  }
+}
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
   display: flex;
   align-items: center;
@@ -3642,11 +3657,6 @@
 @media screen and (max-width: 1024px) {
   #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
     width: 215px;
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module {
-    width: auto;
   }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
@@ -3662,11 +3672,6 @@
   #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
     font-size: 12px;
     margin-left: 0;
-  }
-}
-@media screen and (max-width: 320px) {
-  #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month {
-    font-size: 10px;
   }
 }
 #mysite .your-calendar .calendar-app .calendar-app-header__element--month-module .month-btn {
@@ -3718,19 +3723,12 @@
 @media screen and (max-width: 1024px) {
   #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
     font-size: 12px;
-    width: 215px;
   }
 }
 @media screen and (max-width: 767px) {
   #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
-    width: 165px;
-    height: 19px;
-  }
-}
-@media screen and (max-width: 320px) {
-  #mysite .your-calendar .calendar-app .calendar-app-header__element--time-zone {
-    font-size: 10px;
-    width: 135px;
+    width: 111px;
+    height: 26px;
   }
 }
 #mysite .your-calendar .calendar-app .calendar-app-content {
@@ -3881,7 +3879,12 @@
 @media screen and (max-width: 767px) {
   #mysite .your-calendar .calendar-app .tegs {
     font-size: 12px;
-    padding: 0 10px 20px;
+    padding: 24px 10px 20px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    flex-wrap: wrap;
   }
 }
 #mysite .your-calendar .calendar-app .tegs__element {
