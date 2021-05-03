@@ -42,7 +42,7 @@
 
           <!--          </select>-->
           <div class="flex-column">
-            <div v-model="timeZone" @change="switchTimeZone()"
+            <div v-model="timeZone"
                  class="calendar-app-header__element calendar-app-header__element--time-zone">
               {{ timeZone }}
             </div>
@@ -187,7 +187,7 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-let language = null;
+// let language = null;
 // let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 export default {
   data() {
@@ -219,7 +219,7 @@ export default {
       payment: 'unpayed',
       freeLessBookSuccess: false,
       preloader: true,
-      language: 'eng-lang',
+      language: getCookie('btnLang'),
       pricePrivate: null,
       priceSclub: null,
       price: null,
@@ -247,7 +247,6 @@ export default {
     this.setCurrentMonth();
   },
   mounted: function () {
-    console.log(this.unconfirmTimeArray)
     this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.isFreeLesson()
@@ -257,7 +256,6 @@ export default {
     this.switchLang();
     this.setTimeZone();
     this.getPrice();
-
   },
   updated() {
 
@@ -278,39 +276,41 @@ export default {
       let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
       this.timeZone = gmt; // GMT +03:00
 
-      $('.time-zone-option').each(function (val, k) {
-        if ($(this).val() === gmt) {
-          $(this).attr('selected', true)
-        }
-      });
+      // $('.time-zone-option').each(function (val, k) {
+      //   if ($(this).val() === gmt) {
+      //     $(this).attr('selected', true)
+      //   }
+      // });
 
     },
+
     // изменение интервалов при переключении часового пояса
-    switchTimeZone() {
-      this.getIntervalsFromDB();
-      // this.getFromTempGMT();
-    },
+    // switchTimeZone() {
+    //   this.getIntervalsFromDB();
+    //   // this.getFromTempGMT();
+    // },
 
     // ---- для смены языка
     switchMonthAndDay() {
       this.monthes = [];
-      if (language === 'eng-lang') {
+      if (this.language === 'eng-lang') {
         this.monthes = this.monthesEng;
         this.day = this.dayEng;
       }
-      if (language === 'rus-lang') {
+      if (this.language === 'rus-lang') {
         this.monthes = this.monthesRus;
         this.day = this.dayRus;
       }
     }
     ,
     switchLang() {
-      $('.lang-changer').click(function (e) {
-        if ($(this).hasClass('eng-lang')) {
-          language = 'rus-lang';
+      $('.lang-changer').click((e) => {
+        if ($(e.target).hasClass('eng-lang')) {
+          this.language = 'rus-lang';
         } else {
-          language = 'eng-lang';
+          this.language = 'eng-lang';
         }
+        console.log(this.language)
         $('.trigger').trigger('click');
 
         $('*').each(function (k, val) {
@@ -553,6 +553,7 @@ export default {
       let obj2 = {};
       let obj3 = {};
       let array = [];
+      let array2 = [];
 
       $('.time-intrevals-elem ').each((k, val) => {
         val.innerHTML = '';
@@ -562,7 +563,6 @@ export default {
           .then((response) => {
             // console.log(response.data);
             let data = response.data;
-
             // количество полученных интервалов
             let count = 0;
             if (data !== null) {
@@ -691,19 +691,19 @@ export default {
                   if (Object.keys(obj3).length !== 0) {
                     array.push(obj3);
                   }
-                  let array2 = [...new Set(array)];
+                  array2 = [...new Set(array)];
                   // console.log(array2)
                   // console.log(obj)
                   // console.log(obj2)
-                  let object = {
-                    intervals: array2,
-                    'method': 'setToTempGMT'
-                  }
-
-                  axios.post('/handle.php', JSON.stringify(object))
-
-                })
+                });
               }
+
+              let object = {
+                intervals: array2,
+                'method': 'setToTempGMT'
+              }
+              // console.log(array2);
+              axios.post('/handle.php', JSON.stringify(object))
             }
           });
     },
@@ -715,6 +715,7 @@ export default {
             .then((response) => {
               let data = response.data;
               // console.log(data)
+              let unconfirmedBooks = [];
 
               let dataLength = 0;
               if (data !== null) {
@@ -797,6 +798,7 @@ export default {
                             }
                           })
                         }
+
                       });
                     });
                   }
@@ -811,10 +813,11 @@ export default {
                   .then((response) => {
                     // получаем всю информацию о забронированных уроках по данному пользователю
                     let data = response.data;
-                    console.log(data)
+                    // console.log(data)
                     let days = $('.time-intrevals-from-db__item');
 
                     this.bookedGmtArray = [];
+
                     if (data !== null) {
                       data.forEach((val, k) => {
                         let userNameFromDB = val[1];
@@ -827,7 +830,6 @@ export default {
                         let gmtFromDB = val[8];
                         let bookingTime = val[9];
 
-                        // добавляем в БД bookstime-gmt
                         let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
                         let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
                         let delta = timeZoneNum - gmtFromDbNum;
@@ -835,12 +837,24 @@ export default {
 
                         arr.forEach((val, k) => {
 
-                          // удаление неоплаченых интервалов из БД
-                          // if (confirmationFromDB == 0) {
-                          //   if (bookingTime > 45)
-                          //   if (bookingTime > bookingTime + 15)
-                          //   console.log(val)
-                          // }
+                          // удаление неоплаченых интервалов из БД через 15 минут
+                          if (confirmationFromDB == 0) {
+                            let currentTime = new Date().getMinutes();
+                            let delta = currentTime - bookingTime;
+                            if (Math.sign(delta) == -1) {
+                              delta += 60;
+                            }
+                            if (delta > 15) {
+                              let obj = {
+                                name: userNameFromDB,
+                                time: val,
+                                day: dayFromDB,
+                                'type': 'delAfterTimeInterval',
+                                'method': 'delUnconfirmedBooks'
+                              }
+                              unconfirmedBooks.push(obj);
+                            }
+                          }
 
 
                           let prevNum = +dayFromDB.split('.')[0] - 1;
@@ -928,7 +942,9 @@ export default {
                           this.bookedGmtArray.push(obj);
 
                         });
-                        // console.log(this.bookedGmtArray)
+
+
+
                         let bookedGmtArray = this.bookedGmtArray;
                         $(bookedGmtArray).each((i, obj) => {
                           let dayFromBookedGmtArray = obj.day;
@@ -968,7 +984,7 @@ export default {
                                   }
                                 }
 
-                                if (time.innerHTML.split('-')[0] === time) {
+                                if (time.innerHTML.split('-')[0] === timeFromBookedGmtArray) {
                                   time.classList.add('booked-free');
                                 }
 
@@ -978,6 +994,18 @@ export default {
                         })
                       });
                     }
+
+                    // console.log(unconfirmedBooks)
+
+                    // удаление неоплаченных бронирований через 15 минут
+                    axios.post('/handle.php', JSON.stringify(unconfirmedBooks))
+                        .then((response) => {
+                          let data = response.data;
+                          if (data === true) {
+                            // console.log(data)
+                            this.getIntervalsFromDB();
+                            }
+                        });
 
                   });
 
@@ -1006,7 +1034,7 @@ export default {
       }
       this.unconfirmTimeArray = [];
       this.selectedTimeArray = [];
-      // console.log(selectedTimeArray)
+      console.log(this.selectedTimeArray)
       // let userName = $('.user-login__elem--user-name').html();
       let userName = getCookie('name');
       let confirmation = 0;
@@ -1209,18 +1237,7 @@ export default {
   margin: auto;
 }
 
-#preloader {
-  /*visibility: hidden;*/
-  /*opacity: 0;*/
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
-}
+
 
 *[language] {
   opacity: 0;

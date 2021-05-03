@@ -312,6 +312,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          height: 70px;
 
           &__element {
             margin-right: 30px;
@@ -351,13 +352,14 @@
             position: absolute;
             box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
             border-radius: 4px;
-            width: 239px;
+            width: 139px;
             height: 27px;
             border: none;
             outline: none;
             font-size: 16px;
-            line-height: 19px;
+            line-height: 27px;
             color: rgba(0, 0, 0, 0.5);
+            text-align: center;
             //@include mediaWidth(1024) {
             //  font-size: 12px;
             //  width: 215px;
@@ -533,6 +535,8 @@
       left: 0;
       right: 0;
       margin: auto;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+
 
       .close-btn {
         cursor: pointer;
@@ -586,11 +590,42 @@
           background-size: contain;
           margin-right: 3px;
           background-repeat: no-repeat;
+          cursor: pointer;
+          transition: all ease .2s;
+          position: absolute;
         }
+        .close-btn {
+          display: none;
+          right: -82px;
+          top: -11px;
+          width: 30px;
+          height: 32px;
+        }
+        .close-btn-active {
+          display: block;
+        }
+        .user-avatar-opened {
+          transition: all ease .2s;
+          width: 300px;
+          height: 300px;
+          z-index: 999;
+          right: -12px;
+          //-webkit-animation: openavatar;
+          //-o-animation: openavatar;
+          //animation: openavatar 1s ease;
+        }
+
+        //@keyframes openavatar {
+        //  25% { width: 70px; height: 70px; }
+        //  50% { width: 140px; height: 140px; }
+        //  75% { width: 220px; height: 220px; }
+        //  100% { width: 300px; height: 300px; }
+        //}
 
         .user-name {
           font-size: 20px;
           color: $colorLightBlack;
+          margin-left: 40px;
         }
       }
 
@@ -1007,6 +1042,12 @@
           justify-content: space-between;
           margin: 10px 0;
           line-height: 20px;
+          cursor: pointer;
+          &:hover {
+            background: #e9c6c6;
+            border-radius: 10px;
+            box-shadow: 0px 0px 8px 1px rgb(0 0 0 / 25%);
+          }
         }
 
         &__elem {
@@ -1025,6 +1066,7 @@
               background-size: contain;
               margin-right: 3px;
               background-repeat: no-repeat;
+              cursor: pointer;
             }
           }
 

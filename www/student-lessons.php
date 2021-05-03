@@ -15,7 +15,7 @@ if ($_COOKIE['btnLang'] === 'rus-lang') {
     }
 }
 $objCalendar = new \Classes\Calendar();
-$result = $objCalendar->getLessons();
+$result = $objCalendar->getLessonsFromBookstimeGMT();
 //        echo "<pre>";
 //        print_r($result);
 //        echo "</pre>";
@@ -57,6 +57,7 @@ foreach ($result as $item) {
 ?>
     <title switch-lang="<?= switchLang() ?>" switchable-text="Мои занятия">My lessons</title>
     <main class="student-lessons">
+        <div id="preloader"></div>
         <section class="inner">
             <h2 switch-lang="<?= switchLang() ?>" switchable-text="Мои занятия" class="main-title">My lessons</h2>
             <div class="empty-lesson-block <?= $activity ?>">
@@ -109,10 +110,10 @@ foreach ($result as $item) {
                         if (($item[1] === $_SESSION['name']) and $item[4] === 'private'):
                             $arr = explode('.', $item[2]);
                             $arr[1] = $monthes[+$arr[1] - 1]; ?>
-                        <div class="flex" style="display: flex">
+                        <div class="flex" style="display: flex; justify-content: space-between">
                             <div payment="<?=$item[5]?>" confirmation="<?=$item[6]?>" class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
                             <a class="pay-btn" href="/payment.php">click to pay</a>
-                            <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed</p>
+                            <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
                             <span class="payed-lesson">payed</span>
                         </div>
                         <?php endif; ?>
@@ -130,10 +131,10 @@ foreach ($result as $item) {
                         if (($item[1] === $_SESSION['name']) and $item[4] === 's-club'):
                             $arr = explode('.', $item[2]);
                             $arr[1] = $monthes[+$arr[1] - 1]; ?>
-                            <div class="flex" style="display: flex">
+                            <div class="flex" style="display: flex; justify-content: space-between">
                                 <div payment="<?=$item[5]?>" confirmation="<?=$item[6]?>" class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
                                 <a class="pay-btn" href="/payment.php">click to pay</a>
-                                <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed</p>
+                                <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
                                 <span class="payed-lesson">payed</span>
                             </div>
                         <?php endif; ?>

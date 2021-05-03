@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section calendar-active ">
+    <section id="vue-my-schedule" class="my-schedule admin-inner admin-panel-section">
       <h2 class="main-title">Мое расписание</h2>
       <h3 class="main-title main-title__description">Для составления расписания нажмите на необходимую ячейку
         календаря и выберите интервалы</h3>
@@ -594,7 +594,7 @@ export default {
   transition: all 0.4s ease;
 }
 
-.center {
+.time-type-switcher {
   position: absolute;
   top: calc(50% - 10px);
   left: -55px;

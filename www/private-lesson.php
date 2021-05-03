@@ -5,7 +5,7 @@ $result = $objCalendar->getPrice();
 ?>
 <?php require 'pages/requires/header.php'?>
 <title switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем">Individual lesson</title>
-<body style="max-height: 801px;">
+<body style="max-height: 901px;">
 <main class="book-lesson private-lesson">
     <div class="description-block">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем" class="title">Individual lesson</h2>

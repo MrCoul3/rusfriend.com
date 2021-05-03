@@ -3,6 +3,21 @@ import axios from "axios";
 $(document).ready(function () {
     if ($("main").hasClass('payment')) {
         console.log('payment init');
+        const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
+
+        document.addEventListener("scroll", function (e) {
+            console.log(window.pageYOffset);
+            if (mediaQueryDesktop.matches) {
+                if (window.pageYOffset > 50) {
+                    $('.success-frame-content').addClass('success-frame-content-unfix')
+                    $('.success-frame').addClass('success-frame-unfix');
+                } else {
+                    $('.success-frame-content').removeClass('success-frame-content-unfix')
+                    $('.success-frame').removeClass('success-frame-unfix');
+                }
+            }
+        });
+
 
         // ---- закрытие окна FAQ
         $('.payment-gateway-main__faq').click(() => {

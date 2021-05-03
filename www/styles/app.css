@@ -592,6 +592,9 @@
     margin-left: 0 !important;
   }
 }
+#mysite .about__element--right {
+  margin-top: 40px;
+}
 @media screen and (max-width: 1024px) {
   #mysite .about__element--right {
     margin-top: 0;
@@ -1152,6 +1155,11 @@
   width: 149px;
   height: 108px;
   background-repeat: no-repeat;
+  transition: all ease 0.1s;
+}
+#mysite .header__overhead .header-logo:hover {
+  transform: scale(1.05);
+  transition: all ease 0.1s;
 }
 @media screen and (max-width: 1024px) {
   #mysite .header__overhead .header-logo {
@@ -1556,6 +1564,20 @@
   text-align: center;
   color: #000000;
   cursor: pointer;
+}
+
+#preloader {
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
+  background-color: white;
 }
 
 #mysite .authorization-forms {
@@ -2558,7 +2580,8 @@
 @media screen and (max-width: 767px) {
   #mysite .courses-page .courses {
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 200px;
+    height: 49vh;
   }
 }
 /* стили для страниц private-lesson и speaking-club*/
@@ -2969,6 +2992,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 70px;
 }
 #mysite .admin-panel-section .wrapper .calendar-header .header-content__element {
   margin-right: 30px;
@@ -2999,13 +3023,14 @@
   position: absolute;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  width: 239px;
+  width: 139px;
   height: 27px;
   border: none;
   outline: none;
   font-size: 16px;
-  line-height: 19px;
+  line-height: 27px;
   color: rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 #mysite .admin-panel-section .wrapper .calendar-table {
   border: 2px solid white;
@@ -3137,6 +3162,7 @@
   left: 0;
   right: 0;
   margin: auto;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
 #mysite .my-calendar .calendar-detail .close-btn {
   cursor: pointer;
@@ -3182,10 +3208,31 @@
   background-size: contain;
   margin-right: 3px;
   background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all ease 0.2s;
+  position: absolute;
+}
+#mysite .my-calendar .calendar-detail .user .close-btn {
+  display: none;
+  right: -82px;
+  top: -11px;
+  width: 30px;
+  height: 32px;
+}
+#mysite .my-calendar .calendar-detail .user .close-btn-active {
+  display: block;
+}
+#mysite .my-calendar .calendar-detail .user .user-avatar-opened {
+  transition: all ease 0.2s;
+  width: 300px;
+  height: 300px;
+  z-index: 999;
+  right: -12px;
 }
 #mysite .my-calendar .calendar-detail .user .user-name {
   font-size: 20px;
   color: #455A64;
+  margin-left: 40px;
 }
 #mysite .my-calendar .calendar-detail .confirmation {
   text-align: right;
@@ -3515,6 +3562,12 @@
   justify-content: space-between;
   margin: 10px 0;
   line-height: 20px;
+  cursor: pointer;
+}
+#mysite .my-students .my-students-content .student .wrap:hover {
+  background: #e9c6c6;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.25);
 }
 #mysite .my-students .my-students-content .student__elem {
   width: 100%;
@@ -3531,6 +3584,7 @@
   background-size: contain;
   margin-right: 3px;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 #mysite .my-students .my-students-content .student__elem--status {
   text-align: center;
@@ -3870,10 +3924,11 @@
   justify-content: center;
   margin-top: 35px;
   padding-bottom: 20px;
+  font-size: 14px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .your-calendar .calendar-app .tegs {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -4045,7 +4100,7 @@
   transition: all ease 0.2s;
   opacity: 1;
   width: 100%;
-  height: 100%;
+  height: 200%;
   position: absolute;
   background: rgba(0, 0, 0, 0.25);
   z-index: 9999;
@@ -4283,10 +4338,9 @@
   }
 }
 #mysite .student-lessons .block__elem--content {
-  max-height: 140px;
   display: flex;
   flex-direction: column;
-  max-width: 320px;
+  max-width: 380px;
   width: 100%;
   line-height: 25px;
   position: relative;
@@ -4297,6 +4351,9 @@
     height: auto;
     width: auto;
   }
+}
+#mysite .student-lessons .block__elem--content .flex {
+  margin: 5px 0;
 }
 #mysite .student-lessons .block__elem--content .content-elem {
   margin-right: 20px;
@@ -5100,6 +5157,13 @@
   transition: all ease 0.2s;
   color: #FF3E28;
 }
+.payment-page .payment .success-frame .success-frame-content-unfix {
+  position: unset;
+  margin-top: 40px;
+}
+.payment-page .payment .success-frame-unfix {
+  position: unset;
+}
 .payment-page .payment .success-frame-active {
   display: block;
 }
@@ -5166,7 +5230,7 @@
   opacity: 0;
   transition: all 0.4s ease;
 }
-.center {
+.time-type-switcher {
   position: absolute;
   top: calc(50% - 10px);
   left: -55px;
@@ -5240,18 +5304,6 @@
   left: 0;
   right: 0;
   margin: auto;
-}
-#preloader[data-v-678606de] {
-  /*visibility: hidden;*/
-  /*opacity: 0;*/
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
 }
 *[language][data-v-678606de] {
   opacity: 0;

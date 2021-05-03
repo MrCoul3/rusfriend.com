@@ -440,6 +440,13 @@
           }
         }
       }
+      .success-frame-content-unfix {
+        position: unset;
+        margin-top: 40px;
+      }
+    }
+    .success-frame-unfix {
+      position: unset;
     }
 
     .success-frame-active {

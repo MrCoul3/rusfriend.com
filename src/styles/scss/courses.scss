@@ -5,7 +5,8 @@
       padding-bottom: 140px;
       @include mediaWidth(767) {
         padding-top: 100px;
-        padding-bottom: 100px;
+        padding-bottom: 200px;
+        height: 49vh;
       }
       .main-title {
 

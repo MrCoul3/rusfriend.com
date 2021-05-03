@@ -83,7 +83,6 @@ class Calendar
         return $result;
     }
 
-
     public function addBooksTime($request)
     {
         $errors = [];
@@ -100,7 +99,7 @@ class Calendar
                 $requestKeys = implode(',', array_keys($arr));
                 $requestVals = implode(',', $arr);
                 $query = "INSERT INTO `bookstime` ({$requestKeys}) VALUES ({$requestVals});";
-                var_dump($query);
+//                var_dump($query);
                 $result = $this->dbAccess->query($query);
             }
         }
@@ -109,6 +108,40 @@ class Calendar
     public function getLessons()
     {
         $query = "SELECT * FROM `bookstime` WHERE 1";;
+        $result = $this->dbAccess->query($query);
+        $getUnpayLessons = mysqli_fetch_all($result);
+        return $getUnpayLessons;
+    }
+
+    public function setLessonsToBookstimeGMT($request)
+    {
+        $delete = $this->dbAccess->query('DELETE FROM `bookstime-gmt`');
+        if ($delete) {
+            foreach ($request as $i => &$arr) {
+
+                foreach ($arr as $k => &$val) {
+                    if (!in_array($k, $this->requireFieldsForBooksTime)) {
+                        unset($arr[$k]);
+                    }
+                    if ($val != '') {
+                        $val = "'" . $val . "'";
+                    }
+                }
+                $requestKeys = implode(',', array_keys($arr));
+                $requestVals = implode(',', $arr);
+                $query = "INSERT INTO `bookstime-gmt` ({$requestKeys}) VALUES ({$requestVals});";
+                $result = $this->dbAccess->query($query);
+                $response = 'success';
+            }
+        } else {
+            $response = 'Ошибка удаления интервалов';
+        }
+        return $response;
+    }
+
+    public function getLessonsFromBookstimeGMT()
+    {
+        $query = "SELECT * FROM `bookstime-gmt` WHERE 1";;
         $result = $this->dbAccess->query($query);
         $getUnpayLessons = mysqli_fetch_all($result);
         return $getUnpayLessons;
@@ -155,9 +188,10 @@ class Calendar
             $name = $val['name'];
             $time = $val['time'];
             $date = $val['day'];
+            $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$date}' AND `time` = '{$time}'";
+//            var_dump($query);
+            $result = $this->dbAccess->query($query);
         }
-        $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$date}' AND `time` = '{$time}'";
-        $result = $this->dbAccess->query($query);
         return $result;
     }
 
@@ -189,9 +223,10 @@ class Calendar
 //        echo "</pre>";
         $err = [];
         $incr = "ALTER TABLE `temp-gmt` AUTO_INCREMENT=0;";
+        $reset = $this->dbAccess->query($incr);
+
         $query1 = "DELETE FROM `temp-gmt`;";
         $del = $this->dbAccess->query($query1);
-        $reset = $this->dbAccess->query($incr);
         if ($del || $reset) {
             $err = [];
         } else {

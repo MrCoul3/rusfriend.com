@@ -183,7 +183,7 @@ class User
 
     public function getAllUsersInfo()
     {
-        $query = "SELECT `name`, `email`, `skype`, `status`, `avatar`  FROM `users` WHERE 1=1";
+        $query = "SELECT `name`, `email`, `skype`, `status`, `avatar`  FROM `users` WHERE `status` != 'admin'";
         $result = $this->dbAccess->query($query);
         return $result;
 //        $getUsersInfo = mysqli_fetch_assoc($result);

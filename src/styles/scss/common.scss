@@ -274,6 +274,12 @@
                 width: 149px;
                 height: 108px;
                 background-repeat: no-repeat;
+                transition: all ease .1s;
+
+                &:hover {
+                    transform: scale(1.05);
+                    transition: all ease .1s;
+                }
                 @include mediaWidth(1024) {
                     width: 120px;
                     height: 85px;
@@ -698,5 +704,19 @@
             cursor: pointer;
         }
     }
+}
+
+#preloader {
+    /*visibility: hidden;*/
+    /*opacity: 0;*/
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background: #fbfbfb url('../images/common/preloader_1.gif') no-repeat center center;
+    background-color: white;
 }
 

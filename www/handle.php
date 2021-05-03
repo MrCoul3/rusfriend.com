@@ -211,6 +211,16 @@ if ($request['method'] === 'getLessons') {
     echo json_encode(($result));
 }
 
+if($request[0]['method'] === 'setToBooksTimeGMT') {
+    $result = $objCalendar->setLessonsToBookstimeGMT($request);
+    echo json_encode(($result));
+}
+
+if($request[0]['method'] === 'getLessonsFromBookstimeGMT' OR $request['method'] === 'getLessonsFromBookstimeGMT') {
+    $result = $objCalendar->getLessonsFromBookstimeGMT();
+    echo json_encode(($result));
+}
+
 
 // ------ изменить статус confirmation на 1: click on btn [confirm payment]
 if ($request[0]['method'] === 'confirmLessons') {

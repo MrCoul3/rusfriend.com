@@ -634,7 +634,7 @@
       }
 
       &--right {
-        //margin-top: 44px;
+        margin-top: 40px;
         @include mediaWidth(1024) {
           margin-top: 0;
           margin-left: 20px;

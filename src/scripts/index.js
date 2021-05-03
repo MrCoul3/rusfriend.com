@@ -37,7 +37,7 @@ $(document).ready(function () {
             navSpeed: 500,
             loop: true,
             center: true,
-            autoplay: false,
+            autoplay: true,
             autoplaySpeed: 500,
             autoplayHoverPause: true,
             autoplayTimeout: 3000,

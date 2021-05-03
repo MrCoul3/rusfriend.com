@@ -155,11 +155,11 @@
         }
 
         &--content {
-          max-height: 140px;
+          //max-height: 140px;
           display: flex;
           flex-direction: column;
           //flex-wrap: wrap;
-          max-width: 320px;
+          max-width: 380px;
           width: 100%;
           line-height: 25px;
           position: relative;
@@ -168,6 +168,9 @@
             max-height: none;
             height: auto;
             width: auto;
+          }
+          .flex {
+            margin: 5px 0;
           }
 
           .content-elem {

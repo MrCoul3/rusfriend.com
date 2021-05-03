@@ -107,6 +107,7 @@ $(document).ready(function () {
                 }).then(function (data) {
                     console.log(data.logout)
                     if (data.logout === true) {
+                        delete localStorage.getAllUsersInfo;
                         window.location.reload();
                     } else {
                         console.log('не удалось выйти')
@@ -133,7 +134,7 @@ $(document).ready(function () {
         // ---- занесение в БД admin-data часового пояса при перезагрузке страницы
         function loginOnReload() {
             window.addEventListener("load", function (e) {
-                console.log('load')
+                // console.log('load')
                 let zone = new Date().toString().split(' ')[5];
                 let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
                 let data = {
