@@ -30,7 +30,6 @@ $(document).ready(function () {
             .then((response) => {
                 let data = response.data;
                 // console.log(data)
-
                 if (data !== null) {
                     data.forEach((val, k) => {
                         let userNameFromDB = val[1];
@@ -149,14 +148,21 @@ $(document).ready(function () {
                     // console.log(response.data);
                     if (response.data.trim() !== '') {
                         if (response.data === 'success') {
-                            $('#preloader').css('display','none');
+                            if (!localStorage.getItem('re')) {
+                                localStorage.setItem('re', '1');
+                                window.location.reload();
+                            } else {
+                                delete localStorage.re;
+                                $('#preloader').css('display','none');
+                            }
                         } else {
                             window.location.reload();
                         }
+                    }  else {
+                        $('#preloader').css('display','none');
                     }
-
                 });
-        },400);
+        },50);
 
         function getCookie(name) {
             let matches = document.cookie.match(new RegExp(

@@ -1009,7 +1009,6 @@ export default {
 
                   });
 
-
             });
       }, 500)
 
@@ -1169,6 +1168,25 @@ export default {
                         if (this.freeLesson) {
                           axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
                           this.freeLessBookSuccess = true;
+
+
+                          let mailForUser = {
+                            name: getCookie('name'),
+                            email: localStorage.getItem('email'),
+                            data: this.selectedTimeArray,
+                            'method': 'bookedFree'
+                          }
+                          let mailForAdmin = {
+                            name: getCookie('name'),
+                            email: localStorage.getItem('email'),
+                            data: this.selectedTimeArray,
+                            'method': 'bookedFreeByUser'
+                          }
+
+                          axios.post('/mailer.php', JSON.stringify(mailForUser))
+                          axios.post('/mailer.php', JSON.stringify(mailForAdmin))
+
+
                           // $("#mysite").addClass("body-fixed");
                         } else {
                           // --- для платного - страница оплаты

@@ -175,8 +175,12 @@
             //background: rgba(0, 0, 0, 0.2);
             background-color: $colorRed;
             height: .5px;
-            top: 86px;
+            //top: 86px;
             width: 75%;
+
+            // пока нет компонента мессенджер
+            top: 60px;
+
         }
         &--footer {
             @include mediaWidth(767) {
@@ -378,9 +382,12 @@
                         top: 40px;
                         position: absolute;
                         width: 88px;
-                        height: 103px;
+                        //height: 103px;
                         background: #FFFFFF;
                         box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+                        // пока нет компонента мессенджер
+                        height: 75px;
+
                         //@include mediaWidth(767) {
                         //    display: block!important;
                         //    top: 20px;
@@ -395,9 +402,11 @@
                             font-size: 14px;
                             line-height: 25px;
                             color: rgba(0, 0, 0, 0.5);
+
                             &:hover {
                                 color: $colorRed;
                             }
+
                             &--logout {
                                 margin-top: 10px;
                                 margin-left: 0px;
@@ -589,6 +598,7 @@
                     h2 {
                         font-size: 24px;
                         font-weight: 400;
+                        text-align: center;
                         span {
                             color: $colorRed;
                         }

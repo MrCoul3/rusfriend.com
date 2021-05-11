@@ -1052,8 +1052,8 @@
   position: absolute;
   background-color: #FF3E28;
   height: 0.5px;
-  top: 86px;
   width: 75%;
+  top: 60px;
 }
 @media screen and (max-width: 767px) {
   #mysite .decor-line--footer {
@@ -1243,9 +1243,9 @@
   top: 40px;
   position: absolute;
   width: 88px;
-  height: 103px;
   background: #FFFFFF;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+  height: 75px;
 }
 #mysite .header__overhead .service-btns .user-login .user-login-menu__elem {
   cursor: pointer;
@@ -1447,6 +1447,7 @@
 #mysite .footer .footer-content__element--text h2 {
   font-size: 24px;
   font-weight: 400;
+  text-align: center;
 }
 #mysite .footer .footer-content__element--text h2 span {
   color: #FF3E28;
@@ -3392,6 +3393,7 @@
   left: 0;
   right: 0;
   margin: auto;
+  box-shadow: 0px 9px 18px rgba(0, 0, 0, 0.25);
 }
 #mysite .my-schedule .time-changer .time-changer-title {
   color: #FF3E28;
@@ -4175,17 +4177,21 @@
   padding-top: 250px;
   background-position: center 222px;
   padding-bottom: 120px;
+  min-height: 280px;
 }
 @media screen and (max-width: 1024px) {
   #mysite .student-lessons {
     padding-top: 200px;
     padding-bottom: 22px;
+    min-height: 480px;
   }
 }
 @media screen and (max-width: 767px) {
   #mysite .student-lessons {
     padding-top: 65px;
     padding-bottom: 0px;
+    min-height: 410px;
+    background-position: center 47px;
   }
 }
 #mysite .student-lessons .main-title {
@@ -4366,7 +4372,7 @@
 }
 @media screen and (max-width: 767px) {
   #mysite .student-lessons .block__elem--content .content-elem {
-    margin-right: 0;
+    margin-right: 10px;
     font-size: 12px;
   }
 }
@@ -4375,12 +4381,25 @@
 }
 #mysite .student-lessons .block .pay-btn {
   font-family: Montserrat, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   display: none;
   color: #FF3E28;
 }
 #mysite .student-lessons .block .pay-btn-active {
   display: block;
+}
+#mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .unconfirmed-lesson, #mysite .student-lessons .block .unpaid, #mysite .student-lessons .block .payed, #mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .pay-btn {
+  font-size: 16px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .unconfirmed-lesson, #mysite .student-lessons .block .unpaid, #mysite .student-lessons .block .payed, #mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .pay-btn {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .unconfirmed-lesson, #mysite .student-lessons .block .unpaid, #mysite .student-lessons .block .payed, #mysite .student-lessons .block .payed-lesson, #mysite .student-lessons .block .pay-btn {
+    font-size: 12px;
+  }
 }
 #mysite .student-lessons .block .unconfirmed-lesson {
   display: none;

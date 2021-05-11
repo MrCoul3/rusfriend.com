@@ -67,8 +67,8 @@ function switchLang()
         </div>
         <div class="info-container">
             <?php foreach ($result as $k=>$val):?>
-                <?php $date = $val[2]; $time = $val[3]; $userName = $val[1]; $conf = $val[6]; if ($userName === $_SESSION['name'] && $conf === '0'):?>
-                    <div name="<?=$userName?>" time="<?=$time?>" date="<?=$date?>" class="payment-gateway__elem payment-gateway__elem--info">
+                <?php $date = $val[2]; $time = $val[3]; $userName = $val[1]; $conf = $val[6]; $gmt = $val[8]; if ($userName === $_SESSION['name'] && $conf === '0'):?>
+                    <div name="<?=$userName?>" time="<?=$time?>" date="<?=$date?>" gmt="<?=$gmt?>" class="payment-gateway__elem payment-gateway__elem--info">
                         <p switch-lang="<?=switchLang()?>" switchable-text="Дата и время" class="info-descr info-descr--date">Date and time</p>
                         <p class="info-date"><?=$val[2] . ', ' . $val[3]?></p>
                         <p class="info-descr info-descr--gmt"><?=$val[8]?></p>

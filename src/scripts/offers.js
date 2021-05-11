@@ -16,45 +16,6 @@ $(document).ready(function () {
         openLinkByOffersCardsMobile();
     });
 
-    // --------------- вращение карточек предложений
-    // function rotateCards() {
-    //     if (mediaQueryCartDesktop.matches) {
-    //         $(".offers-cards-conteiner").each(function (key, val) {
-    //             $(this).mouseover(function (e) {
-    //                 if ($(this).children('.offers-cards__card').hasClass('card-rotate-back')) {
-    //                     $(this).children('.offers-cards__card').removeClass('card-rotate-back');
-    //                 }
-    //
-    //                 $(this).children('.offers-cards__card').addClass('card-rotate-forward');
-    //                 let front = $(this).find('div.card-content--front');
-    //                 let back = $(this).find('div.card-content--end');
-    //
-    //                 let frontTimeOut = setTimeout(function () {
-    //                     front.removeClass('card-side-active');
-    //                 }, 150);
-    //                 let backTimeOut = setTimeout(function () {
-    //                     back.addClass('card-side-active');
-    //                 }, 170);
-    //
-    //             });
-    //             $(this).mouseout(function (e) {
-    //                 if ($(this).children('.offers-cards__card').hasClass('card-rotate-forward')) {
-    //                     $(this).children('.offers-cards__card').removeClass('card-rotate-forward');
-    //                 }
-    //                 $(this).children('.offers-cards__card').addClass('card-rotate-back');
-    //                 let front = $(this).find('div.card-content--front');
-    //                 let back = $(this).find('div.card-content--end');
-    //                 let frontTimeOut = setTimeout(function () {
-    //                     front.addClass('card-side-active');
-    //                 }, 150);
-    //                 let backTimeOut = setTimeout(function () {
-    //                     back.removeClass('card-side-active');
-    //                 }, 170);
-    //
-    //             });
-    //         });
-    //     }
-    // }
     function rotateCards() {
         if (mediaQueryDesktop.matches) {
             $(".detail-btn").each(function (key, val) {
@@ -81,21 +42,21 @@ $(document).ready(function () {
             $('.offers-cards-conteiner--courses').click(function (e) {
                 if (mediaQueryTablet.matches) {
                     if ($(e.target).closest('.offers-cards__card--courses .card-content')) {
-                        $(location).attr('href', '/courses.php');
+                        $(location).attr('href', '/courses');
                     }
                 }
             })
             $('.offers-cards-conteiner--private').click(function (e) {
                 if (mediaQueryTablet.matches) {
                     if ($(e.target).closest('.offers-cards__card--private .card-content')) {
-                        $(location).attr('href', '/private-lesson.php');
+                        $(location).attr('href', '/private-lesson');
                     }
                 }
             })
             $('.offers-cards-conteiner--s-club').click(function (e) {
                 if (mediaQueryTablet.matches) {
                     if ($(e.target).closest('.offers-cards__card--s-club .card-content')) {
-                        $(location).attr('href', '/speaking-club.php');
+                        $(location).attr('href', '/speaking-club');
                     }
                 }
             })

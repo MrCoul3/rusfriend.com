@@ -5,13 +5,21 @@
     padding-top: 250px;
     background-position: center 222px;
     padding-bottom: 120px;
+    min-height: 280px;
+
     @include mediaWidth(1024) {
       padding-top: 200px;
       padding-bottom: 22px;
+      min-height: 480px;
+
     }
     @include mediaWidth(767) {
       padding-top: 65px;
       padding-bottom: 0px;
+      min-height: 410px;
+
+      background-position: center 47px;
+
     }
 
     .main-title {
@@ -180,7 +188,7 @@
               font-size: 16px;
             }
             @include mediaWidth(767) {
-              margin-right: 0;
+              margin-right: 10px;
               font-size: 12px;
             }
           }
@@ -192,20 +200,32 @@
       }
       .pay-btn {
         font-family: Montserrat, sans-serif;
-        font-size: 14px;
+        font-size: 12px;
         display: none;
         color: $colorRed;
       }
       .pay-btn-active {
         display: block;
       }
+      .payed-lesson, .unconfirmed-lesson, .unpaid, .payed, .payed-lesson, .pay-btn {
+        font-size: 16px;
+        @include mediaWidth(1024) {
+          font-size: 16px;
+        }
+        @include mediaWidth(767) {
+          font-size: 12px;
+        }
+      }
       .unconfirmed-lesson {
         display: none;
         color: #F6A800;
+
       }
       .unpaid {
         color: #F6A800;
+
       }
+
       .unpaid-lesson {
         display: none;
       }
@@ -214,10 +234,12 @@
       }
       .payed {
         color: #006660;
+
       }
       .payed-lesson {
         display: none;
         color: #006660;
+
       }
       .payed-lesson-active {
         display: block;

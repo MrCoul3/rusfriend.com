@@ -1,4 +1,5 @@
 <?php
+//phpinfo();
 require 'pages/requires/header.php';
 require("vendor/autoload.php");
 ?>

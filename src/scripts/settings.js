@@ -99,10 +99,6 @@ $(document).ready(function () {
                     inputWrap.classList.add('input-wrap-active');
                 }
 
-                if (e.target.className.includes('change-btn--avatar')) {
-
-                }
-
                 // при нажатии на кнопку "ИЗМЕНИТЬ" после ввода в инпут
                 if (e.target.className.includes('change-button')) {
 
@@ -238,6 +234,7 @@ $(document).ready(function () {
                             let data = {
                                 data: inputField.value,
                                 dataType: dataType,
+                                name: getCookie('name'),
                                 'method': 'changeSettings',
                             }
                             // console.log(data);

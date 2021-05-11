@@ -30,6 +30,7 @@ $(document).ready(function () {
 
     function openLoginForm() {
         $(".btn-login").click(function () {
+
             if (!$(".login-form").hasClass('login-form-active')) {
 
                 $('.header').css('right', '8px');
@@ -249,7 +250,7 @@ $(document).ready(function () {
                     avatar: ' ',
                     'method': 'register'
                 };
-                console.log(params);
+                // console.log(params);
                 let response = fetch('handle.php', {
                     method: 'POST',
                     headers: {
@@ -260,8 +261,9 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.success) {
+                        localStorage.setItem('email', data.email);
                         setCookie('name', data.name);
                         registerUser();
                         changeLoginBtnToUserName();
@@ -272,6 +274,20 @@ $(document).ready(function () {
                         if (localStorage.getItem('status') === 'free-lesson') {
                             $(location).attr('href', '/free-lesson.php');
                         }
+
+                        let mailForUser = {
+                            name: name,
+                            email: email,
+                            'method': 'register'
+                        }
+                        let mailForAdmin = {
+                            name: name,
+                            email: email,
+                            'method': 'registerNewUser'
+                        }
+                        axios.post('/mailer.php', JSON.stringify(mailForUser))
+                        axios.post('/mailer.php', JSON.stringify(mailForAdmin))
+
 
                     } else {
                         if (getCookie('btnLang') === 'rus-lang') {
@@ -301,6 +317,7 @@ $(document).ready(function () {
         let loginBtn = document.querySelector(".form-submit-login");
         loginBtn.addEventListener("click", function (e) {
             e.preventDefault();
+
             // ВАЛИДАЦИЯ LOGIN
             let errors = [];
             // проверка email на соответствие регулярному выражению
@@ -339,9 +356,11 @@ $(document).ready(function () {
                 }).then(function (data) {
                     console.log(data);
                     // установка localstor user_id для croppie
-                    localStorage.setItem('user_id', data.userID);
                     // console.log(localStorage.getItem('user_id'));
                     if (data.success) {
+                        localStorage.setItem('user_id', data.userID);
+                        localStorage.setItem('email', data.email);
+
                         if (data.status === 'admin') {
                             document.location.href = '/index.php'
                             // authorizedUser();
@@ -422,17 +441,6 @@ $(document).ready(function () {
                 });
 
                 if (data.success) {
-                    if (data.status === 'user') {
-                        // authorizedUser();
-                        // changeLoginBtnToUserName();
-                        // $(".user-login__elem--user-name").html(data.name);
-                        // ---------- подгрузка аватара в настройки и header
-                        // if (data.avatar.trim() !== '') {
-                        //     $('.avatar').css('backgroundImage', 'url(' + data.avatar + ')');
-                        //     // $('.user-login__elem--avatar').attr('src', '..' + data.avatar +'');
-                        // }
-                    }
-
                 } else {
                     deleteCookie('name');
                     $(".btn-login").removeClass("disable");
@@ -468,17 +476,11 @@ $(document).ready(function () {
             }).then(function (data) {
                 console.log(data.logout)
                 if (data.logout === true) {
-                    // $(".btn-login").removeClass("disable").addClass('active-block');
-                    // $(".user-login").addClass("disable").removeClass("active-flex");
                     deleteCookie('name');
+                    delete localStorage.email;
+                    delete localStorage.user_id;
                     document.location.href = '/index.php'
-                    console.log('logout');
-                    // if ($('main').hasClass('private-lesson') || $('main').hasClass('speaking-club')) {
-                    //     window.location.reload();
-                    // }
-                    // if ($('main').hasClass('student-lessons')) {
-                    //     document.location.href = '/index.php'
-                    // }
+                    // console.log('logout');
                 } else {
                     console.log('не удалось выйти')
                 }
@@ -486,26 +488,16 @@ $(document).ready(function () {
         });
     }
 
-    function deleteCookie(name) {
-        setCookie(name, "", {
-            'max-age': -1
-        })
-    }
 
-    // ----------- COOKIE
-    // ----------- setCookie
+
     function setCookie(name, value, options = {}) {
-
         options = {
             path: '/',
-            // при необходимости добавьте другие значения по умолчанию
             ...options
         };
-
         if (options.expires instanceof Date) {
             options.expires = options.expires.toUTCString();
         }
-
         let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
 
         for (let optionKey in options) {
@@ -515,18 +507,20 @@ $(document).ready(function () {
                 updatedCookie += "=" + optionValue;
             }
         }
-
         document.cookie = updatedCookie;
     }
 
-    // ----------- getCookie
+    function deleteCookie(name) {
+        setCookie(name, "", {
+            'max-age': -1
+        })
+    }
+
     function getCookie(name) {
         let matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
-    //----------------------------------------------
-
 
 });

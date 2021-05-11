@@ -132,6 +132,7 @@
 import AdminBookCalendar from "./AdminBookCalendar.vue";
 import axios from 'axios';
 
+
 export default {
   components: {
     AdminBookCalendar
@@ -456,7 +457,7 @@ export default {
 
             setTimeout(() => {
               this.preloader = false;
-            }, 50);
+            }, 200);
           });
     },
 
@@ -542,8 +543,7 @@ export default {
         'method': 'successPay',
       }
 
-      console.log(this.target);
-
+      // console.log(this.target);
       axios.post('/handle.php', JSON.stringify({obj}))
           .then((response) => {
             let data = response.data;
@@ -551,9 +551,29 @@ export default {
             if (data.payment === 'success') {
               this.payment = true;
               $(this.target).attr('payment', 'payed').removeClass('unpayed');
+
+              let userInfo = JSON.parse(localStorage.getItem('getAllUsersInfo'));
+              let email;
+
+              userInfo.forEach((val, k) => {
+                if (this.detailUserName === val.name) {
+                  email = val.email;
+                }
+              });
+
+
+              let mailForUser = {
+                name: this.detailUserName,
+                time: this.detailTime,
+                data: this.detailDate,
+                email: email,
+                    'method':'confirmedByTutor'
+            }
+              axios.post('/mailer.php', JSON.stringify(mailForUser))
+
             } else {
               this.errors.push(data.payment);
-              console.log(this.errors);
+              // console.log(this.errors);
             }
           });
     },

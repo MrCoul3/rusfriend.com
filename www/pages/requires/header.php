@@ -1,5 +1,4 @@
 <?php session_start();
-//var_dump($_SESSION['email']);
 if (isset($_SESSION['email'])) {
     $status = [
         'logout' => ['disable', 'disable'],
@@ -11,11 +10,11 @@ if (isset($_SESSION['email'])) {
         'login' => ['disable', 'disable']
     ];
 }
+
 require("vendor/autoload.php");
 $obj = new \Classes\User();
 $res = $obj->checkSkype();
 $userInfo = $obj->getUserInfo();
-
 function switchLang()
 {
     if ( $_COOKIE['btnLang']) {
@@ -48,9 +47,9 @@ function switchLang()
     <div class="register-success__frame"><img class="success-img" src="../images/icons/succes.svg" alt="success">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Поздравляем, <br> Ты успешно зарегистрировался!">Congratulations, <br> You have successfully registered!</h2>
         <h3 switch-lang="<?=switchLang()?>" switchable-text="Теперь ты можешь полностью использовать функционал сайта. <br> Что бы забронировать урок - перейди в раздел<br>">Now you can fully use the site's functionality. <br> To book a lesson, go to the section<br></h3>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем," href="/private-lesson.php">Individual lesson,</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем," href="/private-lesson">Individual lesson,</a>
             <span switch-lang="<?=switchLang()?>" switchable-text="если ты только начинаешь учить русский, <br> или в раздел">if you are just starting to learn Russian, <br> or in the section</span>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" href="/speaking-club.php">Speaking - Club,</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" href="/speaking-club">Speaking - Club,</a>
             <span switch-lang="<?=switchLang()?>" switchable-text="если ты уже немного говоришь по-русски">if you already speak a little Russian</span>
 
         <div switch-lang="<?=switchLang()?>" switchable-text="закрыть" class="button reg-success-btn">close</div>
@@ -66,7 +65,7 @@ function switchLang()
                href="https://www.instagram.com/svetlana_totrova/" target="_blank"></a>
             <a class="social-net-btns__elem social-net-btns__elem--tiktok" href="../"></a>
         </div>
-        <a class="header-logo" href="index.php">
+        <a class="header-logo" href="index">
             <!--img(src="images/icons/logo.svg", alt="logo")--></a>
         <div class="service-btns">
             <div class="btn-change-lang language <?= $_COOKIE['btnLang'] ? $_COOKIE['btnLang'] : 'eng-lang' ?>">
@@ -76,7 +75,7 @@ function switchLang()
             <div switch-lang="<?=switchLang()?>" switchable-text="Войти" class="btn-login <?= $status['logout'][0] ?>">Login</div>
 
             <div class="user-login <?= $status['login'][1] ?>">
-                <img class="user-login__elem user-login__elem--avatar" src="<?=$userInfo['avatar'] ? $userInfo['avatar'] : '../images/icons/user-ico.svg'?>" alt="">
+                <img class="user-login__elem user-login__elem--avatar" src="<?=(trim($userInfo['avatar']) !== "") ? $userInfo['avatar'] : '../images/icons/user-ico.svg'?>" alt="SD">
 
 
                 <p class="user-login__elem user-login__elem--user-name">
@@ -86,11 +85,11 @@ function switchLang()
                      src="images/icons/user-arrow.svg"
                      alt="">
                 <div class="user-login-menu">
-                    <a switch-lang="<?=switchLang()?>" switchable-text="Сообщения" class="user-login-menu__elem user-login-menu__elem--messages" href="/">Messages</a>
-                    <a switch-lang="<?=switchLang()?>" switchable-text="Мои уроки" class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons.php">My lessons</a>
+<!--                    <a switch-lang="--><?//=switchLang()?><!--" switchable-text="Сообщения" class="user-login-menu__elem user-login-menu__elem--messages" href="/">Messages</a>-->
+                    <a switch-lang="<?=switchLang()?>" switchable-text="Мои уроки" class="user-login-menu__elem user-login-menu__elem--lessons" href="/student-lessons">My lessons</a>
                     <div switch-lang="<?=switchLang()?>" switchable-text="Настройки" class="user-login-menu__elem user-login-menu__elem--settings">Settings</div>
                     <div class="decor-line decor-line--user-login-menu"></div>
-                    <a switch-lang="<?=switchLang()?>" switchable-text="Выход" class="user-login-menu__elem user-login-menu__elem--logout" href="../index.php">Logout</a>
+                    <a switch-lang="<?=switchLang()?>" switchable-text="Выход" class="user-login-menu__elem user-login-menu__elem--logout" href="../index">Logout</a>
                 </div>
             </div>
 
@@ -108,11 +107,11 @@ function switchLang()
     <div class="header__lower">
         <div class="decor-line decor-line--header"></div>
         <nav class="header-menu">
-            <a switch-lang="<?=switchLang()?>" switchable-text="Об авторе" class="header-menu--about" href="about.php">About me</a>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Курсы" class="header-menu--courses" href="courses.php">Courses</a>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем" class="header-menu--private" href="private-lesson.php">Individual lesson</a>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="header-menu--s-club" href="speaking-club.php">Speaking-club</a>
-            <a switch-lang="<?=switchLang()?>" switchable-text="Гайд" class="header-menu--guide" href="guide.php">Guide</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Об авторе" class="header-menu--about" href="about">About me</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Курсы" class="header-menu--courses" href="courses">Courses</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Занятие с преподавателем" class="header-menu--private" href="private-lesson">Individual lesson</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="header-menu--s-club" href="speaking-club">Speaking-club</a>
+            <a switch-lang="<?=switchLang()?>" switchable-text="Гайд" class="header-menu--guide" href="guide">Guide</a>
         </nav>
         <div class="decor-line decor-line--header decor-line-mobile-hide"></div>
     </div>

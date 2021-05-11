@@ -2,9 +2,9 @@
 require 'pages/requires/header.php';
 require("vendor/autoload.php");
 ?>
+
 <title>Об авторе</title>
 <main class="about-page">
-
     <section class="about">
         <div class="inner">
             <div class="owl-carousel owl-carousel-3 owl-theme about__element about__element--left">

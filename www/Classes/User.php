@@ -3,6 +3,12 @@
 namespace Classes;
 session_start();
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+require './phpmailer/PHPMailer.php';
+require './phpmailer/SMTP.php';
+require './phpmailer/Exception.php';
+
 class User
 {
 
@@ -245,11 +251,43 @@ class User
 
         } elseif ($request['dataType'] === 'email') {
             $_SESSION['newEmail'] = $request['data'];
-//            var_dump($_SESSION['newEmail']);
-//            var_dump($request['dataType'] );
             $code = rand(1000, 9999);
             $_SESSION['code'] = $code;
-            mail($request['data'], 'Сonfirm your new email', $_SESSION['code']);
+            $confCode = $_SESSION['code'];
+
+            $sendToEmail = $request['data'];  // почта получателя
+            $sendToName = $request['name'];  // имя получатлея
+            $myEmail = 'svetlana.tutoronline@gmail.com';    // почта отправителя
+            $myDomen = 'rusfriend.com';         // хост отправителя
+            $mail = new PHPMailer();
+            $mail->isSMTP();                    // Отправка через SMTP
+//            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->CharSet = "UTF-8";
+            $mail->Host = 'smtp.gmail.com';     // Адрес SMTP сервера
+            $mail->SMTPAuth = true;             // Enable SMTP authentication
+//            $mail->Username = 'svetlana.tutoronline';       // ваше имя пользователя (без домена и @)
+            $mail->Username = 'svetlana.tutoronline@gmail.com';       // ваше имя пользователя (без домена и @)
+            $mail->Password = '252525st';       // ваш пароль
+            $mail->SMTPSecure = 'tls';       // шифрование ssl
+            $mail->Port = 587;                  // порт подключения
+            $mail->setFrom($myEmail, $myDomen); // от кого
+            $mail->addAddress($sendToEmail, $sendToName);
+            $mail->Subject = 'Confirmation code';
+            $mail->msgHTML(
+                "<html>
+<body>
+<h1><span style='color: red'>H</span>ello, $sendToName!</h1>
+<p>Your confirmation code: <span style='font-weight: bold'>$confCode</span></p>
+<div style='max-width: 200px; width: 100%;height: 1px;background: #777676'></div>
+<h3>Regards, Russian Friend</h3>
+</body></html> ");
+
+            if ($mail->send()) {
+//                echo 'Письмо отправлено!';
+            } else {
+                echo 'Ошибка: ' . $mail->ErrorInfo;
+            }
+
             $response = [
                 'status' => 'unconfirmed',
             ];

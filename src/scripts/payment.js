@@ -6,7 +6,7 @@ $(document).ready(function () {
         const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
 
         document.addEventListener("scroll", function (e) {
-            console.log(window.pageYOffset);
+            // console.log(window.pageYOffset);
             if (mediaQueryDesktop.matches) {
                 if (window.pageYOffset > 50) {
                     $('.success-frame-content').addClass('success-frame-content-unfix')
@@ -30,26 +30,28 @@ $(document).ready(function () {
 
         // --- confirm btn click
         $('.payment-gateway-main__confirm-btn').click( () => {
-            let array = [];
             let elem = $('.payment-gateway__elem--info');
+            let array = [];
 
             if (elem) {
                 elem.each((k, val) => {
                     let name = $(val).attr('name');
                     let time = $(val).attr('time');
                     let date = $(val).attr('date');
+                    let gmt = $(val).attr('gmt');
                     let obj = {
                         name: name,
                         time: time,
                         date: date,
+                        gmt: gmt,
                         'method': 'confirmLessons',
                     }
                     array.push(obj);
                 })
             }
-
-
             console.log(array);
+
+
 
             axios.post('/handle.php', JSON.stringify(array))
                 .then((response) => {
@@ -60,6 +62,23 @@ $(document).ready(function () {
                         $('.instruction__item--three').addClass('instuction-active');
                     }
                 });
+
+
+
+            let mailForUser = {
+                name: getCookie('name'),
+                email: localStorage.getItem('email'),
+                data: array,
+                'method': 'confirmPayByUser'
+            }
+            let mailForAdmin = {
+                name: getCookie('name'),
+                email: localStorage.getItem('email'),
+                data: array,
+                'method': 'confirmPayByUserToAdmin'
+            }
+            axios.post('/mailer.php', JSON.stringify(mailForUser))
+            axios.post('/mailer.php', JSON.stringify(mailForAdmin))
         })
 
         // ----------- getCookie

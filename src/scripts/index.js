@@ -161,7 +161,7 @@ $(document).ready(function () {
                         }
                     } else {
                         if (response.data['status_2'] === 'new') {
-                            $(location).attr('href', '/free-lesson.php');
+                            $(location).attr('href', '/free-lesson');
                         } else {
                             $('.check').addClass('check-active');
                             setTimeout(function () {

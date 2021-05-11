@@ -11,6 +11,7 @@ $request = json_decode(file_get_contents('php://input'), true);
 
 $obj = new \Classes\User();
 $objCalendar = new \Classes\Calendar();
+//$objMailer = new \Classes\Mailer();
 // --------------------- регистрация
 
 if ($request['method'] == 'register') {
@@ -20,7 +21,8 @@ if ($request['method'] == 'register') {
     if ($register) {
         $response = [
             'success' => true,
-            'name' => $userName['name']
+            'name' => $userName['name'],
+            'email' => $userName['email'],
         ];
     } else {
         $response = [
@@ -50,6 +52,7 @@ if ($request['method'] == 'login') {
             'name' => $userInfo['name'],
             'status' => 'user',
             'avatar' => $userInfo['avatar'],
+            'email' => $userInfo['email'],
         ];
 
     } elseif ($login === 'blocked') {
@@ -345,7 +348,7 @@ if ($request['method'] === 'getFromTempGMT') {
 // ----- отправка писем
 
 if ($request['method'] === 'sendEmail') {
-
+//    $send = $objMailer->sendMail($request);
 
 }
 
@@ -363,3 +366,4 @@ if ($request['method'] === 'setPrice') {
 if ($request['method'] === 'adminPanelReload') {
     $result = $objCalendar->setAdminGMT($request);
 }
+

@@ -435,9 +435,7 @@ export default {
                           a = +firstH + delta; // 02
                           time = a + ':' + firstM;
                         }
-
                         // console.log(time)
-
                         let obj = {
                           name: userNameFromDB,
                           type: type,
@@ -449,30 +447,14 @@ export default {
                           gmt: this.timeZone,
                           'method': 'setToBooksTimeGMT'
                         };
-
-                        // console.log(obj)
                         this.bookedGmtArray.push(obj);
 
                       });
 
-
                     });
-
                   }
-
                   // console.log(unconfirmedBooks)
-
-                  // удаление неоплаченных бронирований через 15 минут
-                  axios.post('/handle.php', JSON.stringify(unconfirmedBooks))
-                      .then((response) => {
-                        let data = response.data;
-                        if (data === true) {
-                          // console.log(data)
-                          this.getIntervalsFromDB();
-                        }
-                      });
-                  console.log(this.bookedGmtArray)
-
+                  // console.log(this.bookedGmtArray)
                   let bookedGmtArray = this.bookedGmtArray;
                   $(bookedGmtArray).each((i, obj) => {
                     let dayFromBookedGmtArray = obj.day;
@@ -488,23 +470,17 @@ export default {
                     days.each((i, day) => {
                       if ($(day).attr('date') === dayFromBookedGmtArray) {
                         for (let time of day.children) {
-
-
-                          if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
-console.log(time)
-
-                            if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
-                              time.classList.add('booked-for-other-users');
-                            }
-
+                          let timeFromBook = timeFromBookedGmtArray.split('-')[0].trim();
+                          if (timeFromBook.split(':')[0].length == 1) {
+                            timeFromBook = '0' + timeFromBook;
+                          }
+                          if (time.innerHTML.split('-')[0].trim() === timeFromBook.trim()) {
+                            time.classList.add('booked-for-other-users');
                           }
                           if (time.innerHTML.split('-')[0] === timeFromBookedGmtArray) {
                             time.classList.add('booked-free');
                           }
                         }
-
-
-
                       }
                     })
                   })
