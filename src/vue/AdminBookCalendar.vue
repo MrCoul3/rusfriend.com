@@ -115,6 +115,10 @@ export default {
     timeZone: {
       required: true,
       default: 'GMT +03:00',
+    },
+    confirmation: {
+      required: true,
+      default: '1',
     }
 
   },
@@ -509,6 +513,7 @@ export default {
       $('.selected-time').each((k, val) => {
         let day = val.parentNode.getAttribute('date');
         let time = val.innerHTML;
+        let confirmation = val.getAttribute('confirmation');
         // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
         let obj = {
           name: userName,
@@ -517,6 +522,9 @@ export default {
           time: time,
           payment: 'payed',
           gmt: this.timeZone,
+          confirmation: this.confirmation,
+          price: ' ',
+          bookingTime: ' ',
           'method': 'bookEvent'
         };
         console.log(obj)

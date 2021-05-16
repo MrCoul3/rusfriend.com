@@ -33,8 +33,6 @@
           <div class="trigger" @click="switchMonthAndDay()" style="display: none"></div>
           <h2 :language="language" switchable-text="Календарь занятий"
               class="calendar-app-header__element calendar-app-header__element--title">Lesson calendar</h2>
-
-
           <!--          <select  v-model="timeZone" @change="switchTimeZone()"-->
           <!--                  class="calendar-app-header__element calendar-app-header__element&#45;&#45;time-zone">-->
           <!--                                    <option selected :value="timeZone">{{timeZone}}</option>-->
@@ -179,16 +177,12 @@
 
 <script>
 import axios from 'axios';
-
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
       "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-
-// let language = null;
-// let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 export default {
   data() {
     return {
@@ -582,7 +576,7 @@ export default {
             this.getOfTempDB();
 
             setTimeout(() => {
-              this.preloader = false;
+
               $('#booking-calendar').animate({
                 'opacity': '1'
               }, 500)
@@ -647,7 +641,7 @@ export default {
                     let a = +firstH + delta; // 02
                     let b = +secondH + delta; //05
 
-                    let time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                    let time = a + ':' + firstM + '- ' + b + ':' + secondM;
 
                     if (a < 0) {
                       // console.log(prevDateNumber)
@@ -916,7 +910,7 @@ export default {
                               }
                               day = nextDateNumber;
                             }
-                            time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                            time = a + ':' + firstM + '- ' + b + ':' + secondM;
                           } else {
                             firstH = val.split(':')[0];// 06
                             firstM = val.split(':')[1];// 00
@@ -1010,6 +1004,7 @@ export default {
                   });
 
             });
+        this.preloader = false;
       }, 500)
 
     },
@@ -1191,7 +1186,7 @@ export default {
                         } else {
                           // --- для платного - страница оплаты
                           setTimeout(() => {
-                            window.location.href = "/payment.php";
+                            window.location.href = "/payment";
                           }, 1000);
                         }
                         // если не выбраны интервалы вслпывающая подсказка
@@ -1231,7 +1226,6 @@ export default {
 
 
   },
-
 }
 </script>
 
@@ -1239,7 +1233,6 @@ export default {
 #booking-calendar {
   opacity: 0;
 }
-
 .prompt {
   position: absolute;
   /*opacity: 0;*/
@@ -1254,13 +1247,9 @@ export default {
   right: 0;
   margin: auto;
 }
-
-
-
 *[language] {
   opacity: 0;
 }
-
 .free-lesson-success__elem > span {
   text-decoration: underline;
   cursor: pointer;

@@ -82,7 +82,6 @@ $(document).ready(function () {
 
         // -----------------------------------------
 
-        // ------------ change settings
         function changeSettings() {
             $('.settings').click(function (e) {
                 let checkText;
@@ -108,7 +107,6 @@ $(document).ready(function () {
                     let errors = [];
 
                     // сброс чеков при фокусе
-
                     inputField.addEventListener('focus', function () {
                         check.classList.remove('check-active');
                     });
@@ -191,12 +189,8 @@ $(document).ready(function () {
 
                     if (errors.length !== 0) {
                         check.classList.add('check-active');
-                        // ----------- если нет ошибок
-
                     } else {
-
                         let dataType = e.target.getAttribute('data-type'); // тип отправляемых данных ('name', 'password', 'email', 'skype') Берется из атрибута data-type кнопки "ИЗМЕНИТЬ"
-
                         // ----------- ИЗМЕНЕНИЕ ПАРОЛЯ ----------- \\
                         let oldPas = $('.input--old-pas');
                         // сброс чека при фокусе
@@ -211,7 +205,6 @@ $(document).ready(function () {
                                 dataType: dataType,
                                 'method': 'changeSettings',
                             }
-                            // console.log(JSON.stringify(data));
                             axios.post('/handle.php', JSON.stringify(data))
                                 .then((response) => {
                                     let dataFromDB = response.data;

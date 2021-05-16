@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /img/
+Disallow: /_nuxt/
+Disallow: /*?room-type=
+
+Sitemap: https://sochidetox.ru/sitemap.xml

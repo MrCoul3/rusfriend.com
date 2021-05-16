@@ -29,9 +29,10 @@ $(document).ready(function () {
         axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
             .then((response) => {
                 let data = response.data;
-                // console.log(data)
+                console.log(data)
                 if (data !== null) {
                     data.forEach((val, k) => {
+                        let idFromDB = val[0];
                         let userNameFromDB = val[1];
                         let dayFromDB = val[2];
                         let timeFromDB = val[3];
@@ -129,6 +130,7 @@ $(document).ready(function () {
                                     price: priceFromDB,
                                     gmt: timeZone,
                                     bookingTime: ' ',
+                                    idFromBookstime: idFromDB,
                                     'method': 'setToBooksTimeGMT'
                                 };
 
@@ -141,13 +143,13 @@ $(document).ready(function () {
                 }
 
             });
-
+        console.log(bookedGmtArray)
         setTimeout(() => {
             axios.post('/handle.php', JSON.stringify(bookedGmtArray))
                 .then((response) => {
-                    // console.log(response.data);
-                    if (response.data.trim() !== '') {
-                        if (response.data === 'success') {
+                    console.log(response.data);
+                    if (response.data !== '') {
+                        if (response.data.success === 'success') {
                             if (!localStorage.getItem('re')) {
                                 localStorage.setItem('re', '1');
                                 window.location.reload();

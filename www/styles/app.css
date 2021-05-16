@@ -989,6 +989,13 @@
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }
+#mysite .button--redirect-to-lessons {
+  background-color: #FF3E28;
+  width: 280px;
+  height: 80px;
+  line-height: 78px;
+  margin: 0px auto 50px;
+}
 #mysite .red-btn {
   background-color: #FF3E28;
   width: 280px;
@@ -1403,6 +1410,23 @@
     background-color: #fff;
     padding: 0;
   }
+}
+#mysite .footer .up-btn {
+  transition: all ease 0.4s;
+  display: none;
+  opacity: 0.5;
+  background-image: url(../images/common/up-btn.svg);
+  width: 52px;
+  height: 52px;
+  position: fixed;
+  bottom: 300px;
+  right: 100px;
+  cursor: pointer;
+  z-index: 999999;
+}
+#mysite .footer .up-btn:hover {
+  opacity: 1;
+  transition: all ease 0.4s;
 }
 #mysite .footer .footer-content {
   margin: 10px auto;
@@ -3564,12 +3588,6 @@
   justify-content: space-between;
   margin: 10px 0;
   line-height: 20px;
-  cursor: pointer;
-}
-#mysite .my-students .my-students-content .student .wrap:hover {
-  background: #e9c6c6;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.25);
 }
 #mysite .my-students .my-students-content .student__elem {
   width: 100%;
@@ -4062,7 +4080,7 @@
   }
 }
 #mysite .your-calendar .enter-your-skype .send-skype {
-  width: 72px;
+  width: 100px;
   height: 36px;
   background: #FF3E28;
   font-weight: 500;
@@ -4346,7 +4364,7 @@
 #mysite .student-lessons .block__elem--content {
   display: flex;
   flex-direction: column;
-  max-width: 380px;
+  max-width: 415px;
   width: 100%;
   line-height: 25px;
   position: relative;
@@ -4380,7 +4398,6 @@
   color: #FF3E28;
 }
 #mysite .student-lessons .block .pay-btn {
-  font-family: Montserrat, sans-serif;
   font-size: 12px;
   display: none;
   color: #FF3E28;

@@ -69,7 +69,7 @@ $(document).ready(function () {
 
         function scrollAnimation() {
             document.addEventListener("scroll", function (e) {
-                // console.log(window.pageYOffset );
+                console.log(window.pageYOffset );
 
                 if (mediaQueryDesktop.matches) {
                     // анимация for-whom
@@ -115,6 +115,13 @@ $(document).ready(function () {
                     if (window.pageYOffset > 2250) {
                         animateToOrigin($(".reviews-title"));
                     }
+                    if (window.pageYOffset > 4000) {
+                        $('.up-btn').show();
+                    }
+                    else {
+                        $('.up-btn').hide();
+                    }
+
                 }
             });
         }

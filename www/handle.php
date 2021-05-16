@@ -18,7 +18,7 @@ if ($request['method'] == 'register') {
     $response = [];
     $register = $obj->addUser($request);
     $userName = $obj->getUserInfo();
-    if ($register) {
+    if ($register === 'success') {
         $response = [
             'success' => true,
             'name' => $userName['name'],
@@ -26,7 +26,8 @@ if ($request['method'] == 'register') {
         ];
     } else {
         $response = [
-            'success' => false
+            'success' => false,
+            'error' => $register
         ];
     }
     echo json_encode($response);

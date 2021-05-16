@@ -261,7 +261,7 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    // console.log(data);
+                    console.log(data);
                     if (data.success) {
                         localStorage.setItem('email', data.email);
                         setCookie('name', data.name);
@@ -290,11 +290,7 @@ $(document).ready(function () {
 
 
                     } else {
-                        if (getCookie('btnLang') === 'rus-lang') {
-                            checkText = 'пользователь с таким email уже существует';
-                        } else {
-                            checkText = 'a user with this email already exists';
-                        }
+                        checkText = data.error;
                         $(".reg-check-email").removeClass("reg-check--disable").html(checkText);
                     }
                 });
@@ -363,7 +359,6 @@ $(document).ready(function () {
 
                         if (data.status === 'admin') {
                             document.location.href = '/index.php'
-                            // authorizedUser();
                         }
                         if (data.status === 'user') {
                             setCookie('name', data.name);

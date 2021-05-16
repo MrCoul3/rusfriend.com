@@ -51,13 +51,10 @@ $(document).ready(function () {
                     $(".lang-changer").removeClass('active');
                 }
             });
-
             $('.lang-changer').click(function (e) {
-
                 let langsObj = {
                     'method': 'language'
                 };
-
                 if ($('.lang-changer').hasClass('eng-lang')) {
                     $('.lang-changer').addClass('rus-lang').removeClass('eng-lang');
                     $(".btn-change-lang").removeClass('rus-lang').addClass('eng-lang');

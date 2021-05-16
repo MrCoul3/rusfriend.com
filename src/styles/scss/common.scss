@@ -126,6 +126,13 @@
             animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
         }
+        &--redirect-to-lessons {
+            background-color: #FF3E28;
+            width: 280px;
+            height: 80px;
+            line-height: 78px;
+            margin: 0px auto 50px;
+        }
     }
     .red-btn {
         background-color: $colorRed;
@@ -560,6 +567,23 @@
             width: 100%;
             background-color: #fff;
             padding: 0;
+        }
+        .up-btn {
+            transition: all ease .4s;
+            display: none;
+            opacity: 0.5;
+            background-image: url("../images/common/up-btn.svg");
+            width: 52px;
+            height: 52px;
+            position: fixed;
+            bottom: 300px;
+            right: 100px;
+            cursor: pointer;
+            z-index: 999999;
+            &:hover {
+                opacity: 1;
+                transition: all ease .4s;
+            }
         }
 
         .footer-content {

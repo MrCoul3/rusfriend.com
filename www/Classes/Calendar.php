@@ -1,4 +1,5 @@
 <?php
+
 namespace Classes;
 
 
@@ -21,7 +22,8 @@ class Calendar
         'price',
         'gmt',
         'payment',
-        'bookingTime'
+        'bookingTime',
+        'idFromBookstime'
     ];
 
     public function __construct()
@@ -97,7 +99,7 @@ class Calendar
                 $requestKeys = implode(',', array_keys($arr));
                 $requestVals = implode(',', $arr);
                 $query = "INSERT INTO `bookstime` ({$requestKeys}) VALUES ({$requestVals});";
-//                var_dump($query);
+                var_dump($query);
                 $result = $this->dbAccess->query($query);
             }
         }
@@ -114,6 +116,9 @@ class Calendar
     public function setLessonsToBookstimeGMT($request)
     {
         $delete = $this->dbAccess->query('DELETE FROM `bookstime-gmt`');
+        $incr = "ALTER TABLE `bookstime-gmt` AUTO_INCREMENT=0;";
+        $this->dbAccess->query($incr);
+//        var_dump($delete);
         if ($delete) {
             foreach ($request as $i => &$arr) {
 
@@ -129,7 +134,11 @@ class Calendar
                 $requestVals = implode(',', $arr);
                 $query = "INSERT INTO `bookstime-gmt` ({$requestKeys}) VALUES ({$requestVals});";
                 $result = $this->dbAccess->query($query);
-                $response = 'success';
+                $response = [
+                    'request' => $request,
+                    'success' => 'success',
+                    'delete' => $delete,
+                    'query' => $query];
             }
         } else {
             $response = 'Ошибка удаления интервалов';
@@ -170,10 +179,13 @@ class Calendar
 
     public function successPay($request)
     {
-        $name = $request['obj']['name'];
-        $time = $request['obj']['time'];
-        $date = $request['obj']['date'];
-        $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `name` = '{$name}' AND `time` = '{$time}' AND `day` = '{$date}'";
+//        $name = $request['obj']['name'];
+//        $time = $request['obj']['time'];
+//        $date = $request['obj']['date'];
+        $id = $request['obj']['id'];
+//        $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `name` = '{$name}' AND `time` = '{$time}' AND `day` = '{$date}'";
+        $query = "UPDATE `bookstime` SET `payment` = 'payed' WHERE `id` = '{$id}'";
+//        var_dump($query);
         $result = $this->dbAccess->query($query);
         return $result;
     }
@@ -196,10 +208,8 @@ class Calendar
     // --------- удалить урок из БД
     public function delBooksTime($request)
     {
-        $name = $request['name'];
-        $day = $request['day'];
-        $time = $request['time'];
-        $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$day}' AND `time` = '{$time}'";
+        $id = $request['id'];
+        $query = "DELETE FROM `bookstime` WHERE `id` = '{$id}'";
         $this->dbAccess->query($query);
     }
 

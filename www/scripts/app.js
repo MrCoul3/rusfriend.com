@@ -2077,6 +2077,10 @@ function getCookie(name) {
     timeZone: {
       required: true,
       "default": 'GMT +03:00'
+    },
+    confirmation: {
+      required: true,
+      "default": '1'
     }
   },
   beforeMount: function beforeMount() {
@@ -2513,7 +2517,8 @@ function getCookie(name) {
       var typeOfLesson = this.typeOfLesson;
       $('.selected-time').each(function (k, val) {
         var day = val.parentNode.getAttribute('date');
-        var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
+        var time = val.innerHTML;
+        var confirmation = val.getAttribute('confirmation'); // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
 
         var obj = {
           name: userName,
@@ -2522,6 +2527,9 @@ function getCookie(name) {
           time: time,
           payment: 'payed',
           gmt: _this2.timeZone,
+          confirmation: _this2.confirmation,
+          price: ' ',
+          bookingTime: ' ',
           'method': 'bookEvent'
         };
         console.log(obj);
@@ -2793,16 +2801,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
 
 
 function getCookie(name) {
   var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
   return matches ? decodeURIComponent(matches[1]) : undefined;
-} // let language = null;
-// let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
-
+}
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3211,7 +3215,6 @@ function getCookie(name) {
         _this3.getOfTempDB();
 
         setTimeout(function () {
-          _this3.preloader = false;
           $('#booking-calendar').animate({
             'opacity': '1'
           }, 500);
@@ -3275,7 +3278,7 @@ function getCookie(name) {
 
                 var b = +secondH + delta; //05
 
-                var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                var time = a + ':' + firstM + '- ' + b + ':' + secondM;
 
                 if (a < 0) {
                   // console.log(prevDateNumber)
@@ -3564,7 +3567,7 @@ function getCookie(name) {
                       day = nextDateNumber;
                     }
 
-                    time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                    time = a + ':' + firstM + '- ' + b + ':' + secondM;
                   } else {
                     firstH = val.split(':')[0]; // 06
 
@@ -3657,6 +3660,7 @@ function getCookie(name) {
             });
           });
         });
+        _this4.preloader = false;
       }, 500);
     },
     // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
@@ -3838,7 +3842,7 @@ function getCookie(name) {
                 } else {
                   // --- для платного - страница оплаты
                   setTimeout(function () {
-                    window.location.href = "/payment.php";
+                    window.location.href = "/payment";
                   }, 1000);
                 } // если не выбраны интервалы вслпывающая подсказка
 
@@ -4027,6 +4031,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4052,6 +4058,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       detailDate: null,
       detailTime: null,
       detailType: null,
+      detailID: null,
       typeOfLesson: null,
       detailUserName: null,
       detailSkype: null,
@@ -4184,6 +4191,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         if (data !== null) {
           data.forEach(function (val, k) {
+            var idFromDB = val[0];
             var userNameFromDB = val[1];
             var dayFromDB = val[2];
             var timeFromDB = val[3];
@@ -4293,6 +4301,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 price: priceFromDB,
                 gmt: _this.timeZone,
                 bookingTime: ' ',
+                idFromBookstime: idFromDB,
                 'method': 'setToBooksTimeGMT'
               };
               bookedGmtArray.push(obj);
@@ -4302,71 +4311,67 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       setTimeout(function () {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify(bookedGmtArray)).then(function (response) {
-          // console.log(response.data);
-          if (response.data.trim() !== '') {
-            if (response.data === 'success') {} else {
+          console.log(response.data);
+
+          if (response.data !== '') {
+            if (response.data.success === 'success') {} else {
               window.location.reload();
             }
           }
         });
       }, 100);
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
-        'method': 'getLessonsFromBookstimeGMT'
-      })).then(function (response) {
-        // console.log(response.data);
-        var data = response.data; // console.log(data)
+      setTimeout(function () {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
+          'method': 'getLessonsFromBookstimeGMT'
+        })).then(function (response) {
+          console.log(response.data);
+          var data = response.data; // console.log(data)
 
-        if (data !== null) {
-          data.forEach(function (val, k) {
-            var typeFromDb = val[4];
-            var nameFromDb = val[1];
-            var dayFromDb = val[2];
-            var timeFromDb = val[3];
-            var gmtFromDb = val[8];
-            var priceFromDb = val[7];
-            var paymentFromDb = val[5];
-            var confirmationFromDb = val[6];
+          if (data !== null) {
+            data.forEach(function (val, k) {
+              var typeFromDb = val[4];
+              var nameFromDb = val[1];
+              var dayFromDb = val[2];
+              var timeFromDb = val[3];
+              var gmtFromDb = val[8];
+              var priceFromDb = val[7];
+              var paymentFromDb = val[5];
+              var confirmationFromDb = val[6];
+              var idFromDb = val[10];
 
-            if (typeFromDb === 'free') {
-              _this.freeLesson = true;
-            }
-
-            $('.calendar-table-days').each(function (k, val) {
-              var day = $(val);
-              var dateOfcell = val.getAttribute('date'); // timeFromDb = newArray.join
-
-              if (dateOfcell === dayFromDb) {
-                if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                  day.append("<span confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>"); // day.children().each((k, val) => {
-                  //     // console.log(val);
-                  //     let valName = val.getAttribute('name');
-                  //     let valType = val.getAttribute('type');
-                  //     let valTime = val.getAttribute('time');
-                  //     let valDate = val.getAttribute('data');
-                  //     if (typeFromDb !== valType && nameFromDb !== valName && dayFromDb !== valDate && timeFromDb !== valTime) {
-                  //     }
-                  // });
-                }
-
-                if (paymentFromDb === 'unpayed') {
-                  day.append("<span confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
-                }
+              if (typeFromDb === 'free') {
+                _this.freeLesson = true;
               }
-            });
-          });
-        }
 
-        setTimeout(function () {
-          _this.preloader = false;
-        }, 200);
-      });
+              $('.calendar-table-days').each(function (k, val) {
+                var day = $(val);
+                var dateOfcell = val.getAttribute('date'); // timeFromDb = newArray.join
+
+                if (dateOfcell === dayFromDb) {
+                  if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
+                    day.append("<span id='" + idFromDb + "' confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
+                  }
+
+                  if (paymentFromDb === 'unpayed') {
+                    day.append("<span  id='" + idFromDb + "' confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>");
+                  }
+                }
+              });
+            });
+          }
+
+          setTimeout(function () {
+            _this.preloader = false;
+          }, 200);
+        });
+      }, 200);
     },
     // действие при нажатии на занятие
     bookingEvent: function bookingEvent(event) {
       var _this2 = this;
 
       var target = event.target;
-      this.target = event.target; // console.log($(target));
+      this.target = event.target; // console.log(this.confirmation);
 
       if (event.target.className.includes('book')) {
         // смена статуса оплачено на подтвердить оплату
@@ -4386,7 +4391,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         this.detailDate = target.getAttribute('data');
         this.detailTime = target.getAttribute('time');
+        this.detailID = target.getAttribute('id');
         this.typeOfLesson = target.getAttribute('type');
+        this.confirmation = target.getAttribute('confirmation');
 
         if (target.getAttribute('type') === 'private') {
           this.detailType = 'Занятие с преподавателем';
@@ -4451,11 +4458,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this3 = this;
 
       var obj = {
-        name: this.detailUserName,
-        time: this.detailTime,
-        date: this.detailDate,
+        id: this.detailID,
         'method': 'successPay'
-      }; // console.log(this.target);
+      }; // console.log(obj);
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
         obj: obj
@@ -4499,16 +4504,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // удалить занятие из БД
     deleteBook: function deleteBook() {
-      // console.log(this.detailUserName);
-      // console.log(this.detailDate);
-      // console.log(this.detailTime);
       var input = {
-        name: this.detailUserName,
-        day: this.detailDate,
-        time: this.detailTime,
+        id: this.detailID,
         'method': 'delBooksTime'
-      };
-      console.log(input);
+      }; // console.log(input);
+
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify(input));
       this.cancelLessShow = false;
       this.preloader = true;
@@ -4526,8 +4526,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     // 'при клике по "изменить время урока" удалить изменяемый интервал
     updateBook: function updateBook(data) {
-      this.deleteBook();
-      window.location.reload();
+      this.deleteBook(); // window.location.reload();
     }
   }
 });
@@ -11036,7 +11035,8 @@ var render = function() {
               attrs: {
                 "user-name": _vm.detailUserName,
                 "type-of-lesson": _vm.typeOfLesson,
-                "time-zone": _vm.timeZone
+                "time-zone": _vm.timeZone,
+                confirmation: _vm.confirmation
               },
               on: {
                 "delete-book": _vm.deleteBook,
@@ -24760,7 +24760,8 @@ $(document).ready(function () {
 
     var scrollAnimation = function scrollAnimation() {
       document.addEventListener("scroll", function (e) {
-        // console.log(window.pageYOffset );
+        console.log(window.pageYOffset);
+
         if (mediaQueryDesktop.matches) {
           // анимация for-whom
           if (window.pageYOffset > 280) {
@@ -24811,6 +24812,12 @@ $(document).ready(function () {
 
           if (window.pageYOffset > 2250) {
             animateToOrigin($(".reviews-title"));
+          }
+
+          if (window.pageYOffset > 4000) {
+            $('.up-btn').show();
+          } else {
+            $('.up-btn').hide();
           }
         }
       });
@@ -25193,7 +25200,8 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          // console.log(data);
+          console.log(data);
+
           if (data.success) {
             localStorage.setItem('email', data.email);
             setCookie('name', data.name);
@@ -25221,12 +25229,7 @@ $(document).ready(function () {
             axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/mailer.php', JSON.stringify(mailForUser));
             axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/mailer.php', JSON.stringify(mailForAdmin));
           } else {
-            if (getCookie('btnLang') === 'rus-lang') {
-              checkText = 'пользователь с таким email уже существует';
-            } else {
-              checkText = 'a user with this email already exists';
-            }
-
+            checkText = data.error;
             $(".reg-check-email").removeClass("reg-check--disable").html(checkText);
           }
         }); // $("#mysite").addClass("body-fixed");
@@ -25290,7 +25293,7 @@ $(document).ready(function () {
             localStorage.setItem('email', data.email);
 
             if (data.status === 'admin') {
-              document.location.href = '/index.php'; // authorizedUser();
+              document.location.href = '/index.php';
             }
 
             if (data.status === 'user') {
@@ -25567,6 +25570,11 @@ $(document).ready(function () {
 
     console.log('payment init');
     var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
+
+    if ($('.payment-gateway-main__price').html() === '$.00') {
+      window.location.href = '/index';
+    }
+
     document.addEventListener("scroll", function (e) {
       // console.log(window.pageYOffset);
       if (mediaQueryDesktop.matches) {
@@ -25744,7 +25752,6 @@ $(document).ready(function () {
       closingfunctionality();
     });
   } // -----------------------------------------
-  // ------------ change settings
 
 
   function changeSettings() {
@@ -25855,7 +25862,7 @@ $(document).ready(function () {
         }
 
         if (errors.length !== 0) {
-          check.classList.add('check-active'); // ----------- если нет ошибок
+          check.classList.add('check-active');
         } else {
           var dataType = e.target.getAttribute('data-type'); // тип отправляемых данных ('name', 'password', 'email', 'skype') Берется из атрибута data-type кнопки "ИЗМЕНИТЬ"
           // ----------- ИЗМЕНЕНИЕ ПАРОЛЯ ----------- \\
@@ -25874,8 +25881,7 @@ $(document).ready(function () {
               // новый пароль
               dataType: dataType,
               'method': 'changeSettings'
-            }; // console.log(JSON.stringify(data));
-
+            };
             axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(data)).then(function (response) {
               var dataFromDB = response.data;
               console.log(dataFromDB);
@@ -26079,10 +26085,12 @@ $(document).ready(function () {
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
       'method': 'getLessons'
     })).then(function (response) {
-      var data = response.data; // console.log(data)
+      var data = response.data;
+      console.log(data);
 
       if (data !== null) {
         data.forEach(function (val, k) {
+          var idFromDB = val[0];
           var userNameFromDB = val[1];
           var dayFromDB = val[2];
           var timeFromDB = val[3];
@@ -26192,6 +26200,7 @@ $(document).ready(function () {
                 price: priceFromDB,
                 gmt: timeZone,
                 bookingTime: ' ',
+                idFromBookstime: idFromDB,
                 'method': 'setToBooksTimeGMT'
               };
               bookedGmtArray.push(obj);
@@ -26201,11 +26210,13 @@ $(document).ready(function () {
         });
       }
     });
+    console.log(bookedGmtArray);
     setTimeout(function () {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(bookedGmtArray)).then(function (response) {
-        // console.log(response.data);
-        if (response.data.trim() !== '') {
-          if (response.data === 'success') {
+        console.log(response.data);
+
+        if (response.data !== '') {
+          if (response.data.success === 'success') {
             if (!localStorage.getItem('re')) {
               localStorage.setItem('re', '1');
               window.location.reload();
