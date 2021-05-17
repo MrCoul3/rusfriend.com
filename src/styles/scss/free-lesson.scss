@@ -13,77 +13,96 @@
       }
       &__element {
         margin-bottom: 20px;
-        .free-lesson-success {
-          backdrop-filter: blur(4px);
-          background: rgba(0, 0, 0, 0.25);
-          position: absolute;
-          width: 553px;
-          height: 250px;
-          //background: #D1D1D1;
-          box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
-          border-radius: 40px;
-          bottom: 126px;
-          left: 0;
-          right: 0;
-          margin: auto;
-          padding: 20px;
-          box-sizing: border-box;
+
+      }
+
+    }
+    .free-lesson-success-frame {
+      left: 0 !important;
+      transition: all ease 0.2s;
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 1001;
+      .free-lesson-success {
+
+        background: #EFF4F9;
+        //backdrop-filter: blur(4px);
+        //background: rgba(0, 0, 0, 0.25);
+        position: absolute;
+        width: 553px;
+        height: 250px;
+        //background: #D1D1D1;
+        box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
+        border-radius: 40px;
+        bottom: 426px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        padding: 20px;
+        box-sizing: border-box;
+
+        @include mediaWidth(1024) {
+          width: 449px;
+          height: 195px;
+          bottom: 739px;
+        }
+        @include mediaWidth(767) {
+          width: 100%;
+         bottom: 359px;
+          padding: 15px;
+          border-radius: 0;
+        }
+        @include mediaWidth(340) {
+          height: 214px;
+        }
+
+        h2, h3 {
+          color: $colorLightBlack;
+          font-weight: normal;
+          @include mediaWidth(767) {
+            font-size: 12px;
+          }
+        }
+        h2 {
+          font-weight: 600;
+          margin-bottom: 20px;
           @include mediaWidth(1024) {
-            width: 449px;
-            height: 195px;
           }
           @include mediaWidth(767) {
-            width: 100%;
-            top: -525px;
-            padding: 15px;
-          }
-          @include mediaWidth(340) {
-            height: 214px;
-          }
-
-          h2, h3 {
-            color: white;
-            font-weight: normal;
-            @include mediaWidth(767) {
-              font-size: 12px;
-            }
-          }
-          h2 {
-            font-weight: 600;
-            margin-bottom: 20px;
-            @include mediaWidth(1024) {
-            }
-            @include mediaWidth(767) {
-              margin-bottom: 10px;
-              font-size: 18px;
-            }
-          }
-          &__elem {
-            text-align: center;
-            margin-bottom: 16px;
-            @include mediaWidth(1024) {
-              margin-bottom: 10px;
-            }
-            @include mediaWidth(767) {
-            }
-          }
-          .ok-btn {
-            width: 72px;
-            height: 36px;
-            background: #FF3E28;
-            font-weight: 500;
+            margin-bottom: 10px;
             font-size: 18px;
-            line-height: 32px;
-            margin: 0 auto;
-            @include mediaWidth(1024) {
-              margin-bottom: 10px;
-            }
-            @include mediaWidth(767) {
+          }
+        }
+        &__elem {
+          text-align: center;
+          margin-bottom: 16px;
+          @include mediaWidth(1024) {
+            margin-bottom: 10px;
+          }
+          @include mediaWidth(767) {
+          }
+        }
+        .ok-btn {
+          width: 72px;
+          height: 36px;
+          background: #FF3E28;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 32px;
+          margin: 0 auto;
+          @include mediaWidth(1024) {
+            margin-bottom: 10px;
+          }
+          @include mediaWidth(767) {
 
-            }
           }
         }
       }
     }
+
   }
 }

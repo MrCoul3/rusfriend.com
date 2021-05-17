@@ -3,7 +3,7 @@ import axios from "axios";
 
 $(document).ready(function () {
     if ($("main").hasClass('main-page')) {
-        console.log("js index plugged");
+        // console.log("js index plugged");
         const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
         const mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
         const mediaQuerySmall = window.matchMedia('(max-width: 767px)');
@@ -69,7 +69,7 @@ $(document).ready(function () {
 
         function scrollAnimation() {
             document.addEventListener("scroll", function (e) {
-                console.log(window.pageYOffset );
+                // console.log(window.pageYOffset );
 
                 if (mediaQueryDesktop.matches) {
                     // анимация for-whom
@@ -154,7 +154,7 @@ $(document).ready(function () {
             localStorage.setItem('status', 'free-lesson');
             axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
                 .then((response) => {
-                    // console.log(response.data['success']);
+                    // // console.log(response.data['success']);
                     if (response.data['success'] === false) {
                         // открытие формы логина
                         if (!$(".register-form").hasClass('register-form-active')) {
@@ -175,7 +175,7 @@ $(document).ready(function () {
                                 $('.check').removeClass('check-active');
                             }, 1000);
 
-                            console.log('пользователь уже бронировал бесплатный урок');
+                            // console.log('пользователь уже бронировал бесплатный урок');
                         }
                     }
                 })

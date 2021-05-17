@@ -3,7 +3,7 @@ import axios from "axios";
 $(document).ready(function () {
 
     if (!$('body').hasClass('admin') && !$('main').hasClass('payment')) {
-        console.log('login and register init')
+        // console.log('login and register init')
 
         openLoginForm();
         closeLoginForm();
@@ -235,7 +235,7 @@ $(document).ready(function () {
                 return +num < 10 ? '0' + num : num
             }
 
-            // console.log(getFormatDate('.'));
+            // // console.log(getFormatDate('.'));
             let registerDate = getFormatDate('.');
             // FETCH
 
@@ -250,7 +250,7 @@ $(document).ready(function () {
                     avatar: ' ',
                     'method': 'register'
                 };
-                // console.log(params);
+                // // console.log(params);
                 let response = fetch('handle.php', {
                     method: 'POST',
                     headers: {
@@ -261,13 +261,13 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.success) {
                         localStorage.setItem('email', data.email);
                         setCookie('name', data.name);
                         registerUser();
                         changeLoginBtnToUserName();
-                        // console.log(data.name);
+                        // // console.log(data.name);
                         $(".user-login__elem--user-name").html(data.name);
                         /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
                              * То редирект на страницу free-lesson*/
@@ -301,7 +301,7 @@ $(document).ready(function () {
                     $("#mysite").removeClass("body-fixed");
                 });
             } else {
-                console.log(errors);
+                // console.log(errors);
             }
 
 
@@ -350,9 +350,9 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    console.log(data);
+                    // console.log(data);
                     // установка localstor user_id для croppie
-                    // console.log(localStorage.getItem('user_id'));
+                    // // console.log(localStorage.getItem('user_id'));
                     if (data.success) {
                         localStorage.setItem('user_id', data.userID);
                         localStorage.setItem('email', data.email);
@@ -407,7 +407,7 @@ $(document).ready(function () {
                 });
 
             } else {
-                console.log(errors);
+                // console.log(errors);
             }
         });
     }
@@ -430,7 +430,7 @@ $(document).ready(function () {
             response.then(function (data) {
                 return data.json()
             }).then(function (data) {
-                // console.log(data)
+                // // console.log(data)
                 $('.form-input').each((k,val)=>{
                     $(val).val('');
                 });
@@ -469,15 +469,15 @@ $(document).ready(function () {
             response.then(function (data) {
                 return data.json()
             }).then(function (data) {
-                console.log(data.logout)
+                // console.log(data.logout)
                 if (data.logout === true) {
                     deleteCookie('name');
                     delete localStorage.email;
                     delete localStorage.user_id;
                     document.location.href = '/index.php'
-                    // console.log('logout');
+                    // // console.log('logout');
                 } else {
-                    console.log('не удалось выйти')
+                    // console.log('не удалось выйти')
                 }
             });
         });

@@ -1959,7 +1959,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
@@ -2063,7 +2071,8 @@ function getCookie(name) {
       validationSkype: false,
       showPreLoader: true,
       selectedTimeArray: [],
-      bookedGmtArray: []
+      bookedGmtArray: [],
+      lengthOfData: null
     };
   },
   props: {
@@ -2077,10 +2086,6 @@ function getCookie(name) {
     timeZone: {
       required: true,
       "default": 'GMT +03:00'
-    },
-    confirmation: {
-      required: true,
-      "default": '1'
     }
   },
   beforeMount: function beforeMount() {
@@ -2091,7 +2096,7 @@ function getCookie(name) {
 
 
     this.weekNumber = new Date().getWeek() - 1;
-    this.currentWeek = new Date().getWeek() - 1; // console.log(this.weekNumber);
+    this.currentWeek = new Date().getWeek() - 1; // // // console.log(this.weekNumber);
   },
   created: function created() {
     this.setCurrentMonth();
@@ -2103,10 +2108,9 @@ function getCookie(name) {
     this.lightingOfToday();
   },
   updated: function updated() {
+    this.adjustmentDateOfDay();
     this.adjustmentDateOfWeek();
     this.lightingOfToday();
-    this.getIntervalsFromDB();
-    this.changeStateOfItem();
     this.setCurrentMonth();
   },
   methods: {
@@ -2121,26 +2125,26 @@ function getCookie(name) {
     },
     //метод корректировки дат недели
     adjustmentDateOfDay: function adjustmentDateOfDay() {
-      var firstElem = $('.calendar-app-content-number:first-child'); // console.log(firstElem);
+      var firstElem = $('.calendar-app-content-number:first-child'); // // // console.log(firstElem);
 
       var numberFirstElem = firstElem.attr('date').split('.')[0];
-      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // // // console.log(numberFirstElem);
+      // // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
 
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // // // console.log(numberFirstElem);
         $('.calendar-app-content-number').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // // console.log($(this).attr('date').split('.'));
           var dateArr = $(this).attr('date').split('.');
 
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
 
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
-            } // console.log(dateArr.join('.'));
+            } // // // console.log(dateArr.join('.'));
 
 
             var newDate = dateArr.join('.');
@@ -2152,23 +2156,23 @@ function getCookie(name) {
     adjustmentDateOfWeek: function adjustmentDateOfWeek() {
       var firstElem = $('.time-intrevals-elem:first-child');
       var numberFirstElem = firstElem.attr('date').split('.')[0];
-      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // // // console.log(numberFirstElem);
+      // // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
 
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // // console.log(numberFirstElem);
         $('.time-intrevals-elem').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // // console.log($(this).attr('date').split('.'));
           var dateArr = $(this).attr('date').split('.');
 
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
 
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
-            } // console.log(dateArr.join('.'));
+            } // // // console.log(dateArr.join('.'));
 
 
             var newDate = dateArr.join('.');
@@ -2218,18 +2222,18 @@ function getCookie(name) {
           a.font = 'bold';
           a.current = '#006660';
         }
-      } // console.log(week);
-      // console.log(week[w][0].index + ' - ' + week[w][6].index);
+      } // // // console.log(week);
+      // // // console.log(week[w][0].index + ' - ' + week[w][6].index);
 
 
       this.dateInterval = week[w][0].index + ' - ' + week[w][6].index;
       return week;
     },
     decrease: function decrease() {
-      // console.log('w');
+      // // // console.log('w');
       this.weekNumber--;
-      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
-      // console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // // // console.log(this.month);
+      // // // console.log(this.weekNumber);
 
       if (this.weekNumber === 0) {
         this.weekNumber = 52;
@@ -2240,7 +2244,7 @@ function getCookie(name) {
     },
     increase: function increase() {
       this.weekNumber++;
-      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // // // console.log(this.weekNumber);
 
       if (this.weekNumber === 52) {
         this.weekNumber = 1;
@@ -2265,11 +2269,17 @@ function getCookie(name) {
       });
     },
     // ----------------------------------------
-    // ---- ФУНКЦИИ ДЛЯ РАБОТЫ С ИНТЕРВАЛАМИ ---- \\
-    // получить и отобразить все интервалы
     getIntervalsFromDB: function getIntervalsFromDB() {
       var _this = this;
 
+      $('#booking-calendar').css('opacity', '0');
+      this.preloader = true;
+      var freeLesson = this.freeLesson;
+      var obj = {};
+      var obj2 = {};
+      var obj3 = {};
+      var array = [];
+      var array2 = [];
       $('.time-intrevals-elem ').each(function (k, val) {
         val.innerHTML = '';
       });
@@ -2277,82 +2287,50 @@ function getCookie(name) {
         'method': 'getTimeIntervals'
       })).then(function (response) {
         // console.log(response.data);
-        var dataFromDB = response.data;
-        var unconfirmedBooks = []; // console.log(dataFromDB[0]);
+        var data = response.data; // количество полученных интервалов
 
-        if (dataFromDB !== null) {
-          dataFromDB.forEach(function (dataFromDB, k) {
-            // console.log(dataFromDB.day); // ...7.03.2021...
-            $('.time-intrevals-elem ').each(function (k, val) {
-              // console.log(val.getAttribute('date'));
-              var dateNumber = val;
-              var data = new Date();
-              var date = $(val).attr('date');
-              var day = date.split('.')[0];
-              var month = date.split('.')[1];
-              var str = '';
-              var valHour = '';
+        var count = 0;
 
-              if (dataFromDB.day === dateNumber.getAttribute('date')) {
-                // console.log(dataFromDB.time);
-                var arr = dataFromDB.time.split(','); // console.log(arr);
-
-                var _str = arr.join('</div><div>'); // console.log(str);
-                // console.log(dateNumber.innerHTML);
-
-
-                dateNumber.innerHTML = '<div>' + _str + '</div>'; //--------- функция деактивации интервалов ранее текущего времени
-
-                $(val).children().each(function (k, val) {
-                  // if (this.freeLesson) {
-                  //   valHour = val.innerHTML.split(':')[0];
-                  // } else {
-                  // }
-                  valHour = val.innerHTML.split('-')[0].split(':')[0];
-
-                  if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                    val.classList.add('booked-for-other-users');
-                  }
-
-                  if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
-                    val.classList.add('booked-for-other-users');
-                  }
-                });
-              }
-            });
+        if (data !== null) {
+          data.forEach(function (val, k) {
+            var arr = val.time.split(',');
+            count += arr.length;
           });
         }
 
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
-          'method': 'getLessons'
-        })).then(function (response) {
-          // получаем всю информацию о забронированных уроках по данному пользователю
-          var data = response.data; // console.log(data)
+        _this.lengthOfData = count;
+        var timeZone = _this.timeZone;
 
-          var days = $('.time-intrevals-from-db__item');
-          _this.bookedGmtArray = [];
+        var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
 
+        addToTempDB();
+
+        _this.getOfTempDB();
+
+        setTimeout(function () {
+          $('#booking-calendar').animate({
+            'opacity': '1'
+          }, 500);
+        }, 500); // добавляет интервалы во временную БД
+
+        function addToTempDB() {
           if (data !== null) {
             data.forEach(function (val, k) {
-              var userNameFromDB = val[1];
-              var dayFromDB = val[2];
-              var timeFromDB = val[3];
-              var type = val[4];
-              var paymentFromDB = val[5];
-              var confirmationFromDB = val[6];
-              var priceFromDB = val[7];
-              var gmtFromDB = val[8];
-              var bookingTime = val[9];
+              // // console.log(val);
+              var dayFromDb = val.day;
+              var timeFromDb = val.time;
+              var gmtFromDb = val.gmt;
+              var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
+              var delta = timeZoneNum - gmtFromDbNum; // // console.log(timeFromDb)
 
-              var timeZoneNum = _this.timeZone.split(' ')[1].substring(0, 3);
-
-              var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
-              var delta = timeZoneNum - gmtFromDbNum;
-              var arr = timeFromDB.split(',');
+              var arr = timeFromDb.split(',');
+              var newArr = [];
+              var newArr2 = [];
+              var newArr3 = [];
               arr.forEach(function (val, k) {
-                var prevNum = +dayFromDB.split('.')[0] - 1;
-                var prevMonth = +dayFromDB.split('.')[1];
-                var prevYear = +dayFromDB.split('.')[2];
+                var prevNum = +dayFromDb.split('.')[0] - 1;
+                var prevMonth = +dayFromDb.split('.')[1];
+                var prevYear = +dayFromDb.split('.')[2];
 
                 if (prevNum == 0) {
                   prevMonth = prevMonth - 1;
@@ -2364,10 +2342,10 @@ function getCookie(name) {
                 }
 
                 var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
-                var nextNum = +dayFromDB.split('.')[0] + 1;
-                var nextMonth = +dayFromDB.split('.')[1];
-                var nextYear = +dayFromDB.split('.')[2];
-                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+                var nextNum = +dayFromDb.split('.')[0] + 1;
+                var nextMonth = +dayFromDb.split('.')[1];
+                var nextYear = +dayFromDb.split('.')[2];
+                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
                 if (nextNum == lastNum + 1) {
                   nextNum = '1';
@@ -2379,129 +2357,629 @@ function getCookie(name) {
                 }
 
                 var nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
-                var firstH;
-                var firstM;
-                var secondH;
-                var secondM;
-                var time;
-                var a;
-                var b;
-                var day = dayFromDB;
+                var firstH = val.split('-')[0].split(':')[0]; // 06
 
-                if (paymentFromDB !== 'free') {
-                  firstH = val.split('-')[0].split(':')[0]; // 06
+                var firstM = val.split('-')[0].split(':')[1]; // 00
 
-                  firstM = val.split('-')[0].split(':')[1]; // 00
+                var secondH = val.split('-')[1].split(':')[0]; // 07
 
-                  secondH = val.split('-')[1].split(':')[0]; // 07
+                var secondM = val.split('-')[1].split(':')[1]; // 30
 
-                  secondM = val.split('-')[1].split(':')[1]; // 30
+                var a = +firstH + delta; // 02
 
-                  a = +firstH + delta; // 02
+                var b = +secondH + delta; //05
 
-                  b = +secondH + delta; //05
+                var time = a + ':' + firstM + '- ' + b + ':' + secondM;
 
-                  if (a < 0) {
-                    a = 24 + a;
+                if (a < 0) {
+                  // // console.log(prevDateNumber)
+                  // // console.log(time)
+                  newArr.push(time); // // console.log(newArr.join(', '))
 
-                    if (b < 0) {
-                      b = 24 + b;
-                    }
-
-                    day = prevDateNumber;
-                  }
-
-                  if (a > 23) {
-                    a = a - 24;
-
-                    if (b > 23) {
-                      b = b - 24;
-                    }
-
-                    day = nextDateNumber;
-                  }
-
-                  time = a + ':' + firstM + ' - ' + b + ':' + secondM;
-                } else {
-                  firstH = val.split(':')[0]; // 06
-
-                  firstM = val.split(':')[1]; // 00
-
-                  a = +firstH + delta; // 02
-
-                  time = a + ':' + firstM;
-                } // console.log(time)
-
-
-                var obj = {
-                  name: userNameFromDB,
-                  type: type,
-                  day: day,
-                  time: time,
-                  payment: paymentFromDB,
-                  confirmation: confirmationFromDB,
-                  price: priceFromDB,
-                  gmt: _this.timeZone,
-                  'method': 'setToBooksTimeGMT'
-                };
-
-                _this.bookedGmtArray.push(obj);
-              });
-            });
-          } // console.log(unconfirmedBooks)
-          // console.log(this.bookedGmtArray)
-
-
-          var bookedGmtArray = _this.bookedGmtArray;
-          $(bookedGmtArray).each(function (i, obj) {
-            var dayFromBookedGmtArray = obj.day;
-            var confirmation = obj.confirmation;
-            var gmt = obj.gmt;
-            var name = obj.name;
-            var payment = obj.payment;
-            var price = obj.price;
-            var timeFromBookedGmtArray = obj.time;
-            var type = obj.type; // стили
-
-            days.each(function (i, day) {
-              if ($(day).attr('date') === dayFromBookedGmtArray) {
-                var _iterator = _createForOfIteratorHelper(day.children),
-                    _step;
-
-                try {
-                  for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                    var time = _step.value;
-                    var timeFromBook = timeFromBookedGmtArray.split('-')[0].trim();
-
-                    if (timeFromBook.split(':')[0].length == 1) {
-                      timeFromBook = '0' + timeFromBook;
-                    }
-
-                    if (time.innerHTML.split('-')[0].trim() === timeFromBook.trim()) {
-                      time.classList.add('booked-for-other-users');
-                    }
-
-                    if (time.innerHTML.split('-')[0] === timeFromBookedGmtArray) {
-                      time.classList.add('booked-free');
-                    }
-                  }
-                } catch (err) {
-                  _iterator.e(err);
-                } finally {
-                  _iterator.f();
+                  obj = {
+                    day: prevDateNumber,
+                    time: newArr.join(', '),
+                    gmt: timeZone
+                  };
                 }
+
+                if (a >= 0 && a < 24) {
+                  newArr2.push(time);
+                  obj2 = {
+                    day: dayFromDb,
+                    time: newArr2.join(', '),
+                    gmt: timeZone
+                  };
+                }
+
+                if (a > 23) {
+                  newArr3.push(time);
+                  obj3 = {
+                    day: nextDateNumber,
+                    time: newArr3.join(', '),
+                    gmt: timeZone
+                  };
+                }
+              });
+
+              if (Object.keys(obj).length !== 0) {
+                array.push(obj);
+              }
+
+              if (Object.keys(obj2).length !== 0) {
+                array.push(obj2);
+              }
+
+              if (Object.keys(obj3).length !== 0) {
+                array.push(obj3);
+              }
+
+              array2 = _toConsumableArray(new Set(array)); // // console.log(array2)
+              // // console.log(obj)
+              // // console.log(obj2)
+            });
+          }
+
+          var object = {
+            intervals: array2,
+            'method': 'setToTempGMT'
+          }; // // console.log(array2);
+
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(object));
+        }
+      });
+    },
+    getOfTempDB: function getOfTempDB() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+          'method': 'getFromTempGMT'
+        })).then(function (response) {
+          var data = response.data; // console.log(data)
+
+          var unconfirmedBooks = [];
+          var dataLength = 0;
+
+          if (data !== null) {
+            data.forEach(function (val, k) {
+              var arr = val[1].split(',');
+              dataLength += arr.length;
+            });
+          }
+
+          if (_this2.lengthOfData !== undefined) {
+            if (_this2.lengthOfData === dataLength) {
+              if (data !== null) {
+                data.forEach(function (val, k) {
+                  // // console.log(val);
+                  var dayFromDb = val[0];
+                  var timeFromDb = val[1];
+                  var gmtFromDb = val[2];
+                  var newArr = [];
+                  var arr = timeFromDb.split(','); // // console.log(timeFromDb);
+
+                  arr.forEach(function (val, k) {
+                    var firstH = val.split(' - ')[0].split(':')[0]; // 06
+
+                    var firstM = val.split(' - ')[0].split(':')[1]; // 00
+
+                    var secondH = val.split(' - ')[1].split(':')[0]; // 07
+
+                    var secondM = val.split(' - ')[1].split(':')[1]; // 30
+
+                    if (+firstH < 0) {
+                      firstH = 24 + +firstH;
+                    }
+
+                    if (+secondH < 0) {
+                      secondH = 24 + +secondH;
+                    }
+
+                    if (+firstH > 23) {
+                      firstH = +firstH - 24;
+                    }
+
+                    if (+secondH > 23) {
+                      secondH = +secondH - 24;
+                    }
+
+                    var time = firstH + ':' + firstM + ' - ' + secondH + ':' + secondM;
+                    newArr.push(time);
+                  });
+                  $('.time-intrevals-elem').each(function (k, val) {
+                    var dateNumber = val;
+                    var data = new Date();
+                    var date = $(val).attr('date');
+                    var day = date.split('.')[0];
+                    var month = date.split('.')[1];
+                    var str = '';
+                    var valHour = '';
+
+                    if (dayFromDb === dateNumber.getAttribute('date')) {
+                      if (_this2.freeLesson) {
+                        var _arr = [];
+                        newArr.forEach(function (val, k) {
+                          _arr.push(val.split('-')[0]);
+                        });
+                        str = _arr.join('</div><div>');
+                      } else {
+                        str = newArr.join('</div><div>');
+                      }
+
+                      $(dateNumber).append('<div>' + str + '</div>'); //--------- функция деактивации интервалов ранее текущего времени
+
+                      $(val).children().each(function (k, val) {
+                        if (_this2.freeLesson) {
+                          valHour = val.innerHTML.split(':')[0];
+                        } else {
+                          valHour = val.innerHTML.split('-')[0].split(':')[0];
+                        }
+
+                        if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                          val.classList.add('booked-for-other-users');
+                        }
+
+                        if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+                          val.classList.add('booked-for-other-users');
+                        }
+                      });
+                    }
+                  });
+                });
+              }
+            } else {
+              // если не совпадает выполняется getIntervalsFromDB заново
+              // console.log('false')
+              _this2.getIntervalsFromDB();
+            }
+          }
+
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
+            'method': 'getLessons'
+          })).then(function (response) {
+            // получаем всю информацию о забронированных уроках по данному пользователю
+            var data = response.data; // // console.log(data)
+
+            var days = $('.time-intrevals-from-db__item');
+            _this2.bookedGmtArray = [];
+
+            if (data !== null) {
+              data.forEach(function (val, k) {
+                var userNameFromDB = val[1];
+                var dayFromDB = val[2];
+                var timeFromDB = val[3];
+                var type = val[4];
+                var paymentFromDB = val[5];
+                var confirmationFromDB = val[6];
+                var priceFromDB = val[7];
+                var gmtFromDB = val[8];
+                var bookingTime = val[9];
+
+                var timeZoneNum = _this2.timeZone.split(' ')[1].substring(0, 3);
+
+                var gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+                var delta = timeZoneNum - gmtFromDbNum;
+                var arr = timeFromDB.split(',');
+                arr.forEach(function (val, k) {
+                  // удаление неоплаченых интервалов из БД через 15 минут
+                  if (confirmationFromDB == 0) {
+                    var currentTime = new Date().getMinutes();
+
+                    var _delta = currentTime - bookingTime;
+
+                    if (Math.sign(_delta) == -1) {
+                      _delta += 60;
+                    }
+
+                    if (_delta > 15) {
+                      var _obj = {
+                        name: userNameFromDB,
+                        time: val,
+                        day: dayFromDB,
+                        'type': 'delAfterTimeInterval',
+                        'method': 'delUnconfirmedBooks'
+                      };
+                      unconfirmedBooks.push(_obj);
+                    }
+                  }
+
+                  var prevNum = +dayFromDB.split('.')[0] - 1;
+                  var prevMonth = +dayFromDB.split('.')[1];
+                  var prevYear = +dayFromDB.split('.')[2];
+
+                  if (prevNum == 0) {
+                    prevMonth = prevMonth - 1;
+                    prevNum = new Date(prevYear, prevMonth, 0).getDate();
+                  }
+
+                  if (String(prevMonth).length < 2) {
+                    prevMonth = '0' + prevMonth;
+                  }
+
+                  var prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+                  var nextNum = +dayFromDB.split('.')[0] + 1;
+                  var nextMonth = +dayFromDB.split('.')[1];
+                  var nextYear = +dayFromDB.split('.')[2];
+                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
+
+                  if (nextNum == lastNum + 1) {
+                    nextNum = '1';
+                    nextMonth = nextMonth + 1;
+                  }
+
+                  if (String(nextMonth).length < 2) {
+                    nextMonth = '0' + nextMonth;
+                  }
+
+                  var nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+                  var firstH;
+                  var firstM;
+                  var secondH;
+                  var secondM;
+                  var time;
+                  var a;
+                  var b;
+                  var day = dayFromDB;
+
+                  if (paymentFromDB !== 'free') {
+                    firstH = val.split('-')[0].split(':')[0]; // 06
+
+                    firstM = val.split('-')[0].split(':')[1]; // 00
+
+                    secondH = val.split('-')[1].split(':')[0]; // 07
+
+                    secondM = val.split('-')[1].split(':')[1]; // 30
+
+                    a = +firstH + delta; // 02
+
+                    b = +secondH + delta; //05
+
+                    if (a < 0) {
+                      a = 24 + a;
+
+                      if (b < 0) {
+                        b = 24 + b;
+                      }
+
+                      day = prevDateNumber;
+                    }
+
+                    if (a > 23) {
+                      a = a - 24;
+
+                      if (b > 23) {
+                        b = b - 24;
+                      }
+
+                      day = nextDateNumber;
+                    }
+
+                    time = a + ':' + firstM + '- ' + b + ':' + secondM;
+                  } else {
+                    firstH = val.split(':')[0]; // 06
+
+                    firstM = val.split(':')[1]; // 00
+
+                    a = +firstH + delta; // 02
+
+                    time = a + ':' + firstM;
+                  } // // console.log(time)
+
+
+                  var obj = {
+                    name: userNameFromDB,
+                    type: type,
+                    day: day,
+                    time: time,
+                    payment: paymentFromDB,
+                    confirmation: confirmationFromDB,
+                    price: priceFromDB,
+                    gmt: _this2.timeZone,
+                    'method': 'setToBooksTimeGMT'
+                  }; // // console.log(obj)
+
+                  _this2.bookedGmtArray.push(obj);
+                });
+                var bookedGmtArray = _this2.bookedGmtArray;
+                $(bookedGmtArray).each(function (i, obj) {
+                  var dayFromBookedGmtArray = obj.day;
+                  var confirmation = obj.confirmation;
+                  var gmt = obj.gmt;
+                  var name = obj.name;
+                  var payment = obj.payment;
+                  var price = obj.price;
+                  var timeFromBookedGmtArray = obj.time;
+                  var type = obj.type; // стили
+
+                  days.each(function (i, day) {
+                    if ($(day).attr('date') === dayFromBookedGmtArray) {
+                      var _iterator = _createForOfIteratorHelper(day.children),
+                          _step;
+
+                      try {
+                        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                          var time = _step.value;
+
+                          if (time.innerHTML.split('-')[0].trim() === timeFromBookedGmtArray.split('-')[0].trim()) {
+                            if (name === getCookie('name')) {
+                              if (payment === "unpayed") {
+                                time.classList.add('unpayed-book');
+                              }
+
+                              if (confirmation === "0") {
+                                time.classList.add('unconfirmed-book');
+                              }
+
+                              if (confirmation === "1" && payment === 'payed') {
+                                time.classList.add('booked-for-this-user');
+                              }
+                            } else {
+                              if (confirmation === "1" || payment === 'payed' || payment === "unpayed" || confirmation === "0") {
+                                time.classList.add('booked-for-other-users');
+                              }
+                            }
+                          }
+
+                          if (time.innerHTML.split('-')[0] === timeFromBookedGmtArray) {
+                            time.classList.add('booked-free');
+                          }
+                        }
+                      } catch (err) {
+                        _iterator.e(err);
+                      } finally {
+                        _iterator.f();
+                      }
+                    }
+                  });
+                });
+              });
+            } // // console.log(unconfirmedBooks)
+            // удаление неоплаченных бронирований через 15 минут
+
+
+            axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(unconfirmedBooks)).then(function (response) {
+              var data = response.data;
+
+              if (data === true) {
+                // // console.log(data)
+                _this2.getIntervalsFromDB();
               }
             });
           });
         });
-      });
+        _this2.preloader = false;
+      }, 500);
     },
-    // выбор свободного интервала для замены
+    // getIntervalsFromDB: function () {
+    //
+    //   this.preloader = true;
+    //   let freeLesson = this.freeLesson;
+    //   let obj = {};
+    //   let obj2 = {};
+    //   let obj3 = {};
+    //   let array = [];
+    //   let array2 = [];
+    //
+    //   $('.time-intrevals-elem ').each((k, val) => {
+    //     val.innerHTML = '';
+    //   });
+    //
+    //   // axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
+    //   //     .then((response) => {
+    //   //       // // // console.log(response.data);
+    //   //       let dataFromDB = response.data;
+    //   //       let unconfirmedBooks = [];
+    //   //       // // // console.log(dataFromDB[0]);
+    //   //       let count = 0;
+    //   //       if (dataFromDB !== null) {
+    //   //         dataFromDB.forEach((val, k) => {
+    //   //           let arr = val.time.split(',')
+    //   //           count += arr.length;
+    //   //         });
+    //   //       }
+    //   //       this.lengthOfData = count;
+    //   //       let timeZone = this.timeZone;
+    //   //       let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+    //   //
+    //   //       if (dataFromDB !== null) {
+    //   //         dataFromDB.forEach(function (dataFromDB, k) {
+    //   //           // // // console.log(dataFromDB.day); // ...7.03.2021...
+    //   //           $('.time-intrevals-elem ').each((k, val) => {
+    //   //             // // // console.log(val.getAttribute('date'));
+    //   //             let dateNumber = val;
+    //   //
+    //   //             let data = new Date();
+    //   //             let date = $(val).attr('date');
+    //   //             let day = date.split('.')[0];
+    //   //             let month = date.split('.')[1];
+    //   //             let str = '';
+    //   //             let valHour = '';
+    //   //
+    //   //             if (dataFromDB.day === dateNumber.getAttribute('date')) {
+    //   //               // // // console.log(dataFromDB.time);
+    //   //               let arr = dataFromDB.time.split(',');
+    //   //               // // // console.log(arr);
+    //   //               let str = arr.join('</div><div>');
+    //   //               // // // console.log(str);
+    //   //               // // // console.log(dateNumber.innerHTML);
+    //   //               dateNumber.innerHTML = '<div>' + str + '</div>';
+    //   //
+    //   //               //--------- функция деактивации интервалов ранее текущего времени
+    //   //               $(val).children().each((k, val) => {
+    //   //                 // if (this.freeLesson) {
+    //   //                 //   valHour = val.innerHTML.split(':')[0];
+    //   //                 // } else {
+    //   //                 // }
+    //   //                 valHour = val.innerHTML.split('-')[0].split(':')[0];
+    //   //
+    //   //                 if (day < data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+    //   //                   val.classList.add('booked-for-other-users');
+    //   //                 }
+    //   //                 if (+valHour - 1 < data.getHours() && day == data.getDate() && month <= data.getMonth() + 1 || month < data.getMonth() + 1) {
+    //   //                   val.classList.add('booked-for-other-users');
+    //   //                 }
+    //   //               })
+    //   //             }
+    //   //
+    //   //           });
+    //   //
+    //   //         })
+    //   //       }
+    //   //
+    //   //       axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
+    //   //           .then((response) => {
+    //   //             // получаем всю информацию о забронированных уроках по данному пользователю
+    //   //             let data = response.data;
+    //   //             // // // console.log(data)
+    //   //             let days = $('.time-intrevals-from-db__item');
+    //   //
+    //   //             this.bookedGmtArray = [];
+    //   //
+    //   //             if (data !== null) {
+    //   //               data.forEach((val, k) => {
+    //   //                 let userNameFromDB = val[1];
+    //   //                 let dayFromDB = val[2];
+    //   //                 let timeFromDB = val[3];
+    //   //                 let type = val[4];
+    //   //                 let paymentFromDB = val[5];
+    //   //                 let confirmationFromDB = val[6];
+    //   //                 let priceFromDB = val[7];
+    //   //                 let gmtFromDB = val[8];
+    //   //                 let bookingTime = val[9];
+    //   //
+    //   //                 let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
+    //   //                 let gmtFromDbNum = gmtFromDB.split(' ')[1].substring(0, 3);
+    //   //                 let delta = timeZoneNum - gmtFromDbNum;
+    //   //                 let arr = timeFromDB.split(',');
+    //   //
+    //   //                 arr.forEach((val, k) => {
+    //   //
+    //   //                   let prevNum = +dayFromDB.split('.')[0] - 1;
+    //   //                   let prevMonth = +dayFromDB.split('.')[1];
+    //   //
+    //   //                   let prevYear = +dayFromDB.split('.')[2];
+    //   //                   if (prevNum == 0) {
+    //   //                     prevMonth = prevMonth - 1;
+    //   //                     prevNum = new Date(prevYear, prevMonth, 0).getDate();
+    //   //                   }
+    //   //                   if (String(prevMonth).length < 2) {
+    //   //                     prevMonth = '0' + prevMonth;
+    //   //                   }
+    //   //                   let prevDateNumber = prevNum + '.' + prevMonth + '.' + prevYear;
+    //   //
+    //   //
+    //   //                   let nextNum = +dayFromDB.split('.')[0] + 1;
+    //   //                   let nextMonth = +dayFromDB.split('.')[1];
+    //   //
+    //   //                   let nextYear = +dayFromDB.split('.')[2];
+    //   //                   let lastNum = new Date(nextYear, nextMonth, 0).getDate();
+    //   //                   // // // console.log(lastNum)
+    //   //                   if (nextNum == lastNum + 1) {
+    //   //                     nextNum = '1';
+    //   //                     nextMonth = nextMonth + 1;
+    //   //                   }
+    //   //                   if (String(nextMonth).length < 2) {
+    //   //                     nextMonth = '0' + nextMonth;
+    //   //                   }
+    //   //                   let nextDateNumber = nextNum + '.' + nextMonth + '.' + nextYear;
+    //   //
+    //   //                   let firstH;
+    //   //                   let firstM;
+    //   //                   let secondH;
+    //   //                   let secondM;
+    //   //                   let time;
+    //   //                   let a;
+    //   //                   let b;
+    //   //                   let day = dayFromDB;
+    //   //                   if (paymentFromDB !== 'free') {
+    //   //                     firstH = val.split('-')[0].split(':')[0];// 06
+    //   //                     firstM = val.split('-')[0].split(':')[1];// 00
+    //   //                     secondH = val.split('-')[1].split(':')[0]; // 07
+    //   //                     secondM = val.split('-')[1].split(':')[1]; // 30
+    //   //                     a = +firstH + delta; // 02
+    //   //                     b = +secondH + delta; //05
+    //   //                     if (a < 0) {
+    //   //                       a = 24 + a;
+    //   //                       if (b < 0) {
+    //   //                         b = 24 + b;
+    //   //                       }
+    //   //                       day = prevDateNumber;
+    //   //                     }
+    //   //
+    //   //                     if (a > 23) {
+    //   //                       a = a - 24;
+    //   //                       if (b > 23) {
+    //   //                         b = b - 24;
+    //   //                       }
+    //   //                       day = nextDateNumber;
+    //   //                     }
+    //   //                     time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+    //   //                   } else {
+    //   //                     firstH = val.split(':')[0];// 06
+    //   //                     firstM = val.split(':')[1];// 00
+    //   //                     a = +firstH + delta; // 02
+    //   //                     time = a + ':' + firstM;
+    //   //                   }
+    //   //                   // // // console.log(time)
+    //   //                   let obj = {
+    //   //                     name: userNameFromDB,
+    //   //                     type: type,
+    //   //                     day: day,
+    //   //                     time: time,
+    //   //                     payment: paymentFromDB,
+    //   //                     confirmation: confirmationFromDB,
+    //   //                     price: priceFromDB,
+    //   //                     gmt: this.timeZone,
+    //   //                     'method': 'setToBooksTimeGMT'
+    //   //                   };
+    //   //                   this.bookedGmtArray.push(obj);
+    //   //
+    //   //                 });
+    //   //
+    //   //               });
+    //   //             }
+    //   //             // // // console.log(unconfirmedBooks)
+    //   //             // // // console.log(this.bookedGmtArray)
+    //   //             let bookedGmtArray = this.bookedGmtArray;
+    //   //             $(bookedGmtArray).each((i, obj) => {
+    //   //               let dayFromBookedGmtArray = obj.day;
+    //   //               let confirmation = obj.confirmation;
+    //   //               let gmt = obj.gmt;
+    //   //               let name = obj.name;
+    //   //               let payment = obj.payment;
+    //   //               let price = obj.price;
+    //   //               let timeFromBookedGmtArray = obj.time;
+    //   //               let type = obj.type;
+    //   //
+    //   //               // стили
+    //   //               days.each((i, day) => {
+    //   //                 if ($(day).attr('date') === dayFromBookedGmtArray) {
+    //   //                   for (let time of day.children) {
+    //   //                     let timeFromBook = timeFromBookedGmtArray.split('-')[0].trim();
+    //   //                     if (timeFromBook.split(':')[0].length == 1) {
+    //   //                       timeFromBook = '0' + timeFromBook;
+    //   //                     }
+    //   //                     if (time.innerHTML.split('-')[0].trim() === timeFromBook.trim()) {
+    //   //                       time.classList.add('booked-for-other-users');
+    //   //                     }
+    //   //                     if (time.innerHTML.split('-')[0] === timeFromBookedGmtArray) {
+    //   //                       time.classList.add('booked-free');
+    //   //                     }
+    //   //                   }
+    //   //                 }
+    //   //               })
+    //   //             })
+    //   //           });
+    //   //
+    //   //     });
+    //
+    // },
     chooseTime: function chooseTime(event) {
-      var _this2 = this;
+      var _this3 = this;
 
-      console.log('chooseTime'); // console.log(event.target);
-
+      // // console.log('chooseTime');
+      // // // console.log(event.target);
       $('.time-intrevals-elem div').removeClass('selected-time');
       var selectedTime = event.target;
 
@@ -2518,38 +2996,35 @@ function getCookie(name) {
       $('.selected-time').each(function (k, val) {
         var day = val.parentNode.getAttribute('date');
         var time = val.innerHTML;
-        var confirmation = val.getAttribute('confirmation'); // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
-
         var obj = {
           name: userName,
           type: typeOfLesson,
           day: day,
           time: time,
           payment: 'payed',
-          gmt: _this2.timeZone,
-          confirmation: _this2.confirmation,
-          price: ' ',
-          bookingTime: ' ',
+          gmt: _this3.timeZone,
+          confirmation: 1,
+          price: 0,
+          bookingTime: 0,
           'method': 'bookEvent'
-        };
-        console.log(obj);
+        }; // // // console.log(obj)
 
         if (day !== null && time !== '') {
-          _this2.selectedTimeArray.push(obj); // selectedTimeArray.push(obj);
+          _this3.selectedTimeArray.push(obj); // selectedTimeArray.push(obj);
 
         }
-      });
-      console.log(this.selectedTimeArray); // console.log(selectedTimeArray);
+      }); // // // console.log(this.selectedTimeArray);
+      // // // console.log(selectedTimeArray);
       // this.selectedTimeArray = array.slice(0);
     },
     // "изменить время урока"
     bookEvent: function bookEvent(event) {
       if (this.selectedTimeArray.length !== 0) {
-        this.$emit('update');
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(this.selectedTimeArray));
-        this.reload += 1; // всплывающая подсказка "нужно выбрать время урока"
+        this.reload += 1;
+        this.$emit('update'); // всплывающая подсказка "нужно выбрать время урока"
       } else {
-        // console.log($(event.target));
+        // // // console.log($(event.target));
         $(event.target).prev(".prompt").fadeTo("slow", 1);
         setTimeout(function () {
           $(event.target).prev(".prompt").fadeOut();
@@ -2563,23 +3038,23 @@ function getCookie(name) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getLessons'
       })).then(function (response) {
-        // console.log(response.data);
+        // // // console.log(response.data);
         // получаем всю информацию о забронированных уроках по данному пользователю
-        var dataFromDB = response.data; // console.log($(this).attr('date'));
+        var dataFromDB = response.data; // // // console.log($(this).attr('date'));
 
         dataFromDB.forEach(function (val, k) {
-          // console.log(val[1]);
+          // // // console.log(val[1]);
           var dayFromDB = val[2];
-          var timeFromDB = val[3]; // console.log(userNameFromDB);
+          var timeFromDB = val[3]; // // // console.log(userNameFromDB);
 
           timeInterval.each(function (k, val) {
             if ($(this).attr('date') === dayFromDB) {
-              // console.log(timeFromDB);
-              // console.log($(this).children())
+              // // // console.log(timeFromDB);
+              // // // console.log($(this).children())
               $(this).children().each(function (k, val) {
-                // console.log(val.innerHTML);
+                // // // console.log(val.innerHTML);
                 if (val.innerHTML === timeFromDB) {
-                  val.classList.add('booked-for-other-users'); // console.log(val);
+                  val.classList.add('booked-for-other-users'); // // // console.log(val);
                 }
               });
             }
@@ -2801,10 +3276,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 function getCookie(name) {
-  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\enter-your-skype.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
@@ -2855,13 +3340,13 @@ function getCookie(name) {
     // возвращает номер недели
     Date.prototype.getWeek = function () {
       var oneJan = new Date(this.getFullYear(), 0, 1);
-      var weekNum = ((this - oneJan) / 86400000 + oneJan.getDay() - 1) / 7; // console.log(weekNum);
+      var weekNum = ((this - oneJan) / 86400000 + oneJan.getDay() - 1) / 7; // // console.log(weekNum);
 
       return Math.ceil(((this - oneJan) / 86400000 + oneJan.getDay() - 1) / 7);
     };
 
     this.weekNumber = new Date().getWeek() - 1;
-    this.currentWeek = new Date().getWeek() - 1; // console.log(this.weekNumber);
+    this.currentWeek = new Date().getWeek() - 1; // // console.log(this.weekNumber);
   },
   created: function created() {
     this.setCurrentMonth();
@@ -2925,9 +3410,9 @@ function getCookie(name) {
           _this.language = 'rus-lang';
         } else {
           _this.language = 'eng-lang';
-        }
+        } // console.log(this.language)
 
-        console.log(_this.language);
+
         $('.trigger').trigger('click');
         $('*').each(function (k, val) {
           if ($(this).attr('language')) {
@@ -2993,6 +3478,7 @@ function getCookie(name) {
     },
     closeFreeLessSuccess: function closeFreeLessSuccess() {
       this.freeLessBookSuccess = false;
+      $("#mysite").removeClass("body-fixed");
       window.location.href = '/student-lessons.php';
     },
     // -----------------------------------
@@ -3005,26 +3491,26 @@ function getCookie(name) {
     },
     //методы корректировки дат недели
     adjustmentDateOfDay: function adjustmentDateOfDay() {
-      var firstElem = $('.calendar-app-content-number:first-child'); // console.log(firstElem);
+      var firstElem = $('.calendar-app-content-number:first-child'); // // console.log(firstElem);
 
       var numberFirstElem = firstElem.attr('date').split('.')[0];
-      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // // console.log(numberFirstElem);
+      // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
 
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // console.log(numberFirstElem);
         $('.calendar-app-content-number').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // console.log($(this).attr('date').split('.'));
           var dateArr = $(this).attr('date').split('.');
 
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
 
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
-            } // console.log(dateArr.join('.'));
+            } // // console.log(dateArr.join('.'));
 
 
             var newDate = dateArr.join('.');
@@ -3034,26 +3520,26 @@ function getCookie(name) {
       }
     },
     adjustmentDateOfWeek: function adjustmentDateOfWeek() {
-      // console.log('adjustmentDateOfWeek');
+      // // console.log('adjustmentDateOfWeek');
       var firstElem = $('.time-intrevals-elem:first-child');
       var numberFirstElem = firstElem.attr('date').split('.')[0];
-      var monthFirstElem = firstElem.attr('date').split('.')[1]; // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      var monthFirstElem = firstElem.attr('date').split('.')[1]; // // console.log(numberFirstElem);
+      // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
 
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // console.log(numberFirstElem);
         $('.time-intrevals-elem').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // console.log($(this).attr('date').split('.'));
           var dateArr = $(this).attr('date').split('.');
 
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
 
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
-            } // console.log(dateArr.join('.'));
+            } // // console.log(dateArr.join('.'));
 
 
             var newDate = dateArr.join('.');
@@ -3067,7 +3553,7 @@ function getCookie(name) {
         if (new Date(year, 0, a).getDay() == 1) break;
       }
 
-      a += (weekNumber - 1) * 7; // console.log(new Date(year, 0, a).getMonth())
+      a += (weekNumber - 1) * 7; // // console.log(new Date(year, 0, a).getMonth())
 
       this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth();
       return new Date(year, 0, a);
@@ -3077,7 +3563,7 @@ function getCookie(name) {
 
       var week = [];
       var w = 0;
-      week[w] = []; // console.log(this.weekNumber)
+      week[w] = []; // // console.log(this.weekNumber)
 
       var dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
 
@@ -3098,28 +3584,28 @@ function getCookie(name) {
         }
 
         if (a.index === new Date().getDate() && this.year === new Date().getFullYear() && this.weekNumber === this.currentWeek) {
-          // console.log(i);
+          // // console.log(i);
           a.today = 'today';
           a.color = '#fff';
           a.font = 'bold';
           a.current = '#006660';
-        } // console.log(i === new Date().getDate() )
-        // console.log(new Date().getDate());
-        // console.log(this.month);
-        // console.log(new Date().getMonth());
+        } // // console.log(i === new Date().getDate() )
+        // // console.log(new Date().getDate());
+        // // console.log(this.month);
+        // // console.log(new Date().getMonth());
 
-      } // console.log(week);
-      // console.log(week[w][0].index + ' - ' + week[w][6].index);
+      } // // console.log(week);
+      // // console.log(week[w][0].index + ' - ' + week[w][6].index);
 
 
       this.dateInterval = week[w][0].index + ' - ' + week[w][6].index;
       return week;
     },
     decrease: function decrease() {
-      // console.log('w');
+      // // console.log('w');
       this.weekNumber--;
-      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
-      // console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // // console.log(this.month);
+      // // console.log(this.weekNumber);
 
       if (this.weekNumber === 0) {
         this.weekNumber = 52;
@@ -3130,8 +3616,8 @@ function getCookie(name) {
     },
     increase: function increase() {
       this.weekNumber++;
-      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // console.log(this.month);
-      // console.log(this.weekNumber);
+      this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth(); // // console.log(this.month);
+      // // console.log(this.weekNumber);
 
       if (this.weekNumber === 52) {
         this.weekNumber = 1;
@@ -3161,7 +3647,7 @@ function getCookie(name) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getPrice'
       })).then(function (response) {
-        // console.log(response.data);
+        // // console.log(response.data);
         if (response.data !== null) {
           _this2.pricePrivate = response.data["private"];
           _this2.priceSclub = response.data.sclub;
@@ -3192,7 +3678,7 @@ function getCookie(name) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getTimeIntervals'
       })).then(function (response) {
-        // console.log(response.data);
+        // // console.log(response.data);
         var data = response.data; // количество полученных интервалов
 
         var count = 0;
@@ -3204,7 +3690,7 @@ function getCookie(name) {
           });
         }
 
-        _this3.lengthOfData = count; // console.log(this.lengthOfData)
+        _this3.lengthOfData = count; // // console.log(this.lengthOfData)
 
         var timeZone = _this3.timeZone;
 
@@ -3223,14 +3709,14 @@ function getCookie(name) {
         function addToTempDB() {
           if (data !== null) {
             data.forEach(function (val, k) {
-              // console.log(val);
+              // // console.log(val);
               var dayFromDb = val.day;
               var timeFromDb = val.time;
               var gmtFromDb = val.gmt; // if (this.timeZone !== gmtFromDb) {
               // ----- func changeIntevals
 
               var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
-              var delta = timeZoneNum - gmtFromDbNum; // console.log(timeFromDb)
+              var delta = timeZoneNum - gmtFromDbNum; // // console.log(timeFromDb)
 
               var arr = timeFromDb.split(',');
               var newArr = [];
@@ -3254,7 +3740,7 @@ function getCookie(name) {
                 var nextNum = +dayFromDb.split('.')[0] + 1;
                 var nextMonth = +dayFromDb.split('.')[1];
                 var nextYear = +dayFromDb.split('.')[2];
-                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
                 if (nextNum == lastNum + 1) {
                   nextNum = '1';
@@ -3281,9 +3767,9 @@ function getCookie(name) {
                 var time = a + ':' + firstM + '- ' + b + ':' + secondM;
 
                 if (a < 0) {
-                  // console.log(prevDateNumber)
-                  // console.log(time)
-                  newArr.push(time); // console.log(newArr.join(', '))
+                  // // console.log(prevDateNumber)
+                  // // console.log(time)
+                  newArr.push(time); // // console.log(newArr.join(', '))
 
                   obj = {
                     day: prevDateNumber,
@@ -3323,16 +3809,16 @@ function getCookie(name) {
                 array.push(obj3);
               }
 
-              array2 = _toConsumableArray(new Set(array)); // console.log(array2)
-              // console.log(obj)
-              // console.log(obj2)
+              array2 = _toConsumableArray(new Set(array)); // // console.log(array2)
+              // // console.log(obj)
+              // // console.log(obj2)
             });
           }
 
           var object = {
             intervals: array2,
             'method': 'setToTempGMT'
-          }; // console.log(array2);
+          }; // // console.log(array2);
 
           axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(object));
         }
@@ -3347,7 +3833,7 @@ function getCookie(name) {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
           'method': 'getFromTempGMT'
         })).then(function (response) {
-          var data = response.data; // console.log(data)
+          var data = response.data; // // console.log(data)
 
           var unconfirmedBooks = [];
           var dataLength = 0;
@@ -3357,18 +3843,21 @@ function getCookie(name) {
               var arr = val[1].split(',');
               dataLength += arr.length;
             });
-          }
+          } //  получение данных из temp-gmt,
+          //  обработка массива - изменение неправильного времени,
+          //  вставка в календарь
+
 
           if (_this4.lengthOfData !== undefined) {
             if (_this4.lengthOfData === dataLength) {
               if (data !== null) {
                 data.forEach(function (val, k) {
-                  // console.log(val);
+                  // // console.log(val);
                   var dayFromDb = val[0];
                   var timeFromDb = val[1];
                   var gmtFromDb = val[2];
                   var newArr = [];
-                  var arr = timeFromDb.split(','); // console.log(timeFromDb);
+                  var arr = timeFromDb.split(','); // // console.log(timeFromDb);
 
                   arr.forEach(function (val, k) {
                     var firstH = val.split(' - ')[0].split(':')[0]; // 06
@@ -3441,8 +3930,7 @@ function getCookie(name) {
               }
             } else {
               // если не совпадает выполняется getIntervalsFromDB заново
-              console.log('false');
-
+              // console.log('false')
               _this4.getIntervalsFromDB();
             }
           }
@@ -3451,7 +3939,7 @@ function getCookie(name) {
             'method': 'getLessons'
           })).then(function (response) {
             // получаем всю информацию о забронированных уроках по данному пользователю
-            var data = response.data; // console.log(data)
+            var data = response.data; // // console.log(data)
 
             var days = $('.time-intrevals-from-db__item');
             _this4.bookedGmtArray = [];
@@ -3513,7 +4001,7 @@ function getCookie(name) {
                   var nextNum = +dayFromDB.split('.')[0] + 1;
                   var nextMonth = +dayFromDB.split('.')[1];
                   var nextYear = +dayFromDB.split('.')[2];
-                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
                   if (nextNum == lastNum + 1) {
                     nextNum = '1';
@@ -3576,7 +4064,7 @@ function getCookie(name) {
                     a = +firstH + delta; // 02
 
                     time = a + ':' + firstM;
-                  } // console.log(time)
+                  } // // console.log(time)
 
 
                   var obj = {
@@ -3589,7 +4077,7 @@ function getCookie(name) {
                     price: priceFromDB,
                     gmt: _this4.timeZone,
                     'method': 'setToBooksTimeGMT'
-                  }; // console.log(obj)
+                  }; // // console.log(obj)
 
                   _this4.bookedGmtArray.push(obj);
                 });
@@ -3646,7 +4134,7 @@ function getCookie(name) {
                   });
                 });
               });
-            } // console.log(unconfirmedBooks)
+            } // // console.log(unconfirmedBooks)
             // удаление неоплаченных бронирований через 15 минут
 
 
@@ -3654,7 +4142,7 @@ function getCookie(name) {
               var data = response.data;
 
               if (data === true) {
-                // console.log(data)
+                // // console.log(data)
                 _this4.getIntervalsFromDB();
               }
             });
@@ -3667,16 +4155,16 @@ function getCookie(name) {
     chooseTime: function chooseTime(event) {
       var _this5 = this;
 
-      // console.log('choose')
+      // // console.log('choose')
       // ---- Для free-lesson возможность выбрать только одно занятие
       if (this.freeLesson) {
         $('.selected-time').removeClass('selected-time');
       }
 
-      var selectedTime = event.target; // console.log($(selectedTime));
+      var selectedTime = event.target; // // console.log($(selectedTime));
 
       if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book')) {
-        // console.log(event.target);
+        // // console.log(event.target);
         if (selectedTime.className.includes('selected-time')) {
           selectedTime.classList.remove('selected-time');
         } else {
@@ -3685,8 +4173,8 @@ function getCookie(name) {
       }
 
       this.unconfirmTimeArray = [];
-      this.selectedTimeArray = [];
-      console.log(this.selectedTimeArray); // let userName = $('.user-login__elem--user-name').html();
+      this.selectedTimeArray = []; // console.log(this.selectedTimeArray)
+      // let userName = $('.user-login__elem--user-name').html();
 
       var userName = getCookie('name');
       var confirmation = 0;
@@ -3703,7 +4191,7 @@ function getCookie(name) {
       document.cookie = "type=" + this.typeOfLesson;
       $('.selected-time').each(function (k, val) {
         var day = val.parentNode.getAttribute('date');
-        var time = val.innerHTML; // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
+        var time = val.innerHTML; // // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
 
         var obj = {
           name: userName,
@@ -3719,7 +4207,7 @@ function getCookie(name) {
         };
 
         _this5.selectedTimeArray.push(obj);
-      }); // console.log( this.selectedTimeArray)
+      }); // // console.log( this.selectedTimeArray)
 
       var day = event.target.parentNode.getAttribute('date');
       var time = event.target.innerHTML;
@@ -3734,7 +4222,7 @@ function getCookie(name) {
         gmt: this.timeZone,
         'method': 'delUnconfirmedBooks'
       };
-      this.unconfirmTimeArray.push(obj); // console.log(this.unconfirmTimeArray);
+      this.unconfirmTimeArray.push(obj); // // console.log(this.unconfirmTimeArray);
       // ----- функция открытия unconfirmed-menu-frame при нажатии на красное бронирование
       // unconfirmed-book (неподтвержденное пользователем на странице payment.php)
 
@@ -3769,11 +4257,9 @@ function getCookie(name) {
       var _this7 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(this.unconfirmTimeArray)).then(function (response) {
-        console.log(response.data);
-
+        // console.log(response.data)
         if (response.data) {
-          console.log('success delete unconfirm lesson');
-
+          // console.log('success delete unconfirm lesson')
           _this7.getIntervalsFromDB();
 
           _this7.closeUnconfirmedMenuFrame();
@@ -3788,7 +4274,7 @@ function getCookie(name) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'checkLoginOnBookedLesson'
       })).then(function (response) {
-        // console.log(response.data['success']);
+        // // console.log(response.data['success']);
         if (response.data['success'] === false) {
           // открытие формы логина
           if (!$(".login-form").hasClass('login-form-active')) {
@@ -3808,15 +4294,15 @@ function getCookie(name) {
           axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
             'method': 'checkSkype'
           })).then(function (response) {
-            // console.log(response.data);
+            // // console.log(response.data);
             var dataFromDB = response.data;
 
             if (dataFromDB.status === 'empty') {
               _this8.enterSkype = true; // включение формы отправки скайпа в БД
-              // $("#mysite").addClass("body-fixed");
-            } else {
-              console.log(_this8.selectedTimeArray);
 
+              $("#mysite").addClass("body-fixed");
+            } else {
+              // console.log(this.selectedTimeArray)
               if (_this8.selectedTimeArray.length !== 0) {
                 axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_this8.selectedTimeArray)); // ---- для бесплатного занятия
 
@@ -3825,6 +4311,7 @@ function getCookie(name) {
                     'method': 'changeSatusOnActive'
                   }));
                   _this8.freeLessBookSuccess = true;
+                  $("#mysite").addClass("body-fixed");
                   var mailForUser = {
                     name: getCookie('name'),
                     email: localStorage.getItem('email'),
@@ -3863,18 +4350,19 @@ function getCookie(name) {
       });
     },
     sendSkype: function sendSkype() {
-      // console.log($('.input-skype').val());
+      // // console.log($('.input-skype').val());
       var skype = $('.input-skype');
 
       if (skype.val().trim() === '') {
-        // console.log('empty');
+        // // console.log('empty');
         this.validationSkype = true;
       } else {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
           'method': 'sendSkype',
           'skype': skype.val()
         }));
-        this.enterSkype = false; // $("#mysite").removeClass("body-fixed");
+        this.enterSkype = false;
+        $("#mysite").removeClass("body-fixed");
       }
     }
   }
@@ -3901,8 +4389,6 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-//
-//
 //
 //
 //
@@ -4070,7 +4556,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       payment: true,
       target: null,
       errors: [],
-      confirmation: 0,
+      confirmation: true,
       avatarOpened: null,
       avatarCloseBtn: null
     };
@@ -4083,7 +4569,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     this.setCurrentMonth(); // this.getBooksTimeFromDB();
   },
   created: function created() {
-    // console.log(this.currentDayOfWeek);
+    // // // console.log(this.currentDayOfWeek);
     this.setCurrentMonth();
   },
   methods: {
@@ -4187,7 +4673,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
         'method': 'getLessons'
       })).then(function (response) {
-        var data = response.data; // console.log(data)
+        var data = response.data; // // // console.log(data)
 
         if (data !== null) {
           data.forEach(function (val, k) {
@@ -4225,7 +4711,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               var nextNum = +dayFromDB.split('.')[0] + 1;
               var nextMonth = +dayFromDB.split('.')[1];
               var nextYear = +dayFromDB.split('.')[2];
-              var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+              var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // // console.log(lastNum)
 
               if (nextNum == lastNum + 1) {
                 nextNum = '1';
@@ -4288,7 +4774,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 a = +firstH + delta; // 02
 
                 time = a + ':' + firstM;
-              } // console.log(time)
+              } // // // console.log(time)
 
 
               var obj = {
@@ -4300,19 +4786,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 confirmation: confirmationFromDB,
                 price: priceFromDB,
                 gmt: _this.timeZone,
-                bookingTime: ' ',
+                bookingTime: 0,
                 idFromBookstime: idFromDB,
                 'method': 'setToBooksTimeGMT'
               };
               bookedGmtArray.push(obj);
-            }); // console.log(bookedGmtArray)
+            }); // // // console.log(bookedGmtArray)
           });
         }
       });
       setTimeout(function () {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify(bookedGmtArray)).then(function (response) {
-          console.log(response.data);
-
+          // // // console.log(response.data);
           if (response.data !== '') {
             if (response.data.success === 'success') {} else {
               window.location.reload();
@@ -4324,8 +4809,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
           'method': 'getLessonsFromBookstimeGMT'
         })).then(function (response) {
-          console.log(response.data);
-          var data = response.data; // console.log(data)
+          var data = response.data; // // // console.log(data)
 
           if (data !== null) {
             data.forEach(function (val, k) {
@@ -4371,7 +4855,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       var target = event.target;
-      this.target = event.target; // console.log(this.confirmation);
+      this.target = event.target;
 
       if (event.target.className.includes('book')) {
         // смена статуса оплачено на подтвердить оплату
@@ -4392,8 +4876,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         this.detailDate = target.getAttribute('data');
         this.detailTime = target.getAttribute('time');
         this.detailID = target.getAttribute('id');
-        this.typeOfLesson = target.getAttribute('type');
-        this.confirmation = target.getAttribute('confirmation');
+        this.typeOfLesson = target.getAttribute('type'); // this.confirmation = +target.getAttribute('confirmation');
 
         if (target.getAttribute('type') === 'private') {
           this.detailType = 'Занятие с преподавателем';
@@ -4412,9 +4895,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           name: this.detailUserName,
           'method': 'getUserSkype'
         })).then(function (response) {
-          // console.log(response.data)
+          // // // console.log(response.data)
           var data = response.data;
-          _this2.detailSkype = data['skype']; // console.log(data['skype']);
+          _this2.detailSkype = data['skype']; // // // console.log(data['skype']);
         });
         var getAllUsersInfo = JSON.parse(localStorage.getItem('getAllUsersInfo'));
 
@@ -4425,9 +4908,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var user = _step.value;
 
-            // console.log(user)
+            // // // console.log(user)
             if ($(target).attr('name') === user.name) {
-              // console.log(user.avatar)
+              // // // console.log(user.avatar)
               if (user.avatar !== '') {
                 $('.user-icon').attr('src', '../images/icons/user-ico.svg');
                 $('.user-icon').attr('src', user.avatar);
@@ -4460,13 +4943,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var obj = {
         id: this.detailID,
         'method': 'successPay'
-      }; // console.log(obj);
+      }; // // // console.log(obj);
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify({
         obj: obj
       })).then(function (response) {
-        var data = response.data;
-        console.log(data);
+        var data = response.data; // // // console.log(data);
 
         if (data.payment === 'success') {
           _this3.payment = true;
@@ -4487,7 +4969,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           };
           axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/mailer.php', JSON.stringify(mailForUser));
         } else {
-          _this3.errors.push(data.payment); // console.log(this.errors);
+          _this3.errors.push(data.payment); // // // console.log(this.errors);
 
         }
       });
@@ -4507,7 +4989,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var input = {
         id: this.detailID,
         'method': 'delBooksTime'
-      }; // console.log(input);
+      }; // // // console.log(input);
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/handle.php', JSON.stringify(input));
       this.cancelLessShow = false;
@@ -4517,16 +4999,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     // "изменить урок"
     openBook: function openBook() {
       this.showBookCalendar = true;
-      this.detailShow = false; // удалить текущий интервал методом deleteBook()
+      this.detailShow = false;
     },
-    // "отмена" Закрыть календарь изменения урока (закрыть AdminBookCalendar.vue)
     closeAdminCalendar: function closeAdminCalendar(data) {
       this.showBookCalendar = false;
       this.detailShow = true;
     },
     // 'при клике по "изменить время урока" удалить изменяемый интервал
     updateBook: function updateBook(data) {
-      this.deleteBook(); // window.location.reload();
+      this.deleteBook();
+      window.location.reload();
     }
   }
 });
@@ -4725,7 +5207,7 @@ function getCookie(name) {
     this.setTimeZone();
   },
   created: function created() {
-    // console.log(this.currentDayOfWeek);
+    // // console.log(this.currentDayOfWeek);
     if (String(this.month + 1).length == '1') {
       this.currentMonth = 0 + String(this.month + 1);
     } else {
@@ -4748,7 +5230,7 @@ function getCookie(name) {
     // switchTimeZone(event) {
     //   let select = event.target;
     //   this.timeZone = event.target.value;
-    //   // console.log(this.timeZone);
+    //   // // console.log(this.timeZone);
     //   select.addEventListener('change', () => {
     //     this.getIntervalsFromDB();
     //   });
@@ -4849,19 +5331,19 @@ function getCookie(name) {
       var targetDate = event.target.closest('td').getAttribute('date');
       targetDate = targetDate.split('.');
       targetDate[1] = +targetDate[1] - 1;
-      targetDate = targetDate.reverse().join(', ');
-      console.log(targetDate);
-      var date = new Date(targetDate).getDay(); // console.log(this.daySun[date]);
+      targetDate = targetDate.reverse().join(', '); // console.log(targetDate);
+
+      var date = new Date(targetDate).getDay(); // // console.log(this.daySun[date]);
 
       this.dayOfWeek = this.daySun[date]; // время выбранной ячейки
 
-      var timeInCell = event.target.closest('.calendar-table-day'); // console.log(timeInCell.childNodes[1].childElementCount)
+      var timeInCell = event.target.closest('.calendar-table-day'); // // console.log(timeInCell.childNodes[1].childElementCount)
 
       if (timeInCell.childNodes[1].childElementCount === 0) {
         this.timeIsSet = false;
       } else {
         this.timeIsSet = true;
-      } // console.log(this.timeIsSet);
+      } // // console.log(this.timeIsSet);
 
 
       this.timeChangeSatus = 'calendar-active';
@@ -4880,11 +5362,11 @@ function getCookie(name) {
         if (resData !== null) {
           resData.forEach(function (val, k) {
             var dateFromDb = val.day;
-            var timeFromDb = val.time; // console.log(dateFromDb);
-            // console.log(currDate);
+            var timeFromDb = val.time; // // console.log(dateFromDb);
+            // // console.log(currDate);
 
             if (currDate === dateFromDb) {
-              mass = timeFromDb.split(','); // console.log(timeFromDb.split(',')[0]);
+              mass = timeFromDb.split(','); // // console.log(timeFromDb.split(',')[0]);
 
               mass.forEach(function (val, k) {
                 var massValue = val;
@@ -4897,7 +5379,7 @@ function getCookie(name) {
                   if (val === massValue.trim().split(' - ')[1]) {
                     arrRight.splice(k, 1);
                   }
-                }); // console.log(massValue.trim().split(' - ')[0]);
+                }); // // console.log(massValue.trim().split(' - ')[0]);
 
                 timeIntervals.push(val.trim());
               });
@@ -4914,23 +5396,22 @@ function getCookie(name) {
     addTime: function addTime() {
       if (this.timeIntervals.length < 21) {
         this.timeIsSet = true;
-        var timeVal = $('#left-time').val() + ' - ' + $('#right-time').val();
-        console.log(timeVal);
+        var timeVal = $('#left-time').val() + ' - ' + $('#right-time').val(); // console.log(timeVal);
+
         this.timeIntervals.push(timeVal);
         this.timeIntervals.sort(this.compareNumeric);
         var leftValIndex = $('#left-time option:selected').attr('data-index');
         var rightValIndex = $('#right-time option:selected').attr('data-index');
         this.timeLeftSelectorVariables.splice(leftValIndex, 1);
-        this.timeRightSelectorVariables.splice(rightValIndex, 1); // console.log(this.timeIntervals);
-      } // console.log(this.timeIsSet);
+        this.timeRightSelectorVariables.splice(rightValIndex, 1); // // console.log(this.timeIntervals);
+      } // // console.log(this.timeIsSet);
 
     },
     delBtn: function delBtn() {
-      this.resetValues();
-      console.log(this.timeIntervals);
+      this.resetValues(); // console.log(this.timeIntervals);
     },
     delTime: function delTime(event) {
-      console.log(this.timeIsSet);
+      // console.log(this.timeIsSet);
       var val = event.target.parentNode.getAttribute('value');
       var arr = val.split('-');
 
@@ -4954,10 +5435,9 @@ function getCookie(name) {
       }
     },
     applyBtn: function applyBtn() {
-      console.log(this.timeIntervals.length);
-      console.log(this.timeIntervals);
-      console.log(this.timeIsSet);
-
+      // console.log(this.timeIntervals.length);
+      // console.log(this.timeIntervals);
+      // console.log(this.timeIsSet);
       if (this.timeIsSet === true) {
         var inputData = {
           day: this.currentDate,
@@ -5009,7 +5489,7 @@ function getCookie(name) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getTimeIntervals'
       })).then(function (response) {
-        // console.log(response.data);
+        // // console.log(response.data);
         var data = response.data; // количество полученных интервалов
 
         var count = 0;
@@ -5021,7 +5501,7 @@ function getCookie(name) {
           });
         }
 
-        _this.lengthOfData = count; // console.log(this.lengthOfData)
+        _this.lengthOfData = count; // // console.log(this.lengthOfData)
 
         var timeZone = _this.timeZone;
 
@@ -5041,12 +5521,12 @@ function getCookie(name) {
         function addToTempDB() {
           if (data !== null) {
             data.forEach(function (val, k) {
-              // console.log(val);
+              // // console.log(val);
               var dayFromDb = val.day;
               var timeFromDb = val.time;
               var gmtFromDb = val.gmt;
               var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
-              var delta = timeZoneNum - gmtFromDbNum; // console.log(timeFromDb)
+              var delta = timeZoneNum - gmtFromDbNum; // // console.log(timeFromDb)
 
               var arr = timeFromDb.split(',');
               var newArr = [];
@@ -5070,7 +5550,7 @@ function getCookie(name) {
                 var nextNum = +dayFromDb.split('.')[0] + 1;
                 var nextMonth = +dayFromDb.split('.')[1];
                 var nextYear = +dayFromDb.split('.')[2];
-                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+                var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
                 if (nextNum == lastNum + 1) {
                   nextNum = '1';
@@ -5097,9 +5577,9 @@ function getCookie(name) {
                 var time = a + ':' + firstM + ' - ' + b + ':' + secondM;
 
                 if (a < 0) {
-                  // console.log(prevDateNumber)
-                  // console.log(time)
-                  newArr.push(time); // console.log(newArr.join(', '))
+                  // // console.log(prevDateNumber)
+                  // // console.log(time)
+                  newArr.push(time); // // console.log(newArr.join(', '))
 
                   obj = {
                     day: prevDateNumber,
@@ -5139,16 +5619,16 @@ function getCookie(name) {
                 array.push(obj3);
               }
 
-              array2 = _toConsumableArray(new Set(array)); // console.log(array2)
-              // console.log(obj)
-              // console.log(obj2)
+              array2 = _toConsumableArray(new Set(array)); // // console.log(array2)
+              // // console.log(obj)
+              // // console.log(obj2)
             });
           }
 
           var object = {
             intervals: array2,
             'method': 'setToTempGMT'
-          }; // console.log(array2);
+          }; // // console.log(array2);
 
           axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(object));
         }
@@ -5162,7 +5642,7 @@ function getCookie(name) {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
           'method': 'getFromTempGMT'
         })).then(function (response) {
-          var data = response.data; // console.log(data)
+          var data = response.data; // // console.log(data)
 
           var unconfirmedBooks = [];
           var dataLength = 0;
@@ -5178,12 +5658,12 @@ function getCookie(name) {
             if (_this2.lengthOfData === dataLength) {
               if (data !== null) {
                 data.forEach(function (val, k) {
-                  // console.log(val);
+                  // // console.log(val);
                   var dayFromDb = val[0];
                   var timeFromDb = val[1];
                   var gmtFromDb = val[2];
                   var newArr = [];
-                  var arr = timeFromDb.split(','); // console.log(timeFromDb);
+                  var arr = timeFromDb.split(','); // // console.log(timeFromDb);
 
                   arr.forEach(function (val, k) {
                     var firstH = val.split(' - ')[0].split(':')[0]; // 06
@@ -5242,8 +5722,7 @@ function getCookie(name) {
               }
             } else {
               // если не совпадает выполняется getIntervalsFromDB заново
-              console.log('false');
-
+              // console.log('false')
               _this2.getIntervalsFromDB();
             }
           }
@@ -5252,7 +5731,7 @@ function getCookie(name) {
             'method': 'getLessons'
           })).then(function (response) {
             // получаем всю информацию о забронированных уроках по данному пользователю
-            var data = response.data; // console.log(data)
+            var data = response.data; // // console.log(data)
 
             var days = $('.time-intrevals-from-db__item');
             _this2.bookedGmtArray = [];
@@ -5314,7 +5793,7 @@ function getCookie(name) {
                   var nextNum = +dayFromDB.split('.')[0] + 1;
                   var nextMonth = +dayFromDB.split('.')[1];
                   var nextYear = +dayFromDB.split('.')[2];
-                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+                  var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
                   if (nextNum == lastNum + 1) {
                     nextNum = '1';
@@ -5377,7 +5856,7 @@ function getCookie(name) {
                     a = +firstH + delta; // 02
 
                     time = a + ':' + firstM;
-                  } // console.log(time)
+                  } // // console.log(time)
 
 
                   var obj = {
@@ -5390,7 +5869,7 @@ function getCookie(name) {
                     price: priceFromDB,
                     gmt: _this2.timeZone,
                     'method': 'setToBooksTimeGMT'
-                  }; // console.log(obj)
+                  }; // // console.log(obj)
 
                   _this2.bookedGmtArray.push(obj);
                 });
@@ -5447,7 +5926,7 @@ function getCookie(name) {
                   });
                 });
               });
-            } // console.log(unconfirmedBooks)
+            } // // console.log(unconfirmedBooks)
             // удаление неоплаченных бронирований через 15 минут
 
 
@@ -5455,7 +5934,7 @@ function getCookie(name) {
               var data = response.data;
 
               if (data === true) {
-                // console.log(data)
+                // // console.log(data)
                 _this2.getIntervalsFromDB();
               }
             });
@@ -5463,8 +5942,7 @@ function getCookie(name) {
         });
       }, 500);
     },
-    exitBtn: function exitBtn() {
-      console.log('exit');
+    exitBtn: function exitBtn() {// console.log('exit');
     },
     // ---- функция меняет  switcherIntervals переключая тип времени в селекторах
     // добавления интервалов  (убирает/добавляет получасовые интервалы)
@@ -5490,9 +5968,8 @@ function getCookie(name) {
         this.timeRightSelectorVariablesOverall.forEach(function (val, k) {
           _this3.timeRightSelectorVariables.push(val);
         });
-      }
+      } // console.log(this.switcherIntervals);
 
-      console.log(this.switcherIntervals);
     }
   }
 });
@@ -5575,12 +6052,12 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'getAllUsersInfo'
       })).then(function (response) {
-        // console.log(response.data)
+        // // console.log(response.data)
         localStorage.setItem('getAllUsersInfo', JSON.stringify(response.data));
         var data = response.data;
         var array = _this.array;
         data.forEach(function (val, k) {
-          // console.log(val.status)
+          // // console.log(val.status)
           if (val.status !== 'admin') {
             array.push(val);
           }
@@ -5592,7 +6069,7 @@ __webpack_require__.r(__webpack_exports__);
           if (val.status === 'blocked') {
             val.text = 'разблокировать';
           }
-        }); // console.log(array)
+        }); // // console.log(array)
       });
     },
     openAvatar: function openAvatar() {
@@ -5605,7 +6082,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     blockUser: function blockUser(event) {
-      // console.log(event.target.parentNode.previousElementSibling);
+      // // console.log(event.target.parentNode.previousElementSibling);
       var statusElem = event.target.parentNode.previousElementSibling;
       var email = event.target.getAttribute('email');
       var status = event.target.getAttribute('status');
@@ -5624,7 +6101,7 @@ __webpack_require__.r(__webpack_exports__);
         'method': method
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(data)).then(function (response) {
-        // console.log(response.data)
+        // // console.log(response.data)
         var data = response.data;
         event.target.setAttribute('status', data);
         statusElem.innerHTML = data;
@@ -9905,6 +10382,237 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.freeLessBookSuccess,
+            expression: "freeLessBookSuccess"
+          }
+        ],
+        staticClass: "free-lesson-success-frame"
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.freeLessBookSuccess,
+                expression: "freeLessBookSuccess"
+              }
+            ],
+            staticClass: "free-lesson-success"
+          },
+          [
+            _c(
+              "h2",
+              {
+                staticClass: "free-lesson-success__elem",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text": "Вы успешно забронировали урок"
+                }
+              },
+              [_vm._v("You have successfully booked a lesson")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h3",
+              {
+                staticClass: "free-lesson-success__elem",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text": "Не забудте придти вовремя"
+                }
+              },
+              [_vm._v("Do not forget to come on time")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h3",
+              {
+                staticClass: "free-lesson-success__elem",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text":
+                    "Если остались вопросы напишите письмо\n                      преподавателю"
+                }
+              },
+              [
+                _vm._v(
+                  "If you still have questions, write a email\n        to the teacher"
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "button ok-btn",
+                on: {
+                  click: function($event) {
+                    return _vm.closeFreeLessSuccess()
+                  }
+                }
+              },
+              [_vm._v("ok")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h3",
+              {
+                staticClass: "free-lesson-success__elem",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text":
+                    "Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                }
+              },
+              [
+                _vm._v("Tutor Skype: "),
+                _c("span", [_vm._v("svetlana TutorOnline")])
+              ]
+            )
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.enterSkype,
+            expression: "enterSkype"
+          }
+        ],
+        staticClass: "enter-your-skype-frame"
+      },
+      [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.enterSkype,
+                expression: "enterSkype"
+              }
+            ],
+            staticClass: "enter-your-skype"
+          },
+          [
+            _c(
+              "h2",
+              {
+                staticClass: "enter-your-skype__element",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text": "Все занятия проходят в skype"
+                }
+              },
+              [_vm._v("All lessons are held on skype")]
+            ),
+            _vm._v(" "),
+            _c(
+              "h3",
+              {
+                staticClass: "enter-your-skype__element",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text":
+                    "Для продолжения введите <br> свой скайп и нажмите отправить"
+                }
+              },
+              [
+                _vm._v("\n        To continue, enter "),
+                _c("br"),
+                _vm._v(" your skype and click send\n      ")
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex" }, [
+              _c("div", { staticClass: "skype-icon-for-input" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex", attrs: { id: "enter-your-skype" } },
+                [
+                  _c("input", {
+                    staticClass: "enter-your-skype__element input-skype",
+                    attrs: { type: "text", placeholder: "skype" }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "button send-skype",
+                      attrs: {
+                        language: _vm.language,
+                        "switchable-text": "отправить"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.sendSkype()
+                        }
+                      }
+                    },
+                    [_vm._v("send\n          ")]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.validationSkype,
+                      expression: "validationSkype"
+                    }
+                  ],
+                  staticClass: "validation-skype",
+                  attrs: {
+                    language: _vm.language,
+                    "switchable-text": "поле не должно быть пустым"
+                  }
+                },
+                [_vm._v("the field must not be empty\n        ")]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "h3",
+              {
+                staticClass: "enter-your-skype__element",
+                attrs: {
+                  language: _vm.language,
+                  "switchable-text":
+                    "Скайп преподавателя: <span>svetlana tutorOnline</span>"
+                }
+              },
+              [
+                _vm._v("Tutor Skype: "),
+                _c("span", [_vm._v("svetlana TutorOnline")])
+              ]
+            )
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
     _c("div", {
       directives: [
         {
@@ -10324,207 +11032,26 @@ var render = function() {
                   [_vm._v("Unavailable time")]
                 )
               ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.enterSkype,
-                    expression: "enterSkype"
-                  }
-                ],
-                staticClass: "enter-your-skype"
-              },
-              [
-                _c(
-                  "h2",
-                  {
-                    staticClass: "enter-your-skype__element",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text": "Все занятия проходят в skype"
-                    }
-                  },
-                  [_vm._v("All lessons are held on skype")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h3",
-                  {
-                    staticClass: "enter-your-skype__element",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text":
-                        "Для продолжения введите <br> свой скайп и нажмите отправить"
-                    }
-                  },
-                  [
-                    _vm._v("\n          To continue, enter "),
-                    _c("br"),
-                    _vm._v(" your skype and click send\n        ")
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "flex" }, [
-                  _c("div", { staticClass: "skype-icon-for-input" }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "flex", attrs: { id: "enter-your-skype" } },
-                    [
-                      _c("input", {
-                        staticClass: "enter-your-skype__element input-skype",
-                        attrs: { type: "text", placeholder: "skype" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "button send-skype",
-                          attrs: {
-                            language: _vm.language,
-                            "switchable-text": "отправить"
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.sendSkype()
-                            }
-                          }
-                        },
-                        [_vm._v("send\n            ")]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.validationSkype,
-                          expression: "validationSkype"
-                        }
-                      ],
-                      staticClass: "validation-skype",
-                      attrs: {
-                        language: _vm.language,
-                        "switchable-text": "поле не должно быть пустым"
-                      }
-                    },
-                    [_vm._v("the field must not be empty\n          ")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "h3",
-                  {
-                    staticClass: "enter-your-skype__element",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text":
-                        "Скайп преподавателя: <span>svetlana tutorOnline</span>"
-                    }
-                  },
-                  [
-                    _vm._v("Tutor Skype: "),
-                    _c("span", [_vm._v("svetlana TutorOnline")])
-                  ]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.freeLessBookSuccess,
-                    expression: "freeLessBookSuccess"
-                  }
-                ],
-                staticClass: "free-lesson-success"
-              },
-              [
-                _c(
-                  "h2",
-                  {
-                    staticClass: "free-lesson-success__elem",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text": "Вы успешно забронировали урок"
-                    }
-                  },
-                  [_vm._v("You have successfully booked a lesson")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h3",
-                  {
-                    staticClass: "free-lesson-success__elem",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text": "Не забудте придти вовремя"
-                    }
-                  },
-                  [_vm._v("Do not forget to come on time")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h3",
-                  {
-                    staticClass: "free-lesson-success__elem",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text":
-                        "Если остались вопросы напишите <span>сообщение</span>\n                      преподавателю"
-                    }
-                  },
-                  [
-                    _vm._v("If you still have questions, write a "),
-                    _c("span", [_vm._v("message")]),
-                    _vm._v("\n          to the teacher")
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "button ok-btn",
-                    on: {
-                      click: function($event) {
-                        return _vm.closeFreeLessSuccess()
-                      }
-                    }
-                  },
-                  [_vm._v("ok")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h3",
-                  {
-                    staticClass: "free-lesson-success__elem",
-                    attrs: {
-                      language: _vm.language,
-                      "switchable-text":
-                        "Скайп преподавателя: <span>svetlana tutorOnline</span>"
-                    }
-                  },
-                  [
-                    _vm._v("Tutor Skype: "),
-                    _c("span", [_vm._v("svetlana TutorOnline")])
-                  ]
-                )
-              ]
-            )
+            ])
           ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "warn-15-min-book-del",
+        attrs: {
+          language: _vm.language,
+          "switchable-text":
+            " <span style='color: red'>Неоплаченные</span> бронирования доступны для оплаты в течение 15 минут. Для оплаты нажмите на красный интервал."
+        }
+      },
+      [
+        _c("span", { staticStyle: { color: "red" } }, [_vm._v("Unpaid")]),
+        _vm._v(
+          "  bookings are available for payment within 15 minutes. To pay, click on the red interval."
         )
       ]
     ),
@@ -11035,8 +11562,7 @@ var render = function() {
               attrs: {
                 "user-name": _vm.detailUserName,
                 "type-of-lesson": _vm.typeOfLesson,
-                "time-zone": _vm.timeZone,
-                confirmation: _vm.confirmation
+                "time-zone": _vm.timeZone
               },
               on: {
                 "delete-book": _vm.deleteBook,
@@ -23756,7 +24282,7 @@ $(document).ready(function () {
 
     var offersAnimation = function offersAnimation() {
       document.addEventListener("scroll", function (e) {
-        // console.log(window.pageYOffset);
+        // // console.log(window.pageYOffset);
         if (mediaQueryDesktop.matches) {
           if (window.pageYOffset > 400) {
             animateToOrigin($(".offers-title"));
@@ -23797,7 +24323,7 @@ $(document).ready(function () {
       }
     };
 
-    console.log('about');
+    // console.log('about');
     var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
     aboutAnimation();
     offersAnimation(); // $(window).resize(function () {
@@ -23898,7 +24424,7 @@ $(document).ready(function () {
           'method': 'setPrice'
         };
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(obj)).then(function (response) {
-          console.log(response.data);
+          // console.log(response.data);
           $('.price-private').html('$' + response.data["private"]);
           $('.price-sclub').html('$' + response.data.sclub);
         });
@@ -23920,13 +24446,11 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          console.log(data.logout);
-
+          // console.log(data.logout)
           if (data.logout === true) {
             delete localStorage.getAllUsersInfo;
             window.location.reload();
-          } else {
-            console.log('не удалось выйти');
+          } else {// console.log('не удалось выйти')
           }
         });
       });
@@ -23947,7 +24471,7 @@ $(document).ready(function () {
 
     var loginOnReload = function loginOnReload() {
       window.addEventListener("load", function (e) {
-        // console.log('load')
+        // // console.log('load')
         var zone = new Date().toString().split(' ')[5];
         var gmt = 'GMT ' + zone.substring(3, 6) + ':00';
         var data = {
@@ -23964,7 +24488,7 @@ $(document).ready(function () {
       });
     };
 
-    console.log('admin-panel init');
+    // console.log('admin-panel init');
     var mediaQueryMobile = window.matchMedia('(max-width: 767px)');
     switchMenuComponents();
     logout(); // adminMenuMobile();
@@ -24055,12 +24579,12 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_18__["default"].config.productionTip = false;
 $(document).ready(function () {
-  console.log('app.js init'); // -----------------------------------------
+  // console.log('app.js init')
+  // -----------------------------------------
   // ----------------- ПОДКЛЮЧЕНИЯ VUE КОМПОНЕНТОВ ---------------- \\
   // ----------- мой календарь (админ-панель)
-
   if (document.getElementById('vue-my-calendar')) {
-    console.log('init vue-my-calendar');
+    // console.log('init vue-my-calendar')
     var myCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-calendar',
       template: "<MyCalendar/>",
@@ -24072,7 +24596,7 @@ $(document).ready(function () {
 
 
   if (document.getElementById('vue-my-schedule')) {
-    console.log('init vue-my-schedule');
+    // console.log('init vue-my-schedule');
     var mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-my-schedule',
       template: "<MySchedule/>",
@@ -24084,7 +24608,7 @@ $(document).ready(function () {
 
 
   if (document.getElementById('vue-my-students')) {
-    console.log('init vue-my-students');
+    // console.log('init vue-my-students')
     var bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-my-students",
       template: "<MyStudents/>",
@@ -24096,8 +24620,7 @@ $(document).ready(function () {
 
 
   if (document.getElementById('vue-admin-book-calendar')) {
-    console.log('init vue-admin-book-calendar');
-
+    // console.log('init vue-admin-book-calendar');
     var _mySchedule = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: '#vue-admin-book-calendar',
       template: "<AdminBookCalendar/>",
@@ -24109,8 +24632,7 @@ $(document).ready(function () {
 
 
   if (document.getElementById('vue-book-calendar')) {
-    console.log('init vue-book-calendar');
-
+    // console.log('init vue-book-calendar')
     var _bookCalendar = new vue__WEBPACK_IMPORTED_MODULE_18__["default"]({
       el: "#vue-book-calendar",
       template: "<BookCalendar/>",
@@ -24134,7 +24656,7 @@ $(document).ready(function () {
 
 // $(document).ready(function () {
 //     if ($('main').hasClass("private-lesson") || $('main').hasClass("speaking-club")) {
-//         console.log('booking-calendar init');
+//         // console.log('booking-calendar init');
 //     }
 // });
 //
@@ -24163,7 +24685,7 @@ $(document).ready(function () {
 
         if (!targClass.includes("user-login__elem") && !targClass.includes("user-login")) {
           $(".user-login-menu").slideUp(10);
-        } // console.log(e.target);
+        } // // console.log(e.target);
 
       });
     }; // ----------- сброс активных состояний на escape
@@ -24173,7 +24695,7 @@ $(document).ready(function () {
     // ----------- функционал смены языка
     var changeLanguage = function changeLanguage() {
       $(".btn-change-lang").click(function () {
-        // console.log($(".lang-changer").hasClass('lang-changer-active'));
+        // // console.log($(".lang-changer").hasClass('lang-changer-active'));
         if (!$(".lang-changer").hasClass('active')) {
           $(".lang-changer").addClass('active');
         } else {
@@ -24207,7 +24729,7 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          // console.log(data); // eng-lang || rus-eng
+          // // console.log(data); // eng-lang || rus-eng
           switchLang(data);
           elemStyleOnSwitchLang();
         });
@@ -24221,10 +24743,10 @@ $(document).ready(function () {
     };
 
     var langStateOnReload = function langStateOnReload() {
-      // console.log(getCookie('btnLang'));
+      // // console.log(getCookie('btnLang'));
       elemStyleOnSwitchLang();
       $('*').each(function (k, val) {
-        // console.log($(this));
+        // // console.log($(this));
         if ($(this).attr('switch-lang') === 'rus-lang') {
           if ($(this).attr('placeholder')) {
             $(this).animate({
@@ -24252,7 +24774,7 @@ $(document).ready(function () {
         }
 
         if ($(this).attr('switch-lang') === 'eng-lang') {
-          // console.log($(this))
+          // // console.log($(this))
           $(this).animate({
             'opacity': 1
           }, 400);
@@ -24367,8 +24889,8 @@ $(document).ready(function () {
 
     var burgerMenuActions = function burgerMenuActions() {
       $(".burger-menu").click(function () {
-        // console.log('ww')
-        // console.log(window.pageYOffset);
+        // // console.log('ww')
+        // // console.log(window.pageYOffset);
         if ($(".header-menu").hasClass('header-menu-active')) {
           $(".header-menu").removeClass('header-menu-active').animate({
             'right': '768px'
@@ -24455,7 +24977,7 @@ $(document).ready(function () {
       }
     };
 
-    console.log('common.js init');
+    // console.log('common.js init')
     var mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
     // -------------------------
 
@@ -24682,9 +25204,9 @@ __webpack_require__.r(__webpack_exports__);
 
 $(document).ready(function () {
   if ($("main").hasClass('free-lesson')) {
-    console.log('free-lesson init'); // console.log(localStorage.getItem('status'));
+    // console.log('free-lesson init');
+    // // console.log(localStorage.getItem('status'));
     // --------- проверка
-
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php ', JSON.stringify({
       'method': 'checkLoginOnBookedLesson'
     })).then(function (response) {
@@ -24711,8 +25233,8 @@ $(document).ready(function () {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
   if ($('main').hasClass('guide')) {
-    console.log('guide.js init'); // карусели
-
+    // console.log('guide.js init')
+    // карусели
     $(".owl-carousel-1").owlCarousel({
       margin: 250,
       autoWidth: true,
@@ -24760,8 +25282,7 @@ $(document).ready(function () {
 
     var scrollAnimation = function scrollAnimation() {
       document.addEventListener("scroll", function (e) {
-        console.log(window.pageYOffset);
-
+        // console.log(window.pageYOffset );
         if (mediaQueryDesktop.matches) {
           // анимация for-whom
           if (window.pageYOffset > 280) {
@@ -24846,7 +25367,7 @@ $(document).ready(function () {
     }; // ---------- получить бесплатное занятие
 
 
-    console.log("js index plugged");
+    // console.log("js index plugged");
     var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)'); // не менее 1024
 
     var mediaQueryCartTablet = window.matchMedia('(max-width: 1023px)');
@@ -24893,7 +25414,7 @@ $(document).ready(function () {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
         'method': 'checkLoginOnBookedLesson'
       })).then(function (response) {
-        // console.log(response.data['success']);
+        // // console.log(response.data['success']);
         if (response.data['success'] === false) {
           // открытие формы логина
           if (!$(".register-form").hasClass('register-form-active')) {
@@ -24912,8 +25433,7 @@ $(document).ready(function () {
             $('.check').addClass('check-active');
             setTimeout(function () {
               $('.check').removeClass('check-active');
-            }, 1000);
-            console.log('пользователь уже бронировал бесплатный урок');
+            }, 1000); // console.log('пользователь уже бронировал бесплатный урок');
           }
         }
       });
@@ -24944,7 +25464,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 $(document).ready(function () {
   if (!$('body').hasClass('admin') && !$('main').hasClass('payment')) {
-    console.log('login and register init');
+    // console.log('login and register init')
     openLoginForm();
     closeLoginForm();
     changeForms();
@@ -25173,7 +25693,7 @@ $(document).ready(function () {
 
       function addZero(num) {
         return +num < 10 ? '0' + num : num;
-      } // console.log(getFormatDate('.'));
+      } // // console.log(getFormatDate('.'));
 
 
       var registerDate = getFormatDate('.'); // FETCH
@@ -25188,7 +25708,7 @@ $(document).ready(function () {
           status: 'new',
           avatar: ' ',
           'method': 'register'
-        }; // console.log(params);
+        }; // // console.log(params);
 
         var response = fetch('handle.php', {
           method: 'POST',
@@ -25200,13 +25720,12 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          console.log(data);
-
+          // console.log(data);
           if (data.success) {
             localStorage.setItem('email', data.email);
             setCookie('name', data.name);
             registerUser();
-            changeLoginBtnToUserName(); // console.log(data.name);
+            changeLoginBtnToUserName(); // // console.log(data.name);
 
             $(".user-login__elem--user-name").html(data.name);
             /*-- если логин после нажатия на кнопку "получить беспдатное занятие"
@@ -25238,8 +25757,7 @@ $(document).ready(function () {
           $(".register-success").removeClass("register-success-active");
           $("#mysite").removeClass("body-fixed");
         });
-      } else {
-        console.log(errors);
+      } else {// console.log(errors);
       }
     });
   }
@@ -25285,9 +25803,9 @@ $(document).ready(function () {
         response.then(function (data) {
           return data.json();
         }).then(function (data) {
-          console.log(data); // установка localstor user_id для croppie
-          // console.log(localStorage.getItem('user_id'));
-
+          // console.log(data);
+          // установка localstor user_id для croppie
+          // // console.log(localStorage.getItem('user_id'));
           if (data.success) {
             localStorage.setItem('user_id', data.userID);
             localStorage.setItem('email', data.email);
@@ -25342,8 +25860,7 @@ $(document).ready(function () {
           } // login
 
         });
-      } else {
-        console.log(errors);
+      } else {// console.log(errors);
       }
     });
   }
@@ -25365,7 +25882,7 @@ $(document).ready(function () {
       response.then(function (data) {
         return data.json();
       }).then(function (data) {
-        // console.log(data)
+        // // console.log(data)
         $('.form-input').each(function (k, val) {
           $(val).val('');
         });
@@ -25403,16 +25920,14 @@ $(document).ready(function () {
       response.then(function (data) {
         return data.json();
       }).then(function (data) {
-        console.log(data.logout);
-
+        // console.log(data.logout)
         if (data.logout === true) {
           deleteCookie('name');
           delete localStorage.email;
           delete localStorage.user_id;
-          document.location.href = '/index.php'; // console.log('logout');
-        } else {
-          console.log('не удалось выйти');
-        }
+          document.location.href = '/index.php'; // // console.log('logout');
+        } else {// console.log('не удалось выйти')
+          }
       });
     });
   }
@@ -25464,8 +25979,7 @@ $(document).ready(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {$(document).ready(function () {
-  if ($('main').hasClass("my-lessons")) {
-    console.log('my lessons init');
+  if ($('main').hasClass("my-lessons")) {// console.log('my lessons init');
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -25503,7 +26017,7 @@ $(document).ready(function () {
     if (mediaQueryDesktop.matches) {
       $(".detail-btn").each(function (key, val) {
         $(this).click(function (e) {
-          // console.log($(this).parent().parent())
+          // // console.log($(this).parent().parent())
           $(this).parent().parent().addClass('card-rotate-forward');
           var front = $(this).parent();
           var back = front.next();
@@ -25568,15 +26082,18 @@ $(document).ready(function () {
     }; //----------------------------------------------
 
 
-    console.log('payment init');
+    // console.log('payment init');
     var mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
 
     if ($('.payment-gateway-main__price').html() === '$.00') {
       window.location.href = '/index';
     }
 
+    setTimeout(function () {
+      $('#preloader').css('display', 'none');
+    }, 700);
     document.addEventListener("scroll", function (e) {
-      // console.log(window.pageYOffset);
+      // // console.log(window.pageYOffset);
       if (mediaQueryDesktop.matches) {
         if (window.pageYOffset > 50) {
           $('.success-frame-content').addClass('success-frame-content-unfix');
@@ -25615,9 +26132,9 @@ $(document).ready(function () {
           };
           array.push(obj);
         });
-      }
+      } // console.log(array);
 
-      console.log(array);
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(array)).then(function (response) {
         if (response.data === 'success') {
           $('.success-frame').addClass('success-frame-active');
@@ -25677,9 +26194,15 @@ $(document).ready(function () {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 $(document).ready(function () {
-  console.log('settings init');
+  // console.log('settings init');
   var user_id = null; // ----- закрытие на escape
 
   $(this).keydown(function (eventObject) {
@@ -25715,7 +26238,7 @@ $(document).ready(function () {
 
   function openSettings() {
     $('.user-login-menu__elem--settings').click(function () {
-      // console.log(localStorage.getItem('user_id'));
+      // // console.log(localStorage.getItem('user_id'));
       $("#mysite").addClass("body-fixed");
       $('.settings-main-frame').addClass('settings-active');
       $('.settings').addClass('settings-active');
@@ -25725,7 +26248,7 @@ $(document).ready(function () {
         'method': 'getUserInfo'
       })).then(function (response) {
         var dataFromDB = response.data;
-        user_id = dataFromDB.id; // console.log(response.data);
+        user_id = dataFromDB.id; // // console.log(response.data);
 
         $('.main-text--user-name').html(dataFromDB.name);
         $('.main-text--email').html(dataFromDB.email);
@@ -25762,7 +26285,7 @@ $(document).ready(function () {
         var wrap = e.target.parentNode.parentNode;
         var inputWrap = wrap.nextElementSibling;
         $('.wrap').removeClass('wrap-hidden');
-        $('.input-wrap').removeClass('input-wrap-active'); // console.log(wrap.nextElementSibling);
+        $('.input-wrap').removeClass('input-wrap-active'); // // console.log(wrap.nextElementSibling);
 
         wrap.classList.add('wrap-hidden');
         inputWrap.classList.add('input-wrap-active');
@@ -25883,8 +26406,7 @@ $(document).ready(function () {
               'method': 'changeSettings'
             };
             axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(data)).then(function (response) {
-              var dataFromDB = response.data;
-              console.log(dataFromDB);
+              var dataFromDB = response.data; // console.log(dataFromDB);
 
               if (dataFromDB !== 'success') {
                 $('.check--old-pass').addClass('check-active');
@@ -25902,11 +26424,12 @@ $(document).ready(function () {
               dataType: dataType,
               name: getCookie('name'),
               'method': 'changeSettings'
-            }; // console.log(data);
+            }; // // console.log(data);
 
             axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(_data)).then(function (response) {
-              // console.log(response.data)
-              var dataFromDB = response.data; // если смена успешна, убирается поле ввода с возвратом первоначального состояния
+              // // console.log(response.data)
+              var dataFromDB = response.data;
+              setCookie('name', dataFromDB.name); // если смена успешна, убирается поле ввода с возвратом первоначального состояния
 
               if (dataFromDB.status === 'success') {
                 if (dataFromDB.type !== 'email') {
@@ -25914,7 +26437,7 @@ $(document).ready(function () {
 
                   _inputWrap.classList.remove('input-wrap-active');
 
-                  var nameOfFiled = e.target.parentNode.parentNode.previousElementSibling.lastElementChild; // console.log(nameOfFiled);
+                  var nameOfFiled = e.target.parentNode.parentNode.previousElementSibling.lastElementChild; // // console.log(nameOfFiled);
 
                   nameOfFiled.innerHTML = dataFromDB.name; // при смене имени меняется имя в шапке сайта и в поле настроек
 
@@ -25951,16 +26474,16 @@ $(document).ready(function () {
 
               if (dataFromDB.status === 'unconfirmed') {
                 // меняется placeholder поля инпут на введите код подтверждения
-                // console.log(dataFromDB.status);
+                // // console.log(dataFromDB.status);
                 $('.input--email').attr('placeholder', confirmationCodeText).val('').removeClass('input--email').addClass('confirm-email');
                 $('.check--email').addClass('check-active').html(sendCodeText);
                 $('.change-button--email').html(btnConfText).attr('data-type', 'confirm-code');
               }
 
               if (dataFromDB.status === 'confirmed') {
-                console.log(dataFromDB.email);
-                console.log(dataFromDB);
-                console.log(dataFromDB.status);
+                // console.log(dataFromDB.email);
+                // console.log(dataFromDB);
+                // console.log(dataFromDB.status);
                 $('.wrap--email').removeClass('wrap-hidden');
                 $('.input-wrap--email').removeClass('input-wrap-active');
                 $('.main-text--email').html(dataFromDB.email);
@@ -25969,61 +26492,45 @@ $(document).ready(function () {
               }
 
               if (dataFromDB.status === 'invalid-code') {
-                // console.log('неверный код подтверждения');
-                // console.log(dataFromDB.status);
+                // // console.log('неверный код подтверждения');
+                // // console.log(dataFromDB.status);
                 $('.check--email').addClass('check-active').html(incorCode);
               }
             });
           }
         }
       }
-    }); // ------- загрузка аватара ../scripts/croppie/script.js
-    // function readURL(input) {
-    //     if (input.files && input.files[0]) {
-    //         let reader = new FileReader();
-    //         // console.log(reader)
-    //         reader.onload = function(e) {
-    //             $('.avatar').css('backgroundImage', 'url(' + e.target.result + ')');
-    //         }
-    //         reader.readAsDataURL(input.files[0]);
-    //     }
-    // }
-    // $('#download-avatar').change(function(){
-    //     axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
-    //         .then((response) => {
-    //             let dataFromDB = response.data
-    //             console.log(dataFromDB)
-    //             user_id = dataFromDB.id;
-    //         });
-    //     readURL(this);
-    //     $('.apply-avatar').addClass('apply-avatar-active ');
-    // });
-    // $('.apply-avatar').click(function () {
-    //
-    //     let data = new FormData();
-    //     // console.log(document.getElementById('download-avatar').files)
-    //     // console.log(document.getElementById('download-avatar').files[0])
-    //     let input  = document.getElementById('download-avatar');
-    //     data.append('img_path', input.files[0]);
-    //     data.append('method','setAvatar');
-    //     data.append('user_id', user_id);
-    //     console.log(data);
-    //     let response = fetch('/handle.php', {
-    //         method: 'POST',
-    //         headers: {},
-    //         body: data,
-    //     });
-    // })
-    // -----------------------------------------
-  } // -----------------------------------------
-  // ----------- getCookie
+    });
+  }
 
+  function setCookie(name, value) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    options = _objectSpread({
+      path: '/'
+    }, options);
+
+    if (options.expires instanceof Date) {
+      options.expires = options.expires.toUTCString();
+    }
+
+    var updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (var optionKey in options) {
+      updatedCookie += "; " + optionKey;
+      var optionValue = options[optionKey];
+
+      if (optionValue !== true) {
+        updatedCookie += "=" + optionValue;
+      }
+    }
+
+    document.cookie = updatedCookie;
+  }
 
   function getCookie(name) {
     var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
     return matches ? decodeURIComponent(matches[1]) : undefined;
-  } //----------------------------------------------
-
+  }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
 
@@ -26060,11 +26567,11 @@ $(document).ready(function () {
       return matches ? decodeURIComponent(matches[1]) : undefined;
     };
 
-    console.log('student-lessons.js init'); // let bookedGmtArray = JSON.parse(localStorage.bookedGmtArray);
-
+    // console.log('student-lessons.js init')
+    // let bookedGmtArray = JSON.parse(localStorage.bookedGmtArray);
     $('.content-elem').each(function (k, val) {
       if ($(val).attr('confirmation') == 0 && $(val).attr('payment') === 'unpayed') {
-        // console.log($(val).siblings('a'))
+        // // console.log($(val).siblings('a'))
         $(val).addClass('unconfirmed');
         $(val).siblings('a').addClass('pay-btn-active');
       }
@@ -26085,8 +26592,7 @@ $(document).ready(function () {
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify({
       'method': 'getLessons'
     })).then(function (response) {
-      var data = response.data;
-      console.log(data);
+      var data = response.data; // console.log(data)
 
       if (data !== null) {
         data.forEach(function (val, k) {
@@ -26124,7 +26630,7 @@ $(document).ready(function () {
               var nextNum = +dayFromDB.split('.')[0] + 1;
               var nextMonth = +dayFromDB.split('.')[1];
               var nextYear = +dayFromDB.split('.')[2];
-              var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // console.log(lastNum)
+              var lastNum = new Date(nextYear, nextMonth, 0).getDate(); // // console.log(lastNum)
 
               if (nextNum == lastNum + 1) {
                 nextNum = '1';
@@ -26187,7 +26693,7 @@ $(document).ready(function () {
                 a = +firstH + delta; // 02
 
                 time = a + ':' + firstM;
-              } // console.log(time)
+              } // // console.log(time)
 
 
               var obj = {
@@ -26205,16 +26711,15 @@ $(document).ready(function () {
               };
               bookedGmtArray.push(obj);
             });
-          } // console.log(bookedGmtArray)
+          } // // console.log(bookedGmtArray)
 
         });
       }
-    });
-    console.log(bookedGmtArray);
+    }); // console.log(bookedGmtArray)
+
     setTimeout(function () {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/handle.php', JSON.stringify(bookedGmtArray)).then(function (response) {
-        console.log(response.data);
-
+        // console.log(response.data);
         if (response.data !== '') {
           if (response.data.success === 'success') {
             if (!localStorage.getItem('re')) {

@@ -69,7 +69,7 @@ class Calendar
         $this->dbAccess->query($identicalNameQuery);
     }
 
-    public function returnTimeIntervals()
+    public function getTimeIntervals()
     {
         $query = "SELECT `day`, `time`, `gmt` FROM `time-intervals` WHERE 1";
         $result = mysqli_fetch_all($this->dbAccess->query($query));
@@ -107,18 +107,20 @@ class Calendar
 
     public function getLessons()
     {
+
         $query = "SELECT * FROM `bookstime` WHERE 1";;
         $result = $this->dbAccess->query($query);
         $getUnpayLessons = mysqli_fetch_all($result);
         return $getUnpayLessons;
     }
 
-    public function setLessonsToBookstimeGMT($request)
+    public function setToBooksTimeGMT($request)
     {
         $delete = $this->dbAccess->query('DELETE FROM `bookstime-gmt`');
+        $this->dbAccess->query($delete);
         $incr = "ALTER TABLE `bookstime-gmt` AUTO_INCREMENT=0;";
         $this->dbAccess->query($incr);
-//        var_dump($delete);
+
         if ($delete) {
             foreach ($request as $i => &$arr) {
 
@@ -226,16 +228,14 @@ class Calendar
     // -------------- сохраняем данные в БД с временными интервалами
     public function setToTempGMT($request)
     {
-//        echo "<pre>";
-//        print_r($request['intervals']);
-//        echo "</pre>";
         $err = [];
-        $incr = "ALTER TABLE `temp-gmt` AUTO_INCREMENT=0;";
-        $reset = $this->dbAccess->query($incr);
-
-        $query1 = "DELETE FROM `temp-gmt`;";
-        $del = $this->dbAccess->query($query1);
-        if ($del || $reset) {
+        $dropID = "ALTER TABLE `temp-gmt` DROP id";
+        $setID = "ALTER TABLE `temp-gmt` ADD `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;";
+        $dropRes = $this->dbAccess->query($dropID);
+        $setRes = $this->dbAccess->query($setID);
+        $clearTableQuery = "DELETE FROM `temp-gmt`;";
+        $clearTable = $this->dbAccess->query($clearTableQuery);
+        if ($clearTable) {
             $err = [];
         } else {
             $err[] = 'не произведено удаление предыдущих записей';

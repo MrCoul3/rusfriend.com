@@ -2,13 +2,17 @@ import axios from "axios";
 
 $(document).ready(function () {
     if ($("main").hasClass('payment')) {
-        console.log('payment init');
+        // console.log('payment init');
         const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
         if ($('.payment-gateway-main__price').html() === '$.00') {
             window.location.href = '/index'
         }
+        setTimeout(()=>{
+            $('#preloader').css('display', 'none');
+        },700);
+
         document.addEventListener("scroll", function (e) {
-            // console.log(window.pageYOffset);
+            // // console.log(window.pageYOffset);
             if (mediaQueryDesktop.matches) {
                 if (window.pageYOffset > 50) {
                     $('.success-frame-content').addClass('success-frame-content-unfix')
@@ -51,7 +55,7 @@ $(document).ready(function () {
                     array.push(obj);
                 })
             }
-            console.log(array);
+            // console.log(array);
 
 
 

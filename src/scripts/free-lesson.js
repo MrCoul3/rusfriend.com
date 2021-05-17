@@ -1,8 +1,8 @@
 import axios from "axios";
 $(document).ready(function () {
     if ($("main").hasClass('free-lesson')) {
-        console.log('free-lesson init');
-        // console.log(localStorage.getItem('status'));
+        // console.log('free-lesson init');
+        // // console.log(localStorage.getItem('status'));
 
         // --------- проверка
         axios.post('/handle.php ', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))

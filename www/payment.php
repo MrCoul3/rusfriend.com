@@ -31,6 +31,7 @@ function switchLang()
     <link href="styles/app.css" rel="stylesheet">
 
 <body class="payment-page" id="mysite">
+<div id="preloader"></div>
 <header class="header">
     <div class="header-inner">
         <a href="/index.php" class="logo"></a>

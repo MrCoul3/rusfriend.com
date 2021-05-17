@@ -166,7 +166,7 @@ export default {
 
   },
   created: function () {
-    // console.log(this.currentDayOfWeek);
+    // // console.log(this.currentDayOfWeek);
     if ((String(this.month + 1).length) == '1') {
       this.currentMonth = 0 + String(this.month + 1);
     } else {
@@ -191,7 +191,7 @@ export default {
     // switchTimeZone(event) {
     //   let select = event.target;
     //   this.timeZone = event.target.value;
-    //   // console.log(this.timeZone);
+    //   // // console.log(this.timeZone);
     //   select.addEventListener('change', () => {
     //     this.getIntervalsFromDB();
     //   });
@@ -280,19 +280,19 @@ export default {
       targetDate = targetDate.split('.');
       targetDate[1] = +targetDate[1] - 1;
       targetDate = targetDate.reverse().join(', ');
-      console.log(targetDate);
+      // console.log(targetDate);
       let date = new Date(targetDate).getDay();
-      // console.log(this.daySun[date]);
+      // // console.log(this.daySun[date]);
       this.dayOfWeek = this.daySun[date];
       // время выбранной ячейки
       let timeInCell = event.target.closest('.calendar-table-day');
-      // console.log(timeInCell.childNodes[1].childElementCount)
+      // // console.log(timeInCell.childNodes[1].childElementCount)
       if (timeInCell.childNodes[1].childElementCount === 0) {
         this.timeIsSet = false;
       } else {
         this.timeIsSet = true;
       }
-      // console.log(this.timeIsSet);
+      // // console.log(this.timeIsSet);
       this.timeChangeSatus = 'calendar-active';
       this.setCurrentMonth();
       this.currentDate = event.target.closest('.calendar-table-day').getAttribute('date');
@@ -309,11 +309,11 @@ export default {
               resData.forEach(function (val, k) {
                 let dateFromDb = val.day;
                 let timeFromDb = val.time;
-                // console.log(dateFromDb);
-                // console.log(currDate);
+                // // console.log(dateFromDb);
+                // // console.log(currDate);
                 if (currDate === dateFromDb) {
                   mass = timeFromDb.split(',');
-                  // console.log(timeFromDb.split(',')[0]);
+                  // // console.log(timeFromDb.split(',')[0]);
                   mass.forEach(function (val, k) {
                     let massValue = val;
                     arrLeft.forEach(function (val, k) {
@@ -326,7 +326,7 @@ export default {
                         arrRight.splice(k, 1);
                       }
                     });
-                    // console.log(massValue.trim().split(' - ')[0]);
+                    // // console.log(massValue.trim().split(' - ')[0]);
                     timeIntervals.push(val.trim());
                   })
                 }
@@ -344,7 +344,7 @@ export default {
       if (this.timeIntervals.length < 21) {
         this.timeIsSet = true;
         let timeVal = $('#left-time').val() + ' - ' + $('#right-time').val();
-        console.log(timeVal);
+        // console.log(timeVal);
         this.timeIntervals.push(timeVal);
         this.timeIntervals.sort(this.compareNumeric);
         let leftValIndex = $('#left-time option:selected').attr('data-index');
@@ -353,16 +353,16 @@ export default {
         this.timeLeftSelectorVariables.splice(leftValIndex, 1);
         this.timeRightSelectorVariables.splice(rightValIndex, 1);
 
-        // console.log(this.timeIntervals);
+        // // console.log(this.timeIntervals);
       }
-      // console.log(this.timeIsSet);
+      // // console.log(this.timeIsSet);
     },
     delBtn() {
       this.resetValues()
-      console.log(this.timeIntervals);
+      // console.log(this.timeIntervals);
     },
     delTime(event) {
-      console.log(this.timeIsSet);
+      // console.log(this.timeIsSet);
       let val = event.target.parentNode.getAttribute('value');
       let arr = val.split('-');
       if (!this.timeLeftSelectorVariables.includes(arr[0].trim())) {
@@ -383,9 +383,9 @@ export default {
       }
     },
     applyBtn() {
-      console.log(this.timeIntervals.length);
-      console.log(this.timeIntervals);
-      console.log(this.timeIsSet);
+      // console.log(this.timeIntervals.length);
+      // console.log(this.timeIntervals);
+      // console.log(this.timeIsSet);
       if (this.timeIsSet === true) {
         let inputData = {
           day: this.currentDate,
@@ -436,7 +436,7 @@ export default {
 
       axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
           .then((response) => {
-            // console.log(response.data);
+            // // console.log(response.data);
             let data = response.data;
             // количество полученных интервалов
             let count = 0;
@@ -447,7 +447,7 @@ export default {
               });
             }
             this.lengthOfData = count;
-            // console.log(this.lengthOfData)
+            // // console.log(this.lengthOfData)
 
             let timeZone = this.timeZone;
             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
@@ -467,14 +467,14 @@ export default {
             function addToTempDB() {
               if (data !== null) {
                 data.forEach((val, k) => {
-                  // console.log(val);
+                  // // console.log(val);
                   let dayFromDb = val.day;
                   let timeFromDb = val.time;
                   let gmtFromDb = val.gmt;
 
                   let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
                   let delta = timeZoneNum - gmtFromDbNum;
-                  // console.log(timeFromDb)
+                  // // console.log(timeFromDb)
 
                   let arr = timeFromDb.split(',');
 
@@ -501,7 +501,7 @@ export default {
                     let nextMonth = +dayFromDb.split('.')[1];
                     let nextYear = +dayFromDb.split('.')[2];
                     let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                    // console.log(lastNum)
+                    // // console.log(lastNum)
                     if (nextNum == lastNum + 1) {
                       nextNum = '1';
                       nextMonth = nextMonth + 1;
@@ -521,10 +521,10 @@ export default {
                     let time = a + ':' + firstM + ' - ' + b + ':' + secondM;
 
                     if (a < 0) {
-                      // console.log(prevDateNumber)
-                      // console.log(time)
+                      // // console.log(prevDateNumber)
+                      // // console.log(time)
                       newArr.push(time);
-                      // console.log(newArr.join(', '))
+                      // // console.log(newArr.join(', '))
                       obj = {
                         day: prevDateNumber,
                         time: newArr.join(', '),
@@ -563,16 +563,16 @@ export default {
                     array.push(obj3);
                   }
                   array2 = [...new Set(array)];
-                  // console.log(array2)
-                  // console.log(obj)
-                  // console.log(obj2)
+                  // // console.log(array2)
+                  // // console.log(obj)
+                  // // console.log(obj2)
                 });
               }
               let object = {
                 intervals: array2,
                 'method': 'setToTempGMT'
               }
-              // console.log(array2);
+              // // console.log(array2);
               axios.post('/handle.php', JSON.stringify(object))
             }
           });
@@ -584,7 +584,7 @@ export default {
         axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
             .then((response) => {
               let data = response.data;
-              // console.log(data)
+              // // console.log(data)
               let unconfirmedBooks = [];
 
               let dataLength = 0;
@@ -599,14 +599,14 @@ export default {
                 if (this.lengthOfData === dataLength) {
                   if (data !== null) {
                     data.forEach((val, k) => {
-                      // console.log(val);
+                      // // console.log(val);
                       let dayFromDb = val[0];
                       let timeFromDb = val[1];
                       let gmtFromDb = val[2];
                       let newArr = [];
 
                       let arr = timeFromDb.split(',');
-                      // console.log(timeFromDb);
+                      // // console.log(timeFromDb);
                       arr.forEach((val, k) => {
                         let firstH = val.split(' - ')[0].split(':')[0];// 06
                         let firstM = val.split(' - ')[0].split(':')[1];// 00
@@ -662,7 +662,7 @@ export default {
                   }
                 } else {
                   // если не совпадает выполняется getIntervalsFromDB заново
-                  console.log('false')
+                  // console.log('false')
                   this.getIntervalsFromDB();
                 }
               }
@@ -671,7 +671,7 @@ export default {
                   .then((response) => {
                     // получаем всю информацию о забронированных уроках по данному пользователю
                     let data = response.data;
-                    // console.log(data)
+                    // // console.log(data)
                     let days = $('.time-intrevals-from-db__item');
 
                     this.bookedGmtArray = [];
@@ -734,7 +734,7 @@ export default {
 
                           let nextYear = +dayFromDB.split('.')[2];
                           let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                          // console.log(lastNum)
+                          // // console.log(lastNum)
                           if (nextNum == lastNum + 1) {
                             nextNum = '1';
                             nextMonth = nextMonth + 1;
@@ -782,7 +782,7 @@ export default {
                             time = a + ':' + firstM;
                           }
 
-                          // console.log(time)
+                          // // console.log(time)
 
                           let obj = {
                             name: userNameFromDB,
@@ -796,7 +796,7 @@ export default {
                             'method': 'setToBooksTimeGMT'
                           };
 
-                          // console.log(obj)
+                          // // console.log(obj)
                           this.bookedGmtArray.push(obj);
 
                         });
@@ -853,14 +853,14 @@ export default {
                       });
                     }
 
-                    // console.log(unconfirmedBooks)
+                    // // console.log(unconfirmedBooks)
 
                     // удаление неоплаченных бронирований через 15 минут
                     axios.post('/handle.php', JSON.stringify(unconfirmedBooks))
                         .then((response) => {
                           let data = response.data;
                           if (data === true) {
-                            // console.log(data)
+                            // // console.log(data)
                             this.getIntervalsFromDB();
                           }
                         });
@@ -873,7 +873,7 @@ export default {
     },
 
     exitBtn() {
-      console.log('exit');
+      // console.log('exit');
     },
 
     // ---- функция меняет  switcherIntervals переключая тип времени в селекторах
@@ -906,7 +906,7 @@ export default {
         });
       }
 
-      console.log(this.switcherIntervals);
+      // console.log(this.switcherIntervals);
 
     },
   }

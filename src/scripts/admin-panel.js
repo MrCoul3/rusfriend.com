@@ -2,7 +2,7 @@ import axios from "axios";
 
 $(document).ready(function () {
     if ($('main').hasClass("admin-main")) {
-        console.log('admin-panel init');
+        // console.log('admin-panel init');
 
         const mediaQueryMobile = window.matchMedia('(max-width: 767px)');
 
@@ -83,7 +83,7 @@ $(document).ready(function () {
                 };
                 axios.post('/handle.php', JSON.stringify(obj))
                     .then((response) => {
-                        console.log(response.data);
+                        // console.log(response.data);
                         $('.price-private').html('$' + response.data.private);
                         $('.price-sclub').html('$' + response.data.sclub);
                     });
@@ -105,12 +105,12 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    console.log(data.logout)
+                    // console.log(data.logout)
                     if (data.logout === true) {
                         delete localStorage.getAllUsersInfo;
                         window.location.reload();
                     } else {
-                        console.log('не удалось выйти')
+                        // console.log('не удалось выйти')
                     }
                 });
             });
@@ -134,7 +134,7 @@ $(document).ready(function () {
         // ---- занесение в БД admin-data часового пояса при перезагрузке страницы
         function loginOnReload() {
             window.addEventListener("load", function (e) {
-                // console.log('load')
+                // // console.log('load')
                 let zone = new Date().toString().split(' ')[5];
                 let gmt = 'GMT ' + zone.substring(3, 6) + ':00';
                 let data = {
