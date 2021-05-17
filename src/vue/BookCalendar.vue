@@ -1,5 +1,45 @@
 <template>
   <div>
+    <div  v-show="freeLessBookSuccess" class="free-lesson-success-frame">
+      <div v-show="freeLessBookSuccess" class="free-lesson-success">
+        <h2 :language="language" switchable-text="Вы успешно забронировали урок"
+            class="free-lesson-success__elem">You have successfully booked a lesson</h2>
+        <h3 :language="language" switchable-text="Не забудте придти вовремя"
+            class="free-lesson-success__elem">Do not forget to come on time</h3>
+        <h3 :language="language" switchable-text="Если остались вопросы напишите письмо
+                        преподавателю" class="free-lesson-success__elem">If you still have questions, write a email
+          to the teacher</h3>
+        <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
+        <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
+            class="free-lesson-success__elem">Tutor Skype: <span>svetlana TutorOnline</span></h3>
+      </div>
+    </div>
+    <div v-show="enterSkype" class="enter-your-skype-frame">
+      <div v-show="enterSkype" class="enter-your-skype">
+        <h2 :language="language" switchable-text="Все занятия проходят в skype"
+            class="enter-your-skype__element">All lessons are held on skype</h2>
+        <h3 :language="language"
+            switchable-text="Для продолжения введите <br> свой скайп и нажмите отправить"
+            class="enter-your-skype__element">
+          To continue, enter <br> your skype and click send
+        </h3>
+        <div class="flex">
+          <div class="skype-icon-for-input"></div>
+          <div id="enter-your-skype" class="flex">
+            <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
+            <div :language="language" switchable-text="отправить" @click="sendSkype()"
+                 class="button send-skype">send
+            </div>
+          </div>
+          <div :language="language" switchable-text="поле не должно быть пустым" v-show="validationSkype"
+               class="validation-skype">the field must not be empty
+          </div>
+        </div>
+        <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
+            class="enter-your-skype__element">Tutor Skype: <span>svetlana TutorOnline</span></h3>
+      </div>
+    </div>
+
     <div v-show="preloader" id="preloader"></div>
     <section id="booking-calendar" class="your-calendar inner">
       <h3 :language="language"
@@ -33,8 +73,6 @@
           <div class="trigger" @click="switchMonthAndDay()" style="display: none"></div>
           <h2 :language="language" switchable-text="Календарь занятий"
               class="calendar-app-header__element calendar-app-header__element--title">Lesson calendar</h2>
-
-
           <!--          <select  v-model="timeZone" @change="switchTimeZone()"-->
           <!--                  class="calendar-app-header__element calendar-app-header__element&#45;&#45;time-zone">-->
           <!--                                    <option selected :value="timeZone">{{timeZone}}</option>-->
@@ -113,43 +151,13 @@
           </div>
         </div>
 
-        <div v-show="enterSkype" class="enter-your-skype">
-          <h2 :language="language" switchable-text="Все занятия проходят в skype"
-              class="enter-your-skype__element">All lessons are held on skype</h2>
-          <h3 :language="language"
-              switchable-text="Для продолжения введите <br> свой скайп и нажмите отправить"
-              class="enter-your-skype__element">
-            To continue, enter <br> your skype and click send
-          </h3>
-          <div class="flex">
-            <div class="skype-icon-for-input"></div>
-            <div id="enter-your-skype" class="flex">
-              <input class="enter-your-skype__element input-skype" type="text" placeholder="skype">
-              <div :language="language" switchable-text="отправить" @click="sendSkype()"
-                   class="button send-skype">send
-              </div>
-            </div>
-            <div :language="language" switchable-text="поле не должно быть пустым" v-show="validationSkype"
-                 class="validation-skype">the field must not be empty
-            </div>
-          </div>
-          <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
-              class="enter-your-skype__element">Tutor Skype: <span>svetlana TutorOnline</span></h3>
-        </div>
-        <div v-show="freeLessBookSuccess" class="free-lesson-success">
-          <h2 :language="language" switchable-text="Вы успешно забронировали урок"
-              class="free-lesson-success__elem">You have successfully booked a lesson</h2>
-          <h3 :language="language" switchable-text="Не забудте придти вовремя"
-              class="free-lesson-success__elem">Do not forget to come on time</h3>
-          <h3 :language="language" switchable-text="Если остались вопросы напишите <span>сообщение</span>
-                        преподавателю" class="free-lesson-success__elem">If you still have questions, write a <span>message</span>
-            to the teacher</h3>
-          <div @click="closeFreeLessSuccess()" class="button ok-btn">ok</div>
-          <h3 :language="language" switchable-text="Скайп преподавателя: <span>svetlana tutorOnline</span>"
-              class="free-lesson-success__elem">Tutor Skype: <span>svetlana TutorOnline</span></h3>
-        </div>
+
+
+
       </div>
     </section>
+    <div class="warn-15-min-book-del"
+         :language="language" switchable-text=" <span style='color: red'>Неоплаченные</span> бронирования доступны для оплаты в течение 15 минут. Для оплаты нажмите на красный интервал."><span style='color: red'>Unpaid</span>  bookings are available for payment within 15 minutes. To pay, click on the red interval.</div>
 
     <section v-show="unconfirmMenuShow" class="unconfirmed-menu-wrap">
       <div class="unconfirmed-menu-frame">
@@ -179,16 +187,12 @@
 
 <script>
 import axios from 'axios';
-
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      "(?:^|; )" + name.replace(/([\enter-your-skype.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-
-// let language = null;
-// let selectedTimeArray = []; // пришлось ввести, так как из 'data' вылезает [_ob_serever]
 export default {
   data() {
     return {
@@ -236,12 +240,12 @@ export default {
     Date.prototype.getWeek = function () {
       let oneJan = new Date(this.getFullYear(), 0, 1)
       let weekNum = (((this - oneJan) / 86400000) + oneJan.getDay() - 1) / 7
-      // console.log(weekNum);
+      // // console.log(weekNum);
       return Math.ceil((((this - oneJan) / 86400000) + oneJan.getDay() - 1) / 7);
     }
     this.weekNumber = ((new Date()).getWeek() - 1);
     this.currentWeek = ((new Date()).getWeek() - 1);
-    // console.log(this.weekNumber);
+    // // console.log(this.weekNumber);
   },
   created: function () {
     this.setCurrentMonth();
@@ -310,7 +314,7 @@ export default {
         } else {
           this.language = 'eng-lang';
         }
-        console.log(this.language)
+        // console.log(this.language)
         $('.trigger').trigger('click');
 
         $('*').each(function (k, val) {
@@ -374,6 +378,7 @@ export default {
     ,
     closeFreeLessSuccess() {
       this.freeLessBookSuccess = false;
+      $("#mysite").removeClass("body-fixed");
       window.location.href = '/student-lessons.php';
     }
     ,
@@ -389,24 +394,24 @@ export default {
     //методы корректировки дат недели
     adjustmentDateOfDay() {
       let firstElem = $('.calendar-app-content-number:first-child');
-      // console.log(firstElem);
+      // // console.log(firstElem);
       let numberFirstElem = firstElem.attr('date').split('.')[0];
       let monthFirstElem = firstElem.attr('date').split('.')[1];
-      // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      // // console.log(numberFirstElem);
+      // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // console.log(numberFirstElem);
         $('.calendar-app-content-number').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // console.log($(this).attr('date').split('.'));
           let dateArr = $(this).attr('date').split('.')
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
             }
-            // console.log(dateArr.join('.'));
+            // // console.log(dateArr.join('.'));
             let newDate = dateArr.join('.');
             val.setAttribute('date', newDate);
           }
@@ -415,25 +420,25 @@ export default {
     }
     ,
     adjustmentDateOfWeek() {
-      // console.log('adjustmentDateOfWeek');
+      // // console.log('adjustmentDateOfWeek');
       let firstElem = $('.time-intrevals-elem:first-child');
       let numberFirstElem = firstElem.attr('date').split('.')[0];
       let monthFirstElem = firstElem.attr('date').split('.')[1];
-      // console.log(numberFirstElem);
-      // console.log(monthFirstElem);
+      // // console.log(numberFirstElem);
+      // // console.log(monthFirstElem);
       // в феврале 2025 года будет ошибка потому что февраль начнется с 24 числа
       if (numberFirstElem > 24 && numberFirstElem < 32) {
-        // console.log(numberFirstElem);
+        // // console.log(numberFirstElem);
         $('.time-intrevals-elem').each(function (k, val) {
-          // console.log($(this).attr('date').split('.'));
+          // // console.log($(this).attr('date').split('.'));
           let dateArr = $(this).attr('date').split('.')
           if (dateArr[0] > 0 && dateArr[0] < 7) {
-            // console.log(dateArr[1])
+            // // console.log(dateArr[1])
             dateArr[1] = String(+monthFirstElem + 1);
             if (dateArr[1].length == '1') {
               dateArr[1] = 0 + String(dateArr[1]);
             }
-            // console.log(dateArr.join('.'));
+            // // console.log(dateArr.join('.'));
             let newDate = dateArr.join('.');
             val.setAttribute('date', newDate);
           }
@@ -445,7 +450,7 @@ export default {
     DateOfMondayInWeek(year, weekNumber) {
       for (var a = 1; ; a++) if ((new Date(year, 0, a)).getDay() == 1) break;
       a += (weekNumber - 1) * 7;
-      // console.log(new Date(year, 0, a).getMonth())
+      // // console.log(new Date(year, 0, a).getMonth())
       this.numberMonthOfFirstDayOfWeek = new Date(year, 0, a).getMonth()
       return (new Date(year, 0, a))
     },
@@ -454,7 +459,7 @@ export default {
       let week = [];
       let w = 0;
       week[w] = [];
-      // console.log(this.weekNumber)
+      // // console.log(this.weekNumber)
       let dayInCurrentWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getDate();
       for (let i = dayInCurrentWeek; i <= dayInCurrentWeek + 6; i++) {
         let a = {index: i};
@@ -468,30 +473,30 @@ export default {
           // week[w].push(i - numOfDayInMonth);
         }
         if (a.index === new Date().getDate() && this.year === new Date().getFullYear() && this.weekNumber === this.currentWeek) {
-          // console.log(i);
+          // // console.log(i);
           a.today = 'today';
           a.color = '#fff';
           a.font = 'bold';
           a.current = '#006660';
         }
-        // console.log(i === new Date().getDate() )
-        // console.log(new Date().getDate());
-        // console.log(this.month);
-        // console.log(new Date().getMonth());
+        // // console.log(i === new Date().getDate() )
+        // // console.log(new Date().getDate());
+        // // console.log(this.month);
+        // // console.log(new Date().getMonth());
       }
-      // console.log(week);
-      // console.log(week[w][0].index + ' - ' + week[w][6].index);
+      // // console.log(week);
+      // // console.log(week[w][0].index + ' - ' + week[w][6].index);
       this.dateInterval = week[w][0].index + ' - ' + week[w][6].index;
       return week;
     }
     ,
     decrease: function () {
 
-      // console.log('w');
+      // // console.log('w');
       this.weekNumber--;
       this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-      // console.log(this.month);
-      // console.log(this.weekNumber);
+      // // console.log(this.month);
+      // // console.log(this.weekNumber);
       if (this.weekNumber === 0) {
         this.weekNumber = 52
         this.year--;
@@ -502,8 +507,8 @@ export default {
     increase: function () {
       this.weekNumber++;
       this.numberMonthOfFirstDayOfWeek = this.DateOfMondayInWeek(this.year, this.weekNumber).getMonth();
-      // console.log(this.month);
-      // console.log(this.weekNumber);
+      // // console.log(this.month);
+      // // console.log(this.weekNumber);
       if (this.weekNumber === 52) {
         this.weekNumber = 1;
         this.year++;
@@ -531,7 +536,7 @@ export default {
     getPrice() {
       axios.post('/handle.php', JSON.stringify({'method': 'getPrice'}))
           .then((response) => {
-            // console.log(response.data);
+            // // console.log(response.data);
             if (response.data !== null) {
               this.pricePrivate = response.data.private;
               this.priceSclub = response.data.sclub;
@@ -561,7 +566,7 @@ export default {
 
       axios.post('/handle.php', JSON.stringify({'method': 'getTimeIntervals'}))
           .then((response) => {
-            // console.log(response.data);
+            // // console.log(response.data);
             let data = response.data;
             // количество полученных интервалов
             let count = 0;
@@ -572,8 +577,7 @@ export default {
               });
             }
             this.lengthOfData = count;
-            // console.log(this.lengthOfData)
-
+            // // console.log(this.lengthOfData)
             let timeZone = this.timeZone;
             let timeZoneNum = this.timeZone.split(' ')[1].substring(0, 3);
 
@@ -582,7 +586,7 @@ export default {
             this.getOfTempDB();
 
             setTimeout(() => {
-              this.preloader = false;
+
               $('#booking-calendar').animate({
                 'opacity': '1'
               }, 500)
@@ -592,7 +596,7 @@ export default {
             function addToTempDB() {
               if (data !== null) {
                 data.forEach((val, k) => {
-                  // console.log(val);
+                  // // console.log(val);
                   let dayFromDb = val.day;
                   let timeFromDb = val.time;
                   let gmtFromDb = val.gmt;
@@ -603,13 +607,14 @@ export default {
                   // ----- func changeIntevals
                   let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
                   let delta = timeZoneNum - gmtFromDbNum;
-                  // console.log(timeFromDb)
+                  // // console.log(timeFromDb)
 
                   let arr = timeFromDb.split(',');
 
                   let newArr = [];
                   let newArr2 = [];
                   let newArr3 = [];
+
 
                   arr.forEach((val, k) => {
 
@@ -630,7 +635,7 @@ export default {
                     let nextMonth = +dayFromDb.split('.')[1];
                     let nextYear = +dayFromDb.split('.')[2];
                     let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                    // console.log(lastNum)
+                    // // console.log(lastNum)
                     if (nextNum == lastNum + 1) {
                       nextNum = '1';
                       nextMonth = nextMonth + 1;
@@ -647,13 +652,13 @@ export default {
                     let a = +firstH + delta; // 02
                     let b = +secondH + delta; //05
 
-                    let time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                    let time = a + ':' + firstM + '- ' + b + ':' + secondM;
 
                     if (a < 0) {
-                      // console.log(prevDateNumber)
-                      // console.log(time)
+                      // // console.log(prevDateNumber)
+                      // // console.log(time)
                       newArr.push(time);
-                      // console.log(newArr.join(', '))
+                      // // console.log(newArr.join(', '))
                       obj = {
                         day: prevDateNumber,
                         time: newArr.join(', '),
@@ -692,9 +697,9 @@ export default {
                     array.push(obj3);
                   }
                   array2 = [...new Set(array)];
-                  // console.log(array2)
-                  // console.log(obj)
-                  // console.log(obj2)
+                  // // console.log(array2)
+                  // // console.log(obj)
+                  // // console.log(obj2)
                 });
               }
 
@@ -702,7 +707,7 @@ export default {
                 intervals: array2,
                 'method': 'setToTempGMT'
               }
-              // console.log(array2);
+              // // console.log(array2);
               axios.post('/handle.php', JSON.stringify(object))
             }
           });
@@ -714,10 +719,11 @@ export default {
         axios.post('/handle.php', JSON.stringify({'method': 'getFromTempGMT'}))
             .then((response) => {
               let data = response.data;
-              // console.log(data)
+              // // console.log(data)
               let unconfirmedBooks = [];
 
               let dataLength = 0;
+
               if (data !== null) {
                 data.forEach((val, k) => {
                   let arr = val[1].split(',')
@@ -725,18 +731,21 @@ export default {
                 });
               }
 
+              //  получение данных из temp-gmt,
+              //  обработка массива - изменение неправильного времени,
+              //  вставка в календарь
               if (this.lengthOfData !== undefined) {
                 if (this.lengthOfData === dataLength) {
                   if (data !== null) {
                     data.forEach((val, k) => {
-                      // console.log(val);
+                      // // console.log(val);
                       let dayFromDb = val[0];
                       let timeFromDb = val[1];
                       let gmtFromDb = val[2];
                       let newArr = [];
 
                       let arr = timeFromDb.split(',');
-                      // console.log(timeFromDb);
+                      // // console.log(timeFromDb);
                       arr.forEach((val, k) => {
                         let firstH = val.split(' - ')[0].split(':')[0];// 06
                         let firstM = val.split(' - ')[0].split(':')[1];// 00
@@ -804,16 +813,17 @@ export default {
                   }
                 } else {
                   // если не совпадает выполняется getIntervalsFromDB заново
-                  console.log('false')
+                  // console.log('false')
                   this.getIntervalsFromDB();
                 }
               }
+
 
               axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
                   .then((response) => {
                     // получаем всю информацию о забронированных уроках по данному пользователю
                     let data = response.data;
-                    // console.log(data)
+                    // // console.log(data)
                     let days = $('.time-intrevals-from-db__item');
 
                     this.bookedGmtArray = [];
@@ -876,7 +886,7 @@ export default {
 
                           let nextYear = +dayFromDB.split('.')[2];
                           let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                          // console.log(lastNum)
+                          // // console.log(lastNum)
                           if (nextNum == lastNum + 1) {
                             nextNum = '1';
                             nextMonth = nextMonth + 1;
@@ -916,7 +926,7 @@ export default {
                               }
                               day = nextDateNumber;
                             }
-                            time = a + ':' + firstM + ' - ' + b + ':' + secondM;
+                            time = a + ':' + firstM + '- ' + b + ':' + secondM;
                           } else {
                             firstH = val.split(':')[0];// 06
                             firstM = val.split(':')[1];// 00
@@ -924,7 +934,7 @@ export default {
                             time = a + ':' + firstM;
                           }
 
-                          // console.log(time)
+                          // // console.log(time)
 
                           let obj = {
                             name: userNameFromDB,
@@ -937,10 +947,8 @@ export default {
                             gmt: this.timeZone,
                             'method': 'setToBooksTimeGMT'
                           };
-
-                          // console.log(obj)
+                          // // console.log(obj)
                           this.bookedGmtArray.push(obj);
-
                         });
 
 
@@ -995,14 +1003,14 @@ export default {
                       });
                     }
 
-                    // console.log(unconfirmedBooks)
+                    // // console.log(unconfirmedBooks)
 
                     // удаление неоплаченных бронирований через 15 минут
                     axios.post('/handle.php', JSON.stringify(unconfirmedBooks))
                         .then((response) => {
                           let data = response.data;
                           if (data === true) {
-                            // console.log(data)
+                            // // console.log(data)
                             this.getIntervalsFromDB();
                             }
                         });
@@ -1010,21 +1018,22 @@ export default {
                   });
 
             });
+        this.preloader = false;
       }, 500)
 
     },
     // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
     chooseTime: function (event) {
-      // console.log('choose')
+      // // console.log('choose')
       // ---- Для free-lesson возможность выбрать только одно занятие
       if (this.freeLesson) {
         $('.selected-time').removeClass('selected-time');
       }
 
       let selectedTime = event.target;
-      // console.log($(selectedTime));
+      // // console.log($(selectedTime));
       if (!selectedTime.className.includes('time-intrevals-from-db__item') && !$(selectedTime).hasClass('unpayed-book')) {
-        // console.log(event.target);
+        // // console.log(event.target);
         if (selectedTime.className.includes('selected-time')) {
           selectedTime.classList.remove('selected-time');
         } else {
@@ -1033,7 +1042,7 @@ export default {
       }
       this.unconfirmTimeArray = [];
       this.selectedTimeArray = [];
-      console.log(this.selectedTimeArray)
+      // console.log(this.selectedTimeArray)
       // let userName = $('.user-login__elem--user-name').html();
       let userName = getCookie('name');
       let confirmation = 0;
@@ -1050,7 +1059,7 @@ export default {
       $('.selected-time').each((k, val) => {
         let day = val.parentNode.getAttribute('date');
         let time = val.innerHTML;
-        // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
+        // // console.log(val.parentNode.getAttribute('date') + val.innerHTML);
         let obj = {
           name: userName,
           type: this.typeOfLesson,
@@ -1066,7 +1075,7 @@ export default {
 
         this.selectedTimeArray.push(obj);
       });
-      // console.log( this.selectedTimeArray)
+      // // console.log( this.selectedTimeArray)
 
       let day = event.target.parentNode.getAttribute('date');
       let time = event.target.innerHTML;
@@ -1083,7 +1092,7 @@ export default {
       };
       this.unconfirmTimeArray.push(obj);
 
-      // console.log(this.unconfirmTimeArray);
+      // // console.log(this.unconfirmTimeArray);
 
       // ----- функция открытия unconfirmed-menu-frame при нажатии на красное бронирование
       // unconfirmed-book (неподтвержденное пользователем на странице payment.php)
@@ -1118,9 +1127,9 @@ export default {
     deleteUnconfirmedLesson() {
       axios.post('/handle.php', JSON.stringify(this.unconfirmTimeArray))
           .then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             if (response.data) {
-              console.log('success delete unconfirm lesson')
+              // console.log('success delete unconfirm lesson')
               this.getIntervalsFromDB();
               this.closeUnconfirmedMenuFrame();
             }
@@ -1131,7 +1140,7 @@ export default {
       // ------ проверка на логин, если не залогинен то открыть форму Регистрации
       axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
           .then((response) => {
-            // console.log(response.data['success']);
+            // // console.log(response.data['success']);
             if (response.data['success'] === false) {
               // открытие формы логина
               if (!$(".login-form").hasClass('login-form-active')) {
@@ -1154,21 +1163,21 @@ export default {
               // ------ если залогинен, то проверка наличия скайпа
               axios.post('/handle.php', JSON.stringify({'method': 'checkSkype'}))
                   .then((response) => {
-                    // console.log(response.data);
+                    // // console.log(response.data);
                     let dataFromDB = response.data;
                     if (dataFromDB.status === 'empty') {
                       this.enterSkype = true; // включение формы отправки скайпа в БД
-                      // $("#mysite").addClass("body-fixed");
+                      $("#mysite").addClass("body-fixed");
                     } else {
 
-                      console.log(this.selectedTimeArray)
+                      // console.log(this.selectedTimeArray)
                       if (this.selectedTimeArray.length !== 0) {
                         axios.post('/handle.php', JSON.stringify(this.selectedTimeArray))
                         // ---- для бесплатного занятия
                         if (this.freeLesson) {
                           axios.post('/handle.php', JSON.stringify({'method': 'changeSatusOnActive'}));
                           this.freeLessBookSuccess = true;
-
+                          $("#mysite").addClass("body-fixed");
 
                           let mailForUser = {
                             name: getCookie('name'),
@@ -1191,7 +1200,7 @@ export default {
                         } else {
                           // --- для платного - страница оплаты
                           setTimeout(() => {
-                            window.location.href = "/payment.php";
+                            window.location.href = "/payment";
                           }, 1000);
                         }
                         // если не выбраны интервалы вслпывающая подсказка
@@ -1216,22 +1225,21 @@ export default {
     }
     ,
     sendSkype: function () {
-      // console.log($('.input-skype').val());
+      // // console.log($('.input-skype').val());
       let skype = $('.input-skype');
       if (skype.val().trim() === '') {
-        // console.log('empty');
+        // // console.log('empty');
         this.validationSkype = true;
       } else {
         axios.post('/handle.php', JSON.stringify({'method': 'sendSkype', 'skype': skype.val()}))
         this.enterSkype = false;
-        // $("#mysite").removeClass("body-fixed");
+        $("#mysite").removeClass("body-fixed");
       }
     }
     ,
 
 
   },
-
 }
 </script>
 
@@ -1239,7 +1247,6 @@ export default {
 #booking-calendar {
   opacity: 0;
 }
-
 .prompt {
   position: absolute;
   /*opacity: 0;*/
@@ -1254,13 +1261,9 @@ export default {
   right: 0;
   margin: auto;
 }
-
-
-
 *[language] {
   opacity: 0;
 }
-
 .free-lesson-success__elem > span {
   text-decoration: underline;
   cursor: pointer;

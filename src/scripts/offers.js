@@ -20,7 +20,7 @@ $(document).ready(function () {
         if (mediaQueryDesktop.matches) {
             $(".detail-btn").each(function (key, val) {
                 $(this).click(function (e) {
-                    // console.log($(this).parent().parent())
+                    // // console.log($(this).parent().parent())
                     $(this).parent().parent().addClass('card-rotate-forward');
 
                     let front = $(this).parent();

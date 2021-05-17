@@ -42,7 +42,8 @@ class User
     {
         $sold = '1asd173sh';
         $hashString = $userPassword . $sold;
-        return md5(md5(trim($hashString)));
+//        return md5(md5(trim($hashString)));
+        return hash('sha256',trim($hashString));
     }
 
     public function addUser($request)
@@ -50,23 +51,45 @@ class User
         $err = [];
 
         if (!preg_match("/^[а-яА-ЯёЁa-zA-Z0-9]+$/", $request['name'])) {
-            $err[] = "Логин может состоять только из букв и цифр";
+            if (isset($_COOKIE['btnLang'])) {
+                if ($_COOKIE['btnLang'] === 'eng-lang') {
+                    $err[] = "The login can only consist of letters and numbers";
+                } else {
+                    $err[] = "Логин может состоять только из букв и цифр";
+                }
+            } else {
+                $err[] = "The login can only consist of letters and numbers";
+            }
         }
 
         if (strlen($request['name']) < 3 or strlen($request['name']) > 30) {
-            $err[] = "имя может быть от 3 до 30 символов";
+            if (isset($_COOKIE['btnLang'])) {
+                if ($_COOKIE['btnLang'] === 'eng-lang') {
+                    $err[] = "The name can be from 3 to 30 characters";
+                } else {
+                    $err[] = "имя может быть от 3 до 30 символов";
+                }
+            } else {
+                $err[] = "The name can be from 3 to 30 characters";
+            }
         }
 
         $identicalNameQuery = "SELECT id FROM users WHERE email = '{$request['email']}'";
-        if (mysqli_num_rows($this->dbAccess->query($identicalNameQuery)) > 0) {
-            $err[] = "Пользователь с таким email уже существует";
-        } else {
-            $err = [];
+//        var_dump(mysqli_fetch_assoc($this->dbAccess->query($identicalNameQuery)));
+        if ((int)mysqli_num_rows($this->dbAccess->query($identicalNameQuery)) > 0) {
+            if (isset($_COOKIE['btnLang'])) {
+                if ($_COOKIE['btnLang'] === 'eng-lang') {
+                    $err[] = "A user with this email already exists";
+                } else {
+                    $err[] = "Пользователь с таким email уже существует";
+                }
+            } else {
+                $err[] = "A user with this email already exists";
+            }
         }
+//        var_dump(count($err) === 0);
 
-        if (count($err) == 0) {
-//            $_SESSION['email'] = $request['email'];
-//            $_SESSION['name'] = $request['name'];
+        if (count($err) === 0) {
             $_SESSION = array(
                 'email' => $request['email'],
                 'name' => $request['name'],
@@ -92,7 +115,9 @@ class User
             $registerQuery = "INSERT INTO `users` ({$requestKeys}) VALUES ({$requestVals});";
 //            var_dump($registerQuery);
             $this->dbAccess->query($registerQuery);
-            return true;
+            return 'success';
+        } else {
+            return $err;
         }
     }
 
@@ -228,14 +253,41 @@ class User
         return 'active';
     }
 
+    public function mailSend($sendToEmail, $sendToName, $mailText)
+    {
+        $sendToEmail = $sendToEmail;  // почта получателя
+        $sendToName = $sendToName;  // имя получатлея
+        $myEmail = 'svetlana.tutoronline@gmail.com';    // почта отправителя
+        $myDomen = 'rusfriend.com';         // хост отправителя
+        $mail = new PHPMailer();
+        $mail->isSMTP();                    // Отправка через SMTP
+//            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->CharSet = "UTF-8";
+        $mail->Host = 'smtp.gmail.com';     // Адрес SMTP сервера
+        $mail->SMTPAuth = true;             // Enable SMTP authentication
+//            $mail->Username = 'svetlana.tutoronline';       // ваше имя пользователя (без домена и @)
+        $mail->Username = 'svetlana.tutoronline@gmail.com';       // ваше имя пользователя (без домена и @)
+        $mail->Password = '252525st';       // ваш пароль
+        $mail->SMTPSecure = 'tls';       // шифрование ssl
+        $mail->Port = 587;                  // порт подключения
+        $mail->setFrom($myEmail, $myDomen); // от кого
+        $mail->addAddress($sendToEmail, $sendToName);
+        $mail->Subject = 'Confirmation code';
+        $mail->msgHTML($mailText);
+
+        if ($mail->send()) {
+//            return $mail->send();
+//                echo 'Письмо отправлено!';
+        } else {
+            echo 'Ошибка: ' . $mail->ErrorInfo;
+        }
+    }
+
     // ------------- SETTINGS
 
     public function changeSettings($request)
     {
-//        var_dump($code);
-//        $code = 1234;
         if ($request['dataType'] === 'password') {
-            // --------ПРОВЕРКА СТАРОГО ПАРОЛЯ
             $oldPasswordEncode = $this->getPassHash($request['old']); // шифрование введенного старого пароля
             $newPasswordEncode = $this->getPassHash($request['data']); // шифрование введенного нового пароля
             $query = "SELECT `{$request['dataType']}` FROM `users` WHERE `id` = '{$_SESSION['user_id']}'";
@@ -255,38 +307,17 @@ class User
             $_SESSION['code'] = $code;
             $confCode = $_SESSION['code'];
 
-            $sendToEmail = $request['data'];  // почта получателя
-            $sendToName = $request['name'];  // имя получатлея
-            $myEmail = 'svetlana.tutoronline@gmail.com';    // почта отправителя
-            $myDomen = 'rusfriend.com';         // хост отправителя
-            $mail = new PHPMailer();
-            $mail->isSMTP();                    // Отправка через SMTP
-//            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-            $mail->CharSet = "UTF-8";
-            $mail->Host = 'smtp.gmail.com';     // Адрес SMTP сервера
-            $mail->SMTPAuth = true;             // Enable SMTP authentication
-//            $mail->Username = 'svetlana.tutoronline';       // ваше имя пользователя (без домена и @)
-            $mail->Username = 'svetlana.tutoronline@gmail.com';       // ваше имя пользователя (без домена и @)
-            $mail->Password = '252525st';       // ваш пароль
-            $mail->SMTPSecure = 'tls';       // шифрование ssl
-            $mail->Port = 587;                  // порт подключения
-            $mail->setFrom($myEmail, $myDomen); // от кого
-            $mail->addAddress($sendToEmail, $sendToName);
-            $mail->Subject = 'Confirmation code';
-            $mail->msgHTML(
+            $sendToEmail = $request['data'];
+            $sendToName = $request['name'];
+            $mailBody =
                 "<html>
 <body>
 <h1><span style='color: red'>H</span>ello, $sendToName!</h1>
 <p>Your confirmation code: <span style='font-weight: bold'>$confCode</span></p>
 <div style='max-width: 200px; width: 100%;height: 1px;background: #777676'></div>
 <h3>Regards, Russian Friend</h3>
-</body></html> ");
-
-            if ($mail->send()) {
-//                echo 'Письмо отправлено!';
-            } else {
-                echo 'Ошибка: ' . $mail->ErrorInfo;
-            }
+</body></html> ";
+            $this->mailSend($sendToEmail, $sendToName, $mailBody);
 
             $response = [
                 'status' => 'unconfirmed',

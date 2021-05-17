@@ -156,6 +156,7 @@ export default {
       detailDate: null,
       detailTime: null,
       detailType: null,
+      detailID: null,
       typeOfLesson: null,
       detailUserName: null,
       detailSkype: null,
@@ -167,13 +168,12 @@ export default {
       payment: true,
       target: null,
       errors: [],
-      confirmation: 0,
+      confirmation: true,
       avatarOpened: null,
       avatarCloseBtn: null,
     }
   },
   mounted: function () {
-
     this.getBooksTimeFromDB();
     this.setTimeZone();
   },
@@ -183,11 +183,12 @@ export default {
     // this.getBooksTimeFromDB();
   },
   created: function () {
-    // console.log(this.currentDayOfWeek);
+    // // // console.log(this.currentDayOfWeek);
     this.setCurrentMonth();
   },
   methods: {
     // ---- ФУНКЦИОНАЛ СМЕНЫ ЧАСОВЫХ ПОЯСОВ ---- \\
+
     // установка текущего часового пояса //
     setTimeZone() {
       let zone = new Date().toString().split(' ')[5];
@@ -204,7 +205,6 @@ export default {
       this.getBooksTimeFromDB();
     },
     // -------------------------------------------
-
     // ---- ФУНКЦИОНАЛ ЛОГИКИ КАЛЕНДАРЯ ---- \\
     calendar: function () {
       var days = [];
@@ -268,7 +268,6 @@ export default {
     getBooksTimeFromDB() {
       this.preloader = true;
 
-
       // очищает ячейки при обновлении компонента
       $('.calendar-table-days .book').remove();
 
@@ -279,10 +278,11 @@ export default {
       axios.post('/handle.php', JSON.stringify({'method': 'getLessons'}))
           .then((response) => {
             let data = response.data;
-            // console.log(data)
+            // // // console.log(data)
 
             if (data !== null) {
               data.forEach((val, k) => {
+                let idFromDB = val[0];
                 let userNameFromDB = val[1];
                 let dayFromDB = val[2];
                 let timeFromDB = val[3];
@@ -319,7 +319,7 @@ export default {
 
                   let nextYear = +dayFromDB.split('.')[2];
                   let lastNum = new Date(nextYear, nextMonth, 0).getDate();
-                  // console.log(lastNum)
+                  // // // console.log(lastNum)
                   if (nextNum == lastNum + 1) {
                     nextNum = '1';
                     nextMonth = nextMonth + 1;
@@ -367,7 +367,7 @@ export default {
                     time = a + ':' + firstM;
                   }
 
-                  // console.log(time)
+                  // // // console.log(time)
 
                   let obj = {
                     name: userNameFromDB,
@@ -378,13 +378,14 @@ export default {
                     confirmation: confirmationFromDB,
                     price: priceFromDB,
                     gmt: this.timeZone,
-                    bookingTime: ' ',
+                    bookingTime: 0,
+                    idFromBookstime: idFromDB,
                     'method': 'setToBooksTimeGMT'
                   };
 
                   bookedGmtArray.push(obj);
                 });
-                // console.log(bookedGmtArray)
+                // // // console.log(bookedGmtArray)
 
               });
             }
@@ -394,80 +395,69 @@ export default {
       setTimeout(() => {
         axios.post('/handle.php', JSON.stringify(bookedGmtArray))
             .then((response) => {
-              // console.log(response.data);
-              if (response.data.trim() !== '') {
-                if (response.data === 'success') {
+              // // // console.log(response.data);
+              if (response.data !== '') {
+                if (response.data.success === 'success') {
                 } else {
                   window.location.reload();
                 }
               }
-
             });
       }, 100);
+      setTimeout(() => {
+        axios.post('/handle.php', JSON.stringify({'method': 'getLessonsFromBookstimeGMT'}))
+            .then((response) => {
 
+              let data = response.data;
+              // // // console.log(data)
+              if (data !== null) {
 
-      axios.post('/handle.php', JSON.stringify({'method': 'getLessonsFromBookstimeGMT'}))
-          .then((response) => {
-            // console.log(response.data);
-            let data = response.data;
-            // console.log(data)
-            if (data !== null) {
+                data.forEach((val, k) => {
 
-              data.forEach((val, k) => {
+                  let typeFromDb = val[4];
+                  let nameFromDb = val[1];
+                  let dayFromDb = val[2];
+                  let timeFromDb = val[3];
+                  let gmtFromDb = val[8];
+                  let priceFromDb = val[7];
+                  let paymentFromDb = val[5];
+                  let confirmationFromDb = val[6];
+                  let idFromDb = val[10];
 
-                let typeFromDb = val[4];
-                let nameFromDb = val[1];
-                let dayFromDb = val[2];
-                let timeFromDb = val[3];
-                let gmtFromDb = val[8];
-                let priceFromDb = val[7];
-                let paymentFromDb = val[5];
-                let confirmationFromDb = val[6];
-
-                if (typeFromDb === 'free') {
-                  this.freeLesson = true;
-                }
-
-
-                $('.calendar-table-days').each((k, val) => {
-                  let day = $(val);
-                  let dateOfcell = val.getAttribute('date');
-                  // timeFromDb = newArray.join
-
-                  if (dateOfcell === dayFromDb) {
-                    if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
-                      day.append("<span confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
-                      // day.children().each((k, val) => {
-                      //     // console.log(val);
-                      //     let valName = val.getAttribute('name');
-                      //     let valType = val.getAttribute('type');
-                      //     let valTime = val.getAttribute('time');
-                      //     let valDate = val.getAttribute('data');
-                      //     if (typeFromDb !== valType && nameFromDb !== valName && dayFromDb !== valDate && timeFromDb !== valTime) {
-                      //     }
-                      // });
-                    }
-                    if (paymentFromDb === 'unpayed') {
-                      day.append("<span confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
-                    }
+                  if (typeFromDb === 'free') {
+                    this.freeLesson = true;
                   }
-                })
-              });
-            }
 
-            setTimeout(() => {
-              this.preloader = false;
-            }, 200);
-          });
+
+                  $('.calendar-table-days').each((k, val) => {
+                    let day = $(val);
+                    let dateOfcell = val.getAttribute('date');
+                    // timeFromDb = newArray.join
+
+                    if (dateOfcell === dayFromDb) {
+                      if (paymentFromDb === 'payed' || paymentFromDb === 'free') {
+                        day.append("<span id='" + idFromDb + "' confirmation='" + confirmationFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                      }
+                      if (paymentFromDb === 'unpayed') {
+                        day.append("<span  id='" + idFromDb + "' confirmation='" + confirmationFromDb + "' payment='" + paymentFromDb + "' type='" + typeFromDb + "' name='" + nameFromDb + "' time='" + timeFromDb + "' data=" + dateOfcell + " class='book " + typeFromDb + ' ' + paymentFromDb + "'>" + timeFromDb + ' ' + nameFromDb + "</span>")
+                      }
+                    }
+                  })
+                });
+              }
+
+              setTimeout(() => {
+                this.preloader = false;
+              }, 200);
+            });
+      }, 200);
+
+
     },
-
-
     // действие при нажатии на занятие
     bookingEvent(event) {
       let target = event.target;
       this.target = event.target;
-      // console.log($(target));
-
       if (event.target.className.includes('book')) {
 
         // смена статуса оплачено на подтвердить оплату
@@ -480,13 +470,14 @@ export default {
           this.confirmation = true;
         } else {
           this.confirmation = false;
-
         }
 
         this.detailShow = true; // открытие окна детализации бронирования
         this.detailDate = target.getAttribute('data');
         this.detailTime = target.getAttribute('time');
+        this.detailID = target.getAttribute('id');
         this.typeOfLesson = target.getAttribute('type');
+        // this.confirmation = +target.getAttribute('confirmation');
         if (target.getAttribute('type') === 'private') {
           this.detailType = 'Занятие с преподавателем';
         }
@@ -499,18 +490,17 @@ export default {
         this.detailUserName = target.getAttribute('name');
         axios.post('/handle.php', JSON.stringify({name: this.detailUserName, 'method': 'getUserSkype'}))
             .then((response) => {
-              // console.log(response.data)
+              // // // console.log(response.data)
               let data = response.data;
               this.detailSkype = data['skype'];
-              // console.log(data['skype']);
+              // // // console.log(data['skype']);
             });
 
         let getAllUsersInfo = JSON.parse(localStorage.getItem('getAllUsersInfo'));
         for (let user of getAllUsersInfo) {
-          // console.log(user)
-
+          // // // console.log(user)
           if ($(target).attr('name') === user.name) {
-            // console.log(user.avatar)
+            // // // console.log(user.avatar)
             if (user.avatar !== '') {
               $('.user-icon').attr('src', '../images/icons/user-ico.svg')
               $('.user-icon').attr('src', user.avatar)
@@ -518,7 +508,6 @@ export default {
               $('.user-icon').attr('src', '../images/icons/user-ico.svg')
             }
           }
-
         }
 
       }
@@ -537,17 +526,14 @@ export default {
     confirmPayment() {
 
       let obj = {
-        name: this.detailUserName,
-        time: this.detailTime,
-        date: this.detailDate,
+        id: this.detailID,
         'method': 'successPay',
       }
-
-      // console.log(this.target);
+      // // // console.log(obj);
       axios.post('/handle.php', JSON.stringify({obj}))
           .then((response) => {
             let data = response.data;
-            console.log(data)
+            // // // console.log(data);
             if (data.payment === 'success') {
               this.payment = true;
               $(this.target).attr('payment', 'payed').removeClass('unpayed');
@@ -567,13 +553,13 @@ export default {
                 time: this.detailTime,
                 data: this.detailDate,
                 email: email,
-                    'method':'confirmedByTutor'
-            }
+                'method': 'confirmedByTutor'
+              }
               axios.post('/mailer.php', JSON.stringify(mailForUser))
 
             } else {
               this.errors.push(data.payment);
-              // console.log(this.errors);
+              // // // console.log(this.errors);
             }
           });
     },
@@ -589,16 +575,11 @@ export default {
     },
     // удалить занятие из БД
     deleteBook() {
-      // console.log(this.detailUserName);
-      // console.log(this.detailDate);
-      // console.log(this.detailTime);
       let input = {
-        name: this.detailUserName,
-        day: this.detailDate,
-        time: this.detailTime,
+        id: this.detailID,
         'method': 'delBooksTime'
       };
-      console.log(input);
+      // // // console.log(input);
       axios.post('/handle.php', JSON.stringify(input))
       this.cancelLessShow = false;
       this.preloader = true;
@@ -608,9 +589,7 @@ export default {
     openBook() {
       this.showBookCalendar = true;
       this.detailShow = false;
-      // удалить текущий интервал методом deleteBook()
     },
-    // "отмена" Закрыть календарь изменения урока (закрыть AdminBookCalendar.vue)
     closeAdminCalendar(data) {
       this.showBookCalendar = false;
       this.detailShow = true;

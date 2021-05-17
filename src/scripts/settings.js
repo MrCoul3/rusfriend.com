@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 $(document).ready(function () {
-        console.log('settings init');
+        // console.log('settings init');
         let user_id = null;
         // ----- закрытие на escape
         $(this).keydown(function (eventObject) {
@@ -39,7 +39,7 @@ $(document).ready(function () {
         // ----------- открыть настройки пользователя
         function openSettings() {
             $('.user-login-menu__elem--settings').click(function () {
-                // console.log(localStorage.getItem('user_id'));
+                // // console.log(localStorage.getItem('user_id'));
                 $("#mysite").addClass("body-fixed");
                 $('.settings-main-frame').addClass('settings-active');
                 $('.settings').addClass('settings-active');
@@ -49,7 +49,7 @@ $(document).ready(function () {
                     .then((response) => {
                         let dataFromDB = response.data
                         user_id = dataFromDB.id;
-                        // console.log(response.data);
+                        // // console.log(response.data);
                         $('.main-text--user-name').html(dataFromDB.name)
                         $('.main-text--email').html(dataFromDB.email);
                         $('.main-text--skype').html(dataFromDB.skype);
@@ -82,7 +82,6 @@ $(document).ready(function () {
 
         // -----------------------------------------
 
-        // ------------ change settings
         function changeSettings() {
             $('.settings').click(function (e) {
                 let checkText;
@@ -94,7 +93,7 @@ $(document).ready(function () {
 
                     $('.wrap').removeClass('wrap-hidden');
                     $('.input-wrap').removeClass('input-wrap-active');
-                    // console.log(wrap.nextElementSibling);
+                    // // console.log(wrap.nextElementSibling);
                     wrap.classList.add('wrap-hidden');
                     inputWrap.classList.add('input-wrap-active');
                 }
@@ -108,7 +107,6 @@ $(document).ready(function () {
                     let errors = [];
 
                     // сброс чеков при фокусе
-
                     inputField.addEventListener('focus', function () {
                         check.classList.remove('check-active');
                     });
@@ -191,12 +189,8 @@ $(document).ready(function () {
 
                     if (errors.length !== 0) {
                         check.classList.add('check-active');
-                        // ----------- если нет ошибок
-
                     } else {
-
                         let dataType = e.target.getAttribute('data-type'); // тип отправляемых данных ('name', 'password', 'email', 'skype') Берется из атрибута data-type кнопки "ИЗМЕНИТЬ"
-
                         // ----------- ИЗМЕНЕНИЕ ПАРОЛЯ ----------- \\
                         let oldPas = $('.input--old-pas');
                         // сброс чека при фокусе
@@ -211,11 +205,10 @@ $(document).ready(function () {
                                 dataType: dataType,
                                 'method': 'changeSettings',
                             }
-                            // console.log(JSON.stringify(data));
                             axios.post('/handle.php', JSON.stringify(data))
                                 .then((response) => {
                                     let dataFromDB = response.data;
-                                    console.log(dataFromDB);
+                                    // console.log(dataFromDB);
                                     if (dataFromDB !== 'success') {
                                         $('.check--old-pass').addClass('check-active');
                                     } else {
@@ -237,11 +230,13 @@ $(document).ready(function () {
                                 name: getCookie('name'),
                                 'method': 'changeSettings',
                             }
-                            // console.log(data);
+                            // // console.log(data);
                             axios.post('/handle.php', JSON.stringify(data))
                                 .then((response) => {
-                                    // console.log(response.data)
+                                    // // console.log(response.data)
                                     let dataFromDB = response.data;
+                                    setCookie('name', dataFromDB.name);
+
                                     // если смена успешна, убирается поле ввода с возвратом первоначального состояния
                                     if (dataFromDB.status === 'success') {
 
@@ -249,7 +244,7 @@ $(document).ready(function () {
                                             wrap.classList.remove('wrap-hidden');
                                             inputWrap.classList.remove('input-wrap-active')
                                             let nameOfFiled = e.target.parentNode.parentNode.previousElementSibling.lastElementChild;
-                                            // console.log(nameOfFiled);
+                                            // // console.log(nameOfFiled);
                                             nameOfFiled.innerHTML = dataFromDB.name;
                                             // при смене имени меняется имя в шапке сайта и в поле настроек
                                             if (dataFromDB.type === 'name') {
@@ -285,16 +280,16 @@ $(document).ready(function () {
 
                                     if (dataFromDB.status === 'unconfirmed') {
                                         // меняется placeholder поля инпут на введите код подтверждения
-                                        // console.log(dataFromDB.status);
+                                        // // console.log(dataFromDB.status);
 
                                         $('.input--email').attr('placeholder', confirmationCodeText).val('').removeClass('input--email').addClass('confirm-email');
                                         $('.check--email').addClass('check-active').html(sendCodeText);
                                         $('.change-button--email').html(btnConfText).attr('data-type', 'confirm-code');
                                     }
                                     if (dataFromDB.status === 'confirmed') {
-                                        console.log(dataFromDB.email);
-                                        console.log(dataFromDB);
-                                        console.log(dataFromDB.status);
+                                        // console.log(dataFromDB.email);
+                                        // console.log(dataFromDB);
+                                        // console.log(dataFromDB.status);
                                         $('.wrap--email').removeClass('wrap-hidden');
                                         $('.input-wrap--email').removeClass('input-wrap-active');
                                         $('.main-text--email').html(dataFromDB.email);
@@ -303,8 +298,8 @@ $(document).ready(function () {
                                         $('.change-button--email').html(change).attr('data-type', 'email');
                                     }
                                     if (dataFromDB.status === 'invalid-code') {
-                                        // console.log('неверный код подтверждения');
-                                        // console.log(dataFromDB.status);
+                                        // // console.log('неверный код подтверждения');
+                                        // // console.log(dataFromDB.status);
                                         $('.check--email').addClass('check-active').html(incorCode);
                                     }
                                 });
@@ -312,53 +307,29 @@ $(document).ready(function () {
 
                     }
                 }
-
-
             });
-            // ------- загрузка аватара ../scripts/croppie/script.js
-
-            // function readURL(input) {
-            //     if (input.files && input.files[0]) {
-            //         let reader = new FileReader();
-            //         // console.log(reader)
-            //         reader.onload = function(e) {
-            //             $('.avatar').css('backgroundImage', 'url(' + e.target.result + ')');
-            //         }
-            //         reader.readAsDataURL(input.files[0]);
-            //     }
-            // }
-            // $('#download-avatar').change(function(){
-            //     axios.post('/handle.php', JSON.stringify({'method': 'getUserInfo'}))
-            //         .then((response) => {
-            //             let dataFromDB = response.data
-            //             console.log(dataFromDB)
-            //             user_id = dataFromDB.id;
-            //         });
-            //     readURL(this);
-            //     $('.apply-avatar').addClass('apply-avatar-active ');
-            // });
-            // $('.apply-avatar').click(function () {
-            //
-            //     let data = new FormData();
-            //     // console.log(document.getElementById('download-avatar').files)
-            //     // console.log(document.getElementById('download-avatar').files[0])
-            //     let input  = document.getElementById('download-avatar');
-            //     data.append('img_path', input.files[0]);
-            //     data.append('method','setAvatar');
-            //     data.append('user_id', user_id);
-            //     console.log(data);
-            //     let response = fetch('/handle.php', {
-            //         method: 'POST',
-            //         headers: {},
-            //         body: data,
-            //     });
-            // })
-            // -----------------------------------------
-
         }
 
-        // -----------------------------------------
-        // ----------- getCookie
+        function setCookie(name, value, options = {}) {
+            options = {
+                path: '/',
+                ...options
+            };
+            if (options.expires instanceof Date) {
+                options.expires = options.expires.toUTCString();
+            }
+            let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+            for (let optionKey in options) {
+                updatedCookie += "; " + optionKey;
+                let optionValue = options[optionKey];
+                if (optionValue !== true) {
+                    updatedCookie += "=" + optionValue;
+                }
+            }
+            document.cookie = updatedCookie;
+        }
+
         function getCookie(name) {
             let matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -366,6 +337,5 @@ $(document).ready(function () {
             return matches ? decodeURIComponent(matches[1]) : undefined;
         }
 
-        //----------------------------------------------
     }
 );

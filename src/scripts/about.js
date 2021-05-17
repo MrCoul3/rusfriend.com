@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if ($('main').hasClass("about-page")) {
-        console.log('about');
+        // console.log('about');
         const mediaQueryDesktop = window.matchMedia('(min-width: 1024px)');
 
         aboutAnimation();
@@ -49,7 +49,7 @@ $(document).ready(function () {
         // ----------- анимация карточек предложений
         function offersAnimation() {
             document.addEventListener("scroll", function (e) {
-                // console.log(window.pageYOffset);
+                // // console.log(window.pageYOffset);
                 if (mediaQueryDesktop.matches) {
                     if (window.pageYOffset > 400) {
                         animateToOrigin($(".offers-title"));

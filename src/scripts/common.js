@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if ($(".header")) {
-        console.log('common.js init')
+        // console.log('common.js init')
         const mediaQueryMobile = window.matchMedia('(max-width: 767px)'); // работает только на мобильных / не более 767
         // -------------------------
         resetStates();
@@ -25,7 +25,7 @@ $(document).ready(function () {
                 if (!targClass.includes("user-login__elem") && !targClass.includes("user-login")) {
                     $(".user-login-menu").slideUp(10);
                 }
-                // console.log(e.target);
+                // // console.log(e.target);
             });
         }
 
@@ -44,20 +44,17 @@ $(document).ready(function () {
         // ----------- функционал смены языка
         function changeLanguage() {
             $(".btn-change-lang").click(function () {
-                // console.log($(".lang-changer").hasClass('lang-changer-active'));
+                // // console.log($(".lang-changer").hasClass('lang-changer-active'));
                 if (!$(".lang-changer").hasClass('active')) {
                     $(".lang-changer").addClass('active');
                 } else {
                     $(".lang-changer").removeClass('active');
                 }
             });
-
             $('.lang-changer').click(function (e) {
-
                 let langsObj = {
                     'method': 'language'
                 };
-
                 if ($('.lang-changer').hasClass('eng-lang')) {
                     $('.lang-changer').addClass('rus-lang').removeClass('eng-lang');
                     $(".btn-change-lang").removeClass('rus-lang').addClass('eng-lang');
@@ -80,7 +77,7 @@ $(document).ready(function () {
                 response.then(function (data) {
                     return data.json()
                 }).then(function (data) {
-                    // console.log(data); // eng-lang || rus-eng
+                    // // console.log(data); // eng-lang || rus-eng
                     switchLang(data);
                     elemStyleOnSwitchLang();
                 });
@@ -93,10 +90,10 @@ $(document).ready(function () {
         }
 
         function langStateOnReload() {
-            // console.log(getCookie('btnLang'));
+            // // console.log(getCookie('btnLang'));
             elemStyleOnSwitchLang();
             $('*').each(function (k, val) {
-                // console.log($(this));
+                // // console.log($(this));
                 if ($(this).attr('switch-lang') === 'rus-lang') {
 
                     if ($(this).attr('placeholder')) {
@@ -116,7 +113,7 @@ $(document).ready(function () {
                     $(this).removeAttr('eng-text');
                 }
                 if ($(this).attr('switch-lang') === 'eng-lang') {
-                    // console.log($(this))
+                    // // console.log($(this))
                     $(this).animate({'opacity': 1}, 400);
                 }
             })
@@ -229,8 +226,8 @@ $(document).ready(function () {
         // ----------- функционал и анимация бургер-меню на мобильных устройствах
         function burgerMenuActions() {
             $(".burger-menu").click(function () {
-                // console.log('ww')
-                // console.log(window.pageYOffset);
+                // // console.log('ww')
+                // // console.log(window.pageYOffset);
                 if ($(".header-menu").hasClass('header-menu-active')) {
                     $(".header-menu").removeClass('header-menu-active').animate({
                         'right': '768px'

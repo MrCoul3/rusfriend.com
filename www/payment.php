@@ -31,6 +31,7 @@ function switchLang()
     <link href="styles/app.css" rel="stylesheet">
 
 <body class="payment-page" id="mysite">
+<div id="preloader"></div>
 <header class="header">
     <div class="header-inner">
         <a href="/index.php" class="logo"></a>
@@ -120,7 +121,7 @@ function switchLang()
             <p switch-lang="<?=switchLang()?>" switchable-text="После подтверждения оплаты вам на почту будет выслано <br> письмо с информацией о бронировании">After confirming the payment, you will receive an <br> email with the booking information.</p>
             <div class="flex success-flex"><a href="/private-lesson.php">
                     <div class="arrow"></div>
-                </a><a switch-lang="<?=switchLang()?>" switchable-text="Вернуться в календарь занятий" class="return-link" href="/private-lesson.php">Go back to the class calendar</a></div>
+                </a><a switch-lang="<?=switchLang()?>" switchable-text="Перейти в 'мои уроки'" class="return-link" href="/student-lessons">Go to 'my lessons'</a></div>
         </div>
     </section>
 

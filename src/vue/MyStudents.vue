@@ -61,12 +61,12 @@ export default {
     getAllUsersInfo: function () {
       axios.post('/handle.php', JSON.stringify({'method': 'getAllUsersInfo'}))
           .then((response) => {
-            // console.log(response.data)
+            // // console.log(response.data)
             localStorage.setItem('getAllUsersInfo', JSON.stringify(response.data))
             let data = response.data;
             let array = this.array;
             data.forEach(function (val, k) {
-              // console.log(val.status)
+              // // console.log(val.status)
               if (val.status !== 'admin') {
                 array.push(val);
               }
@@ -77,7 +77,7 @@ export default {
                 val.text = 'разблокировать';
               }
             })
-            // console.log(array)
+            // // console.log(array)
           });
     },
     openAvatar() {
@@ -90,7 +90,7 @@ export default {
       }
     },
     blockUser(event) {
-      // console.log(event.target.parentNode.previousElementSibling);
+      // // console.log(event.target.parentNode.previousElementSibling);
       let statusElem = event.target.parentNode.previousElementSibling;
       let email = event.target.getAttribute('email');
       let status = event.target.getAttribute('status');
@@ -108,7 +108,7 @@ export default {
       }
       axios.post('/handle.php', JSON.stringify(data))
           .then((response) => {
-            // console.log(response.data)
+            // // console.log(response.data)
             let data = response.data;
             event.target.setAttribute('status', data);
             statusElem.innerHTML = data;

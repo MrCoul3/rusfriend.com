@@ -1,6 +1,6 @@
 $(document).ready(function () {
     if ($('main').hasClass('guide')) {
-        console.log('guide.js init')
+        // console.log('guide.js init')
         // карусели
         $(".owl-carousel-1").owlCarousel({
             margin: 250,

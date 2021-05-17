@@ -1,6 +1,6 @@
 <title>Главная</title>
 <main class="main-page">
-
+    <a name="top"></a>
     <section class="cookie-warn">
         <div class="cookie-warn-frame">
             <p>Этот сайт использует cookie для хранения
@@ -151,5 +151,7 @@
             </div>
         </div>
     </section>
+
+    <a href="/student-lessons" class="button button--redirect-to-lessons" switch-lang="<?=switchLang()?>" switchable-text="забронировать урок">book a lesson</a>
 
 </main>

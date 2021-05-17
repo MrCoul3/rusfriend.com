@@ -217,9 +217,9 @@ if ($request['method'] === 'confirmedByTutor') {
 
 
 // Отправляем
-if ($mail->send()) {
-    echo 'Письмо отправлено!';
-} else {
-    echo 'Ошибка: ' . $mail->ErrorInfo;
-}
+//if ($mail->send()) {
+//    echo 'Письмо отправлено!';
+//} else {
+//    echo 'Ошибка: ' . $mail->ErrorInfo;
+//}
 

@@ -108,9 +108,9 @@ foreach ($result as $item) {
             <div class="flex" style="display: flex; justify-content: space-between">
                 <div payment="<?= $item[5] ?>" confirmation="<?= $item[6] ?>"
                      class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
-                <a class="pay-btn" href="/payment">click to pay</a>
-                <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
-                <span class="payed-lesson">payed</span>
+                <a switch-lang="<?= switchLang() ?>" switchable-text="оплатить" class="pay-btn" href="/payment">click to pay</a>
+                <p switch-lang="<?= switchLang() ?>" switchable-text="неподтвержденное учителем" style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
+                <span switch-lang="<?= switchLang() ?>" switchable-text="оплачено" class="payed-lesson">payed</span>
             </div>
         <?php endif; ?>
         <?php endif; ?>
@@ -131,9 +131,9 @@ foreach ($result as $item) {
                     <div class="flex" style="display: flex; justify-content: space-between">
                         <div payment="<?= $item[5] ?>" confirmation="<?= $item[6] ?>"
                              class="content-elem"><?= $arr[0] . ' ' . $arr[1] . ' ' . $item[3] ?></div>
-                        <a class="pay-btn" href="/payment">click to pay</a>
-                        <p style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
-                        <span class="payed-lesson">payed</span>
+                        <a switch-lang="<?= switchLang() ?>" switchable-text="оплатить" class="pay-btn"   class="pay-btn" href="/payment">click to pay</a>
+                        <p switch-lang="<?= switchLang() ?>" switchable-text="неподтвержденное учителем" style="margin: 0;" class="unconfirmed-lesson">unconfirmed by tutor</p>
+                        <span switch-lang="<?= switchLang() ?>" switchable-text="оплачено" class="payed-lesson">payed</span>
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>

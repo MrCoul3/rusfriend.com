@@ -18,7 +18,7 @@ if ($request['method'] == 'register') {
     $response = [];
     $register = $obj->addUser($request);
     $userName = $obj->getUserInfo();
-    if ($register) {
+    if ($register === 'success') {
         $response = [
             'success' => true,
             'name' => $userName['name'],
@@ -26,7 +26,8 @@ if ($request['method'] == 'register') {
         ];
     } else {
         $response = [
-            'success' => false
+            'success' => false,
+            'error' => $register
         ];
     }
     echo json_encode($response);
@@ -138,7 +139,7 @@ if ($request['method'] == 'language') {
 
 if ($request['method'] == 'addTimeIntervals') {
   $res= $objCalendar->addTimeIntervals($request);
-    $timeIntervals = $objCalendar->returnTimeIntervals();
+    $timeIntervals = $objCalendar->getTimeIntervals();
     foreach ($timeIntervals as $day => $time) {
         $response[] = [
             'day' => $time[0],
@@ -150,7 +151,7 @@ if ($request['method'] == 'addTimeIntervals') {
 }
 
 if ($request['method'] == 'getTimeIntervals') {
-    $timeIntervals = $objCalendar->returnTimeIntervals();
+    $timeIntervals = $objCalendar->getTimeIntervals();
     foreach ($timeIntervals as $day => $time) {
         $response[] = [
             'day' => $time[0],
@@ -215,7 +216,7 @@ if ($request['method'] === 'getLessons') {
 }
 
 if($request[0]['method'] === 'setToBooksTimeGMT') {
-    $result = $objCalendar->setLessonsToBookstimeGMT($request);
+    $result = $objCalendar->setToBooksTimeGMT($request);
     echo json_encode(($result));
 }
 

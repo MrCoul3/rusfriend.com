@@ -3,6 +3,7 @@ require("vendor/autoload.php");
 ?>
 
 <footer class="footer">
+    <a href="#top" class="up-btn"></a>
     <div class="decor-line decor-line--footer"></div>
     <div class="footer-content">
         <a class="footer-content__element footer-content__element--logo" href="/index.php"></a>

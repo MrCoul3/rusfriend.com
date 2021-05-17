@@ -989,6 +989,13 @@
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }
+#mysite .button--redirect-to-lessons {
+  background-color: #FF3E28;
+  width: 280px;
+  height: 80px;
+  line-height: 78px;
+  margin: 0px auto 50px;
+}
 #mysite .red-btn {
   background-color: #FF3E28;
   width: 280px;
@@ -1404,6 +1411,23 @@
     padding: 0;
   }
 }
+#mysite .footer .up-btn {
+  transition: all ease 0.4s;
+  display: none;
+  opacity: 0.5;
+  background-image: url(../images/common/up-btn.svg);
+  width: 52px;
+  height: 52px;
+  position: fixed;
+  bottom: 300px;
+  right: 100px;
+  cursor: pointer;
+  z-index: 999999;
+}
+#mysite .footer .up-btn:hover {
+  opacity: 1;
+  transition: all ease 0.4s;
+}
 #mysite .footer .footer-content {
   margin: 10px auto;
   max-width: 1024px;
@@ -1573,7 +1597,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 999;
+  z-index: 999999999999;
   width: 100%;
   height: 100%;
   overflow: visible;
@@ -3564,12 +3588,6 @@
   justify-content: space-between;
   margin: 10px 0;
   line-height: 20px;
-  cursor: pointer;
-}
-#mysite .my-students .my-students-content .student .wrap:hover {
-  background: #e9c6c6;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.25);
 }
 #mysite .my-students .my-students-content .student__elem {
   width: 100%;
@@ -3984,107 +4002,6 @@
 #mysite .your-calendar .calendar-app .tegs__element .circle--unavailable {
   background: #DBDEE1;
 }
-#mysite .your-calendar .enter-your-skype {
-  position: absolute;
-  width: 553px;
-  height: 250px;
-  background: rgba(0, 0, 0, 0.25);
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-  box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
-  border-radius: 40px;
-  bottom: 275px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
-@media screen and (max-width: 1024px) {
-  #mysite .your-calendar .enter-your-skype {
-    width: 449px;
-    height: 195px;
-  }
-}
-@media screen and (max-width: 767px) {
-  #mysite .your-calendar .enter-your-skype {
-    width: 100%;
-    padding: 15px;
-  }
-}
-@media screen and (max-width: 360px) {
-  #mysite .your-calendar .enter-your-skype {
-    height: 230px;
-  }
-}
-#mysite .your-calendar .enter-your-skype__element {
-  text-align: center;
-}
-#mysite .your-calendar .enter-your-skype .flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-@media screen and (max-width: 360px) {
-  #mysite .your-calendar .enter-your-skype .flex {
-    flex-direction: column;
-  }
-}
-#mysite .your-calendar .enter-your-skype .skype-icon-for-input {
-  background-image: url(../images/icons/skype-ico.svg);
-  width: 21px;
-  height: 20.95px;
-  position: relative;
-  left: 29px;
-}
-@media screen and (max-width: 360px) {
-  #mysite .your-calendar .enter-your-skype .skype-icon-for-input {
-    left: -89px;
-    top: 34px;
-  }
-}
-#mysite .your-calendar .enter-your-skype .input-skype {
-  text-align: left;
-  width: 212px;
-  height: 36px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  outline: none;
-  border: none;
-  display: block;
-  padding-left: 33px;
-  margin: 20px auto;
-  margin-right: 4px;
-}
-@media screen and (max-width: 360px) {
-  #mysite .your-calendar .enter-your-skype .input-skype {
-    margin: 6px auto;
-  }
-}
-#mysite .your-calendar .enter-your-skype .send-skype {
-  width: 72px;
-  height: 36px;
-  background: #FF3E28;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 32px;
-}
-#mysite .your-calendar .enter-your-skype .validation-skype {
-  position: absolute;
-  color: #FF3E28;
-  font-style: italic;
-  font-size: 14px;
-  top: 180px;
-  right: 218px;
-}
-#mysite .your-calendar .enter-your-skype h2, #mysite .your-calendar .enter-your-skype h3 {
-  color: white;
-  font-weight: normal;
-}
-#mysite .your-calendar .enter-your-skype h2 {
-  font-weight: 600;
-  margin-bottom: 20px;
-}
 #mysite .your-calendar .booked-for-this-user {
   background: #34CFBE;
   border-radius: 5px;
@@ -4097,6 +4014,35 @@
 }
 #mysite .your-calendar .booked-free {
   display: none;
+}
+#mysite .warn-15-min-book-del {
+  text-align: center;
+  margin: 20px 0;
+  font-weight: 600;
+  font-size: 20px;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .warn-15-min-book-del {
+    margin: 28px 0px;
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .warn-15-min-book-del {
+    text-align: center;
+    margin: 45px 0px 0;
+    font-size: 14px;
+  }
+}
+@media screen and (max-width: 505px) {
+  #mysite .warn-15-min-book-del {
+    margin: 55px 0px 0;
+  }
+}
+@media screen and (max-width: 335px) {
+  #mysite .warn-15-min-book-del {
+    margin: 62px 0px 0;
+  }
 }
 #mysite .unconfirmed-menu-wrap {
   transition: all ease 0.2s;
@@ -4169,6 +4115,125 @@
 }
 #mysite .unconfirmed-menu-wrap .unconfirmed-menu-frame .flex .button--cancel-btn {
   background: #B3B3B3;
+}
+#mysite .enter-your-skype-frame {
+  left: 0 !important;
+  transition: all ease 0.2s;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1001;
+}
+@media screen and (max-width: 767px) {
+  #mysite .enter-your-skype-frame {
+    top: 0;
+    height: 200%;
+  }
+}
+#mysite .enter-your-skype-frame .enter-your-skype {
+  position: absolute;
+  width: 553px;
+  height: 250px;
+  background: #EFF4F9;
+  box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
+  border-radius: 40px;
+  top: 200px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1024px) {
+  #mysite .enter-your-skype-frame .enter-your-skype {
+    width: 449px;
+    height: 195px;
+    top: 100px;
+  }
+}
+@media screen and (max-width: 767px) {
+  #mysite .enter-your-skype-frame .enter-your-skype {
+    width: 100%;
+    top: 143px;
+    padding: 15px;
+    border-radius: 0;
+  }
+}
+@media screen and (max-width: 360px) {
+  #mysite .enter-your-skype-frame .enter-your-skype {
+    height: 230px;
+  }
+}
+#mysite .enter-your-skype-frame .enter-your-skype__element {
+  text-align: center;
+}
+#mysite .enter-your-skype-frame .enter-your-skype .flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media screen and (max-width: 360px) {
+  #mysite .enter-your-skype-frame .enter-your-skype .flex {
+    flex-direction: column;
+  }
+}
+#mysite .enter-your-skype-frame .enter-your-skype .skype-icon-for-input {
+  background-image: url(../images/icons/skype-ico.svg);
+  width: 21px;
+  height: 20.95px;
+  position: relative;
+  left: 29px;
+}
+@media screen and (max-width: 360px) {
+  #mysite .enter-your-skype-frame .enter-your-skype .skype-icon-for-input {
+    left: -89px;
+    top: 34px;
+  }
+}
+#mysite .enter-your-skype-frame .enter-your-skype .input-skype {
+  text-align: left;
+  width: 212px;
+  height: 36px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  display: block;
+  padding-left: 33px;
+  margin: 20px auto;
+  margin-right: 4px;
+}
+@media screen and (max-width: 360px) {
+  #mysite .enter-your-skype-frame .enter-your-skype .input-skype {
+    margin: 6px auto;
+  }
+}
+#mysite .enter-your-skype-frame .enter-your-skype .send-skype {
+  width: 100px;
+  height: 36px;
+  background: #FF3E28;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 32px;
+}
+#mysite .enter-your-skype-frame .enter-your-skype .validation-skype {
+  position: absolute;
+  color: #FF3E28;
+  font-style: italic;
+  font-size: 14px;
+  top: 180px;
+  right: 218px;
+}
+#mysite .enter-your-skype-frame .enter-your-skype h2, #mysite .enter-your-skype-frame .enter-your-skype h3 {
+  color: #455A64;
+  font-weight: normal;
+}
+#mysite .enter-your-skype-frame .enter-your-skype h2 {
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 #mysite .student-lessons {
@@ -4346,7 +4411,7 @@
 #mysite .student-lessons .block__elem--content {
   display: flex;
   flex-direction: column;
-  max-width: 380px;
+  max-width: 415px;
   width: 100%;
   line-height: 25px;
   position: relative;
@@ -4380,7 +4445,6 @@
   color: #FF3E28;
 }
 #mysite .student-lessons .block .pay-btn {
-  font-family: Montserrat, sans-serif;
   font-size: 12px;
   display: none;
   color: #FF3E28;
@@ -4684,16 +4748,25 @@
 #mysite .free-lesson .your-calendar__element {
   margin-bottom: 20px;
 }
-#mysite .free-lesson .your-calendar__element .free-lesson-success {
+#mysite .free-lesson .free-lesson-success-frame {
+  left: 0 !important;
+  transition: all ease 0.2s;
   -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  width: 100%;
+  height: 100%;
+  position: absolute;
   background: rgba(0, 0, 0, 0.25);
+  z-index: 1001;
+}
+#mysite .free-lesson .free-lesson-success-frame .free-lesson-success {
+  background: #EFF4F9;
   position: absolute;
   width: 553px;
   height: 250px;
   box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
   border-radius: 40px;
-  bottom: 126px;
+  bottom: 426px;
   left: 0;
   right: 0;
   margin: auto;
@@ -4701,52 +4774,54 @@
   box-sizing: border-box;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success {
     width: 449px;
     height: 195px;
+    bottom: 739px;
   }
 }
 @media screen and (max-width: 767px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success {
     width: 100%;
-    top: -525px;
+    bottom: 359px;
     padding: 15px;
+    border-radius: 0;
   }
 }
 @media screen and (max-width: 340px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success {
     height: 214px;
   }
 }
-#mysite .free-lesson .your-calendar__element .free-lesson-success h2, #mysite .free-lesson .your-calendar__element .free-lesson-success h3 {
-  color: white;
+#mysite .free-lesson .free-lesson-success-frame .free-lesson-success h2, #mysite .free-lesson .free-lesson-success-frame .free-lesson-success h3 {
+  color: #455A64;
   font-weight: normal;
 }
 @media screen and (max-width: 767px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success h2, #mysite .free-lesson .your-calendar__element .free-lesson-success h3 {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success h2, #mysite .free-lesson .free-lesson-success-frame .free-lesson-success h3 {
     font-size: 12px;
   }
 }
-#mysite .free-lesson .your-calendar__element .free-lesson-success h2 {
+#mysite .free-lesson .free-lesson-success-frame .free-lesson-success h2 {
   font-weight: 600;
   margin-bottom: 20px;
 }
 @media screen and (max-width: 767px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success h2 {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success h2 {
     margin-bottom: 10px;
     font-size: 18px;
   }
 }
-#mysite .free-lesson .your-calendar__element .free-lesson-success__elem {
+#mysite .free-lesson .free-lesson-success-frame .free-lesson-success__elem {
   text-align: center;
   margin-bottom: 16px;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success__elem {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success__elem {
     margin-bottom: 10px;
   }
 }
-#mysite .free-lesson .your-calendar__element .free-lesson-success .ok-btn {
+#mysite .free-lesson .free-lesson-success-frame .free-lesson-success .ok-btn {
   width: 72px;
   height: 36px;
   background: #FF3E28;
@@ -4756,7 +4831,7 @@
   margin: 0 auto;
 }
 @media screen and (max-width: 1024px) {
-  #mysite .free-lesson .your-calendar__element .free-lesson-success .ok-btn {
+  #mysite .free-lesson .free-lesson-success-frame .free-lesson-success .ok-btn {
     margin-bottom: 10px;
   }
 }

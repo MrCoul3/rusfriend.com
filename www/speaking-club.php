@@ -6,7 +6,7 @@ $result = $objCalendar->getPrice();
 ?>
 
 <title switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" >speaking-club</title>
-<body style="max-height: 901px;">
+<body style="max-height: 1022px;">
 <main class="book-lesson speaking-club">
     <div class="description-block">
         <h2 switch-lang="<?=switchLang()?>" switchable-text="Разговорный клуб" class="title">Speaking - Club</h2>

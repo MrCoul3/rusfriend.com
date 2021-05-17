@@ -67,6 +67,7 @@
       @include mediaWidth(767) {
         padding-bottom: 10px;
       }
+
       .decor-line {
         margin-bottom: 30px;
       }
@@ -79,6 +80,7 @@
         @include mediaWidth(767) {
           padding: 10px 10px;
         }
+
         .flex-column {
           display: flex;
           flex-direction: column;
@@ -161,6 +163,7 @@
               display: none;
             }
           }
+
           // Для select возможности выбора временной зоны
           //&--time-zone {
           //  font-family: 'Montserrat', sans-serif;
@@ -316,7 +319,7 @@
               background: $colorRed !important;
               border-radius: 5px;
               color: white !important;
-              cursor: pointer!important;
+              cursor: pointer !important;
 
               &:hover {
                 transition: none;
@@ -332,6 +335,7 @@
               border-radius: 5px;
               color: white !important;
               cursor: auto;
+
               &:hover {
                 transition: none;
                 background: #F6D200;
@@ -439,16 +443,156 @@
       }
     }
 
+
+    .booked-for-this-user {
+      background: $colorTurquoise;
+      border-radius: 5px;
+      color: white !important;
+      pointer-events: none;
+    }
+
+    .booked-for-other-users {
+      color: $colorDisable !important;
+      pointer-events: none;
+    }
+
+    .booked-free {
+      display: none;
+    }
+
+    // открытие меню при нажатии на неоплаченный урок
+
+
+  }
+
+  .warn-15-min-book-del {
+    text-align: center;
+    margin: 20px 0;
+    font-weight: 600;
+    font-size: 20px;
+    @include mediaWidth(1024) {
+      margin: 28px 0px;
+      font-size: 18px;
+    }
+    @include mediaWidth(767) {
+      text-align: center;
+      margin: 45px 0px 0;
+      font-size: 14px;
+    }
+    @include mediaWidth(505) {
+      margin: 55px 0px 0;
+    }
+    @include mediaWidth(335) {
+      margin: 62px 0px 0;
+    }
+  }
+
+  .unconfirmed-menu-wrap {
+    transition: all ease .2s;
+    opacity: 1;
+    width: 100%;
+    height: 200%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    top: 0;
+    @include mediaWidth(767) {
+      height: 0;
+      background: transparent;
+    }
+
+    .unconfirmed-menu-frame {
+      position: fixed;
+      top: 200px;
+      right: 0;
+      left: -2000px;
+      opacity: 0;
+      margin: auto;
+      width: 438px;
+      height: 200px;
+      background: #EFF4F9;
+      box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      text-align: center;
+      @include mediaWidth(767) {
+        width: 100%;
+      }
+
+      .close-btn {
+        margin: 15px 15px 0 0;
+      }
+
+      .title {
+        font-weight: normal;
+        font-size: 18px;
+        color: $colorRed;
+      }
+
+      .description {
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: normal;
+        font-size: 16px;
+      }
+
+      .decor-line {
+        margin: 0 20px;
+      }
+
+      .flex {
+        margin: 17px auto;
+        display: flex;
+        justify-content: space-between;
+        max-width: 320px;
+        width: 100%;
+
+        .button {
+          width: 154px;
+          height: 35px;
+          //box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
+          border-radius: 4px;
+          font-size: 16px;
+          font-weight: normal;
+          line-height: 35px;
+
+          &--pay-btn {
+            background: #34CFBF;
+          }
+
+          &--cancel-btn {
+            background: #B3B3B3;
+          }
+        }
+      }
+    }
+  }
+
+  .enter-your-skype-frame {
+    left: 0 !important;
+    transition: all ease 0.2s;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1001;
+    @include mediaWidth(767) {
+      top: 0;
+      height: 200%;
+
+    }
+
     .enter-your-skype {
       position: absolute;
       width: 553px;
       height: 250px;
       //background: #D1D1D1;
-      background: rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(4px);
+      //background: rgba(0, 0, 0, 0.25);
+      background: #EFF4F9;
+      //backdrop-filter: blur(4px);
       box-shadow: 0px 0px 21px rgba(0, 0, 0, 0.25);
       border-radius: 40px;
-      bottom: 275px;
+      top: 200px;
       left: 0;
       right: 0;
       margin: auto;
@@ -457,11 +601,13 @@
       @include mediaWidth(1024) {
         width: 449px;
         height: 195px;
+        top: 100px;
       }
       @include mediaWidth(767) {
         width: 100%;
-        //top: -420px;
+        top: 143px;
         padding: 15px;
+        border-radius: 0;
 
       }
       @include mediaWidth(360) {
@@ -512,7 +658,7 @@
       }
 
       .send-skype {
-        width: 72px;
+        width: 100px;
         height: 36px;
         background: #FF3E28;
         font-weight: 500;
@@ -530,110 +676,13 @@
       }
 
       h2, h3 {
-        color: white;
+        color: $colorLightBlack;
         font-weight: normal;
       }
 
       h2 {
         font-weight: 600;
         margin-bottom: 20px;
-      }
-    }
-
-    .booked-for-this-user {
-      background: $colorTurquoise;
-      border-radius: 5px;
-      color: white !important;
-      pointer-events: none;
-    }
-
-    .booked-for-other-users {
-      color: $colorDisable !important;
-      pointer-events: none;
-    }
-
-    .booked-free {
-      display: none;
-    }
-
-    // открытие меню при нажатии на неоплаченный урок
-
-
-  }
-
-  .unconfirmed-menu-wrap {
-    transition: all ease .2s;
-    opacity: 1;
-    width: 100%;
-    height: 200%;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.25);
-    z-index: 9999;
-    top: 0;
-    @include mediaWidth(767) {
-      height: 0;
-      background: transparent;
-    }
-
-    .unconfirmed-menu-frame {
-      position: fixed;
-      top: 200px;
-      right: 0;
-      left: -2000px;
-      opacity: 0;
-      margin: auto;
-      width: 438px;
-      height: 200px;
-      background: #EFF4F9;
-      box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
-      border-radius: 20px;
-      text-align: center;
-      @include mediaWidth(767) {
-        width: 100%;
-      }
-      .close-btn {
-        margin: 15px 15px 0 0;
-      }
-
-      .title {
-        font-weight: normal;
-        font-size: 18px;
-        color: $colorRed;
-      }
-
-      .description {
-        color: rgba(0, 0, 0, 0.5);
-        font-weight: normal;
-        font-size: 16px;
-      }
-      .decor-line {
-        margin: 0 20px;
-      }
-
-      .flex {
-        margin: 17px auto;
-        display: flex;
-        justify-content: space-between;
-        max-width: 320px;
-        width: 100%;
-
-        .button {
-          width: 154px;
-          height: 35px;
-          //box-shadow: 0px 0px 19px 5px rgba(0, 0, 0, 0.25);
-          border-radius: 4px;
-          font-size: 16px;
-          font-weight: normal;
-          line-height: 35px;
-
-          &--pay-btn {
-            background: #34CFBF;
-          }
-
-          &--cancel-btn {
-            background: #B3B3B3;
-          }
-        }
       }
     }
   }
