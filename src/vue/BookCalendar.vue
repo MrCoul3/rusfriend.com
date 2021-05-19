@@ -189,7 +189,7 @@
 import axios from 'axios';
 function getCookie(name) {
   let matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\enter-your-skype.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
   ));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -549,7 +549,6 @@ export default {
 
           });
     },
-    // получение интервалов, обработка  в зависимости от часового пояса и занесение во временную базу данных tempGMT
     getIntervalsFromDB: function () {
       $('#booking-calendar').css('opacity', '0');
       this.preloader = true;
@@ -596,25 +595,15 @@ export default {
             function addToTempDB() {
               if (data !== null) {
                 data.forEach((val, k) => {
-                  // // console.log(val);
                   let dayFromDb = val.day;
                   let timeFromDb = val.time;
                   let gmtFromDb = val.gmt;
-
-
-                  // if (this.timeZone !== gmtFromDb) {
-
-                  // ----- func changeIntevals
                   let gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
                   let delta = timeZoneNum - gmtFromDbNum;
-                  // // console.log(timeFromDb)
-
                   let arr = timeFromDb.split(',');
-
                   let newArr = [];
                   let newArr2 = [];
                   let newArr3 = [];
-
 
                   arr.forEach((val, k) => {
 
@@ -674,7 +663,6 @@ export default {
                         gmt: timeZone,
                       }
                     }
-
                     if (a > 23) {
                       newArr3.push(time);
                       obj3 = {
@@ -683,10 +671,7 @@ export default {
                         gmt: timeZone,
                       }
                     }
-
-
                   });
-
                   if (Object.keys(obj).length !== 0) {
                     array.push(obj);
                   }
@@ -697,9 +682,7 @@ export default {
                     array.push(obj3);
                   }
                   array2 = [...new Set(array)];
-                  // // console.log(array2)
-                  // // console.log(obj)
-                  // // console.log(obj2)
+
                 });
               }
 
@@ -721,9 +704,7 @@ export default {
               let data = response.data;
               // // console.log(data)
               let unconfirmedBooks = [];
-
               let dataLength = 0;
-
               if (data !== null) {
                 data.forEach((val, k) => {
                   let arr = val[1].split(',')
@@ -731,9 +712,6 @@ export default {
                 });
               }
 
-              //  получение данных из temp-gmt,
-              //  обработка массива - изменение неправильного времени,
-              //  вставка в календарь
               if (this.lengthOfData !== undefined) {
                 if (this.lengthOfData === dataLength) {
                   if (data !== null) {
@@ -934,8 +912,6 @@ export default {
                             time = a + ':' + firstM;
                           }
 
-                          // // console.log(time)
-
                           let obj = {
                             name: userNameFromDB,
                             type: type,
@@ -947,7 +923,6 @@ export default {
                             gmt: this.timeZone,
                             'method': 'setToBooksTimeGMT'
                           };
-                          // // console.log(obj)
                           this.bookedGmtArray.push(obj);
                         });
 
@@ -1024,7 +999,8 @@ export default {
     },
     // --- выбор интервалов с записью параметров в массив selectedTimeArray[]
     chooseTime: function (event) {
-      // // console.log('choose')
+      let userName = getCookie('name');
+
       // ---- Для free-lesson возможность выбрать только одно занятие
       if (this.freeLesson) {
         $('.selected-time').removeClass('selected-time');
@@ -1042,9 +1018,8 @@ export default {
       }
       this.unconfirmTimeArray = [];
       this.selectedTimeArray = [];
-      // console.log(this.selectedTimeArray)
+      console.log(this.selectedTimeArray)
       // let userName = $('.user-login__elem--user-name').html();
-      let userName = getCookie('name');
       let confirmation = 0;
       if ($('.header-menu--private').hasClass('menu-item-active')) {
         this.typeOfLesson = 'private';
@@ -1135,7 +1110,6 @@ export default {
             }
           });
     },
-    // ------------- click on button class="button book-btn" (забронировать -> страница оплаты)
     bookEvent: function (event) {
       // ------ проверка на логин, если не залогинен то открыть форму Регистрации
       axios.post('/handle.php', JSON.stringify({'method': 'checkLoginOnBookedLesson'}))
@@ -1191,12 +1165,9 @@ export default {
                             data: this.selectedTimeArray,
                             'method': 'bookedFreeByUser'
                           }
-
                           axios.post('/mailer.php', JSON.stringify(mailForUser))
                           axios.post('/mailer.php', JSON.stringify(mailForAdmin))
 
-
-                          // $("#mysite").addClass("body-fixed");
                         } else {
                           // --- для платного - страница оплаты
                           setTimeout(() => {

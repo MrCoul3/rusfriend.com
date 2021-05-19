@@ -10,7 +10,7 @@ require("vendor/autoload.php");
             <div class="owl-carousel owl-carousel-3 owl-theme about__element about__element--left">
                 <img
                         class="owl-carousel__element owl-carousel__element--photo"
-                        about-social-net__elem about-social-net__elem--insta   src="images/index/top-index-main-photo.png">
+                        about-social-net__elem about-social-net__elem--insta   src="images/about/about-photo.png">
                 <img
                         class="owl-carousel__element owl-carousel__element--diplom" src="images/about/diplom.png">
                 <img

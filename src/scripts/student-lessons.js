@@ -129,7 +129,7 @@ $(document).ready(function () {
                                     confirmation: confirmationFromDB,
                                     price: priceFromDB,
                                     gmt: timeZone,
-                                    bookingTime: ' ',
+                                    bookingTime: 0,
                                     idFromBookstime: idFromDB,
                                     'method': 'setToBooksTimeGMT'
                                 };
@@ -157,6 +157,7 @@ $(document).ready(function () {
                                 delete localStorage.re;
                                 $('#preloader').css('display','none');
                             }
+
                         } else {
                             window.location.reload();
                         }
@@ -164,7 +165,7 @@ $(document).ready(function () {
                         $('#preloader').css('display','none');
                     }
                 });
-        },50);
+        },200);
 
         function getCookie(name) {
             let matches = document.cookie.match(new RegExp(
@@ -173,4 +174,5 @@ $(document).ready(function () {
             return matches ? decodeURIComponent(matches[1]) : undefined;
         }
     }
+
 });

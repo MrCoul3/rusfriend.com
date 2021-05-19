@@ -2,7 +2,6 @@
 
 namespace Classes;
 
-
 class Calendar
 {
     protected $dbAccess = null;
@@ -99,7 +98,6 @@ class Calendar
                 $requestKeys = implode(',', array_keys($arr));
                 $requestVals = implode(',', $arr);
                 $query = "INSERT INTO `bookstime` ({$requestKeys}) VALUES ({$requestVals});";
-                var_dump($query);
                 $result = $this->dbAccess->query($query);
             }
         }
@@ -201,7 +199,6 @@ class Calendar
             $time = $val['time'];
             $date = $val['day'];
             $query = "DELETE FROM `bookstime` WHERE `name` = '{$name}' AND `day` = '{$date}' AND `time` = '{$time}'";
-//            var_dump($query);
             $result = $this->dbAccess->query($query);
         }
         return $result;

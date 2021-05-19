@@ -19,6 +19,10 @@ $(document).ready(function () {
         $('.register-success').remove();
         $('.settings').remove();
 
+        setTimeout(()=>{
+            $('#preloader').css('display', 'none');
+        },50);
+
         // ------------ переключение элементов меню
         function switchMenuComponents() {
             $('.admin-menu__element--mycalendar').addClass('menu-element-colored');

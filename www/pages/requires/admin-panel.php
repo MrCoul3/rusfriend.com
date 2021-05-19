@@ -1,6 +1,4 @@
 <?php
-//require("vendor/autoload.php");
-
 $request = json_decode(file_get_contents('php://input'), true);
 if ($request['method'] == 'requireAdminComponents') {
     $result = $request['type'];
@@ -25,7 +23,7 @@ $result = $objCalendar->getPrice();
 <!--    </div>-->
 </header>
 
-
+<div id="preloader"></div>
 <div class="decor-line decor-line--admin-header admin-inner"></div>
 <nav class="admin-menu admin-inner">
     <div class="admin-menu__element admin-menu__element--mycalendar" type="my-calendar">Мой календарь</div>

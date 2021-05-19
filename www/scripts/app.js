@@ -3289,7 +3289,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 function getCookie(name) {
-  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\enter-your-skype.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+  var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
@@ -3660,7 +3660,6 @@ function getCookie(name) {
         }
       });
     },
-    // получение интервалов, обработка  в зависимости от часового пояса и занесение во временную базу данных tempGMT
     getIntervalsFromDB: function getIntervalsFromDB() {
       var _this3 = this;
 
@@ -3709,15 +3708,11 @@ function getCookie(name) {
         function addToTempDB() {
           if (data !== null) {
             data.forEach(function (val, k) {
-              // // console.log(val);
               var dayFromDb = val.day;
               var timeFromDb = val.time;
-              var gmtFromDb = val.gmt; // if (this.timeZone !== gmtFromDb) {
-              // ----- func changeIntevals
-
+              var gmtFromDb = val.gmt;
               var gmtFromDbNum = gmtFromDb.split(' ')[1].substring(0, 3);
-              var delta = timeZoneNum - gmtFromDbNum; // // console.log(timeFromDb)
-
+              var delta = timeZoneNum - gmtFromDbNum;
               var arr = timeFromDb.split(',');
               var newArr = [];
               var newArr2 = [];
@@ -3809,9 +3804,7 @@ function getCookie(name) {
                 array.push(obj3);
               }
 
-              array2 = _toConsumableArray(new Set(array)); // // console.log(array2)
-              // // console.log(obj)
-              // // console.log(obj2)
+              array2 = _toConsumableArray(new Set(array));
             });
           }
 
@@ -3843,10 +3836,7 @@ function getCookie(name) {
               var arr = val[1].split(',');
               dataLength += arr.length;
             });
-          } //  получение данных из temp-gmt,
-          //  обработка массива - изменение неправильного времени,
-          //  вставка в календарь
-
+          }
 
           if (_this4.lengthOfData !== undefined) {
             if (_this4.lengthOfData === dataLength) {
@@ -4064,8 +4054,7 @@ function getCookie(name) {
                     a = +firstH + delta; // 02
 
                     time = a + ':' + firstM;
-                  } // // console.log(time)
-
+                  }
 
                   var obj = {
                     name: userNameFromDB,
@@ -4077,7 +4066,7 @@ function getCookie(name) {
                     price: priceFromDB,
                     gmt: _this4.timeZone,
                     'method': 'setToBooksTimeGMT'
-                  }; // // console.log(obj)
+                  };
 
                   _this4.bookedGmtArray.push(obj);
                 });
@@ -4155,8 +4144,8 @@ function getCookie(name) {
     chooseTime: function chooseTime(event) {
       var _this5 = this;
 
-      // // console.log('choose')
-      // ---- Для free-lesson возможность выбрать только одно занятие
+      var userName = getCookie('name'); // ---- Для free-lesson возможность выбрать только одно занятие
+
       if (this.freeLesson) {
         $('.selected-time').removeClass('selected-time');
       }
@@ -4173,10 +4162,9 @@ function getCookie(name) {
       }
 
       this.unconfirmTimeArray = [];
-      this.selectedTimeArray = []; // console.log(this.selectedTimeArray)
-      // let userName = $('.user-login__elem--user-name').html();
+      this.selectedTimeArray = [];
+      console.log(this.selectedTimeArray); // let userName = $('.user-login__elem--user-name').html();
 
-      var userName = getCookie('name');
       var confirmation = 0;
 
       if ($('.header-menu--private').hasClass('menu-item-active')) {
@@ -4266,7 +4254,6 @@ function getCookie(name) {
         }
       });
     },
-    // ------------- click on button class="button book-btn" (забронировать -> страница оплаты)
     bookEvent: function bookEvent(event) {
       var _this8 = this;
 
@@ -4325,7 +4312,7 @@ function getCookie(name) {
                     'method': 'bookedFreeByUser'
                   };
                   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/mailer.php', JSON.stringify(mailForUser));
-                  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/mailer.php', JSON.stringify(mailForAdmin)); // $("#mysite").addClass("body-fixed");
+                  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/mailer.php', JSON.stringify(mailForAdmin));
                 } else {
                   // --- для платного - страница оплаты
                   setTimeout(function () {
@@ -24502,6 +24489,9 @@ $(document).ready(function () {
     $('.register-form').remove();
     $('.register-success').remove();
     $('.settings').remove();
+    setTimeout(function () {
+      $('#preloader').css('display', 'none');
+    }, 50);
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
@@ -26705,7 +26695,7 @@ $(document).ready(function () {
                 confirmation: confirmationFromDB,
                 price: priceFromDB,
                 gmt: timeZone,
-                bookingTime: ' ',
+                bookingTime: 0,
                 idFromBookstime: idFromDB,
                 'method': 'setToBooksTimeGMT'
               };
@@ -26736,7 +26726,7 @@ $(document).ready(function () {
           $('#preloader').css('display', 'none');
         }
       });
-    }, 50);
+    }, 200);
   }
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery/dist/jquery.min.js */ "../node_modules/jquery/dist/jquery.min.js")))
