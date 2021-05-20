@@ -12,7 +12,8 @@
 
     <section class="about-school-video">
         <div class="video-container">
-            <div switch-lang="<?=switchLang()?>" switchable-text="Подробнее про нашу школу" class="close-line">Learn more about our school
+            <div class="close-line">
+                <span class="close-line-text" switch-lang="<?=switchLang()?>" switchable-text="Подробнее про нашу школу">Learn more about our school</span>
                 <div class="close-button"></div>
             </div>
             <iframe id="about-video" class="detailed-about-school" width="1200px" height="315" src="https://www.youtube.com/embed/mUPs1h9TZSg?enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

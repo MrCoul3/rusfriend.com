@@ -3286,6 +3286,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
 
 
 function getCookie(name) {
@@ -10369,6 +10370,18 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("div", {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.preloader,
+          expression: "preloader"
+        }
+      ],
+      attrs: { id: "preloader" }
+    }),
+    _vm._v(" "),
     _c(
       "div",
       {
@@ -10599,18 +10612,6 @@ var render = function() {
         )
       ]
     ),
-    _vm._v(" "),
-    _c("div", {
-      directives: [
-        {
-          name: "show",
-          rawName: "v-show",
-          value: _vm.preloader,
-          expression: "preloader"
-        }
-      ],
-      attrs: { id: "preloader" }
-    }),
     _vm._v(" "),
     _c(
       "section",
@@ -12018,17 +12019,17 @@ var render = function() {
                     class: arr.status,
                     attrs: { status: arr.status }
                   },
-                  [_vm._v("\n          " + _vm._s(arr.status) + "\n        ")]
+                  [
+                    _vm._v(
+                      "\n            " + _vm._s(arr.status) + "\n          "
+                    )
+                  ]
                 ),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "student__elem student__elem--actions" },
                   [
-                    _c("div", { staticClass: "student-actions-message" }, [
-                      _vm._v("написать сообщение")
-                    ]),
-                    _vm._v(" "),
                     _c(
                       "div",
                       {
@@ -12040,7 +12041,7 @@ var render = function() {
                           }
                         }
                       },
-                      [_vm._v(_vm._s(arr.text) + "\n          ")]
+                      [_vm._v(_vm._s(arr.text) + "\n            ")]
                     )
                   ]
                 )
@@ -25477,6 +25478,9 @@ $(document).ready(function () {
 
   function openLoginForm() {
     $(".btn-login").click(function () {
+      $('#email').val('');
+      $('#password').val('');
+
       if (!$(".login-form").hasClass('login-form-active')) {
         $('.header').css('right', '8px');
         $('.header__overhead').css('padding', '0 30px');

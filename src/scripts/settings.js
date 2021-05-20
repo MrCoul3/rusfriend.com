@@ -85,9 +85,10 @@ $(document).ready(function () {
         function changeSettings() {
             $('.settings').click(function (e) {
                 let checkText;
+
+
                 // появление инпута при нажатии изменить
                 if (e.target.className.includes('change-btn--input')) {
-
                     let wrap = e.target.parentNode.parentNode;
                     let inputWrap = wrap.nextElementSibling;
 

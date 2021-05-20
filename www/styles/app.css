@@ -5384,7 +5384,7 @@
   background: #fbfbfb url(../images/common/preloader_1.gif) no-repeat center center;
 }
 #booking-calendar[data-v-678606de] {
-  opacity: 0;
+  opacity: 1;
 }
 .prompt[data-v-678606de] {
   position: absolute;

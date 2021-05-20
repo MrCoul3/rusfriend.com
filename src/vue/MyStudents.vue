@@ -30,7 +30,7 @@
           </div>
           <div class="student__elem student__elem--actions">
             <!--                        <div class="student-actions-invite">отправить приглашение на урок</div>-->
-            <div class="student-actions-message">написать сообщение</div>
+<!--            <div class="student-actions-message">написать сообщение</div>-->
             <div :status="arr.status" :email="arr.email" @click="blockUser($event)"
                  class="student-actions-ban">{{ arr.text }}
             </div>

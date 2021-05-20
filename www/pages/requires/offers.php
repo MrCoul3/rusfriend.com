@@ -52,7 +52,7 @@
                 <div class="card-content card-content--end">
                     <p switch-lang="<?=switchLang()?>" switchable-text="Если ты уже немного говоришь по-русски и хочешь увеличить словарный запас, а так же приятно провести время за разговором - Speaking-Club как раз для тебя." class="card-description card-description--back">If you already speak a little Russian and want to increase your vocabulary, as well as have a good time talking - Speaking-Club is just for you. Does not include grammar and is suitable for any level.</p>
                     <p switch-lang="<?=switchLang()?>" switchable-text="Не включает грамматику и подходит для любого уровня." class="card-description card-description--back card-description--addition">Does not include grammar and is suitable for any level.</p>
-                    <p switch-lang="<?=switchLang()?>" switchable-text="от 25$" class="card-content-price">from 25$</p>
+                    <p switch-lang="<?=switchLang()?>" switchable-text="от 15$" class="card-content-price">from 15$</p>
                     <a switch-lang="<?=switchLang()?>" switchable-text="начать" class="begin-btn" href="/speaking-club">start</a>
                 </div>
             </div>

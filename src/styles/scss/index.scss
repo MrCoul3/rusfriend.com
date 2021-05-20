@@ -135,6 +135,10 @@
           top: -30px;
         }
 
+        .close-line-text {
+
+        }
+
         .close-button {
           cursor: pointer;
           position: absolute;
@@ -531,10 +535,11 @@
       @include mediaWidth(1024) {
         margin-top: 47px;
       }
+
       .check {
         //display: none;
         transition: all ease .5s;
-        opacity: 0!important;
+        opacity: 0 !important;
         width: 235px;
         text-align: center;
         font-style: italic;
@@ -550,10 +555,12 @@
           width: 205px;
         }
       }
+
       .check-active {
         transition: all ease .5s;
-        opacity: 1!important;
+        opacity: 1 !important;
       }
+
       .get-free-lesson-btn {
         text-decoration: none;
         display: block;
@@ -569,8 +576,6 @@
         }
       }
     }
-
-
 
 
   }
@@ -971,7 +976,6 @@
     }
 
   }
-
 
 
 }

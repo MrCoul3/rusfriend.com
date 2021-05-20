@@ -30,7 +30,8 @@ $(document).ready(function () {
 
     function openLoginForm() {
         $(".btn-login").click(function () {
-
+            $('#email').val('');
+            $('#password').val('');
             if (!$(".login-form").hasClass('login-form-active')) {
 
                 $('.header').css('right', '8px');

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-show="preloader" id="preloader"></div>
     <div  v-show="freeLessBookSuccess" class="free-lesson-success-frame">
       <div v-show="freeLessBookSuccess" class="free-lesson-success">
         <h2 :language="language" switchable-text="Вы успешно забронировали урок"
@@ -40,7 +41,7 @@
       </div>
     </div>
 
-    <div v-show="preloader" id="preloader"></div>
+
     <section id="booking-calendar" class="your-calendar inner">
       <h3 :language="language"
           switchable-text="Забронируй <span>бесплатный</span> получасовой урок с преподавателем прямо сейчас"
@@ -589,6 +590,7 @@ export default {
               $('#booking-calendar').animate({
                 'opacity': '1'
               }, 500)
+
             }, 500);
 
             // добавляет интервалы во временную БД
@@ -1216,7 +1218,7 @@ export default {
 
 <style scoped>
 #booking-calendar {
-  opacity: 0;
+  opacity: 1;
 }
 .prompt {
   position: absolute;
